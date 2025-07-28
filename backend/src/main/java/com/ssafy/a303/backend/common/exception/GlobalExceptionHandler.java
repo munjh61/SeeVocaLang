@@ -7,27 +7,29 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.Collections;
+import java.util.Map;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(SVLRuntimeException.class)
-    public ResponseEntity<String> handleSVLRuntimeException(SVLRuntimeException exception) {
-        ErrorCode errorCode = exception.getErrorCode();
-        int statusCode = errorCode.getStatusCode();
-        String message = errorCode.getMessage();
-        return ResponseEntity.status(statusCode).body(message);
+    public ResponseEntity<ErrorResponse> handleSVLRuntimeException(SVLRuntimeException exception) {
+        int statusCode = exception.getErrorCode().getStatusCode();
+        ErrorResponse response = new ErrorResponse(exception.getMessage());
+        return ResponseEntity.status(statusCode).body(response);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<String> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
-        String message = exception.getMessage();
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
+    public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
+        ErrorResponse response = new ErrorResponse(exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<String> handleConstraintViolationException(MethodArgumentNotValidException exception) {
-        String message = exception.getMessage();
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
+    public ResponseEntity<ErrorResponse> handleConstraintViolationException(MethodArgumentNotValidException exception) {
+        ErrorResponse response = new ErrorResponse(exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
 }
