@@ -1,12 +1,13 @@
-function App() {
+import { Button } from "./components/atoms/Button.tsx";
 
+function App() {
   return (
     <>
-      <div className={"bg-blue-800"}>
-        Tailwind Css Test
-            </div>
+      <Button purpose={"purple"} size="md">
+        버튼
+      </Button>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
