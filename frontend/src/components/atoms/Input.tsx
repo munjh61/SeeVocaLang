@@ -1,6 +1,6 @@
 import type { VariantProps } from "class-variance-authority";
 import { cn } from "../../utils/cn";
-import { InputVariants } from "../variants/InputVariants";
+import { InputVariants } from "../variants/atoms/InputVariants.ts";
 
 type InputProps = {
   className?: string;
