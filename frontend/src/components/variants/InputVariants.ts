@@ -1,7 +1,7 @@
 import { cva } from "class-variance-authority";
 
 export const InputVariants = cva(
-  "w-full py-2 m-1 text-gray-500 bg-white border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-400 transition-all",
+  "w-full py-2 m-1 text-gray-500 bg-white border border-gray-200 focus:outline-none focus:border-2 focus:border-purple-400 transition-all",
   {
     variants: {
       scale: {

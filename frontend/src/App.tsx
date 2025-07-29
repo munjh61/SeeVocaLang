@@ -3,7 +3,9 @@ import { Input } from "./components/atoms/Input.tsx";
 function App() {
   return (
     <>
-      <Input />
+      <div className="w-[50%]">
+        <Input />
+      </div>
     </>
   );
 }
