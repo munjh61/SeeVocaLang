@@ -154,3 +154,4 @@ $RECYCLE.BIN/
 .gradle*
 build*
 env.*
+src/main/generated
