@@ -1,24 +1,27 @@
+import type { VariantProps } from "class-variance-authority";
 import { buttonVariants } from "../variants/ButtonVariants.ts";
 import { cn } from "../../utils/cn.ts";
 
+type ButtonVariantProps = VariantProps<typeof buttonVariants>;
+
 type ButtonProps = {
-  purpose?: "purple" | "delete" | "cancle";
-  size?: "sm" | "md" | "lg";
   className?: string;
   icon?: string;
   children: React.ReactNode;
-} & React.ButtonHTMLAttributes<HTMLButtonElement>;
+} & ButtonVariantProps &
+  React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 export const Button = ({
-  purpose,
+  bgColor,
   size,
+  textColor,
   className,
   children,
   ...props
 }: ButtonProps) => {
   return (
     <button
-      className={cn(buttonVariants({ purpose, size }), className)}
+      className={cn(buttonVariants({ bgColor, size, textColor }), className)}
       {...props}
     >
       {children}

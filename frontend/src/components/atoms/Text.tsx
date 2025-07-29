@@ -1,22 +1,29 @@
 import { textVariants } from "../variants/TextVariants.ts";
 import { cn } from "../../utils/cn.ts";
+import type { VariantProps } from "class-variance-authority";
+
+type TextVariantProps = VariantProps<typeof textVariants>;
 
 type TextProps = {
-  size?: "sm" | "md" | "lg";
-  style?: "main" | "game" | "mypage" | "friend";
   className?: string;
-  children: React.ReactNode;
-} & React.HTMLAttributes<HTMLDivElement>; // ✅ textarea가 아니라 div
+  children?: React.ReactNode;
+} & TextVariantProps &
+  React.HTMLAttributes<HTMLDivElement>;
 
 export const Text = ({
-  style,
   size,
+  weight,
+  color,
+  align,
   className,
   children,
   ...props
 }: TextProps) => {
   return (
-    <div className={cn(textVariants({ style, size }), className)} {...props}>
+    <div
+      className={cn(textVariants({ size, weight, color, align }), className)}
+      {...props}
+    >
       {children}
     </div>
   );
