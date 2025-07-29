@@ -3,5 +3,5 @@ package com.ssafy.a303.backend.user.service;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class RefreshTokenService {
 }
