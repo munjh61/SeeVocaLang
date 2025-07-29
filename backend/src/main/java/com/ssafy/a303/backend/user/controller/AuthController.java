@@ -8,9 +8,7 @@ import com.ssafy.a303.backend.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,6 +21,18 @@ public class AuthController {
     @PostMapping("/api/v1/auth/signup")
     public ResponseEntity<BaseResponseDto<Void>> signUp(@RequestBody SignUpRequestDto requestDto) {
         return ResponseEntity.ok(authService.signUp(requestDto));
+    }
+
+    // 아이디 중복확인
+    @GetMapping("/api/v1/auth/validation-id")
+    public ResponseEntity<BaseResponseDto<Void>> validateLoginId(@RequestParam("value") String loginId) {
+        return ResponseEntity.ok(authService.validateLoginId(loginId));
+    }
+
+    // 닉네임 중복확인
+    @GetMapping("/api/v1/auth/validation-nickname")
+    public ResponseEntity<BaseResponseDto<Void>> validateNickname(@RequestParam("value") String nickname) {
+        return ResponseEntity.ok(authService.validateNickname(nickname));
     }
 
     /// 로그인
