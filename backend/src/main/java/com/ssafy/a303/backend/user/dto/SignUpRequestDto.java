@@ -3,10 +3,12 @@ package com.ssafy.a303.backend.user.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class SignUpRequestDto {
 
     @NotBlank(message = "ID는 필수 입력값입니다.")
