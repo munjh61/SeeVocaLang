@@ -1,11 +1,9 @@
-import { Button } from "./components/atoms/Button.tsx";
+import { Input } from "./components/atoms/Input.tsx";
 
 function App() {
   return (
     <>
-      <Button purpose={"purple"} size="md">
-        버튼
-      </Button>
+      <Input />
     </>
   );
 }
