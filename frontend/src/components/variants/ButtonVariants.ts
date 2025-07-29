@@ -1,22 +1,45 @@
 import { cva } from "class-variance-authority";
 
 export const buttonVariants = cva(
-  "inline-flex items-center justify-center rounded", // 이함수에 기본적으로 적용시킬 스타일 뼈대
+  "font-bold inline-flex items-center justify-center rounded-md hover:opacity-90 active:scale-95 active:shadow-inner",
   {
     variants: {
-      purpose: {
-        purple: `
+      bgColor: {
+        gradientPurple: `
           bg-gradient-to-r from-purple-700 to-blue-500
-          hover:opacity-90
+        `,
+        gradientGreen: `
+          bg-gradient-to-r from-green-300 to-green-700
+        `,
+        gradientOrange: `
+          bg-gradient-to-r from-orange-400 to-orange-700
+        `,
+        red: `
+          bg-[#EF4444]
+        `,
+        green: `
+          bg-[#22C55E]
+        `,
+        blue: `
+          bg-[#3B82F6]
+        `,
+        orange: `
+          bg-[#F97316]
+        `,
+        transparent: `
+          bg-white/50 text-white
+          hover:bg-white/40
           active:scale-95 active:shadow-inner
         `,
-        delete: "bg-red-500 text-white hover:bg-red-600",
-        cancle: "bg-green-500 text-white hover:bg-green-600",
+        white: `
+          bg-white
+        `,
       },
       size: {
-        sm: "px-2 py-1 text-sm",
-        md: "px-4 py-2 text-base",
-        lg: "px-6 py-3 text-lg",
+        sm: "px-2 py-1 text-xs",
+        md: "px-4 py-1 text-xs",
+        xl5: "px-30 py-1 text-xs",
+        word: "px-30 py-30 text-xl",
       },
       textColor: {
         white: "text-white",

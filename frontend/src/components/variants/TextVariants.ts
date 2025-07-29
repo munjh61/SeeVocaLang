@@ -1,24 +1,37 @@
 import { cva } from "class-variance-authority";
 
-export const textVariants = cva(
-  "inline-flex items-center justify-center rounded", // 이함수에 기본적으로 적용시킬 스타일 뼈대
-  {
-    variants: {
-      style: {
-        main: "bg-blue-500 text-white hover:bg-blue-600",
-        game: "bg-red-500 text-white hover:bg-red-600",
-        mypage: "bg-green-500 text-white hover:bg-green-600",
-        friend: "bg-blue-500 radious-20",
-      },
-      size: {
-        sm: "px-2 py-1 text-sm",
-        md: "px-4 py-2 text-base",
-        lg: "px-6 py-3 text-lg",
-      },
+export const textVariants = cva("", {
+  variants: {
+    size: {
+      xs: "text-xs",
+      sm: "text-sm",
+      base: "text-base",
+      lg: "text-lg",
+      xl: "text-xl",
     },
-    defaultVariants: {
-      style: "main",
-      size: "md",
+    weight: {
+      light: "font-light",
+      normal: "font-normal",
+      medium: "font-medium",
+      bold: "font-bold",
+      extrabold: "font-extrabold",
     },
-  }
-);
+    color: {
+      primary: "text-blue-600",
+      danger: "text-red-500",
+      muted: "text-gray-500",
+      white: "text-white",
+      black: "text-black",
+    },
+    align: {
+      left: "text-left",
+      center: "text-center",
+      right: "text-right",
+    },
+  },
+  defaultVariants: {
+    size: "base",
+    weight: "normal",
+    color: "black",
+  },
+});
