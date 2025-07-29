@@ -1,1 +1,4 @@
-// 메인페이지
+function MainPage() {
+  return <h1>Home</h1>;
+}
+export default MainPage;
