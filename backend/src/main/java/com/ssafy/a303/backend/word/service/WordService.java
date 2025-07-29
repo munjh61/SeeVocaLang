@@ -3,7 +3,6 @@ package com.ssafy.a303.backend.word.service;
 import com.ssafy.a303.backend.common.dto.BaseResponseDto;
 import com.ssafy.a303.backend.common.dto.PageResponseDto;
 import com.ssafy.a303.backend.common.exception.CommonErrorCode;
-import com.ssafy.a303.backend.common.exception.SVLRuntimeException;
 import com.ssafy.a303.backend.word.dto.DeleteWordCommandDto;
 import com.ssafy.a303.backend.word.dto.ReadWordCommandDto;
 import com.ssafy.a303.backend.word.dto.ReadWordResponseDto;
@@ -11,11 +10,11 @@ import com.ssafy.a303.backend.word.entity.WordEntity;
 import com.ssafy.a303.backend.word.exception.WordNotFoundException;
 import com.ssafy.a303.backend.word.mapper.WordMapper;
 import com.ssafy.a303.backend.word.repository.WordRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,6 +23,7 @@ import java.util.List;
 public class WordService {
     private final WordRepository wordRepository;
 
+    @Transactional(readOnly = true)
     public PageResponseDto<ReadWordResponseDto> getWords(ReadWordCommandDto readWordCommandDto) {
         long lastId = readWordCommandDto.getLastId();
         int size = readWordCommandDto.getSize();
@@ -61,7 +61,7 @@ public class WordService {
     @Transactional
     public BaseResponseDto<Void> deleteWord(DeleteWordCommandDto deleteWordCommandDto) {
         WordEntity word = wordRepository.findByUserUserIdAndWordId(deleteWordCommandDto.getUserId(),
-                deleteWordCommandDto.getWordId())
+                        deleteWordCommandDto.getWordId())
                 .orElseThrow(() -> new WordNotFoundException(CommonErrorCode.RESOURCE_NOT_FOUND));
 
         word.delete();
