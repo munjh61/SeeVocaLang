@@ -34,6 +34,8 @@ export const buttonVariants = cva(
         white: `
           bg-white
         `,
+        gray: `bg-[#F3F4F6]`,
+        noBg: `bg-transparent`,
       },
       size: {
         sm: "px-2 py-1 text-xs",
@@ -44,6 +46,8 @@ export const buttonVariants = cva(
       textColor: {
         white: "text-white",
         black: "text-black",
+        purple: "text-[#9D5EEE]",
+        gray: "text-[#71717A]",
       },
     },
   }
