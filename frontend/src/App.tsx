@@ -1,13 +1,7 @@
-import { Input } from "./components/atoms/Input.tsx";
+import { Router } from "./router/Router.tsx";
 
 function App() {
-  return (
-    <>
-      <div className="w-[50%]">
-        <Input />
-      </div>
-    </>
-  );
+  return <Router />;
 }
 
 export default App;
