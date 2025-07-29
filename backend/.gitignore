@@ -151,3 +151,6 @@ $RECYCLE.BIN/
 # End of https://www.toptal.com/developers/gitignore/api/windows,macos,intellij+all
 
 .env
+.gradle*
+build*
+env.*
