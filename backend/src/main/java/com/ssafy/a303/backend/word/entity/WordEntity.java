@@ -2,8 +2,10 @@ package com.ssafy.a303.backend.word.entity;
 
 import com.ssafy.a303.backend.user.entity.UserEntity;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
@@ -26,4 +28,19 @@ public class WordEntity {
     @Column(nullable = false)
     private String imageUrl;
     private String audioUrl;
+
+    private boolean isDeleted = false;
+
+    public void delete(){
+        isDeleted = true;
+    }
+
+    @Builder
+    public WordEntity(UserEntity user, String nameEn, String nameKo, String imageUrl, String audioUrl) {
+        this.user = user;
+        this.nameEn = nameEn;
+        this.nameKo = nameKo;
+        this.imageUrl = imageUrl;
+        this.audioUrl = audioUrl;
+    }
 }
