@@ -13,14 +13,17 @@ import java.time.LocalDate;
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long userId;
+    private Long userId;
+
+    @Column(unique = true)
+    private String loginId;
 
     @Column(unique = true, nullable = false)
     private String nickname;
     @Column(unique = true)
     private String email;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String password;
 
     @Column(nullable = false)
