@@ -49,6 +49,26 @@ public class AuthService {
                 .build();
     }
 
+    // 아이디 중복 확인
+    public BaseResponseDto<Void> validateLoginId(String loginId) {
+        if (userRepository.existsByLoginId(loginId)) {
+            throw new UserIdAlreadyExistsException(CommonErrorCode.RESOURCE_ALREADY_EXIST);
+        }
+        return BaseResponseDto.<Void>builder()
+                .message("사용 가능한 아이디입니다.")
+                .build();
+    }
+
+    // 닉네임 사용 가능 여부 검증
+    public BaseResponseDto<Void> validateNickname(String nickname) {
+        if (userRepository.existsByNickname(nickname)) {
+            throw new UserNicknameAlreadyExistsException(CommonErrorCode.RESOURCE_ALREADY_EXIST);
+        }
+        return BaseResponseDto.<Void>builder()
+                .message("사용 가능한 닉네임입니다.")
+                .build();
+    }
+
     // 로그인
 
     // 로그아웃
