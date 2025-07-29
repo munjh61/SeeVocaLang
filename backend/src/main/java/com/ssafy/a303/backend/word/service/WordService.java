@@ -43,12 +43,7 @@ public class WordService {
                 .map(WordMapper.INSTANCE::readWordCommandDto)
                 .toList();
 
-        long id;
-
-        if (words.isEmpty())
-            id = -1;
-        else
-            id = words.get(words.size() - 1).getWordId();
+        long id = words.isEmpty() ? -1 : words.get(words.size() - 1).getWordId();
 
         return PageResponseDto.<ReadWordResponseDto>builder()
                 .message("전체 사진을 성공적으로 불러왔습니다.")
