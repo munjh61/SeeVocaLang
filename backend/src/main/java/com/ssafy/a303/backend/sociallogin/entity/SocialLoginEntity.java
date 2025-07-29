@@ -8,18 +8,22 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "social_login_tb")
+@Table(name = "social_login_tb",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"provider", "socialUid"})
+)
 public class SocialLoginEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long loginId;
+    private long socialLoginId;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Provider provider;
 
-    private long socialUid;
+    @Column(nullable = false)
+    private String socialUid;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity user;
 }
