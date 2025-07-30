@@ -1,35 +1,22 @@
 import book from "../asset/nav_book.svg?react";
-import { SearchbarSegment } from "../components/molecules/book/SearchbarSegment";
+import { IconButton } from "../components/layout/book/IconButton";
 
 function TestPageMoon() {
   const handleSearch = (value: string) => {
     console.log(value);
   };
   return (
-    <SearchbarSegment
-      iconInput={{
-        iconVariant: {
-          icon: book,
-          color: "blue",
-        },
-        inputProps: {
-          placeholder: "검색어를 입력하세요",
-          onChange: () => handleSearch,
-        },
-        inputVariant: {
-          scale: "md",
-          text: "gray",
-        },
+    <IconButton
+      ButtonVariant={{
+        bgColor: "blue",
+        children: "",
+        size: "md",
+        textColor: "white",
       }}
-      segmentControl={{
-        options: [
-          { label: "영어", value: "en" },
-          { label: "한글", value: "ko" },
-        ],
-        defaultValue: "en",
-        onChange: value => console.log("선택됨:", value),
-      }}
-    />
+      IconVariant={{ icon: book, color: "white" }}
+    >
+      학습하기
+    </IconButton>
   );
 }
 export default TestPageMoon;

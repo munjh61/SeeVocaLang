@@ -1,6 +1,6 @@
 import { Icon } from "../../atoms/icon";
 import { Input } from "../../atoms/Input";
-import type { ComponentProps, ComponentType, SVGProps } from "react";
+import type { ComponentProps } from "react";
 
 type InputProps = ComponentProps<typeof Input>;
 type IconProps = ComponentProps<typeof Icon>;
