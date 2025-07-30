@@ -1,24 +1,19 @@
 import { Icon } from "../../atoms/icon";
 import { Input } from "../../atoms/Input";
-import type { ComponentType, SVGProps } from "react";
-import type { VariantProps } from "class-variance-authority";
-import type { InputVariants } from "../../variants/InputVariants";
-import type { iconVariants } from "../../variants/IconVariants";
+import type { ComponentProps, ComponentType, SVGProps } from "react";
 
-type InputVariantProps = VariantProps<typeof InputVariants>;
-type IconVariantProps = VariantProps<typeof iconVariants>;
+type InputProps = ComponentProps<typeof Input>;
+type IconProps = ComponentProps<typeof Icon>;
 
 type IconInputProps = {
   icon: ComponentType<SVGProps<SVGSVGElement>>;
   className?: string;
-
+  // variant props를 각각 따로 분리
+  iconVariant?: Pick<IconProps, "size" | "color" | "rotate">;
+  inputVariant?: InputProps;
   // 일반 input HTML 속성들
   inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
-
-  // variant props를 각각 따로 분리
-  iconVariant?: Pick<IconVariantProps, "size" | "color" | "rotate">;
-  inputVariant?: Pick<InputVariantProps, "scale" | "text">;
-
+  // 함수
   inputValue?: (value: string) => void;
 };
 
