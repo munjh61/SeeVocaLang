@@ -16,26 +16,42 @@ type IconInputProps = {
   inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
 
   // variant props를 각각 따로 분리
-  inputVariant?: Pick<InputVariantProps, "scale">;
   iconVariant?: Pick<IconVariantProps, "size" | "color" | "rotate">;
+  inputVariant?: Pick<InputVariantProps, "scale" | "text">;
+
+  inputValue?: (value: string) => void;
 };
 
 export const IconInput = ({
   icon,
   iconVariant,
-  inputProps,
   inputVariant,
+  inputProps,
   className = "",
+  inputValue,
 }: IconInputProps) => {
   const inputScale = inputVariant?.scale ?? "md";
+  const inputText = inputVariant?.text ?? "gray";
   const iconSize = iconVariant?.size ?? "md";
   const iconColor = iconVariant?.color ?? "gray";
   const iconRotate = iconVariant?.rotate;
 
+  const pressEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    inputProps?.onKeyDown?.(e); // 원래 onKeyDown 먼저 실행
+    if (e.key === "Enter" && inputValue) {
+      inputValue(e.currentTarget.value);
+    }
+  };
+
   return (
     <div className={`w-full flex items-center gap-2 ${className}`}>
       <Icon icon={icon} size={iconSize} color={iconColor} rotate={iconRotate} />
-      <Input scale={inputScale} {...inputProps} />
+      <Input
+        scale={inputScale}
+        text={inputText}
+        {...inputProps}
+        onKeyDown={pressEnter}
+      />
     </div>
   );
 };

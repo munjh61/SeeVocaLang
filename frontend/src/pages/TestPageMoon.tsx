@@ -2,6 +2,9 @@ import searchSvg from "../asset/search.svg?react";
 import { SearchbarSegment } from "../components/molecules/book/SearchbarSegment";
 
 function TestPageMoon() {
+  const handleSearch = (value: string) => {
+    console.log(value);
+  };
   return (
     <div>
       <h1>Moon</h1>
@@ -11,9 +14,9 @@ function TestPageMoon() {
           iconVariant: { color: "blue" },
           inputProps: {
             placeholder: "검색어를 입력하세요",
-            onChange: e => console.log("입력:", e.target.value),
           },
           inputVariant: { scale: "md" },
+          inputValue: handleSearch,
         }}
         segmentControl={{
           options: [
