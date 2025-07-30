@@ -2,22 +2,30 @@ import { Button } from "../../atoms/Button";
 import AddFriendIcon from "../../../asset/friend_add.svg?react";
 import DeleteFriendIcon from "../../../asset/friend_del.svg?react";
 import WaitFriendIcon from "../../../asset/wait.svg?react";
+import type { ComponentProps } from "react";
+import { Text } from "../../atoms/Text";
 
-type FriendStatus = "none" | "requested" | "friend" | "delete";
+type ButtonProps = ComponentProps<typeof Button>;
+type TextProps =ComponentProps<typeof Text>;
+type FriendStatus = "none" | "requested"  | "delete" | "response";
 type FriendInfoProps = {
   profileUrl?: string;
   name: string;
   status: FriendStatus;
+  ButtonVariants: ButtonProps;
+  TextVariants: TextProps;
   onAdd?: () => void;
   onDelete?: () => void;
+  onAccept?: () => void;
+  onRefuse?: () => void;
 };
 
-export const FriendInfo = ({ profileUrl, name, status, onAdd, onDelete }: FriendInfoProps) => {
+export const FriendInfoCard = ({ profileUrl, name, status, onAdd, onDelete, onAccept, onRefuse }: FriendInfoProps) => {
   const renderButton = () => {
     switch (status) {
       case "none":
         return (
-          <Button
+          <Button         
             bgColor="blue"
             size="md"
             textColor="white"
@@ -25,32 +33,22 @@ export const FriendInfo = ({ profileUrl, name, status, onAdd, onDelete }: Friend
             onClick={onAdd}
           >
             <AddFriendIcon className="w-4 h-4" />
-            친구 추가
+            <Text color="white">친구 추가</Text>
+            
+            
           </Button>
         );
       case "requested":
         return (
           <Button
-            bgColor="gradientOrange"
+            bgColor="white"
             size="md"
-            textColor="white"
+            textColor="purple"
             className="gap-1 px-3 py-1.5"
             disabled
           >
             <WaitFriendIcon className="w-4 h-4" />
-            요청됨
-          </Button>
-        );
-      case "friend":
-        return (
-          <Button
-            bgColor="green"
-            size="md"
-            textColor="white"
-            className="gap-1 px-3 py-1.5"
-            disabled
-          >
-            친구
+            <Text >요청됨</Text>
           </Button>
         );
       case "delete":
@@ -63,9 +61,32 @@ export const FriendInfo = ({ profileUrl, name, status, onAdd, onDelete }: Friend
             onClick={onDelete}
           >
             <DeleteFriendIcon className="w-4 h-4" />
-            친구 삭제
+            <Text>친구 삭제</Text>
           </Button>
         );
+      case "response":
+        return (
+          <div className="flex  gap-2">
+            <Button
+            bgColor="green"
+            size="md"
+            textColor="white"
+            className="gap-1 px-3 py-1.5"
+            onClick={onAccept}
+          >
+            <Text>수락</Text>
+          </Button>
+          <Button
+            bgColor="red"
+            size="md"
+            textColor="white"
+            className="gap-1 px-3 py-1.5"
+            onClick={onRefuse}
+          >
+           <Text>거절</Text>
+          </Button>
+        </div>
+      );
     }
   };
 
@@ -80,7 +101,7 @@ export const FriendInfo = ({ profileUrl, name, status, onAdd, onDelete }: Friend
         <span className="text-sm font-semibold text-gray-900">{name}</span>
       </div>
 
-      {/* 버튼 렌더링 */}
+    
       {renderButton()}
     </div>
   );

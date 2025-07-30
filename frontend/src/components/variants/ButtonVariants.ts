@@ -44,6 +44,7 @@ export const buttonVariants = cva(
       textColor: {
         white: "text-white",
         black: "text-black",
+        purple: "text-[#9564E6]",
       },
     },
   }

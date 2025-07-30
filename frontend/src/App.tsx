@@ -1,35 +1,24 @@
+
 import { useState } from "react";
-import { FriendInfo } from "./components/molecules/friend/FriendInfo";
+import { FriendInfoCard } from "./components/molecules/friend/FriendInfoCard";
 import { FriendSearchBar } from "./components/molecules/friend/FriendSearchBar";
+import { NavTab } from "./components/molecules/friend/NavTab";
+import { FriendNavBar } from "./components/organisms/friend/FriendNavBar";
+import FriendPage from "./FriendPage";
+import { PageHeader } from "./components/molecules/friend/PageHeader";
 
 function App() {
-  const [search, setSearch] = useState("");
+ const [search, setSearch] = useState("");
 
   return (
-    <>
-      <div className="p-6 bg-white">
-        <FriendSearchBar
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-      </div>
-
-      <div className="p-8 bg-gray-50 min-h-screen flex flex-col gap-4">
-        <FriendInfo
-          name="김영희"
-          status="none"
-          onAdd={() => alert("친구 요청 보냄")}
-        />
-        <FriendInfo name="이철수" status="requested" />
-        <FriendInfo name="박민수" status="friend" />
-        <FriendInfo
-          name="정하늘"
-          status="delete"
-          onDelete={() => alert("친구 삭제")}
-        />
-      </div>
-    </>
+    <div>
+    <FriendNavBar></FriendNavBar>
+    <FriendSearchBar value={search} onChange={(e) => setSearch(e.target.value)} />
+    <PageHeader title="새로운 친구 찾기" subtitle="새로운 학습 파트너를 찾아보세요"></PageHeader>
+    <FriendInfoCard name="문준호" status="none"></FriendInfoCard>
+    </div>
   );
+
 }
 
 export default App;
