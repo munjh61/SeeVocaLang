@@ -13,17 +13,12 @@ public class ImageUploader {
     private final S3Helper helper;
 
     public String upload(Long userId, String word, MultipartFile file) {
-        String extension = this.getFileExtension(file.getContentType());
-        String key = String.format("%s/%d/%s.%s", S3Directory.IMAGE.getPath(), userId, word, extension);
+        String key = String.format("%s/%d/%s", S3Directory.IMAGE.getPath(), userId, word);
         return helper.upload(key, file);
     }
 
-    private String getFileExtension(String contentType) {
-        return switch (contentType) {
-            case "image/jpeg" -> "jpg";
-            case "image/png" -> "png";
-            case "image/gif" -> "gif";
-            default -> throw new S3UnknownRuntimeException(S3ErrorCode.UNKNOWN_ERROR);
-        };
+    public String update(Long userId, String word, MultipartFile file) {
+        String key = String.format("%s/%d/%s", S3Directory.IMAGE.getPath(), userId, word);
+        return helper.update(key, file);
     }
 }
