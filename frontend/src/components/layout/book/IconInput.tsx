@@ -57,15 +57,23 @@ export const IconInput = ({
 };
 
 // 이런 식으로 쓰면 됨
-{
-  /* <IconInput
-        icon={searchSvg}
-        inputProps={{
-          placeholder: "검색어를 입력하세요",
-          onChange: e => console.log(e.target.value),
-        }}
-        inputVariant={{ scale: "md" }}
-        iconVariant={{ size: "md", color: "blue" }}
-        className="w-full"
-      /> */
-}
+// import searchSvg from "../asset/search.svg?react";
+// import { IconInput } from "../components/layout/book/IconInput";
+
+// function TestPageMoon() {
+//   const handleSearch = (value: string) => {
+//     console.log(value);
+//   };
+//   return (
+//     <div>
+//       <IconInput
+//         icon={searchSvg}
+//         iconVariant={{ color: "blue", size: "md" }}
+//         inputValue={handleSearch}
+//         inputProps={{}} // Input 변경
+//         className="" // 아이콘 + Input을 감싼 div를 변경
+//       />
+//     </div>
+//   );
+// }
+// export default TestPageMoon;
