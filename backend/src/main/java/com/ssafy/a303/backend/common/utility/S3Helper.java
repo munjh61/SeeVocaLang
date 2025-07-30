@@ -36,6 +36,23 @@ public class S3Helper {
         return String.format("https://%s.s3.%s.amazonaws.com/%s", bucket, region, key);
     }
 
+    public boolean exists(String key) {
+        try {
+            s3Client.headObject(HeadObjectRequest.builder()
+                    .bucket(bucket)
+                    .key(key)
+                    .build());
+
+            return true;
+        } catch (S3Exception exception) {
+            if (exception.statusCode() == 404) {
+                return false;
+            }
+
+            throw new S3UnknownRuntimeException(S3ErrorCode.UNKNOWN_ERROR);
+        }
+    }
+
     public String upload(String key, MultipartFile file) {
         try (InputStream is = file.getInputStream()) {
             PutObjectRequest putReq = PutObjectRequest.builder()
