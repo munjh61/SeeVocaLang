@@ -68,4 +68,12 @@ public class S3Helper {
             throw new S3UnknownRuntimeException(S3ErrorCode.UNKNOWN_ERROR);
         }
     }
+
+    public String update(String key, MultipartFile file) {
+        if (!this.exists(key)) {
+            throw new S3ObjectNotFoundRuntimeException(CommonErrorCode.RESOURCE_NOT_FOUND);
+        }
+
+        return this.upload(key, file);
+    }
 }
