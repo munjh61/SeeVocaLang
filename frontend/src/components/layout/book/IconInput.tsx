@@ -22,9 +22,9 @@ type IconInputProps = {
 
 export const IconInput = ({
   icon,
+  iconVariant,
   inputProps,
   inputVariant,
-  iconVariant,
   className = "",
 }: IconInputProps) => {
   const inputScale = inputVariant?.scale ?? "md";
@@ -33,9 +33,23 @@ export const IconInput = ({
   const iconRotate = iconVariant?.rotate;
 
   return (
-    <div className={`flex items-center gap-2 ${className}`}>
+    <div className={`w-full flex items-center gap-2 ${className}`}>
       <Icon icon={icon} size={iconSize} color={iconColor} rotate={iconRotate} />
       <Input scale={inputScale} {...inputProps} />
     </div>
   );
 };
+
+// 이런 식으로 쓰면 됨
+{
+  /* <IconInput
+        icon={searchSvg}
+        inputProps={{
+          placeholder: "검색어를 입력하세요",
+          onChange: e => console.log(e.target.value),
+        }}
+        inputVariant={{ scale: "md" }}
+        iconVariant={{ size: "md", color: "blue" }}
+        className="w-full"
+      /> */
+}
