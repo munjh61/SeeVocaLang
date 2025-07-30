@@ -13,3 +13,8 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+
+  jwt:
+    secret: ${JWT_SECRET:see-vocabulary-language-ssafy-project-a303}
+    access-minutes: 15
+    refresh-days: 14
