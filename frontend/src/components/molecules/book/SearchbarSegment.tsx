@@ -30,7 +30,6 @@ export const SearchbarSegment = ({
 
 // 사용 방법
 // import searchSvg from "../asset/search.svg?react";
-// import { IconInput } from "../components/layout/book/IconInput";
 // import { SearchbarSegment } from "../components/molecules/book/SearchbarSegment";
 
 // function TestPageMoon() {
