@@ -7,7 +7,7 @@ import com.ssafy.a303.backend.user.dto.SignUpRequestDto;
 import com.ssafy.a303.backend.user.entity.UserEntity;
 import com.ssafy.a303.backend.user.exception.UserIdAlreadyExistsException;
 import com.ssafy.a303.backend.user.repository.UserRepository;
-import com.ssafy.a303.backend.user.service.exception.UserNicknameAlreadyExistsException;
+import com.ssafy.a303.backend.user.exception.UserNicknameAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
