@@ -76,4 +76,21 @@ public class S3Helper {
 
         return this.upload(key, file);
     }
+
+    public void delete(String key) {
+        try {
+            DeleteObjectRequest request = DeleteObjectRequest.builder()
+                    .bucket(bucket)
+                    .key(key)
+                    .build();
+
+            s3Client.deleteObject(request);
+        } catch (S3Exception exception) {
+            if (exception.statusCode() == 404) {
+                throw new S3ObjectNotFoundRuntimeException(CommonErrorCode.RESOURCE_NOT_FOUND);
+            }
+
+            throw new S3UnknownRuntimeException(S3ErrorCode.UNKNOWN_ERROR);
+        }
+    }
 }

@@ -21,4 +21,9 @@ public class ImageUploader {
         String key = String.format("%s/%d/%s", S3Directory.IMAGE.getPath(), userId, word);
         return helper.update(key, file);
     }
+
+    public void delete(Long userId, String word) {
+        String key = String.format("%s/%d/%s", S3Directory.IMAGE.getPath(), userId, word);
+        helper.delete(key);
+    }
 }
