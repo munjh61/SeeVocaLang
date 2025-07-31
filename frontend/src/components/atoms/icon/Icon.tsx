@@ -7,7 +7,7 @@ import { iconVariants } from "./IconVariants.ts";
 type IconVariants = VariantProps<typeof iconVariants>;
 
 type IconProps = {
-  icon?: ComponentType<SVGProps<SVGSVGElement>>;
+  icon: ComponentType<SVGProps<SVGSVGElement>>;
   className?: string;
 } & IconVariants;
 
