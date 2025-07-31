@@ -33,7 +33,7 @@ export const IconButton = ({
 
   const navigate = useNavigate();
   const onClick = () => {
-    if (buttonValue && data) buttonValue(data);
+    if (buttonValue && data) buttonValue(data); // ajax 요청할 때 쓰면 될 듯?
     if (path) navigate(path); // 경로 이동
   };
   return (
@@ -43,6 +43,7 @@ export const IconButton = ({
         textColor={color}
         size={size}
         className="flex items-center gap-2 text-no"
+        type="button"
         onClick={onClick}
       >
         <Icon {...IconVariant} />
@@ -53,17 +54,29 @@ export const IconButton = ({
 };
 
 // 이렇게 쓰면 됨
-// import { IconButton } from "../components/layout/book/IconButton";
 // import book from "../asset/nav_book.svg?react";
+// import { IconButton } from "../components/layout/book/IconButton";
 
 // function TestPageMoon() {
+//   const handleSearch = (value: string) => {
+//     console.log(value);
+//   };
 //   return (
-//     <div>
-//       <IconButton
-//         ButtonVariant={{ children: "" }}
-//         IconVariant={{ icon: book }}
-//       />
-//     </div>
+//     <IconButton
+//       ButtonVariant={{
+//         bgColor: "blue",
+//         children: "",
+//         size: "md",
+//         textColor: "white",
+//       }}
+//       path="/"
+//       data="하이"
+//       // buttonValue={v => console.log(v)}
+//       buttonValue={handleSearch}
+//       IconVariant={{ icon: book, color: "white" }}
+//     >
+//       학습하기
+//     </IconButton>
 //   );
 // }
 // export default TestPageMoon;

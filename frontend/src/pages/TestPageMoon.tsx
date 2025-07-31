@@ -13,6 +13,10 @@ function TestPageMoon() {
         size: "md",
         textColor: "white",
       }}
+      path="/"
+      data="하이"
+      // buttonValue={v => console.log(v)}
+      buttonValue={handleSearch}
       IconVariant={{ icon: book, color: "white" }}
     >
       학습하기
