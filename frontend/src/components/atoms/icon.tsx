@@ -2,7 +2,7 @@ import { type VariantProps } from "class-variance-authority";
 
 import type { ComponentType, SVGProps } from "react";
 import { cn } from "../../utils/cn.ts";
-import { iconVariants } from "../variants/IconVariants.ts";
+import { iconVariants } from "../variants/atoms/IconVariants.ts";
 
 type IconVariants = VariantProps<typeof iconVariants>;
 

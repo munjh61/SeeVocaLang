@@ -1,12 +1,12 @@
 import type { VariantProps } from "class-variance-authority";
-import { buttonVariants } from "../variants/ButtonVariants.ts";
+import { buttonVariants } from "../variants/atoms/ButtonVariants.ts";
 import { cn } from "../../utils/cn.ts";
 
 type ButtonVariantProps = VariantProps<typeof buttonVariants>;
 
 type ButtonProps = {
+  clicked?: boolean;
   className?: string;
-  icon?: string;
   children: React.ReactNode;
 } & ButtonVariantProps &
   React.ButtonHTMLAttributes<HTMLButtonElement>;
