@@ -5,6 +5,7 @@ import { cn } from "../../utils/cn.ts";
 type ButtonVariantProps = VariantProps<typeof buttonVariants>;
 
 type ButtonProps = {
+  clicked?: boolean;
   className?: string;
   children: React.ReactNode;
 } & ButtonVariantProps &
