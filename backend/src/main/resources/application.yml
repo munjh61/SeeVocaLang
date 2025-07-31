@@ -19,6 +19,11 @@ spring:
     access-minutes: 15
     refresh-days: 14
 
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: ""
 
   cloud:
     aws:

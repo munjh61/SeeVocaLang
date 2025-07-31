@@ -1,13 +1,10 @@
 package com.ssafy.a303.backend.user.controller;
 
 import com.ssafy.a303.backend.common.dto.BaseResponseDto;
-import com.ssafy.a303.backend.security.JwtUtil;
 import com.ssafy.a303.backend.user.dto.SignUpRequestDto;
 import com.ssafy.a303.backend.user.service.AuthService;
-import com.ssafy.a303.backend.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -36,11 +33,11 @@ public class AuthController {
     }
 
     /// 로그인
-    // 소셜 로그인
+    // 소셜 로그인 /api/v1/auth/social-singin
 
-    // 일반 로그인
+    // 일반 로그인 /api/v1/auth/singin
 
-    // 통합 로그인
+    // 통합 로그인 /api/v1/auth/integration-login
 
     // 로그아웃
 
