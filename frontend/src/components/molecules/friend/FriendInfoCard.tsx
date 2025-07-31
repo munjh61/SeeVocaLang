@@ -1,9 +1,9 @@
-import { Button } from "../../atoms/Button";
+import { Button } from "../../atoms/button/Button.tsx";
 import AddFriendIcon from "../../../asset/friend_add.svg?react";
 import DeleteFriendIcon from "../../../asset/friend_del.svg?react";
 import WaitFriendIcon from "../../../asset/wait.svg?react";
 import type { ComponentProps } from "react";
-import { Text } from "../../atoms/Text";
+import { Text } from "../../atoms/text/Text.tsx";
 
 type ButtonProps = ComponentProps<typeof Button>;
 type TextProps =ComponentProps<typeof Text>;

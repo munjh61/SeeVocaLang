@@ -1,6 +1,6 @@
 import type { VariantProps } from "class-variance-authority";
 import * as React from "react";
-import { mainPageButton } from "../../variants/molecules/main/MainButtonVariants.ts";
+import { mainPageButton } from "./MainButtonVariants.ts";
 import { cn } from "../../../utils/cn.ts";
 
 type MainButtonVariantProps = VariantProps<typeof mainPageButton>;

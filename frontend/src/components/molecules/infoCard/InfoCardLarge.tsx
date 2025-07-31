@@ -1,4 +1,4 @@
-import { mainPageButton } from "../../variants/molecules/main/MainButtonVariants.ts";
+import { mainPageButton } from "./MainButtonVariants.ts";
 import * as React from "react";
 import { cn } from "../../../utils/cn.ts";
 import type { VariantProps } from "class-variance-authority";

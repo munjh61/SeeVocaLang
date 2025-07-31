@@ -1,6 +1,6 @@
 import type { VariantProps } from "class-variance-authority";
-import { buttonVariants } from "../variants/atoms/ButtonVariants.ts";
-import { cn } from "../../utils/cn.ts";
+import { buttonVariants } from "./ButtonVariants.ts";
+import { cn } from "../../../utils/cn.ts";
 
 type ButtonVariantProps = VariantProps<typeof buttonVariants>;
 

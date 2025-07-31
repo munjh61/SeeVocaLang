@@ -1,1 +1,0 @@
-// MypageApi.ts

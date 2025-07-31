@@ -1,6 +1,6 @@
-import { MainInfoCardLarge } from "../../molecules/main/InfoCardLarge.tsx";
-import { Text } from "../../atoms/Text.tsx";
-import { ProgressBar } from "../../atoms/ProgressBar.tsx";
+import { MainInfoCardLarge } from "./InfoCardLarge.tsx";
+import { Text } from "../../atoms/text/Text.tsx";
+import { ProgressBar } from "../progressbar/ProgressBar.tsx";
 
 export const TodayGoalCard = () => (
   <MainInfoCardLarge

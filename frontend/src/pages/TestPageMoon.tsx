@@ -1,5 +1,5 @@
 import book from "../asset/nav_book.svg?react";
-import { IconButton } from "../components/layout/book/IconButton";
+import { IconButton } from "../components/molecules/iconbutton/IconButton.tsx";
 
 function TestPageMoon() {
   const handleSearch = (value: string) => {

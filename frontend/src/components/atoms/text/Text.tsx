@@ -1,5 +1,5 @@
-import { textVariants } from "../variants/atoms/TextVariants.ts";
-import { cn } from "../../utils/cn.ts";
+import { textVariants } from "./TextVariants.ts";
+import { cn } from "../../../utils/cn.ts";
 import type { VariantProps } from "class-variance-authority";
 import * as React from "react";
 

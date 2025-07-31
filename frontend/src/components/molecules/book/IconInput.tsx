@@ -1,5 +1,5 @@
-import { Icon } from "../../atoms/icon";
-import { Input } from "../../atoms/Input";
+import { Icon } from "../../atoms/icon/Icon.tsx";
+import { Input } from "../../atoms/input/Input.tsx";
 import type { ComponentProps } from "react";
 
 type InputProps = ComponentProps<typeof Input>;

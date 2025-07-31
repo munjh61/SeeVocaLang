@@ -1,4 +1,4 @@
-import { infoCard } from "../../variants/molecules/main/InfoCardVariants.ts";
+import { infoCard } from "./InfoCardVariants.ts";
 import * as React from "react";
 import { cn } from "../../../utils/cn.ts";
 

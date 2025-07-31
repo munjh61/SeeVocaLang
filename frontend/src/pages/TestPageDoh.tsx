@@ -1,11 +1,11 @@
-import { MainPageButton } from "../components/molecules/main/MainButton.tsx";
+import { MainPageButton } from "../components/molecules/infoCard/InfoCardSmall.tsx";
 import StarIcon from "../asset/star_empty.svg?react";
-import { Icon } from "../components/atoms/icon.tsx";
-import { Text } from "../components/atoms/Text.tsx";
-import { Button } from "../components/atoms/Button.tsx";
+import { Icon } from "../components/atoms/icon/Icon.tsx";
+import { Text } from "../components/atoms/text/Text.tsx";
+import { Button } from "../components/atoms/button/Button.tsx";
 import * as React from "react";
-import { MainInfoCardSmall } from "../components/molecules/main/InfoCardSmall.tsx";
-import { TodayGoalCard } from "../components/organisms/main/TodayGoldCard.tsx";
+import { MainInfoCardSmall } from "../components/molecules/infoCard/InfoCardProgressBar.tsx";
+import { TodayGoalCard } from "../components/molecules/infoCard/TodayGoldCard.tsx";
 
 const TitleText = (text: string): React.ReactNode => {
   return (

@@ -1,5 +1,5 @@
-import { IconInput } from "../../layout/book/IconInput";
-import { SegmentControl } from "../../layout/book/SegmentControl";
+import { IconInput } from "../../molecules/book/IconInput.tsx";
+import { SegmentControl } from "../../molecules/book/SegmentControl.tsx";
 import type { ComponentProps } from "react";
 
 type IconInputProps = ComponentProps<typeof IconInput>;

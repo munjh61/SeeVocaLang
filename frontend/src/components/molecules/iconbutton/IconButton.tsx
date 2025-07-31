@@ -1,6 +1,6 @@
 import type { ComponentProps } from "react";
-import { Button } from "../../atoms/Button";
-import { Icon } from "../../atoms/icon";
+import { Button } from "../../atoms/button/Button.tsx";
+import { Icon } from "../../atoms/icon/Icon.tsx";
 import { useNavigate } from "react-router-dom";
 
 type IconProps = ComponentProps<typeof Icon>;

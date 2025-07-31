@@ -1,13 +1,13 @@
 import { type VariantProps } from "class-variance-authority";
 
 import type { ComponentType, SVGProps } from "react";
-import { cn } from "../../utils/cn.ts";
-import { iconVariants } from "../variants/atoms/IconVariants.ts";
+import { cn } from "../../../utils/cn.ts";
+import { iconVariants } from "./IconVariants.ts";
 
 type IconVariants = VariantProps<typeof iconVariants>;
 
 type IconProps = {
-  icon: ComponentType<SVGProps<SVGSVGElement>>;
+  icon?: ComponentType<SVGProps<SVGSVGElement>>;
   className?: string;
 } & IconVariants;
 

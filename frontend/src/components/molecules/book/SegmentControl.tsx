@@ -1,6 +1,6 @@
 // components/ui/SegmentControl.tsx
 import { useState } from "react";
-import { Button } from "../../atoms/Button";
+import { Button } from "../../atoms/button/Button.tsx";
 
 type SegmentOption = {
   label: string;

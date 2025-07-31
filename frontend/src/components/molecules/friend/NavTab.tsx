@@ -1,6 +1,6 @@
 
 import type { ReactNode } from "react";
-import { Button } from "../../atoms/Button";
+import { Button } from "../../atoms/button/Button.tsx";
 import { cn } from "../../../utils/cn";
 
 
