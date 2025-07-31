@@ -33,7 +33,7 @@ export const FriendInfoCard = ({ profileUrl, name, status, onAdd, onDelete, onAc
             onClick={onAdd}
           >
             <AddFriendIcon className="w-4 h-4" />
-            <Text color="white">친구 추가</Text>
+            친구 추가
             
             
           </Button>
