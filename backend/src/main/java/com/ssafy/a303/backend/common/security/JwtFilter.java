@@ -1,4 +1,4 @@
-package com.ssafy.a303.backend.security;
+package com.ssafy.a303.backend.common.security;
 
 import com.ssafy.a303.backend.user.entity.UserEntity;
 import com.ssafy.a303.backend.user.repository.UserRepository;

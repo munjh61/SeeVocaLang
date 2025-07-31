@@ -1,4 +1,4 @@
-package com.ssafy.a303.backend.security;
+package com.ssafy.a303.backend.common.security;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

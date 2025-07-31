@@ -2,16 +2,26 @@ package com.ssafy.a303.backend.user.service;
 
 import com.ssafy.a303.backend.common.dto.BaseResponseDto;
 import com.ssafy.a303.backend.common.exception.CommonErrorCode;
-import com.ssafy.a303.backend.security.JwtUtil;
+import com.ssafy.a303.backend.common.exception.SVLRuntimeException;
+import com.ssafy.a303.backend.common.security.JwtUtil;
+import com.ssafy.a303.backend.common.utility.CookieUtil;
+import com.ssafy.a303.backend.user.dto.SignInRequestDto;
+import com.ssafy.a303.backend.user.dto.SignInResponseDto;
 import com.ssafy.a303.backend.user.dto.SignUpRequestDto;
 import com.ssafy.a303.backend.user.entity.UserEntity;
 import com.ssafy.a303.backend.user.exception.UserIdAlreadyExistsException;
+import com.ssafy.a303.backend.user.exception.UserNotFoundException;
 import com.ssafy.a303.backend.user.repository.UserRepository;
 import com.ssafy.a303.backend.user.exception.UserNicknameAlreadyExistsException;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +30,8 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
+    private final RefreshTokenService rts;
+    private final CookieUtil cookie;
     private final RefreshTokenService refreshTokenService;
 
     // 회원가입

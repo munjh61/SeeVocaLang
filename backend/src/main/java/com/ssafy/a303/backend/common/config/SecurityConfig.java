@@ -1,6 +1,6 @@
 package com.ssafy.a303.backend.common.config;
 
-import com.ssafy.a303.backend.security.JwtFilter;
+import com.ssafy.a303.backend.common.security.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
