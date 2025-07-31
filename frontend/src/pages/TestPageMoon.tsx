@@ -1,26 +1,26 @@
-import book from "../asset/nav_book.svg?react";
-import { IconButton } from "../components/molecules/iconbutton/IconButton.tsx";
+import { ImageBox } from "../components/molecules/imagebox/imagebox.tsx";
+import apple from "../asset/png/apple.png";
 
 function TestPageMoon() {
   const handleSearch = (value: string) => {
     console.log(value);
   };
   return (
-    <IconButton
-      ButtonVariant={{
-        bgColor: "blue",
-        children: "",
-        size: "md",
-        textColor: "white",
-      }}
-      path="/"
-      data="하이"
-      // buttonValue={v => console.log(v)}
-      buttonValue={handleSearch}
-      IconVariant={{ icon: book, color: "white" }}
-    >
-      학습하기
-    </IconButton>
+    <>
+      {/* 이미지를 안주면 회색 */}
+      <ImageBox shape="circle"></ImageBox>
+      {/* 꽉 채움 */}
+      <ImageBox src={apple} shape="circle" />
+      {/* 크기는 className으로 넣으셈 */}
+      <ImageBox src={apple} shape="circle" className="w-[200px]" />
+      {/* 클릭시 함수 */}
+      <ImageBox
+        src={apple}
+        className="w-200"
+        data="apple"
+        imageValue={handleSearch}
+      />
+    </>
   );
 }
 export default TestPageMoon;
