@@ -1,6 +1,6 @@
 import { Text } from "../../atoms/text/Text";
 import { IconButton } from "../../molecules/iconbutton/IconButton";
-import { ImageBox } from "../../molecules/imagebox/Imagebox";
+import { ImageBox } from "../../molecules/imagebox/imagebox";
 import book from "../../../asset/nav_book.svg?react";
 
 type VocaCardProps = {
@@ -11,15 +11,19 @@ type VocaCardProps = {
 
 export const VocaCard = ({ thumbnail, name, description }: VocaCardProps) => {
   return (
-    <div className="rounded-ms w-40 h-60">
+    <div className="rounded-md shadow-md w-40 h-70 p-3">
       <div>
         <ImageBox src={thumbnail} className="w-full h-full"></ImageBox>
       </div>
       <div>
         <Text size={"xl"} weight={"bold"}>
-          {name}
+          {name.length < 6 ? name : `${name.slice(0, 6)}...`}
         </Text>
-        <Text color={"primary"}>{description}</Text>
+        <Text color={"primary"}>
+          {description.length < 20
+            ? description
+            : `${description.slice(0, 19)}...`}
+        </Text>
         <IconButton
           IconVariant={{ icon: book, color: "white" }}
           ButtonVariant={{ bgColor: "blue", textColor: "white" }}

@@ -44,35 +44,23 @@ export const SegmentControl = ({
 };
 
 // 이런 식으로 쓰면 됨
-// import searchSvg from "../asset/search.svg?react";
-// import { SearchbarSegment } from "../components/molecules/book/SearchbarSegment";
+// import { SearchbarSegment } from "../components/organisms/searchbarSegment/SearchbarSegment";
 
 // function TestPageMoon() {
-//   const handleSearch = (value: string) => {
-//     console.log(value);
-//   };
 //   return (
-//     <div>
+//     <>
 //       <SearchbarSegment
-//         iconInput={{
-//           icon: searchSvg,
-//           iconVariant: { color: "blue" },
-//           inputProps: {
-//             placeholder: "검색어를 입력하세요",
-//           },
-//           inputVariant: { scale: "md" },
-//           inputValue: handleSearch,
-//         }}
+//         onSearch={v => console.log(v)}
 //         segmentControl={{
 //           options: [
 //             { label: "영어", value: "en" },
 //             { label: "한글", value: "ko" },
 //           ],
 //           defaultValue: "en",
-//           onChange: v => console.log("선택됨:", v),
+//           onChange: v => console.log(v),
 //         }}
 //       />
-//     </div>
+//     </>
 //   );
 // }
 // export default TestPageMoon;
