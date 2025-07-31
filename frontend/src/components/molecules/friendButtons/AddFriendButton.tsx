@@ -1,7 +1,6 @@
 import { IconButton } from "../iconbutton/IconButton";
 import AddFriendIcon from "../../../asset/friend_add.svg?react";
 
-
 type AddFriendButtonProps = {
   className?: string;
  // 친구 ID 같은 것

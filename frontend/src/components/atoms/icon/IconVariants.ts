@@ -13,6 +13,7 @@ export const iconVariants = cva("inline-block", {
       white: "text-white",
       black: "text-black",
       blue: "text-blue-500",
+      purple: "text-purple"
     },
     rotate: {
       none: "",

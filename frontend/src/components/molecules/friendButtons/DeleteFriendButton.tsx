@@ -3,9 +3,9 @@ import DeleteFriendIcon from "../../../asset/friend_del.svg?react";
 
 
 type DeleteFriendButtonProps = {
-  className?: string;
+  className: string;
  // 친구 ID 같은 것
- data: string;
+  data: string;
   children?:React.ReactNode;
 };
 
