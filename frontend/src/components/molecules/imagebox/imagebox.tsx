@@ -1,5 +1,5 @@
 import { cn } from "../../../utils/cn"; // className 병합 유틸
-import { imageboxVariants } from "./imageboxVariants";
+import { imageboxVariants } from "./ImageboxVariants";
 
 type ImageBoxProps = {
   src?: string; // img가 없을 수도 있으니 optional
@@ -41,7 +41,7 @@ export const ImageBox = ({
 };
 
 // 사용 방법
-// import { ImageBox } from "../components/molecules/imagebox/imagebox.tsx";
+// import { ImageBox } from "../components/molecules/imagebox/Imagebox";
 // import apple from "../asset/png/apple.png";
 
 // function TestPageMoon() {

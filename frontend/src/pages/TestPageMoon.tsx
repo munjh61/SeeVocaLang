@@ -1,4 +1,4 @@
-import { ImageBox } from "../components/molecules/imagebox/imagebox.tsx";
+import { ImageBox } from "../components/molecules/imagebox/Imagebox";
 import apple from "../asset/png/apple.png";
 
 function TestPageMoon() {
