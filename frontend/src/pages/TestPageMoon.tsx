@@ -11,8 +11,6 @@ function TestPageMoon() {
   // };
   return (
     <>
-      <Input placeholder="안녕" />
-      <IconInput iconVariant={{ icon: book }} />
       <SearchbarSegment
         onSearch={v => console.log(v)}
         segmentControl={{
