@@ -33,7 +33,7 @@ export const IconInput = ({
   return (
     <div className={`w-full flex items-center gap-2 ${className}`}>
       <Icon {...iconVariant} />
-      <Input {...inputVariant} onKeyDown={pressEnter} />
+      <Input {...inputVariant} onKeyDown={pressEnter} {...inputProps} />
     </div>
   );
 };

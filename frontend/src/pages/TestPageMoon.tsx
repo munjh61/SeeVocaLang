@@ -1,6 +1,9 @@
 import apple from "../asset/png/apple.png";
+import { Input } from "../components/atoms/input/Input";
+import { IconInput } from "../components/molecules/iconInput/IconInput";
 import { SearchbarSegment } from "../components/organisms/searchbarSegment/SearchbarSegment";
 import { VocaCard } from "../components/organisms/vocaCard/VocaCard";
+import book from "../asset/book.svg?react";
 
 function TestPageMoon() {
   // const handleSearch = (value: string) => {
@@ -8,6 +11,8 @@ function TestPageMoon() {
   // };
   return (
     <>
+      <Input placeholder="안녕" />
+      <IconInput iconVariant={{ icon: book }} />
       <SearchbarSegment
         onSearch={v => console.log(v)}
         segmentControl={{
