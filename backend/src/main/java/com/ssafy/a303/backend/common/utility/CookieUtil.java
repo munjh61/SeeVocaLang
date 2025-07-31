@@ -13,7 +13,7 @@ public class CookieUtil {
         Cookie cookie = new Cookie(Name, token);
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
-        cookie.setPath("/auth");
+        cookie.setPath("/api/auth");
         cookie.setMaxAge(TTL);
 
         res.addCookie(cookie);
@@ -23,7 +23,7 @@ public class CookieUtil {
         Cookie cookie = new Cookie(Name, null);
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
-        cookie.setPath("/auth");
+        cookie.setPath("/api/auth");
         cookie.setMaxAge(0);
 
         res.addCookie(cookie);

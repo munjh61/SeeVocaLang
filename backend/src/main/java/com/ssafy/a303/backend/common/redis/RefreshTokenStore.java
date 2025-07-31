@@ -30,5 +30,8 @@ public class RefreshTokenStore {
     // 해당 유저의 모든 RefreshToken 삭제
     public void deleteAll(String userId) {
         Set<String> keys = redis.keys("rt:" + userId + ":*");
+        if (keys != null && !keys.isEmpty()) {
+            redis.delete(keys);
+        }
     }
 }
