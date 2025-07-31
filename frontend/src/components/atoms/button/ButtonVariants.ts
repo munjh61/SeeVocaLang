@@ -1,12 +1,12 @@
 import { cva } from "class-variance-authority";
 
 export const buttonVariants = cva(
-  "font-bold inline-flex items-center justify-center rounded-md hover:opacity-90 active:scale-95 active:shadow-inner",
+  "font-bold inline-flex items-center justify-center rounded-md hover:opacity-90 active:scale-95 active:shadow-inner cursor-pointer",
   {
     variants: {
       bgColor: {
         gradientPurple: `
-          bg-gradient-to-r from-purple-700 to-blue-500
+          bg-gradient-to-r from-[#8197F2] to-[#9568EF]
         `,
         gradientGreen: `
           bg-gradient-to-r from-green-300 to-green-700
@@ -38,9 +38,10 @@ export const buttonVariants = cva(
         noBg: `bg-transparent`,
       },
       size: {
+        xs: "px-2 py-0.5 text-xs",
         sm: "px-2 py-1 text-xs",
         md: "px-4 py-1 text-xs",
-        xl5: "px-30 py-1 text-xs",
+        xl5: "px-25 py-1 text-xs",
         word: "px-30 py-30 text-xl",
       },
       textColor: {
@@ -48,6 +49,9 @@ export const buttonVariants = cva(
         black: "text-black",
         purple: "text-[#9D5EEE]",
         gray: "text-[#71717A]",
+      },
+      rounded: {
+        full: "rounded-full",
       },
     },
   }

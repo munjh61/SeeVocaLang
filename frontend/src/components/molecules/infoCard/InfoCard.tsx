@@ -38,7 +38,13 @@ export const InfoCardLarge = ({
       {...props}
     >
       <div className={"flex flex-row gap-4 items-center"}>
-        <p>{icon}</p>
+        <Button
+          bgColor={"transparent"}
+          rounded={"full"}
+          className={"w-10 h-10"}
+        >
+          {icon}
+        </Button>
         <section className={"flex flex-col pl-4 gap-1"}>
           <Text color={"white"} weight={"bold"}>
             {mainTitle}
@@ -46,7 +52,7 @@ export const InfoCardLarge = ({
           <Text color={"white"} size={"xs"}>
             {subTitle}
           </Text>
-          <Button bgColor={"transparent"} textColor={"white"} size={"sm"}>
+          <Button bgColor={"transparent"} textColor={"white"} size={"xs"}>
             {buttonText}
           </Button>
         </section>
