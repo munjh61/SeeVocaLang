@@ -1,6 +1,6 @@
 import type { ChangeEvent } from "react";
 import SearchIcon from "../../../asset/search.svg?react";
-import { Input } from "../../atoms/input/Input.tsx";
+import { Input } from "../../atoms/input/Input";
 
 type FriendSearchBarProps = {
   value: string;
@@ -18,8 +18,9 @@ export const FriendSearchBar = ({
       <SearchIcon className="w-4 h-4 text-gray-500" />
       <Input
         type="text"
-        scale="sm"
-        className="bg-transparent outline-none text-sm text-gray-800 w-full placeholder:text-gray-400"
+        scale="sm"             
+        text="gray"             
+        className="bg-transparent outline-none w-full placeholder:text-gray-400"
         placeholder={placeholder}
         value={value}
         onChange={onChange}
