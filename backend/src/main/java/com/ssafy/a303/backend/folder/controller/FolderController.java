@@ -45,4 +45,14 @@ public class FolderController {
 
         return ResponseEntity.ok(response);
     }
+
+    @DeleteMapping("/api/b1/folders/{folderId}/words")
+    public ResponseEntity<BaseResponseDto<Void>> deleteFolder(@PathVariable long folderId) {
+        BaseResponseDto<Void> response = folderService.deleteFolder(DeleteFolderCommandDto.builder()
+                .folderId(folderId)
+                .userId(1L)
+                .build());
+
+        return ResponseEntity.ok(response);
+    }
 }
