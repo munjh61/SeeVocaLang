@@ -26,4 +26,15 @@ public class FolderEntity {
     private boolean isFavorite;
     @Column(nullable = false)
     private boolean isDefault;
+
+    private boolean isDeleted;
+
+    public void delete(){
+        isDeleted = true;
+    }
+
+    public void update(String description, String name){
+        this.description =  description;
+        this.name =  name;
+    }
 }

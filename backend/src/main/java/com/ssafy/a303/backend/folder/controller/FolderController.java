@@ -1,15 +1,13 @@
 package com.ssafy.a303.backend.folder.controller;
 
+import com.ssafy.a303.backend.common.dto.BaseResponseDto;
 import com.ssafy.a303.backend.common.dto.PageResponseDto;
-import com.ssafy.a303.backend.folder.dto.ReadFoldersCommandDto;
-import com.ssafy.a303.backend.folder.dto.ReadFoldersResponseDto;
+import com.ssafy.a303.backend.folder.dto.*;
+import com.ssafy.a303.backend.folder.mapper.FolderMapper;
 import com.ssafy.a303.backend.folder.service.FolderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,5 +27,22 @@ public class FolderController {
         return ResponseEntity.ok(response);
     }
 
+    @DeleteMapping("/api/b1/folders/{folderId}")
+    public ResponseEntity<BaseResponseDto<Void>> deleteFolder(@PathVariable long folderId) {
+        BaseResponseDto<Void> response = folderService.deleteFolder(DeleteFolderCommandDto.builder()
+                .folderId(folderId)
+                .userId(1L)
+                .build());
 
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/api/b1/folders/{folderId}")
+    public ResponseEntity<BaseResponseDto<Void>> updateFolder(@PathVariable long folderId,
+                                                              @RequestBody UpdateFolderRequestDto updateFolderRequestDto) {
+        BaseResponseDto<Void> response = folderService.updateFolder(FolderMapper.INSTANCE
+                .toUpdateFolderCommandDto(updateFolderRequestDto, 1L));
+
+        return ResponseEntity.ok(response);
+    }
 }
