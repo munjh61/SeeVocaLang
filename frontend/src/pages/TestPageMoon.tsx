@@ -12,14 +12,14 @@ function TestPageMoon() {
   return (
     <>
       <SearchbarSegment
-        onSearch={v => console.log(v)}
+        onSearch={(v) => console.log(v)}
         segmentControl={{
           options: [
             { label: "영어", value: "en" },
             { label: "한글", value: "ko" },
           ],
           defaultValue: "en",
-          onChange: v => console.log(v),
+          onChange: (v) => console.log(v),
         }}
       />
       <VocaCard
