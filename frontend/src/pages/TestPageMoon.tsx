@@ -1,5 +1,6 @@
 import { ImageBox } from "../components/molecules/imagebox/Imagebox";
 import apple from "../asset/png/apple.png";
+import { VocaCard } from "../components/organisms/vocaCard/VocaCard";
 
 function TestPageMoon() {
   const handleSearch = (value: string) => {
@@ -7,19 +8,7 @@ function TestPageMoon() {
   };
   return (
     <>
-      {/* 이미지를 안주면 회색 */}
-      <ImageBox shape="circle"></ImageBox>
-      {/* 꽉 채움 */}
-      <ImageBox src={apple} shape="circle" />
-      {/* 크기는 className으로 넣으셈 */}
-      <ImageBox src={apple} shape="circle" className="w-[200px]" />
-      {/* 클릭시 함수 */}
-      <ImageBox
-        src={apple}
-        className="w-200"
-        data="apple"
-        imageValue={handleSearch}
-      />
+      <VocaCard thumbnail={apple} name="제목" description="설명"></VocaCard>
     </>
   );
 }

@@ -42,7 +42,7 @@ export const IconButton = ({
         bgColor={bg}
         textColor={color}
         size={size}
-        className="flex items-center gap-2 text-nowrap"
+        className="flex items-center gap-2 text-nowrap px-2 py-1"
         type="button"
         onClick={onClick}
       >
