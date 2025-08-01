@@ -1,5 +1,5 @@
 import type React from "react";
-import { IconButton } from "../erriconButton/IconButton";
+import { IconButton } from "../iconButton/IconButton";
 import WaitFriendIcon from "../../../asset/wait.svg?react";
 type RequestFriendButtonProps = {
   className: string;

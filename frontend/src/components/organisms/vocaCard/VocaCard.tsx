@@ -1,5 +1,5 @@
 import { Text } from "../../atoms/text/Text";
-import { IconButton } from "../../molecules/erriconButton/IconButton";
+import { IconButton } from "../../molecules/iconButton/IconButton";
 import { ImageBox } from "../../molecules/imagebox/Imagebox";
 import book from "../../../asset/nav_book.svg?react";
 

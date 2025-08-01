@@ -1,4 +1,4 @@
-import { IconButton } from "../erriconButton/IconButton";
+import { IconButton } from "../iconButton/IconButton";
 import AddFriendIcon from "../../../asset/friend_add.svg?react";
 
 type AddFriendButtonProps = {
