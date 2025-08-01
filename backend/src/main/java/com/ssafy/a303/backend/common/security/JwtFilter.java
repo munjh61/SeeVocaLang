@@ -1,6 +1,8 @@
 package com.ssafy.a303.backend.common.security;
 
+import com.ssafy.a303.backend.common.exception.CommonErrorCode;
 import com.ssafy.a303.backend.user.entity.UserEntity;
+import com.ssafy.a303.backend.user.exception.UserNotFoundException;
 import com.ssafy.a303.backend.user.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -35,15 +37,13 @@ public class JwtFilter extends OncePerRequestFilter {
             if (jwt.validate(token)) {
                 String userId = jwt.getUserId(token);
                 UserEntity user = userRepo.findById(Long.valueOf(userId))
-                        .orElse(null);
+                        .orElseThrow(() -> new UserNotFoundException(CommonErrorCode.RESOURCE_NOT_FOUND));
 
-                if (user != null) {
-                    UserDetails details = new CustomUserDetails(user);
-                    Authentication authentication = new UsernamePasswordAuthenticationToken(
-                            details, null, details.getAuthorities()
-                    );
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
-                }
+                UserDetails details = CustomUserDetails.from(user);
+                Authentication authentication = new UsernamePasswordAuthenticationToken(
+                        details, null, details.getAuthorities()
+                );
+                SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }
 
