@@ -4,6 +4,7 @@ import { IconInput } from "../components/molecules/iconInput/IconInput";
 import { SearchbarSegment } from "../components/organisms/searchbarSegment/SearchbarSegment";
 import { VocaCard } from "../components/organisms/vocaCard/VocaCard";
 import book from "../asset/book.svg?react";
+import { Button } from "../components/atoms/button/Button";
 
 function TestPageMoon() {
   // const handleSearch = (value: string) => {
@@ -11,6 +12,7 @@ function TestPageMoon() {
   // };
   return (
     <>
+      <Button border={"blue"}>블루</Button>
       <SearchbarSegment
         onSearch={v => console.log(v)}
         segmentControl={{
@@ -27,7 +29,11 @@ function TestPageMoon() {
         name="제목제목제목제목제목"
         description="설명설명설명설명설명설명설명설명설명설명설명설명"
       />
-      <VocaCard thumbnail={apple} name="제목" description="설명" />
+      <VocaCard
+        thumbnail={apple}
+        name="AaaaBAaaaBAaaaB"
+        description="AaaaBAaaaBAaaaBAaaaB"
+      />
       <VocaCard thumbnail={apple} name="제목" description="설명" />
       <VocaCard thumbnail={apple} name="제목" description="설명" />
       <VocaCard thumbnail={apple} name="제목" description="설명" />

@@ -22,16 +22,28 @@ export const textVariants = cva("", {
       muted: "text-gray-500",
       white: "text-white",
       black: "text-black",
+      gray: "text-[#71717A]",
+      red: "text-[#FF3245]",
+      orange: "text-[#FF6940]",
+      yellow: "text-[#FFA600]",
+      green: "text-[#6DC16A]",
+      blue: "text-[#6083EE]",
+      purple: "text-[#9D5EEE]",
     },
     align: {
       left: "text-left",
       center: "text-center",
       right: "text-right",
     },
+    onlyOneLine: {
+      yes: "w-full whitespace-nowrap overflow-hidden text-ellipsis",
+      no: "",
+    },
   },
   defaultVariants: {
     size: "base",
     weight: "normal",
     color: "black",
+    onlyOneLine: "no",
   },
 });

@@ -16,13 +16,17 @@ export const Text = ({
   weight,
   color,
   align,
+  onlyOneLine,
   className,
   children,
   ...props
 }: TextProps) => {
   return (
     <div
-      className={cn(textVariants({ size, weight, color, align }), className)}
+      className={cn(
+        textVariants({ size, weight, color, align, onlyOneLine }),
+        className
+      )}
       {...props}
     >
       {children}

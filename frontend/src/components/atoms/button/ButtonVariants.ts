@@ -14,27 +14,24 @@ export const buttonVariants = cva(
         gradientOrange: `
           bg-gradient-to-r from-orange-400 to-orange-700
         `,
-        red: `
-          bg-[#EF4444]
-        `,
-        green: `
-          bg-[#22C55E]
-        `,
-        blue: `
-          bg-[#3B82F6]
-        `,
-        orange: `
-          bg-[#F97316]
-        `,
+        // red: `bg-[#EF4444]`,
+        // green: `bg-[#22C55E]`,
+        // blue: `bg-[#3B82F6]`,
+        // orange: `bg-[#F97316]`,
         transparent: `
-          bg-white/50 text-white
+          "bg-white/50 text-white
           hover:bg-white/40
-          active:scale-95 active:shadow-inner
+          active:scale-95 active:shadow-inner"
         `,
-        white: `
-          bg-white
-        `,
+        white: "bg-white",
+        black: "bg-black",
         gray: `bg-[#F3F4F6]`,
+        red: "bg-[#FF3245]",
+        orange: "bg-[#FF6940]",
+        yellow: "bg-[#FFA600]",
+        green: "bg-[#6DC16A]",
+        blue: "bg-[#6083EE]",
+        purple: "bg-[#9D5EEE]",
         noBg: `bg-transparent`,
       },
       size: {
@@ -47,8 +44,24 @@ export const buttonVariants = cva(
       textColor: {
         white: "text-white",
         black: "text-black",
-        purple: "text-[#9D5EEE]",
         gray: "text-[#71717A]",
+        red: "text-[#FF3245]",
+        orange: "text-[#FF6940]",
+        yellow: "text-[#FFA600]",
+        green: "text-[#6DC16A]",
+        blue: "text-[#6083EE]",
+        purple: "text-[#9D5EEE]",
+      },
+      border: {
+        white: "border border-white",
+        black: "border border-black",
+        gray: "border border-[#71717A]",
+        red: "border border-[#FF3245]",
+        orange: "border border-[#FF6940]",
+        yellow: "border border-[#FFA600]",
+        green: "border border-[#6DC16A]",
+        blue: "border border-[#6083EE]",
+        purple: "border border-[#9D5EEE]",
       },
       rounded: {
         full: "rounded-full",
