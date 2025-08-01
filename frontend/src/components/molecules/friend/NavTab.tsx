@@ -22,9 +22,9 @@ export const NavTab = ({
   return (
     <Button
       onClick={onClick}
-      bgColor={selected ? "blue" : "white"}
+      bgColor={selected ? "pp" : "white"}
       size="md"
-      textColor={selected ? "white" : "black"}
+      textColor={selected ? "pp" : "gray"}
       className={cn(
         "gap-1 px-3 py-1.5 rounded-full relative",
         selected

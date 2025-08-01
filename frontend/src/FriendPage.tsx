@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { FriendSearchBar } from "./components/molecules/friend/FriendSearchBar";
+import { FriendSearchBar } from "./components/molecules/friendSearchBar/FriendSearchBar";
 import { PageHeader } from "./components/molecules/friend/PageHeader";
-import { FriendList } from "./components/organisms/friend/FriendList";
-import { FriendNavBar } from "./components/organisms/friend/FriendNavBar";
+import { FriendList } from "./components/organisms/friendNavBar/FriendList";
+import { FriendNavBar } from "./components/organisms/friendNavBar/FriendNavBar";
 
 const DUMMY_FRIENDS = [
   { id: 1, name: "박지민", status: "response" },
