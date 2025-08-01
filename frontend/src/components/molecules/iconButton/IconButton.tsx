@@ -10,7 +10,7 @@ type IconButtonProps = {
   // icon: ComponentType<SVGProps<SVGSVGElement>>;
   className?: string;
   IconVariant: IconProps;
-  ButtonVariant: ButtonProps;
+  ButtonVariant?: ButtonProps;
   children?: React.ReactNode;
   data?: string;
   path?: string;
