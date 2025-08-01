@@ -4,7 +4,8 @@ import { IconInput } from "../components/molecules/iconInput/IconInput";
 import { SearchbarSegment } from "../components/organisms/searchbarSegment/SearchbarSegment";
 import { VocaCard } from "../components/organisms/vocaCard/VocaCard";
 import book from "../asset/book.svg?react";
-import { Button } from "../components/atoms/button/Button";
+import { Nav } from "../components/molecules/nav/Nav";
+import { Navigation } from "../components/organisms/nav/Navigation";
 
 function TestPageMoon() {
   // const handleSearch = (value: string) => {
@@ -12,7 +13,13 @@ function TestPageMoon() {
   // };
   return (
     <>
-      <Button border={"blue"}>블루</Button>
+      {/* <Nav icon={book} onoff={false}>
+        책
+      </Nav>
+      <Nav icon={book} onoff={true}>
+        책
+      </Nav> */}
+      <Navigation loc="setting" />
       <SearchbarSegment
         onSearch={v => console.log(v)}
         segmentControl={{
@@ -28,21 +35,68 @@ function TestPageMoon() {
         thumbnail={apple}
         name="제목제목제목제목제목"
         description="설명설명설명설명설명설명설명설명설명설명설명설명"
+        favorite={false}
       />
       <VocaCard
         thumbnail={apple}
         name="AaaaBAaaaBAaaaB"
         description="AaaaBAaaaBAaaaBAaaaB"
+        favorite={false}
       />
-      <VocaCard thumbnail={apple} name="제목" description="설명" />
-      <VocaCard thumbnail={apple} name="제목" description="설명" />
-      <VocaCard thumbnail={apple} name="제목" description="설명" />
-      <VocaCard thumbnail={apple} name="제목" description="설명" />
-      <VocaCard thumbnail={apple} name="제목" description="설명" />
-      <VocaCard thumbnail={apple} name="제목" description="설명" />
-      <VocaCard thumbnail={apple} name="제목" description="설명" />
-      <VocaCard thumbnail={apple} name="제목" description="설명" />
-      <VocaCard thumbnail={apple} name="제목" description="설명" />
+      <VocaCard
+        thumbnail={apple}
+        name="제목"
+        description="설명"
+        favorite={false}
+      />
+      <VocaCard
+        thumbnail={apple}
+        name="제목"
+        description="설명"
+        favorite={false}
+      />
+      <VocaCard
+        thumbnail={apple}
+        name="제목"
+        description="설명"
+        favorite={false}
+      />
+      <VocaCard
+        thumbnail={apple}
+        name="제목"
+        description="설명"
+        favorite={false}
+      />
+      <VocaCard
+        thumbnail={apple}
+        name="제목"
+        description="설명"
+        favorite={false}
+      />
+      <VocaCard
+        thumbnail={apple}
+        name="제목"
+        description="설명"
+        favorite={false}
+      />
+      <VocaCard
+        thumbnail={apple}
+        name="제목"
+        description="설명"
+        favorite={false}
+      />
+      <VocaCard
+        thumbnail={apple}
+        name="제목"
+        description="설명"
+        favorite={false}
+      />
+      <VocaCard
+        thumbnail={apple}
+        name="제목"
+        description="설명"
+        favorite={false}
+      />
     </>
   );
 }

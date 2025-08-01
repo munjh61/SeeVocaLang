@@ -1,5 +1,6 @@
 import { IconButton } from "../components/molecules/iconButton/IconButton";
 import thunder from "../asset/thunder.svg?react";
+import { Navigation } from "../components/organisms/nav/Navigation";
 
 function MainPage() {
   return (
@@ -26,6 +27,7 @@ function MainPage() {
       >
         Moon
       </IconButton>
+      <Navigation loc="home" />
     </>
   );
 }

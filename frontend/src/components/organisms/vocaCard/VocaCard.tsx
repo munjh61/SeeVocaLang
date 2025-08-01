@@ -50,12 +50,7 @@ export const VocaCard = ({
           >
             {name}
           </Text>
-          <Text
-            size={"xs"}
-            color={"primary"}
-            onlyOneLine={"yes"}
-            className="mb-5"
-          >
+          <Text size={"xs"} color={"blue"} onlyOneLine={"yes"} className="mb-5">
             {description}
           </Text>
         </div>
