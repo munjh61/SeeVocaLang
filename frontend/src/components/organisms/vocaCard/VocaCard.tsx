@@ -27,7 +27,10 @@ export const VocaCard = ({
   };
 
   return (
-    <div className="rounded-md shadow-md w-60 p-3 inline-flex flex-col gap-2 bg-white">
+    <div
+      className="rounded-md shadow-md w-60 p-3 inline-flex flex-col gap-2 bg-white select-none"
+      onDragStart={e => e.preventDefault()}
+    >
       <div className="relative">
         <Icon
           icon={isFavorite ? starF : starE}
