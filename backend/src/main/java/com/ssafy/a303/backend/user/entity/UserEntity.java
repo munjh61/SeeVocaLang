@@ -13,14 +13,17 @@ import java.time.LocalDate;
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long userId;
+    private Long userId;
+
+    @Column(unique = true)
+    private String loginId;
 
     @Column(unique = true, nullable = false)
     private String nickname;
     @Column(unique = true)
     private String email;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String password;
 
     @Column(nullable = false)
@@ -32,4 +35,14 @@ public class UserEntity {
     private int totalDays;
     @Column(nullable = false)
     private int streakDays;
+
+    // 회원가입 생성자
+    public UserEntity(String loginId, String password, String nickname, boolean socialUser) {
+        this.loginId = loginId;
+        this.password = password;
+        this.nickname = nickname;
+        this.socialUser = socialUser;
+        this.totalDays = 0;
+        this.streakDays = 0;
+    }
 }
