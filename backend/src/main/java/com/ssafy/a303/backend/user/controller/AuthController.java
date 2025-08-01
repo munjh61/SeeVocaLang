@@ -16,35 +16,34 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
     private final AuthService authService;
 
     // 회원가입
-    @PostMapping("/signup")
+    @PostMapping("/api/v1/auth/signup")
     public ResponseEntity<BaseResponseDto<Void>> signUp(@Valid @RequestBody SignUpRequestDto requestDto) {
         BaseResponseDto<Void> res = authService.signUp(requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(res);
     }
 
     // 아이디 중복 확인
-    @GetMapping("/validate/login-id")
-    public ResponseEntity<BaseResponseDto<Void>> validateLoginId(@RequestParam String loginId) {
-        BaseResponseDto<Void> res = authService.validateLoginId(loginId);
+    @GetMapping("/api/v1/auth/validation-id")
+    public ResponseEntity<BaseResponseDto<Void>> validateLoginId(@RequestParam String value) {
+        BaseResponseDto<Void> res = authService.validateLoginId(value);
         return ResponseEntity.ok(res);
     }
 
     // 닉네임 중복 확인
-    @GetMapping("/validate/nickname")
-    public ResponseEntity<BaseResponseDto<Void>> validateNickname(@RequestParam String nickname) {
-        BaseResponseDto<Void> res = authService.validateNickname(nickname);
+    @GetMapping("/api/v1/auth/validation-nickname")
+    public ResponseEntity<BaseResponseDto<Void>> validateNickname(@RequestParam String value) {
+        BaseResponseDto<Void> res = authService.validateNickname(value);
         return ResponseEntity.ok(res);
     }
 
     // 로그인
-    @PostMapping("/signin")
+    @PostMapping("/api/v1/auth/signin")
     public ResponseEntity<BaseResponseDto<SignInResponseDto>> signIn(
             @Valid @RequestBody SignInRequestDto requestDto,
             HttpServletResponse response
@@ -61,7 +60,7 @@ public class AuthController {
     }
 
     // 로그아웃
-    @PostMapping("/signout")
+    @PostMapping("/api/v1/auth/signout")
     public ResponseEntity<BaseResponseDto<Void>> signOut(
             HttpServletRequest request,
             HttpServletResponse response,
@@ -89,16 +88,10 @@ public class AuthController {
     }
 
     private String resolveRefreshToken(HttpServletRequest request, String headerToken, String paramToken) {
-        // 1) 쿠키에서 찾기 (CookieUtil 의 실제 쿠키명과 맞추세요)
         String cookieToken = findCookieValue(request, "refreshToken");
         if (StringUtils.hasText(cookieToken)) return cookieToken;
-
-        // 2) 헤더
         if (StringUtils.hasText(headerToken)) return headerToken;
-
-        // 3) 파라미터
         if (StringUtils.hasText(paramToken)) return paramToken;
-
         return null;
     }
 
