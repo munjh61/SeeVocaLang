@@ -15,13 +15,17 @@ export const Button = ({
   bgColor,
   size,
   textColor,
+  border,
   className,
   children,
   ...props
 }: ButtonProps) => {
   return (
     <button
-      className={cn(buttonVariants({ bgColor, size, textColor }), className)}
+      className={cn(
+        buttonVariants({ bgColor, size, textColor, border }),
+        className
+      )}
       {...props}
     >
       {children}
