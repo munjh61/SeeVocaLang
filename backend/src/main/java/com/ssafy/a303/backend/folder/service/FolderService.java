@@ -65,7 +65,7 @@ public class FolderService {
 
     @Transactional(readOnly = true)
     public PageResponseDto<ReadWordResponseDto> getWordsByFolderId(ReadFolderWordCommandDto readFolderWordCommandDto) {
-        List<ReadWordResponseDto> words = folderRepository.findAllWordsByFolderId(readFolderWordCommandDto.getFolderId(),
+        List<ReadWordResponseDto> words = folderRepository.deleteAllWordsByFolderId(readFolderWordCommandDto.getFolderId(),
                 readFolderWordCommandDto.getLastId(),
                 PageRequest.of(0, readFolderWordCommandDto.getSize()));
 
@@ -82,6 +82,15 @@ public class FolderService {
                 .content(words)
                 .lastId(lastId)
                 .hasNext(hasNext)
+                .build();
+    }
+
+    public BaseResponseDto<Void> deleteFolderWords(DeleteFolderWordsCommandDto deleteFolderWordsCommandDto) {
+        folderRepository.deleteAllWordsByFolderId(deleteFolderWordsCommandDto.getFolderId(),
+                deleteFolderWordsCommandDto.getWordIds());
+
+        return BaseResponseDto.<Void>builder()
+                .message("성공적으로 단어들을 단어장에서 삭제했습니다.")
                 .build();
     }
 }

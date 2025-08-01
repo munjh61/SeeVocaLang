@@ -30,7 +30,7 @@ public class FolderController {
 
     @GetMapping("/api/v1/folders/{folderId}/words")
     public ResponseEntity<PageResponseDto<ReadWordResponseDto>> getFolderWords(@PathVariable long folderId,
-                                                                              @RequestParam(defaultValue = "-1") long lastId) {
+                                                                               @RequestParam(defaultValue = "-1") long lastId) {
         PageResponseDto<ReadWordResponseDto> response = folderService.getWordsByFolderId(ReadFolderWordCommandDto
                 .builder()
                 .lastId(lastId)
@@ -41,7 +41,7 @@ public class FolderController {
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/api/b1/folders/{folderId}")
+    @DeleteMapping("/api/v1/folders/{folderId}")
     public ResponseEntity<BaseResponseDto<Void>> deleteFolder(@PathVariable long folderId) {
         BaseResponseDto<Void> response = folderService.deleteFolder(DeleteFolderCommandDto.builder()
                 .folderId(folderId)
@@ -51,7 +51,7 @@ public class FolderController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/api/b1/folders/{folderId}")
+    @PutMapping("/api/v1/folders/{folderId}")
     public ResponseEntity<BaseResponseDto<Void>> updateFolder(@PathVariable long folderId,
                                                               @RequestBody UpdateFolderRequestDto updateFolderRequestDto) {
         BaseResponseDto<Void> response = folderService.updateFolder(FolderMapper.INSTANCE
@@ -59,4 +59,18 @@ public class FolderController {
 
         return ResponseEntity.ok(response);
     }
+
+    @DeleteMapping("/api/v1/folders/{folderId}/words")
+    public ResponseEntity<BaseResponseDto<Void>> deleteFolderWords(@PathVariable long folderId,
+                                                                   @RequestBody DeleteFolderWordsRequestDto deleteFolderWordsRequestDto) {
+        BaseResponseDto<Void> response = folderService.deleteFolderWords(DeleteFolderWordsCommandDto
+                .builder()
+                .folderId(folderId)
+                .wordIds(deleteFolderWordsRequestDto.getWordIds())
+                .build());
+
+        return ResponseEntity.ok(response);
+    }
+
+
 }

@@ -1,5 +1,6 @@
 package com.ssafy.a303.backend.folder.repository.query;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.JPQLQuery;
@@ -11,6 +12,7 @@ import com.ssafy.a303.backend.word.entity.QWordEntity;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -59,7 +61,7 @@ public class FolderQueryRepositoryImpl extends QuerydslRepositorySupport impleme
     }
 
     @Override
-    public List<ReadWordResponseDto> findAllWordsByFolderId(long folderId, long wordId, Pageable pageable) {
+    public List<ReadWordResponseDto> deleteAllWordsByFolderId(long folderId, long wordId, Pageable pageable) {
         QFolderWordEntity folderWord = QFolderWordEntity.folderWordEntity;
         QWordEntity word = new QWordEntity("resultWord");
 
@@ -82,4 +84,17 @@ public class FolderQueryRepositoryImpl extends QuerydslRepositorySupport impleme
                 .fetch();
     }
 
+    @Override
+    @Transactional
+    public boolean deleteAllWordsByFolderId(long folderId, List<Long> wordIds) {
+        QFolderWordEntity folderWord = QFolderWordEntity.folderWordEntity;
+
+        BooleanBuilder builder = new BooleanBuilder();
+        builder.and(folderWord.folder.folderId.eq(folderId))
+                .and(folderWord.word.wordId.in(wordIds));
+
+        delete(folderWord).where(builder).execute();
+
+        return true;
+    }
 }

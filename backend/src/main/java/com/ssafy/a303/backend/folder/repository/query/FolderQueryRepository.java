@@ -9,5 +9,7 @@ import java.util.List;
 public interface FolderQueryRepository {
     List<ReadFoldersResponseDto> findAllByUserId(long userId, long folderId, Pageable pageable);
 
-    List<ReadWordResponseDto> findAllWordsByFolderId(long folderId, long wordId, Pageable pageable);
+    List<ReadWordResponseDto> deleteAllWordsByFolderId(long folderId, long wordId, Pageable pageable);
+
+    boolean deleteAllWordsByFolderId(long folderId, List<Long> wordIds);
 }
