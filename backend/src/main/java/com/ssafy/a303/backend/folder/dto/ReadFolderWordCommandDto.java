@@ -9,9 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UpdateFolderCommandDto {
+public class ReadFolderWordCommandDto {
     private long folderId;
-    private long userId;
-    private String description;
-    private String name;
+    private long lastId;
+    private int size;
 }

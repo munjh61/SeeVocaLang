@@ -5,6 +5,7 @@ import com.ssafy.a303.backend.common.dto.PageResponseDto;
 import com.ssafy.a303.backend.folder.dto.*;
 import com.ssafy.a303.backend.folder.mapper.FolderMapper;
 import com.ssafy.a303.backend.folder.service.FolderService;
+import com.ssafy.a303.backend.word.dto.ReadWordResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +18,24 @@ public class FolderController {
     @GetMapping("/api/v1/folders/{userId}")
     public ResponseEntity<PageResponseDto<ReadFoldersResponseDto>> getFolders(@PathVariable long userId,
                                                                               @RequestParam(defaultValue = "-1") long lastId) {
-        PageResponseDto<ReadFoldersResponseDto> response = folderService.getWords(ReadFoldersCommandDto
+        PageResponseDto<ReadFoldersResponseDto> response = folderService.getFolders(ReadFoldersCommandDto
                 .builder()
                 .lastId(lastId)
                 .size(10)
                 .userId(userId)
+                .build());
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/api/v1/folders/{folderId}/words")
+    public ResponseEntity<PageResponseDto<ReadWordResponseDto>> getFolderWords(@PathVariable long folderId,
+                                                                              @RequestParam(defaultValue = "-1") long lastId) {
+        PageResponseDto<ReadWordResponseDto> response = folderService.getWordsByFolderId(ReadFolderWordCommandDto
+                .builder()
+                .lastId(lastId)
+                .size(10)
+                .folderId(folderId)
                 .build());
 
         return ResponseEntity.ok(response);
@@ -42,16 +56,6 @@ public class FolderController {
                                                               @RequestBody UpdateFolderRequestDto updateFolderRequestDto) {
         BaseResponseDto<Void> response = folderService.updateFolder(FolderMapper.INSTANCE
                 .toUpdateFolderCommandDto(updateFolderRequestDto, 1L));
-
-        return ResponseEntity.ok(response);
-    }
-
-    @DeleteMapping("/api/b1/folders/{folderId}/words")
-    public ResponseEntity<BaseResponseDto<Void>> deleteFolder(@PathVariable long folderId) {
-        BaseResponseDto<Void> response = folderService.deleteFolder(DeleteFolderCommandDto.builder()
-                .folderId(folderId)
-                .userId(1L)
-                .build());
 
         return ResponseEntity.ok(response);
     }

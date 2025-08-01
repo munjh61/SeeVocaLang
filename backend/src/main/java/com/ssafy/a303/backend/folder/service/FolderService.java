@@ -3,13 +3,11 @@ package com.ssafy.a303.backend.folder.service;
 import com.ssafy.a303.backend.common.dto.BaseResponseDto;
 import com.ssafy.a303.backend.common.dto.PageResponseDto;
 import com.ssafy.a303.backend.common.exception.CommonErrorCode;
-import com.ssafy.a303.backend.folder.dto.DeleteFolderCommandDto;
-import com.ssafy.a303.backend.folder.dto.ReadFoldersCommandDto;
-import com.ssafy.a303.backend.folder.dto.ReadFoldersResponseDto;
-import com.ssafy.a303.backend.folder.dto.UpdateFolderCommandDto;
+import com.ssafy.a303.backend.folder.dto.*;
 import com.ssafy.a303.backend.folder.entity.FolderEntity;
 import com.ssafy.a303.backend.folder.exception.FolderNotFoundException;
 import com.ssafy.a303.backend.folder.repository.FolderRepository;
+import com.ssafy.a303.backend.word.dto.ReadWordResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -23,7 +21,7 @@ public class FolderService {
     private final FolderRepository folderRepository;
 
     @Transactional(readOnly = true)
-    public PageResponseDto<ReadFoldersResponseDto> getWords(ReadFoldersCommandDto readFoldersCommandDto) {
+    public PageResponseDto<ReadFoldersResponseDto> getFolders(ReadFoldersCommandDto readFoldersCommandDto) {
         List<ReadFoldersResponseDto> folders = folderRepository.findAllByUserId(readFoldersCommandDto.getUserId(),
                 readFoldersCommandDto.getLastId(), PageRequest.of(0, readFoldersCommandDto.getSize()));
 
@@ -63,5 +61,27 @@ public class FolderService {
         folder.update(updateFolderCommandDto.getDescription(), updateFolderCommandDto.getName());
 
         return BaseResponseDto.<Void>builder().message("성공적으로 단어장을 수정했습니다.").build();
+    }
+
+    @Transactional(readOnly = true)
+    public PageResponseDto<ReadWordResponseDto> getWordsByFolderId(ReadFolderWordCommandDto readFolderWordCommandDto) {
+        List<ReadWordResponseDto> words = folderRepository.findAllWordsByFolderId(readFolderWordCommandDto.getFolderId(),
+                readFolderWordCommandDto.getLastId(),
+                PageRequest.of(0, readFolderWordCommandDto.getSize()));
+
+        boolean hasNext = words.size() > readFolderWordCommandDto.getSize();
+
+        if (hasNext) {
+            words = words.subList(0, readFolderWordCommandDto.getSize());
+        }
+
+        long lastId = words.isEmpty() ? -1 : words.get(words.size() - 1).getWordId();
+
+        return PageResponseDto.<ReadWordResponseDto>builder()
+                .message("성공적으로 단어장을 불러왔습니다.")
+                .content(words)
+                .lastId(lastId)
+                .hasNext(hasNext)
+                .build();
     }
 }

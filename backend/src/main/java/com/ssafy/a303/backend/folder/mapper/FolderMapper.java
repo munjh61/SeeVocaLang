@@ -13,8 +13,8 @@ public interface FolderMapper {
     @Mapping(target = "thumbnailUrl", ignore = true)
     ReadFoldersResponseDto toReadFolderResponseDto(FolderEntity entity);
 
-    @Mapping(target = "userId", source = "userId")
-    CreateFolderCommandDto toCreateFolderCommandDto(CreateFolderRequestDto createFolderRequestDto, long userId);
+//    @Mapping(target = "userId", source = "userId")
+//    CreateFolderCommandDto toCreateFolderCommandDto(CreateFolderRequestDto createFolderRequestDto, long userId);
 
     @Mapping(target = "userId", source = "userId")
     UpdateFolderCommandDto toUpdateFolderCommandDto(UpdateFolderRequestDto  updateFolderRequestDto, long userId);

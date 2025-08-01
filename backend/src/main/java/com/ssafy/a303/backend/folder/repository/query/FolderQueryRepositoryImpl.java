@@ -6,6 +6,7 @@ import com.querydsl.jpa.JPQLQuery;
 import com.ssafy.a303.backend.folder.dto.ReadFoldersResponseDto;
 import com.ssafy.a303.backend.folder.entity.QFolderEntity;
 import com.ssafy.a303.backend.folderword.entity.QFolderWordEntity;
+import com.ssafy.a303.backend.word.dto.ReadWordResponseDto;
 import com.ssafy.a303.backend.word.entity.QWordEntity;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
@@ -53,6 +54,30 @@ public class FolderQueryRepositoryImpl extends QuerydslRepositorySupport impleme
                         folderId != -1 ? folderEntity.folderId.lt(folderId) : null
                 )
                 .orderBy(folderEntity.folderId.desc())
+                .limit(pageable.getPageSize() + 1)
+                .fetch();
+    }
+
+    @Override
+    public List<ReadWordResponseDto> findAllWordsByFolderId(long folderId, long wordId, Pageable pageable) {
+        QFolderWordEntity folderWord = QFolderWordEntity.folderWordEntity;
+        QWordEntity word = new QWordEntity("resultWord");
+
+        return from(word)
+                .select(word)
+                .select(Projections.constructor(ReadWordResponseDto.class,
+                        word.wordId,
+                        word.imageUrl,
+                        word.audioUrl,
+                        word.nameKo,
+                        word.nameEn
+                ))
+                .join(folderWord).on(folderWord.word.wordId.eq(word.wordId))
+                .where(
+                        folderWord.folder.folderId.eq(folderId),
+                        wordId != -1 ? word.wordId.lt(wordId) : null
+                )
+                .orderBy(word.wordId.desc())
                 .limit(pageable.getPageSize() + 1)
                 .fetch();
     }
