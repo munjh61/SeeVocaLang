@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FriendSearchBar } from "./components/molecules/friend/FriendSearchBar";
+import { FriendSearchBar } from "./components/molecules/friendSearchBar/FriendSearchBar";
 import { PageHeader } from "./components/molecules/friend/PageHeader";
 import { FriendList } from "./components/organisms/friend/FriendList";
 import { FriendNavBar } from "./components/organisms/friend/FriendNavBar";

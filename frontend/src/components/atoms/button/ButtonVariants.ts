@@ -35,6 +35,7 @@ export const buttonVariants = cva(
           bg-white
         `,
         gray: `bg-[#F3F4F6]`,
+        pp: `bg -[#F1F6FE]`,
         noBg: `bg-transparent`,
       },
       size: {
@@ -48,6 +49,7 @@ export const buttonVariants = cva(
         black: "text-black",
         purple: "text-[#9D5EEE]",
         gray: "text-[#71717A]",
+        pp: "text-[#8284E6]"
       },
     },
   }
