@@ -18,8 +18,8 @@ export const FriendSearchBar = ({
       <SearchIcon className="w-4 h-4 text-gray-500" />
       <Input
         type="text"
-        scale="sm"             
-        text="gray"             
+        scale="sm"
+        text="gray"
         className="bg-transparent outline-none w-full placeholder:text-gray-400"
         placeholder={placeholder}
         value={value}

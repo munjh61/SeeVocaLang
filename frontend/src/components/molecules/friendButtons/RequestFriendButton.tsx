@@ -1,14 +1,15 @@
 import type React from "react";
-import { IconButton } from "../iconbutton/IconButton";
+import { IconButton } from "../iconButton/IconButton";
 import WaitFriendIcon from "../../../asset/wait.svg?react";
-type RequestFriendButtonProps ={
-    className: string;
-    children?:React.ReactNode;
+type RequestFriendButtonProps = {
+  className: string;
+  children?: React.ReactNode;
 };
 
-export const RequestFriendButton =({className}: RequestFriendButtonProps)=>{
-
-    return (
+export const RequestFriendButton = ({
+  className,
+}: RequestFriendButtonProps) => {
+  return (
     <IconButton
       className={className}
       IconVariant={{

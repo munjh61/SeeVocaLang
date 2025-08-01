@@ -10,7 +10,7 @@ type IconButtonProps = {
   // icon: ComponentType<SVGProps<SVGSVGElement>>;
   className?: string;
   IconVariant: IconProps;
-  ButtonVariant: ButtonProps;
+  ButtonVariant?: ButtonProps;
   children?: React.ReactNode;
   data?: string;
   path?: string;
@@ -30,6 +30,7 @@ export const IconButton = ({
   const bg = ButtonVariant?.bgColor;
   const color = ButtonVariant?.textColor;
   const size = ButtonVariant?.size;
+  const border = ButtonVariant?.border;
 
   const navigate = useNavigate();
   const onClick = () => {
@@ -42,6 +43,7 @@ export const IconButton = ({
         bgColor={bg}
         textColor={color}
         size={size}
+        border={border}
         className="flex items-center gap-2 text-nowrap px-2 py-1"
         type="button"
         onClick={onClick}

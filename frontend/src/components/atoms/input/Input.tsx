@@ -7,10 +7,17 @@ type InputProps = {
 } & VariantProps<typeof InputVariants> &
   React.InputHTMLAttributes<HTMLInputElement>;
 
-export const Input = ({ scale, text, className, ...props }: InputProps) => {
+export const Input = ({
+  scale,
+  text,
+  className,
+  border,
+  bg,
+  ...props
+}: InputProps) => {
   return (
     <input
-      className={cn(InputVariants({ scale, text }), className)}
+      className={cn(InputVariants({ scale, text, border, bg }), className)}
       {...props}
     />
   );

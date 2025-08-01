@@ -2,11 +2,13 @@ import { IconInput } from "../../molecules/iconInput/IconInput.tsx";
 import { SegmentControl } from "../../molecules/segmentControl/SegmentControl.tsx";
 import type { ComponentProps } from "react";
 import searchSVG from "../../../asset/search.svg?react";
+import type { Icon } from "../../atoms/icon/Icon.tsx";
 
 type SegmentControlProps = ComponentProps<typeof SegmentControl>;
 
 type SearchbarSegmentProps = {
-  // color?: ComponentProps<typeof Icon>["color"];
+  iconColor?: ComponentProps<typeof Icon>["color"];
+  placeholder?: string;
   onSearch?: (keyword: string) => void;
   segmentControl?: Pick<
     SegmentControlProps,
@@ -17,13 +19,15 @@ type SearchbarSegmentProps = {
 export const SearchbarSegment = ({
   onSearch,
   segmentControl,
+  iconColor,
+  placeholder,
 }: SearchbarSegmentProps) => {
   return (
     <div className="flex items-center justify-between p-2 bg-gray-100 shadow-md">
       <IconInput
-        iconVariant={{ icon: searchSVG, color: "gray" }}
+        iconVariant={{ icon: searchSVG, color: iconColor }}
         inputVariant={{ scale: "lg", text: "gray" }}
-        inputProps={{ placeholder: "검색어를 입력하세요." }}
+        inputProps={{ placeholder: placeholder }}
         inputValue={onSearch}
       />
       {segmentControl && <SegmentControl {...segmentControl} />}

@@ -1,15 +1,17 @@
-import { IconButton } from "../iconbutton/IconButton";
+import { IconButton } from "../iconButton/IconButton";
 import DeleteFriendIcon from "../../../asset/friend_del.svg?react";
-
 
 type DeleteFriendButtonProps = {
   className: string;
- // 친구 ID 같은 것
+  // 친구 ID 같은 것
   data: string;
-  children?:React.ReactNode;
+  children?: React.ReactNode;
 };
 
-export const DeleteFriendButton = ({ className,data }: DeleteFriendButtonProps) => {
+export const DeleteFriendButton = ({
+  className,
+  data,
+}: DeleteFriendButtonProps) => {
   const handleSearch = (value: string) => {
     console.log(value);
   };

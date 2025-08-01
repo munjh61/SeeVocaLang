@@ -14,14 +14,19 @@ type ButtonProps = {
 export const Button = ({
   bgColor,
   size,
+  rounded,
   textColor,
+  border,
   className,
   children,
   ...props
 }: ButtonProps) => {
   return (
     <button
-      className={cn(buttonVariants({ bgColor, size, textColor }), className)}
+      className={cn(
+        buttonVariants({ border, rounded, bgColor, size, textColor }),
+        className
+      )}
       {...props}
     >
       {children}
