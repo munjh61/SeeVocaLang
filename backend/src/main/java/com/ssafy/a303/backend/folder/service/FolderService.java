@@ -41,6 +41,10 @@ public class FolderService {
                 .build();
     }
 
+//    public BaseResponseDto<Long> createFolder(CreateFolderCommandDto createFolderCommandDto) {
+//
+//    }
+
     @Transactional
     public BaseResponseDto<Void> deleteFolder(DeleteFolderCommandDto deleteFolderCommandDto) {
         FolderEntity folder = folderRepository.findById(deleteFolderCommandDto.getFolderId())

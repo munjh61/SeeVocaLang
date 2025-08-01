@@ -18,4 +18,6 @@ public interface FolderMapper {
 
     @Mapping(target = "userId", source = "userId")
     UpdateFolderCommandDto toUpdateFolderCommandDto(UpdateFolderRequestDto  updateFolderRequestDto, long userId);
+
+    FolderEntity toEntity(CreateFolderCommandDto createFolderCommandDto);
 }

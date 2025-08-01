@@ -41,6 +41,11 @@ public class FolderController {
         return ResponseEntity.ok(response);
     }
 
+//    @PostMapping("/api/v1/folders")
+//    public ResponseEntity<BaseResponseDto<Long>> createFolder(@RequestBody CreateFolderRequestDto createFolderRequestDto) {
+//
+//    }
+
     @DeleteMapping("/api/v1/folders/{folderId}")
     public ResponseEntity<BaseResponseDto<Void>> deleteFolder(@PathVariable long folderId) {
         BaseResponseDto<Void> response = folderService.deleteFolder(DeleteFolderCommandDto.builder()
@@ -71,6 +76,4 @@ public class FolderController {
 
         return ResponseEntity.ok(response);
     }
-
-
 }
