@@ -1,7 +1,7 @@
 type ProgressBarProps = {
   current: number;
   total: number;
-  height?: number;
+  height: number;
   className?: string;
 };
 
