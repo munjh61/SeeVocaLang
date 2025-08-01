@@ -8,6 +8,7 @@ type IconVariants = VariantProps<typeof iconVariants>;
 
 type IconProps = {
   icon: ComponentType<SVGProps<SVGSVGElement>>;
+  onClick?: (e: React.MouseEvent<SVGSVGElement>) => void;
   className?: string;
 } & IconVariants;
 
@@ -17,8 +18,12 @@ export const Icon = ({
   color,
   rotate,
   className,
+  onClick,
 }: IconProps) => {
   return (
-    <IconSvg className={cn(iconVariants({ size, color, rotate }), className)} />
+    <IconSvg
+      onClick={onClick}
+      className={cn(iconVariants({ size, color, rotate }), className)}
+    />
   );
 };
