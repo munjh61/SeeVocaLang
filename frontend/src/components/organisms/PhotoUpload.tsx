@@ -1,53 +1,67 @@
+import { useState } from "react";
 import CameraIcon from "../../asset/camera.svg?react";
 import UploadIcon from "../../asset/image_upload.svg?react";
 import { Button } from "../atoms/button/Button.tsx";
 import { Icon } from "../atoms/icon/Icon.tsx";
 import { Text } from "../atoms/text/Text.tsx";
+import { Modal } from "../atoms/modal/modal.tsx";
 
 export const PhotoUpload = () => {
+  const [isModalOpen, setModalOpen] = useState(false);
+
   return (
-    <section className="flex flex-col items-center justify-center flex-1/2 m-2 gap-5 bg-blue-100 rounded-md shadow-md">
-      <Button
-        bgColor={"gradientPurple"}
-        rounded={"full"}
-        className={"relative w-20 h-20"}
-      >
-        <Icon icon={CameraIcon} color={"white"} size={"lg"}></Icon>
-        <span className="absolute top-0 right-0 bg-yellow-400 text-white text-xs px-1.5 py-0.5 rounded-full">
-          ✨
-        </span>
-      </Button>
+    <>
+      <section className="flex flex-col items-center justify-center flex-1/2 m-2 gap-5 bg-blue-100 rounded-md shadow-md">
+        <Button
+          bgColor={"gradientPurple"}
+          rounded={"full"}
+          className={"relative w-20 h-20"}
+        >
+          <Icon icon={CameraIcon} color={"white"} size={"lg"} />
+          <span className="absolute top-0 right-0 bg-yellow-400 text-white text-xs px-1.5 py-0.5 rounded-full">
+            ✨
+          </span>
+        </Button>
 
-      <div>
-        <Text color={"black"} weight={"bold"} size={"xl"}>
-          사진을 선택해 주세요
-        </Text>
-        <Text color={"muted"} size={"xs"}>
-          AI가 분석하여 맞춤 학습을 제공합니다
-        </Text>
-      </div>
+        <div>
+          <Text color={"black"} weight={"bold"} size={"xl"}>
+            사진을 선택해 주세요
+          </Text>
+          <Text color={"muted"} size={"xs"}>
+            AI가 분석하여 맞춤 학습을 제공합니다
+          </Text>
+        </div>
 
-      <Button
-        bgColor={"gradientPurple"}
-        textColor={"white"}
-        size={"xl5"}
-        className={"gap-2 rounded-md"}
-      >
-        <Icon icon={UploadIcon} color={"white"} size={"md"}></Icon>
-        사진 업로드
-      </Button>
+        <Button
+          bgColor={"gradientPurple"}
+          textColor={"white"}
+          size={"xl5"}
+          className={"gap-2 rounded-md"}
+          onClick={() => setModalOpen(true)}
+        >
+          <Icon icon={UploadIcon} color={"white"} size={"md"} />
+          사진 업로드
+        </Button>
 
-      <section>
-        <Text color={"muted"} size={"xs"}>
-          📷 지원 형식: JPG, PNG, WEBP
-        </Text>
-        <Text color={"muted"} size={"xs"}>
-          🔍 최대 크기: 10MB
-        </Text>
-        <Text color={"muted"} size={"xs"}>
-          ⚡ 즉시 AI 분석 시작
-        </Text>
+        <section>
+          <Text color={"muted"} size={"xs"}>
+            📷 지원 형식: JPG, PNG, WEBP
+          </Text>
+          <Text color={"muted"} size={"xs"}>
+            🔍 최대 크기: 10MB
+          </Text>
+          <Text color={"muted"} size={"xs"}>
+            ⚡ 즉시 AI 분석 시작
+          </Text>
+        </section>
       </section>
-    </section>
+
+      <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
+        <Text size="lg" weight="bold" className="mb-2">
+          사진 업로드 모달
+        </Text>
+        <Text size="sm">여기에 파일 업로드 UI 등을 넣을 수 있어요</Text>
+      </Modal>
+    </>
   );
 };
