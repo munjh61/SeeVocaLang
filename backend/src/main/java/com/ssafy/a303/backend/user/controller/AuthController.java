@@ -67,7 +67,6 @@ public class AuthController {
             @RequestHeader(value = "X-Refresh-Token", required = false) String refreshTokenFromHeader,
             @RequestParam(value = "refreshToken", required = false) String refreshTokenFromParam
     ) {
-        // 1) HttpOnly 쿠키 (권장), 2) X-Refresh-Token 헤더, 3) query/body 파라미터 순으로 시도
         String refreshToken = resolveRefreshToken(request, refreshTokenFromHeader, refreshTokenFromParam);
 
         if (!StringUtils.hasText(refreshToken)) {
