@@ -1,10 +1,6 @@
 import apple from "../asset/png/apple.png";
-import { Input } from "../components/atoms/input/Input";
-import { IconInput } from "../components/molecules/iconInput/IconInput";
 import { SearchbarSegment } from "../components/organisms/searchbarSegment/SearchbarSegment";
 import { VocaCard } from "../components/organisms/vocaCard/VocaCard";
-import book from "../asset/book.svg?react";
-import { Nav } from "../components/molecules/nav/Nav";
 import { Navigation } from "../components/organisms/nav/Navigation";
 
 function TestPageMoon() {

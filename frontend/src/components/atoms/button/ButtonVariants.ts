@@ -18,11 +18,6 @@ export const buttonVariants = cva(
         // green: `bg-[#22C55E]`,
         // blue: `bg-[#3B82F6]`,
         // orange: `bg-[#F97316]`,
-        transparent: `
-          "bg-white/50 text-white
-          hover:bg-white/40
-          active:scale-95 active:shadow-inner"
-        `,
         white: "bg-white",
         black: "bg-black",
         gray: `bg-[#F3F4F6]`,

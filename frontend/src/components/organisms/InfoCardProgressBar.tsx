@@ -22,12 +22,12 @@ export const InfoCardProgressBar = ({
   return (
     <section
       className={
-        "bg-gradient-to-r from-[#91DE96] to-[#67B785] px-4 py-2 rounded-sm"
+        "flex flex-col gap-2 bg-gradient-to-r from-[#91DE96] to-[#67B785] px-4 py-2 rounded-sm h-1/4"
       }
       {...props}
     >
       <div className={"flex flex-row justify-between items-center"}>
-        <div className={"flex flex-col gap-1"}>
+        <div className={"flex flex-col gap-2"}>
           <Text color={"white"} weight={"bold"}>{`${current}/${total}`}</Text>
           <Text color={"white"} size={"xs"}>
             "오늘의 목표"

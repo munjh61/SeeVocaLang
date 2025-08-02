@@ -1,7 +1,7 @@
 import { cva } from "class-variance-authority";
 
 export const infoCard = cva(
-  "flex w-full items-center px-8 py-1.5 rounded-sm hover:opacity-90",
+  "flex w-full items-center px-8 py-1.5  rounded-sm hover:opacity-90",
   {
     variants: {
       bgColor: {

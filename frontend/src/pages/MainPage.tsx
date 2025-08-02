@@ -1,34 +1,12 @@
-import { IconButton } from "../components/molecules/iconButton/IconButton";
-import thunder from "../asset/thunder.svg?react";
 import { Navigation } from "../components/organisms/nav/Navigation";
+import { MainDashboardTemplate } from "../components/templates/MainDashboardTemplate.tsx";
 
 function MainPage() {
   return (
-    <>
-      <h1>Home</h1>
-      <IconButton
-        IconVariant={{ icon: thunder }}
-        path="kwon"
-        ButtonVariant={{ bgColor: "gradientPurple" }}
-      >
-        Kwon
-      </IconButton>
-      <IconButton
-        IconVariant={{ icon: thunder }}
-        path="doh"
-        ButtonVariant={{ bgColor: "gradientPurple" }}
-      >
-        Doh
-      </IconButton>
-      <IconButton
-        IconVariant={{ icon: thunder }}
-        path="moon"
-        ButtonVariant={{ bgColor: "gradientPurple" }}
-      >
-        Moon
-      </IconButton>
+    <div className="flex flex-col h-screen">
+      <MainDashboardTemplate />
       <Navigation loc="home" />
-    </>
+    </div>
   );
 }
 export default MainPage;

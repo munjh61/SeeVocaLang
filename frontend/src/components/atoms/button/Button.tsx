@@ -1,6 +1,7 @@
 import type { VariantProps } from "class-variance-authority";
 import { buttonVariants } from "./ButtonVariants.ts";
 import { cn } from "../../../utils/cn.ts";
+import React from "react";
 
 type ButtonVariantProps = VariantProps<typeof buttonVariants>;
 

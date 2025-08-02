@@ -4,14 +4,14 @@ import UploadIcon from "../../asset/image_upload.svg?react";
 import { Button } from "../atoms/button/Button.tsx";
 import { Icon } from "../atoms/icon/Icon.tsx";
 import { Text } from "../atoms/text/Text.tsx";
-import { Modal } from "../atoms/modal/modal.tsx";
+import { FileUploadModalFlow } from "./fileUpload/FileUploadModalFlow.tsx";
 
 export const PhotoUpload = () => {
   const [isModalOpen, setModalOpen] = useState(false);
 
   return (
     <>
-      <section className="flex flex-col items-center justify-center flex-1/2 m-2 gap-5 bg-blue-100 rounded-md shadow-md">
+      <section className="flex flex-col items-center justify-center flex-1/2 p-2 gap-5 bg-blue-100 rounded-md shadow-md">
         <Button
           bgColor={"gradientPurple"}
           rounded={"full"}
@@ -56,12 +56,10 @@ export const PhotoUpload = () => {
         </section>
       </section>
 
-      <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
-        <Text size="lg" weight="bold" className="mb-2">
-          사진 업로드 모달
-        </Text>
-        <Text size="sm">여기에 파일 업로드 UI 등을 넣을 수 있어요</Text>
-      </Modal>
+      <FileUploadModalFlow
+        isOpen={isModalOpen}
+        onClose={() => setModalOpen(false)}
+      />
     </>
   );
 };
