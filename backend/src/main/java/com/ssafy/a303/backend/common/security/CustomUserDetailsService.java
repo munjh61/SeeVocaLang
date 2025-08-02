@@ -1,6 +1,11 @@
 package com.ssafy.a303.backend.common.security;
 
+import com.ssafy.a303.backend.common.exception.CommonErrorCode;
+import com.ssafy.a303.backend.common.exception.ErrorCode;
+import com.ssafy.a303.backend.sociallogin.exception.SocialLoginErrorCode;
+import com.ssafy.a303.backend.sociallogin.exception.SocialLoginException;
 import com.ssafy.a303.backend.user.entity.UserEntity;
+import com.ssafy.a303.backend.user.exception.UserNotFoundException;
 import com.ssafy.a303.backend.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,9 +28,18 @@ public class CustomUserDetailsService implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String loginId) throws UsernameNotFoundException {
+        if (loginId == null) {
+            throw new SocialLoginException(SocialLoginErrorCode.SOCIAL_LOGIN_FAILED);
+        }
+
         UserEntity user = userRepository.findByLoginId(loginId)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + loginId));
+                .orElseThrow(() -> new UserNotFoundException(CommonErrorCode.RESOURCE_NOT_FOUND));
+
+        if (user.isDeleted()) {
+            throw new UserNotFoundException(CommonErrorCode.RESOURCE_NOT_FOUND);
+        }
 
         return CustomUserDetails.from(user);
     }
+
 }

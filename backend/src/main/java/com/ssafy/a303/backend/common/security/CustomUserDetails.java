@@ -5,12 +5,14 @@ import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 @Getter
-public class CustomUserDetails implements UserDetails {
+public class CustomUserDetails implements UserDetails, OAuth2User {
 
     private final String loginId;
     private final String password;
@@ -34,13 +36,18 @@ public class CustomUserDetails implements UserDetails {
     }
 
     @Override
+    public Map<String, Object> getAttributes() {
+        return Map.of();
+    }
+
+    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
     @Override
     public String getUsername() {
-        return loginId;
+        return loginId != null ? loginId : nickname;
     }
 
     @Override
@@ -54,4 +61,9 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() { return true; }
+
+    @Override
+    public String getName() {
+        return loginId != null ? loginId : nickname;
+    }
 }
