@@ -1,4 +1,4 @@
-package com.ssafy.a303.backend.common.utility.exception;
+package com.ssafy.a303.backend.common.utility.s3.exception;
 
 import com.ssafy.a303.backend.common.exception.ErrorCode;
 import com.ssafy.a303.backend.common.exception.SVLRuntimeException;
