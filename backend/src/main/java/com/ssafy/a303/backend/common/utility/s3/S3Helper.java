@@ -1,9 +1,9 @@
-package com.ssafy.a303.backend.common.utility;
+package com.ssafy.a303.backend.common.utility.s3;
 
 import com.ssafy.a303.backend.common.exception.CommonErrorCode;
-import com.ssafy.a303.backend.common.utility.exception.S3ErrorCode;
-import com.ssafy.a303.backend.common.utility.exception.S3ObjectNotFoundRuntimeException;
-import com.ssafy.a303.backend.common.utility.exception.S3UnknownRuntimeException;
+import com.ssafy.a303.backend.common.utility.s3.exception.S3ErrorCode;
+import com.ssafy.a303.backend.common.utility.s3.exception.S3ObjectNotFoundRuntimeException;
+import com.ssafy.a303.backend.common.utility.s3.exception.S3UnknownRuntimeException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -53,43 +53,41 @@ public class S3Helper {
         }
     }
 
-    public String upload(String key, MultipartFile file) {
-        try (InputStream is = file.getInputStream()) {
+    public String upload(String key, byte[] fileBytes, String contentType) {
+        try {
             PutObjectRequest putReq = PutObjectRequest.builder()
                     .bucket(bucket)
                     .key(key)
-                    .contentType(file.getContentType())
-                    .contentLength(file.getSize())
+                    .contentType(contentType)
+                    .contentLength((long) fileBytes.length)
                     .build();
 
-            s3Client.putObject(putReq, RequestBody.fromInputStream(is, file.getSize()));
-            return this.getObjectUrl(key);
-        } catch (IOException exception) {
+            s3Client.putObject(putReq, RequestBody.fromBytes(fileBytes));
+            return getObjectUrl(key);
+        } catch (S3Exception e) {
             throw new S3UnknownRuntimeException(S3ErrorCode.UNKNOWN_ERROR);
         }
     }
 
-    public String update(String key, MultipartFile file) {
-        if (!this.exists(key)) {
+    public String update(String key, byte[] fileBytes, String contentType) {
+        if (!exists(key)) {
             throw new S3ObjectNotFoundRuntimeException(CommonErrorCode.RESOURCE_NOT_FOUND);
         }
 
-        return this.upload(key, file);
+        return upload(key, fileBytes, contentType);
     }
 
     public void delete(String key) {
         try {
-            DeleteObjectRequest request = DeleteObjectRequest.builder()
+            DeleteObjectRequest delReq = DeleteObjectRequest.builder()
                     .bucket(bucket)
                     .key(key)
                     .build();
-
-            s3Client.deleteObject(request);
-        } catch (S3Exception exception) {
-            if (exception.statusCode() == 404) {
+            s3Client.deleteObject(delReq);
+        } catch (S3Exception e) {
+            if (e.statusCode() == 404) {
                 throw new S3ObjectNotFoundRuntimeException(CommonErrorCode.RESOURCE_NOT_FOUND);
             }
-
             throw new S3UnknownRuntimeException(S3ErrorCode.UNKNOWN_ERROR);
         }
     }
