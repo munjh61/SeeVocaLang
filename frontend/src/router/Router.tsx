@@ -8,6 +8,7 @@ import BookPage from "../pages/BookPage.tsx";
 import GamePage from "../pages/GamePage.tsx";
 import FriendPage from "../pages/FriendPage.tsx";
 import MyPage from "../pages/MyPage.tsx";
+import { SignupFlow } from "../components/organisms/signUp/SignupFlow.tsx";
 
 export const Router = () => {
   return (
@@ -21,6 +22,7 @@ export const Router = () => {
         <Route path="/game" element={<GamePage />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/friend" element={<FriendPage />} />
+        <Route path="/signup" element={<SignupFlow />} />
       </Routes>
     </BrowserRouter>
   );

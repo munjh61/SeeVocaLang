@@ -1,14 +1,10 @@
-import { PhotoUpload } from "../components/organisms/PhotoUpload.tsx";
-import { MainActionPanel } from "../components/organisms/MainActionPanel .tsx";
+import { OnBoardingPage } from "./OnBoardingPage.tsx";
 
 function TestPageDoh() {
   return (
-    <>
-      <div className={"flex"}>
-        <PhotoUpload />
-        <MainActionPanel />
-      </div>
-    </>
+    <div>
+      <OnBoardingPage />
+    </div>
   );
 }
 export default TestPageDoh;

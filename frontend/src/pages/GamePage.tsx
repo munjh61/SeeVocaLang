@@ -1,11 +1,10 @@
-import { Navigation } from "../components/organisms/nav/Navigation";
+import { OnBoardingPage } from "./OnBoardingPage.tsx";
 
 function GamePage() {
   return (
-    <>
-      <h1>게임 페이지</h1>
-      <Navigation loc="game" />
-    </>
+    <div className={"flex flex-col h-screen bg-[#F3FAF3]"}>
+      <OnBoardingPage />
+    </div>
   );
 }
 

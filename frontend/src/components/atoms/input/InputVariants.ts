@@ -9,6 +9,8 @@ export const InputVariants = cva(
         md: "text-base rounded-md px-7",
         lg: "text-lg rounded-lg px-8",
         xl: "text-xl rounded-xl px-10",
+        onboard: "rounded-md w-80 h-12 text-lg",
+        signup: "rounded-md w-100 h-12 text-lg",
       },
       bg: {
         white: "bg-white",
@@ -44,6 +46,7 @@ export const InputVariants = cva(
         green: "border border-[#6DC16A]",
         blue: "border border-[#6083EE]",
         purple: "border border-[#9D5EEE]",
+        lightgray: "border border-[#E4E4E7]",
       },
     },
     defaultVariants: {

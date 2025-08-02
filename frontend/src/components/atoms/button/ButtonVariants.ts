@@ -36,6 +36,8 @@ export const buttonVariants = cva(
         md: "px-4 py-1 text-xs",
         xl5: "px-25 py-1 text-xs",
         word: "px-30 py-30 text-xl",
+        onboard: "w-80 h-12 text-lg",
+        signup: "rounded-md w-100 h-12 text-lg",
       },
       textColor: {
         white: "text-white",
@@ -62,6 +64,7 @@ export const buttonVariants = cva(
       },
       rounded: {
         full: "rounded-full",
+        lg: "rounded-lg",
       },
     },
   }
