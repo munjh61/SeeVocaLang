@@ -35,6 +35,7 @@ export const VocaBookCard = ({
       <div className="relative">
         <Icon
           icon={favorite ? starF : starE}
+          color={"yellow"}
           className="absolute top-0 right-0 cursor-pointer"
           onClick={() => onToggleFavorite?.(id)}
         />
@@ -62,7 +63,7 @@ export const VocaBookCard = ({
           <IconButton
             IconVariant={{ icon: book, color: "white" }}
             ButtonVariant={{ bgColor: "blue", textColor: "white" }}
-            path={`/voca/detail/${id}`}
+            path={`/book/${id}`}
           >
             학습하기
           </IconButton>

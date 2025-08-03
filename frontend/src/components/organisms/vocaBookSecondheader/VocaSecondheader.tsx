@@ -29,7 +29,7 @@ export const VocaBookSecondHeader = ({
           즐겨찾기
         </IconButton>
       </div>
-      <div className="flex">
+      <div className="flex gap-2">
         <IconButton
           IconVariant={{
             icon: isToggle ? all : list,

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { VocaBookSecondHeader } from "../../organisms/vocaBookSecondheader/VocaBookSecondheader";
+import { VocaBookSecondHeader } from "../../organisms/vocaBookSecondheader/VocaSecondheader";
 import { SearchbarSegment } from "../../organisms/searchbarSegment/SearchbarSegment";
 import {
   VocaBookCard,
