@@ -4,19 +4,19 @@ import book from "../../../asset/book_add.svg?react";
 import all from "../../../asset/all.svg?react";
 import list from "../../../asset/list.svg?react";
 
-type BookSecondHeaderProps = {
+type VocaBookSecondHeaderProps = {
   isToggle: boolean;
   onClickFavorite: () => void;
   onClickToggle: () => void;
   onClickCreate: () => void;
 };
 
-export const BookSecondHeader = ({
+export const VocaBookSecondHeader = ({
   isToggle,
   onClickFavorite,
   onClickToggle,
   onClickCreate,
-}: BookSecondHeaderProps) => {
+}: VocaBookSecondHeaderProps) => {
   return (
     <div className="flex align-center justify-between">
       <div>

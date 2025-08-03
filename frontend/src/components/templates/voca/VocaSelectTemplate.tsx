@@ -1,18 +1,18 @@
 import { useState } from "react";
-import { BookSecondHeader } from "../../organisms/vocaSecondheader/VocaSecondheader";
+import { VocaBookSecondHeader } from "../../organisms/vocaSecondheader/VocaSecondheader";
 import { SearchbarSegment } from "../../organisms/searchbarSegment/SearchbarSegment";
 import {
-  VocaCard,
-  type VocaCardProps,
-} from "../../organisms/vocaCard/VocaCard";
+  VocaBookCard,
+  type VocaBookCardProps,
+} from "../../organisms/vocaBookCard/VocaBookCard";
 import { Modal } from "../../atoms/modal/modal";
-import { VocaForm } from "../../organisms/vocaEditModal/vocaForm";
+import { VocaForm } from "../../organisms/vocaEditModal/vocaBookForm";
 
-export type VocaDataProps = {
-  vocaDatas: VocaCardProps[];
+export type VocaBookDataProps = {
+  vocaDatas: VocaBookCardProps[];
 };
 
-export const BookSelectTemplate = ({ vocaDatas }: VocaDataProps) => {
+export const BookSelectTemplate = ({ vocaDatas }: VocaBookDataProps) => {
   const searchFunction = (v: string) => console.log(v);
 
   const [modalType, setModalType] = useState<"create" | "update" | null>(null);
@@ -22,6 +22,9 @@ export const BookSelectTemplate = ({ vocaDatas }: VocaDataProps) => {
   const [isToggle, setIsToggle] = useState(true);
   const [isFavoriteOnly, setIsFavoriteOnly] = useState(false);
 
+  // 여기서 전체 단어장 상태 관리
+  const [vocaList, setVocaList] = useState<VocaBookCardProps[]>(vocaDatas);
+
   const closeModal = () => {
     setModalType(null);
     setSelectedId(null);
@@ -30,7 +33,7 @@ export const BookSelectTemplate = ({ vocaDatas }: VocaDataProps) => {
   };
 
   const openEditModal = (id: number) => {
-    const selected = vocaDatas.find(item => item.id === id);
+    const selected = vocaList.find(item => item.id === id);
     if (!selected) return;
     setTitle(selected.name);
     setSubtitle(selected.description);
@@ -39,7 +42,6 @@ export const BookSelectTemplate = ({ vocaDatas }: VocaDataProps) => {
   };
 
   const openCreateModal = () => {
-    console.log("현재 modalType:", modalType);
     setTitle("");
     setSubtitle("");
     setSelectedId(null);
@@ -55,9 +57,17 @@ export const BookSelectTemplate = ({ vocaDatas }: VocaDataProps) => {
     closeModal();
   };
 
-  const filteredData = vocaDatas.filter(voca =>
-    isFavoriteOnly ? voca.favorite : true
-  );
+  const toggleFavorite = (id: number) => {
+    setVocaList(prev =>
+      prev.map(item =>
+        item.id === id ? { ...item, favorite: !item.favorite } : item
+      )
+    );
+  };
+
+  const filteredList = isFavoriteOnly
+    ? vocaList.filter(voca => voca.favorite)
+    : vocaList;
 
   return (
     <div className="flex flex-col justify-center">
@@ -87,7 +97,7 @@ export const BookSelectTemplate = ({ vocaDatas }: VocaDataProps) => {
           }}
         />
 
-        <BookSecondHeader
+        <VocaBookSecondHeader
           isToggle={isToggle}
           onClickToggle={() => setIsToggle(prev => !prev)}
           onClickCreate={openCreateModal}
@@ -95,8 +105,13 @@ export const BookSelectTemplate = ({ vocaDatas }: VocaDataProps) => {
         />
 
         <div className="gap-4">
-          {filteredData.map(data => (
-            <VocaCard key={data.id} {...data} onEditClick={openEditModal} />
+          {filteredList.map(data => (
+            <VocaBookCard
+              key={data.id}
+              {...data}
+              onEditClick={openEditModal}
+              onToggleFavorite={toggleFavorite}
+            />
           ))}
         </div>
       </div>

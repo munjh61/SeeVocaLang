@@ -1,6 +1,6 @@
 import { Input } from "../../atoms/input/Input";
 
-type VocaFormProps = {
+type VocaBookFormProps = {
   formType: "create" | "update";
   title: string;
   subtitle: string;
@@ -16,7 +16,7 @@ export const VocaForm = ({
   onChangeTitle,
   onChangeSubtitle,
   onSubmit,
-}: VocaFormProps) => {
+}: VocaBookFormProps) => {
   return (
     <div className="flex flex-col gap-4">
       <h1 className="text-xl font-bold">

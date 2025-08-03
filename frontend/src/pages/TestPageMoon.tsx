@@ -1,6 +1,6 @@
 import apple from "../asset/png/apple.png";
 import { SearchbarSegment } from "../components/organisms/searchbarSegment/SearchbarSegment";
-import { VocaCard } from "../components/organisms/vocaCard/VocaCard";
+import { VocaBookCard } from "../components/organisms/vocaBookCard/VocaBookCard";
 import { Navigation } from "../components/organisms/nav/Navigation";
 
 function TestPageMoon() {
@@ -27,67 +27,22 @@ function TestPageMoon() {
           onChange: v => console.log(v),
         }}
       />
-      <VocaCard
+      <VocaBookCard
+        id={1}
         thumbnail={apple}
         name="제목제목제목제목제목"
         description="설명설명설명설명설명설명설명설명설명설명설명설명"
         favorite={false}
       />
-      <VocaCard
+      <VocaBookCard
+        id={2}
         thumbnail={apple}
         name="AaaaBAaaaBAaaaB"
         description="AaaaBAaaaBAaaaBAaaaB"
         favorite={false}
       />
-      <VocaCard
-        thumbnail={apple}
-        name="제목"
-        description="설명"
-        favorite={false}
-      />
-      <VocaCard
-        thumbnail={apple}
-        name="제목"
-        description="설명"
-        favorite={false}
-      />
-      <VocaCard
-        thumbnail={apple}
-        name="제목"
-        description="설명"
-        favorite={false}
-      />
-      <VocaCard
-        thumbnail={apple}
-        name="제목"
-        description="설명"
-        favorite={false}
-      />
-      <VocaCard
-        thumbnail={apple}
-        name="제목"
-        description="설명"
-        favorite={false}
-      />
-      <VocaCard
-        thumbnail={apple}
-        name="제목"
-        description="설명"
-        favorite={false}
-      />
-      <VocaCard
-        thumbnail={apple}
-        name="제목"
-        description="설명"
-        favorite={false}
-      />
-      <VocaCard
-        thumbnail={apple}
-        name="제목"
-        description="설명"
-        favorite={false}
-      />
-      <VocaCard
+      <VocaBookCard
+        id={3}
         thumbnail={apple}
         name="제목"
         description="설명"

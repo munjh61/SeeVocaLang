@@ -6,30 +6,26 @@ import gear from "../../../asset/gear.svg?react";
 import book from "../../../asset/nav_book.svg?react";
 import starF from "../../../asset/star-fill.svg?react";
 import starE from "../../../asset/star_empty.svg?react";
-import { useState } from "react";
 
-export type VocaCardProps = {
+export type VocaBookCardProps = {
   id: number;
   thumbnail?: string;
   name: string;
   description: string;
   favorite: boolean;
   onEditClick?: (id: number) => void;
+  onToggleFavorite?: (id: number) => void;
 };
 
-export const VocaCard = ({
+export const VocaBookCard = ({
   id,
   thumbnail,
   name,
   description,
   favorite,
   onEditClick,
-}: VocaCardProps) => {
-  const [isFavorite, setIsFavorite] = useState(favorite);
-  const toggleFavorite = () => {
-    setIsFavorite(prev => !prev);
-  };
-
+  onToggleFavorite,
+}: VocaBookCardProps) => {
   return (
     <div
       className="rounded-md shadow-md w-60 p-3 inline-flex flex-col gap-2 bg-white select-none"
@@ -37,9 +33,9 @@ export const VocaCard = ({
     >
       <div className="relative">
         <Icon
-          icon={isFavorite ? starF : starE}
-          className="absolute top-0 right-0"
-          onClick={toggleFavorite}
+          icon={favorite ? starF : starE}
+          className="absolute top-0 right-0 cursor-pointer"
+          onClick={() => onToggleFavorite?.(id)}
         />
         <ImageBox src={thumbnail} className="w-full h-full" />
       </div>
@@ -70,9 +66,7 @@ export const VocaCard = ({
             IconVariant={{ icon: gear }}
             ButtonVariant={{ bgColor: "white", border: "gray" }}
             data={id}
-            buttonValue={v => {
-              if (typeof v === "number") onEditClick?.(v);
-            }}
+            buttonValue={v => onEditClick?.(Number(v))}
           >
             수정
           </IconButton>

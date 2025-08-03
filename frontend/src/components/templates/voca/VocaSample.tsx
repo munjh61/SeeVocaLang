@@ -1,6 +1,6 @@
 import sampleimg from "../../../asset/png/apple.png";
 
-const VocaSampleDatas = [
+const VocaBookSampleDatas = [
   {
     id: 1,
     name: "토익 필수 단어",
@@ -73,4 +73,4 @@ const VocaSampleDatas = [
   },
 ];
 
-export default VocaSampleDatas;
+export default VocaBookSampleDatas;
