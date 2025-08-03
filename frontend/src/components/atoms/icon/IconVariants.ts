@@ -7,6 +7,7 @@ export const iconVariants = cva("inline-block", {
       md: "w-5 h-5",
       lg: "w-10 h-10",
       xl: "w-15 h-15",
+      searchbar: "w-8 h-8",
     },
     color: {
       gray: "text-gray-500",

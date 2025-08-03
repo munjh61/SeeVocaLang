@@ -23,7 +23,11 @@ export const Icon = ({
   return (
     <IconSvg
       onClick={onClick}
-      className={cn(iconVariants({ size, color, rotate }), className)}
+      className={cn(
+        iconVariants({ size, color, rotate }),
+        "self-center",
+        className
+      )}
     />
   );
 };

@@ -35,7 +35,7 @@ export const Nav = ({
     <div
       className={cn(
         NavVariants({ bg }),
-        "p-3 inline-flex gap-2 w-fit",
+        "p-3 inline-flex gap-2 grow justify-center text-center",
         className
       )}
       onClick={handleClick}
@@ -45,7 +45,11 @@ export const Nav = ({
         color={onoff ? "white" : "gray"}
         className="inline-flex"
       />
-      <Text color={onoff ? "white" : "gray"} className="inline-flex">
+      <Text
+        color={onoff ? "white" : "gray"}
+        className="inline-flex"
+        align={"center"}
+      >
         {children}
       </Text>
     </div>

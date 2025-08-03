@@ -8,7 +8,8 @@ import starF from "../../../asset/star-fill.svg?react";
 import starE from "../../../asset/star_empty.svg?react";
 import { useState } from "react";
 
-type VocaCardProps = {
+export type VocaCardProps = {
+  id: number;
   thumbnail?: string;
   name: string;
   description: string;
@@ -16,6 +17,7 @@ type VocaCardProps = {
 };
 
 export const VocaCard = ({
+  id,
   thumbnail,
   name,
   description,
@@ -24,6 +26,9 @@ export const VocaCard = ({
   const [isFavorite, setIsFavorite] = useState(favorite);
   const toggleFavorite = () => {
     setIsFavorite(prev => !prev);
+  };
+  const editModal = () => {
+    console.log(id);
   };
 
   return (
@@ -58,12 +63,15 @@ export const VocaCard = ({
           <IconButton
             IconVariant={{ icon: book, color: "white" }}
             ButtonVariant={{ bgColor: "blue", textColor: "white" }}
+            path={`/voca/detail/${id}`}
           >
             학습하기
           </IconButton>
           <IconButton
             IconVariant={{ icon: gear }}
             ButtonVariant={{ bgColor: "white", border: "gray" }}
+            data={id.toString()}
+            buttonValue={editModal}
           >
             수정
           </IconButton>
