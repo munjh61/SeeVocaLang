@@ -1,6 +1,9 @@
 package com.ssafy.a303.backend.common.config;
 
 import com.ssafy.a303.backend.common.security.JwtFilter;
+import com.ssafy.a303.backend.common.security.OAuth2FailureHandler;
+import com.ssafy.a303.backend.common.security.OAuth2SuccessHandler;
+import com.ssafy.a303.backend.sociallogin.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +23,9 @@ import org.springframework.web.cors.CorsConfigurationSource;
 public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
+    private final OAuth2FailureHandler oAuth2FailureHandler;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
@@ -40,6 +46,13 @@ public class SecurityConfig {
         http.authorizeHttpRequests(auth -> {
             auth.anyRequest().permitAll();
         });
+
+        http.oauth2Login(oauth2 -> oauth2
+                .userInfoEndpoint(userInfo -> userInfo
+                        .userService(customOAuth2UserService))
+                .successHandler(oAuth2SuccessHandler)
+                .failureHandler(oAuth2FailureHandler)
+        );
 
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf(csrf -> csrf.disable());

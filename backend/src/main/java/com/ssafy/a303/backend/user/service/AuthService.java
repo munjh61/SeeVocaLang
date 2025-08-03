@@ -10,19 +10,15 @@ import com.ssafy.a303.backend.user.dto.SignInRequestDto;
 import com.ssafy.a303.backend.user.dto.SignInResponseDto;
 import com.ssafy.a303.backend.user.dto.SignUpRequestDto;
 import com.ssafy.a303.backend.user.entity.UserEntity;
-import com.ssafy.a303.backend.user.exception.InvalidCredentialsException;
-import com.ssafy.a303.backend.user.exception.UserIdAlreadyExistsException;
-import com.ssafy.a303.backend.user.exception.UserNotFoundException;
+import com.ssafy.a303.backend.user.exception.*;
 import com.ssafy.a303.backend.user.repository.UserRepository;
-import com.ssafy.a303.backend.user.exception.UserNicknameAlreadyExistsException;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -91,12 +87,12 @@ public class AuthService {
         }
 
         String jti = UUID.randomUUID().toString();
-        String at = jwtUtil.createAccessToken(user.getLoginId().toString());
-        String rt = jwtUtil.createRefreshToken(user.getLoginId().toString(), jti);
+        String at = jwtUtil.createAccessToken(user.getUserId());
+        String rt = jwtUtil.createRefreshToken(user.getUserId(), jti);
 
         long refreshTokenTTL = 60 * 60 * 24 * 14;
 
-        rts.save(user.getLoginId().toString(), jti, rt, refreshTokenTTL);
+        rts.save(user.getUserId(), jti, rt, refreshTokenTTL);
 
         cookie.attachRefreshToken(response, rt);
 
@@ -108,10 +104,41 @@ public class AuthService {
 
     // 로그아웃
     public void signOut(String refreshToken, HttpServletResponse response) {
-        String userKey = jwtUtil.getUserId(refreshToken); // <- subject = loginId
+        Long userId = jwtUtil.getUserId(refreshToken);
         String jti = jwtUtil.getJti(refreshToken);
-        rts.delete(userKey, jti);
+        rts.delete(userId, jti);
+
         cookie.clearRefreshToken(response);
+    }
+
+    // accessToken 재발금
+    public Map<String, String> reissue(String refreshToken, HttpServletResponse response) {
+        if (!StringUtils.hasText(refreshToken)) {
+            throw new AuthException(AuthErrorCode.REFRESH_TOKEN_NOT_PROVIDED);
+        }
+
+        if (!jwtUtil.validate(refreshToken)) {
+            throw new AuthException(AuthErrorCode.REFRESH_TOKEN_INVALID);
+        }
+
+        Long userId = jwtUtil.getUserId(refreshToken);
+        String jti = jwtUtil.getJti(refreshToken);
+
+        if (!rts.exists(userId, jti)) {
+            throw new AuthException(AuthErrorCode.REFRESH_TOKEN_EXPIRED_OR_NOT_FOUND);
+        }
+
+        String newAccessToken = jwtUtil.createAccessToken(userId);
+        String newJti = UUID.randomUUID().toString();
+        String newRefreshToken = jwtUtil.createRefreshToken(userId, newJti);
+
+        rts.save(userId, newJti, newRefreshToken, 60 * 60 * 24 * 14); // 14일 TTL
+        rts.delete(userId, jti);
+
+        cookie.attachRefreshToken(response, newRefreshToken);
+        response.setHeader("Authorization", "Bearer " + newAccessToken);
+
+        return Map.of("accessToken", newAccessToken);
     }
 
 }

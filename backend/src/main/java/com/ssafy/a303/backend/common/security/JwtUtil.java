@@ -39,12 +39,12 @@ public class JwtUtil {
     /**
      * AccessToken 생성
      *
-     * @param userId 사용자 ID
+     * @param userId 사용자 ID (Long)
      */
-    public String createAccessToken(String userId) {
+    public String createAccessToken(Long userId) {
         return Jwts.builder()
-                .setSubject(userId) // 토큰 주체 = userId
-                .setIssuedAt(new Date()) // 발급 시간
+                .setSubject(userId.toString()) // JWT 내부에는 문자열로 저장
+                .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + accessTokenExp))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
@@ -53,13 +53,13 @@ public class JwtUtil {
     /**
      * RefreshToken 생성
      *
-     * @param userId 사용자 ID
+     * @param userId 사용자 ID (Long)
      * @param jti RefreshToken의 고유 ID (UUID)
      */
-    public String createRefreshToken(String userId, String jti) {
+    public String createRefreshToken(Long userId, String jti) {
         return Jwts.builder()
-                .setSubject(userId)
-                .setId(jti) // RefreshToken 구분용 ID
+                .setSubject(userId.toString()) // subject는 문자열로
+                .setId(jti)                    // jti도 UUID 문자열
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + refreshTokenExp))
                 .signWith(key, SignatureAlgorithm.HS256)
@@ -81,11 +81,14 @@ public class JwtUtil {
     }
 
     /**
-     * 토큰에서 사용자 ID(subject) 추출
+     * 토큰에서 사용자 ID(subject) 추출 → Long으로 반환
      */
-    public String getUserId(String token) {
-        return Jwts.parserBuilder().setSigningKey(key).build()
-                .parseClaimsJws(token).getBody().getSubject();
+    public Long getUserId(String token) {
+        String subject = Jwts.parserBuilder().setSigningKey(key).build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
+        return Long.parseLong(subject);
     }
 
     /**
@@ -95,5 +98,4 @@ public class JwtUtil {
         return Jwts.parserBuilder().setSigningKey(key).build()
                 .parseClaimsJws(token).getBody().getId();
     }
-
 }
