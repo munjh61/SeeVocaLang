@@ -31,7 +31,7 @@ export const IconInput = ({
   };
 
   return (
-    <div className={`w-full flex items-center gap-2 ${className}`}>
+    <div className={`w-full h-full flex items-center gap-2 ${className}`}>
       <Icon {...iconVariant} />
       <Input {...inputVariant} onKeyDown={pressEnter} {...inputProps} />
     </div>
