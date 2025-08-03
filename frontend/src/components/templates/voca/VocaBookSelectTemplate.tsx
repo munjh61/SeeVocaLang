@@ -3,17 +3,19 @@ import { VocaBookSecondHeader } from "../../organisms/vocaBookSecondheader/VocaS
 import { SearchbarSegment } from "../../organisms/searchbarSegment/SearchbarSegment";
 import {
   VocaBookCard,
-  type VocaBookCardProps,
-} from "../../organisms/vocaBookCard/VocaBookCard";
+  type VocaBookProps,
+} from "../../organisms/vocaBook/VocaBook";
 import { Modal } from "../../atoms/modal/modal";
 import { VocaForm } from "../../organisms/vocaBookForm/vocaBookForm";
 import hangul from "hangul-js";
 
 export type VocaBookDataProps = {
-  vocaDatas: VocaBookCardProps[];
+  vocaBookDatas?: VocaBookProps[];
 };
 
-export const BookSelectTemplate = ({ vocaDatas }: VocaBookDataProps) => {
+export const BookSelectTemplate = ({
+  vocaBookDatas = [],
+}: VocaBookDataProps) => {
   const [modalType, setModalType] = useState<"create" | "update" | null>(null);
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [title, setTitle] = useState("");
@@ -23,7 +25,7 @@ export const BookSelectTemplate = ({ vocaDatas }: VocaBookDataProps) => {
   const [searchKey, setSearchKey] = useState("");
 
   // 여기서 전체 단어장 상태 관리
-  const [vocaList, setVocaList] = useState<VocaBookCardProps[]>(vocaDatas);
+  const [vocaList, setVocaList] = useState<VocaBookProps[]>(vocaBookDatas);
 
   const closeModal = () => {
     setModalType(null);
@@ -56,7 +58,7 @@ export const BookSelectTemplate = ({ vocaDatas }: VocaBookDataProps) => {
     });
     if (modalType === "create") {
       const newId = Math.max(...vocaList.map(v => v.id), 0) + 1; // ID 자동 증가, 나중에 서버 붙이면 번호 가져와야함
-      const newItem: VocaBookCardProps = {
+      const newItem: VocaBookProps = {
         id: newId,
         name: title,
         description: subtitle,

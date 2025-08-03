@@ -8,7 +8,7 @@ import starF from "../../../asset/star-fill.svg?react";
 import starE from "../../../asset/star_empty.svg?react";
 import noImage from "../../../asset/png/noimage.png";
 
-export type VocaBookCardProps = {
+export type VocaBookProps = {
   id: number;
   thumbnail?: string;
   name: string;
@@ -26,7 +26,7 @@ export const VocaBookCard = ({
   favorite,
   onEditClick,
   onToggleFavorite,
-}: VocaBookCardProps) => {
+}: VocaBookProps) => {
   return (
     <div
       className="rounded-md shadow-md w-60 p-3 inline-flex flex-col gap-2 bg-white select-none"

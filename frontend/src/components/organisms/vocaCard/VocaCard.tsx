@@ -4,13 +4,15 @@ import { IconButton } from "../../molecules/iconButton/IconButton";
 import { ImageBox } from "../../molecules/imagebox/Imagebox";
 import speaker from "../../../asset/speaker.svg?react";
 import { VocaLoc } from "./VocaLoc";
+import trash from "../../../asset/delete.svg?react";
 
-type VocaCardProps = {
+export type VocaCardProps = {
   wordId?: number;
   imgUrl?: string;
   audioUrl?: string;
   nameEn: string;
   nameKo: string;
+  onDelete: () => void;
 };
 
 export const VocaCard = ({
@@ -19,10 +21,17 @@ export const VocaCard = ({
   // audioUrl,
   nameEn,
   nameKo,
+  onDelete,
 }: VocaCardProps) => {
   return (
     <div className="rounded-md shadow-md w-80 p-3 inline-flex flex-col gap-2 bg-white select-none">
       <div className="relative border-b border-gray-200">
+        <div className="absolute top-0 left-0">
+          <IconButton
+            IconVariant={{ icon: trash, color: "red" }}
+            buttonValue={onDelete}
+          ></IconButton>
+        </div>
         <div className="absolute top-0 right-0">
           <VocaLoc bg={"red"}>단어장1</VocaLoc>
           <VocaLoc bg={"yellow"}>단어장2</VocaLoc>
