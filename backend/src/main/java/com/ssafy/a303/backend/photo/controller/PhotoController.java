@@ -32,4 +32,27 @@ public class PhotoController {
         return new BaseResponseDto<>(UPLOAD_SUCCESS_MESSAGE, responseDto);
     }
 
+    @PostMapping("/api/v1/photos/words")
+    public BaseResponseDto<Void> createWord(
+            @RequestBody CreateWordRequestDto requestDto
+    ) {
+        // TODO: JWT 토큰 도입 이후에 변경할 예정입니다.
+        Long userId = 1L;
+        photoService.createWord(PhotoMapper.INSTANCE.toCommandDto(userId, requestDto));
+        return BaseResponseDto.<Void>builder()
+                .message(SAVE_WORD_SUCCESS_MESSAGE)
+                .build();
+    }
+
+    @PutMapping("/api/v1/photos/words/{wordId}")
+    public BaseResponseDto<Void> updateWord(
+            @PathVariable Long wordId,
+            @RequestBody UpdateWordRequestDto requestDto
+    ) {
+        Long userId = 1L;
+        photoService.updateWord(new UpdatePhotoWordCommandDto(userId, wordId, requestDto.imageKey()));
+        return BaseResponseDto.<Void>builder()
+                .message(UPDATE_WORD_SUCCESS_MESSAGE)
+                .build();
+    }
 }
