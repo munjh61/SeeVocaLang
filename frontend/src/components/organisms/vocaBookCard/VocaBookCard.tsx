@@ -6,6 +6,7 @@ import gear from "../../../asset/gear.svg?react";
 import book from "../../../asset/nav_book.svg?react";
 import starF from "../../../asset/star-fill.svg?react";
 import starE from "../../../asset/star_empty.svg?react";
+import noImage from "../../../asset/png/noimage.png";
 
 export type VocaBookCardProps = {
   id: number;
@@ -37,7 +38,10 @@ export const VocaBookCard = ({
           className="absolute top-0 right-0 cursor-pointer"
           onClick={() => onToggleFavorite?.(id)}
         />
-        <ImageBox src={thumbnail} className="w-full h-full" />
+        <ImageBox
+          src={thumbnail ? thumbnail : noImage}
+          className="w-full h-full"
+        />
       </div>
 
       <div className="flex flex-col">

@@ -14,6 +14,7 @@ type IconInputProps = {
   inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
   // 함수
   inputValue?: (value: string) => void;
+  onChange?: (value: string) => void;
 };
 
 export const IconInput = ({
@@ -22,6 +23,7 @@ export const IconInput = ({
   inputProps,
   className = "",
   inputValue,
+  onChange,
 }: IconInputProps) => {
   const pressEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     inputProps?.onKeyDown?.(e); // 원래 onKeyDown 먼저 실행
@@ -33,7 +35,15 @@ export const IconInput = ({
   return (
     <div className={`w-full h-full flex items-center gap-2 ${className}`}>
       <Icon {...iconVariant} />
-      <Input {...inputVariant} onKeyDown={pressEnter} {...inputProps} />
+      <Input
+        {...inputVariant}
+        onKeyDown={pressEnter}
+        onChange={e => {
+          inputProps?.onChange?.(e);
+          onChange?.(e.target.value);
+        }}
+        {...inputProps}
+      />
     </div>
   );
 };

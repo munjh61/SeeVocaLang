@@ -26,13 +26,14 @@ export const SearchbarSegment = ({
 }: SearchbarSegmentProps) => {
   return (
     <div
-      className={`flex items-center justify-between p-2 w-full bg-gray-100 shadow-md rounded-sm ${className} `}
+      className={`flex items-center justify-between p-2 mt-4 w-full bg-gray-100 shadow-md rounded-sm ${className} `}
     >
       <IconInput
-        iconVariant={{ icon: searchSVG, color: iconColor, size: "header" }}
+        iconVariant={{ icon: searchSVG, color: iconColor, size: "searchbar" }}
         inputVariant={{ scale: "xl", text: "gray" }}
         inputProps={{ placeholder: placeholder }}
         inputValue={onSearch}
+        onChange={onSearch}
       />
       {segmentControl && <SegmentControl {...segmentControl} />}
     </div>
