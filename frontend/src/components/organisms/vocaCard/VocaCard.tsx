@@ -14,6 +14,7 @@ export type VocaCardProps = {
   name: string;
   description: string;
   favorite: boolean;
+  onEditClick?: (id: number) => void;
 };
 
 export const VocaCard = ({
@@ -22,13 +23,11 @@ export const VocaCard = ({
   name,
   description,
   favorite,
+  onEditClick,
 }: VocaCardProps) => {
   const [isFavorite, setIsFavorite] = useState(favorite);
   const toggleFavorite = () => {
     setIsFavorite(prev => !prev);
-  };
-  const editModal = () => {
-    console.log(id);
   };
 
   return (
@@ -70,8 +69,10 @@ export const VocaCard = ({
           <IconButton
             IconVariant={{ icon: gear }}
             ButtonVariant={{ bgColor: "white", border: "gray" }}
-            data={id.toString()}
-            buttonValue={editModal}
+            data={id}
+            buttonValue={v => {
+              if (typeof v === "number") onEditClick?.(v);
+            }}
           >
             수정
           </IconButton>

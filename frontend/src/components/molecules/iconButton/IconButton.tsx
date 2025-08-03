@@ -12,9 +12,9 @@ type IconButtonProps = {
   IconVariant: IconProps;
   ButtonVariant?: ButtonProps;
   children?: React.ReactNode;
-  data?: string;
+  data?: number | string;
   path?: string;
-  buttonValue?: (value: string) => void;
+  buttonValue?: (value?: number | string) => void;
 };
 
 export const IconButton = ({
@@ -34,7 +34,10 @@ export const IconButton = ({
 
   const navigate = useNavigate();
   const onClick = () => {
-    if (buttonValue && data) buttonValue(data); // ajax 요청할 때 쓰면 될 듯?
+    if (buttonValue) {
+      if (data !== undefined) buttonValue(data);
+      else buttonValue();
+    }
     if (path) navigate(path); // 경로 이동
   };
   return (
