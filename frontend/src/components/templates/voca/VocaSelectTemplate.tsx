@@ -29,7 +29,7 @@ export const BookSelectTemplate = ({ vocaDatas }: VocaDataProps) => {
           }}
         />
         <BookSecondHeader />
-        <div className="flex flex-row gap-4">
+        <div className="gap-4">
           {vocaDatas.map(data => {
             return <VocaCard {...data} />;
           })}
