@@ -1,4 +1,4 @@
-package com.ssafy.a303.backend.common.utility;
+package com.ssafy.a303.backend.common.utility.s3;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
