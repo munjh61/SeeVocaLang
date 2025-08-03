@@ -6,7 +6,10 @@ import com.ssafy.a303.backend.common.exception.CommonErrorCode;
 import com.ssafy.a303.backend.folder.dto.*;
 import com.ssafy.a303.backend.folder.entity.FolderEntity;
 import com.ssafy.a303.backend.folder.exception.FolderNotFoundException;
+import com.ssafy.a303.backend.folder.mapper.FolderMapper;
 import com.ssafy.a303.backend.folder.repository.FolderRepository;
+import com.ssafy.a303.backend.user.entity.UserEntity;
+import com.ssafy.a303.backend.user.service.UserService;
 import com.ssafy.a303.backend.word.dto.ReadWordResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -19,6 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FolderService {
     private final FolderRepository folderRepository;
+    private final UserService userService;
 
     @Transactional(readOnly = true)
     public PageResponseDto<ReadFoldersResponseDto> getFolders(ReadFoldersCommandDto readFoldersCommandDto) {
@@ -41,9 +45,16 @@ public class FolderService {
                 .build();
     }
 
-//    public BaseResponseDto<Long> createFolder(CreateFolderCommandDto createFolderCommandDto) {
-//
-//    }
+    public BaseResponseDto<Long> createFolder(CreateFolderCommandDto createFolderCommandDto) {
+        UserEntity user = userService.findById(createFolderCommandDto.getUserId());
+        FolderEntity folder = FolderMapper.INSTANCE.toEntity(createFolderCommandDto, user);
+
+        long folderId = folderRepository.save(folder).getFolderId();
+        return BaseResponseDto.<Long>builder()
+                .message("성공적으로 폴더를 생성했습니다.")
+                .content(folderId)
+                .build();
+    }
 
     @Transactional
     public BaseResponseDto<Void> deleteFolder(DeleteFolderCommandDto deleteFolderCommandDto) {

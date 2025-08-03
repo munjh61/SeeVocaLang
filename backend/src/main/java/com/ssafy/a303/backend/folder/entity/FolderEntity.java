@@ -23,11 +23,11 @@ public class FolderEntity {
     private String description;
 
     @Column(nullable = false)
-    private boolean isFavorite;
+    private boolean isFavorite = false;
     @Column(nullable = false)
-    private boolean isDefault;
+    private boolean isDefault = false;
 
-    private boolean isDeleted;
+    private boolean isDeleted = false;
 
     public void delete(){
         isDeleted = true;

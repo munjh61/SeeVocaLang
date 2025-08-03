@@ -2,12 +2,15 @@ package com.ssafy.a303.backend.folder.controller;
 
 import com.ssafy.a303.backend.common.dto.BaseResponseDto;
 import com.ssafy.a303.backend.common.dto.PageResponseDto;
+import com.ssafy.a303.backend.common.security.CustomUserDetails;
 import com.ssafy.a303.backend.folder.dto.*;
 import com.ssafy.a303.backend.folder.mapper.FolderMapper;
 import com.ssafy.a303.backend.folder.service.FolderService;
 import com.ssafy.a303.backend.word.dto.ReadWordResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -41,10 +44,15 @@ public class FolderController {
         return ResponseEntity.ok(response);
     }
 
-//    @PostMapping("/api/v1/folders")
-//    public ResponseEntity<BaseResponseDto<Long>> createFolder(@RequestBody CreateFolderRequestDto createFolderRequestDto) {
-//
-//    }
+    @PostMapping("/api/v1/folders")
+    public ResponseEntity<BaseResponseDto<Long>> createFolder(@RequestBody CreateFolderRequestDto createFolderRequestDto,
+                                                              @AuthenticationPrincipal CustomUserDetails userDetails) {
+        BaseResponseDto<Long> response = folderService.createFolder(FolderMapper
+                .INSTANCE
+                .toCreateFolderCommandDto(createFolderRequestDto, 1L));
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
 
     @DeleteMapping("/api/v1/folders/{folderId}")
     public ResponseEntity<BaseResponseDto<Void>> deleteFolder(@PathVariable long folderId) {
@@ -60,7 +68,7 @@ public class FolderController {
     public ResponseEntity<BaseResponseDto<Void>> updateFolder(@PathVariable long folderId,
                                                               @RequestBody UpdateFolderRequestDto updateFolderRequestDto) {
         BaseResponseDto<Void> response = folderService.updateFolder(FolderMapper.INSTANCE
-                .toUpdateFolderCommandDto(updateFolderRequestDto, 1L));
+                .toUpdateFolderCommandDto(updateFolderRequestDto, folderId, 1L));
 
         return ResponseEntity.ok(response);
     }

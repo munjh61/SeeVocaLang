@@ -2,8 +2,10 @@ package com.ssafy.a303.backend.folder.mapper;
 
 import com.ssafy.a303.backend.folder.dto.*;
 import com.ssafy.a303.backend.folder.entity.FolderEntity;
+import com.ssafy.a303.backend.user.entity.UserEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
 @Mapper
@@ -13,11 +15,10 @@ public interface FolderMapper {
     @Mapping(target = "thumbnailUrl", ignore = true)
     ReadFoldersResponseDto toReadFolderResponseDto(FolderEntity entity);
 
-//    @Mapping(target = "userId", source = "userId")
-//    CreateFolderCommandDto toCreateFolderCommandDto(CreateFolderRequestDto createFolderRequestDto, long userId);
+    UpdateFolderCommandDto toUpdateFolderCommandDto(UpdateFolderRequestDto updateFolderRequestDto, long folderId, long userId);
 
-    @Mapping(target = "userId", source = "userId")
-    UpdateFolderCommandDto toUpdateFolderCommandDto(UpdateFolderRequestDto  updateFolderRequestDto, long userId);
+    @Mapping(target = "folderId", ignore = true)
+    FolderEntity toEntity(CreateFolderCommandDto createFolderCommandDto, UserEntity user);
 
-    FolderEntity toEntity(CreateFolderCommandDto createFolderCommandDto);
+    CreateFolderCommandDto toCreateFolderCommandDto(CreateFolderRequestDto dto, long userId);
 }
