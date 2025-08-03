@@ -35,7 +35,7 @@ public class JwtFilter extends OncePerRequestFilter {
             String token = auth.substring(7);
 
             if (jwt.validate(token)) {
-                String userId = jwt.getUserId(token);
+                Long userId = jwt.getUserId(token);
                 UserEntity user = userRepo.findById(Long.valueOf(userId))
                         .orElseThrow(() -> new UserNotFoundException(CommonErrorCode.RESOURCE_NOT_FOUND));
 

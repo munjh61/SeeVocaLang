@@ -18,8 +18,10 @@ public class CustomUserDetails implements UserDetails, OAuth2User {
     private final String password;
     private final String nickname;
     private final String profileImage;
+    private final Long userId;
 
-    public CustomUserDetails(String loginId, String password, String nickname, String profileImage) {
+    public CustomUserDetails(Long userId, String loginId, String password, String nickname, String profileImage) {
+        this.userId = userId;
         this.loginId = loginId;
         this.password = password;
         this.nickname = nickname;
@@ -28,6 +30,7 @@ public class CustomUserDetails implements UserDetails, OAuth2User {
 
     public static CustomUserDetails from(UserEntity user) {
         return new CustomUserDetails(
+                user.getUserId(),
                 user.getLoginId(),
                 user.getPassword(),
                 user.getNickname(),
