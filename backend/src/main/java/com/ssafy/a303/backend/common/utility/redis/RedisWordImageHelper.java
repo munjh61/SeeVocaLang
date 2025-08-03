@@ -4,6 +4,7 @@ import com.ssafy.a303.backend.common.utility.redis.exception.RedisErrorCode;
 import com.ssafy.a303.backend.common.utility.redis.exception.RedisObjectNotFoundRuntimeException;
 import com.ssafy.a303.backend.common.utility.redis.exception.RedisObjectNotReadableRuntimeException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,12 +16,12 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class RedisWordImageHelper {
 
-    private final RedisImageHelper redisImageHelper;
+    private final RedisTemplate<String, RedisWordImage> redisTemplate;
 
     private static final Duration TEMP_IMAGE_TTL = Duration.ofHours(1);
 
     public RedisWordImage getImage(String key) {
-        RedisWordImage image = redisImageHelper.get(key);
+        RedisWordImage image = redisTemplate.opsForValue().get(key);
         if (Objects.isNull(image)) {
             throw new RedisObjectNotFoundRuntimeException(RedisErrorCode.OBJECT_NOT_FOUND);
         }
@@ -32,14 +33,15 @@ public class RedisWordImageHelper {
         String key = buildTempKey(userId, objectName);
 
         try {
-            RedisWordImage img = RedisWordImage.builder()
+            RedisWordImage image = RedisWordImage.builder()
                     .key(key)
                     .contentType(file.getContentType())
                     .contentLength(file.getSize())
                     .content(file.getBytes())
                     .nameEn(objectName)
                     .build();
-            redisImageHelper.set(key, img, TEMP_IMAGE_TTL);
+
+            redisTemplate.opsForValue().set(key, image, TEMP_IMAGE_TTL);
             return key;
         } catch (IOException e) {
             throw new RedisObjectNotReadableRuntimeException(RedisErrorCode.OBJECT_NOT_READABLE);
@@ -48,7 +50,7 @@ public class RedisWordImageHelper {
 
     public void deleteImage(Long userId, String word) {
         String key = buildTempKey(userId, word);
-        redisImageHelper.delete(key);
+        redisTemplate.delete(key);
     }
 
     private String buildTempKey(Long userId, String objectName) {
