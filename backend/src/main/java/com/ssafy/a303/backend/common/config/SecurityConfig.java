@@ -1,6 +1,6 @@
 package com.ssafy.a303.backend.common.config;
 
-import com.ssafy.a303.backend.common.security.JwtFilter;
+import com.ssafy.a303.backend.common.security.jwt.JwtFilter;
 import com.ssafy.a303.backend.common.security.OAuth2FailureHandler;
 import com.ssafy.a303.backend.common.security.OAuth2SuccessHandler;
 import com.ssafy.a303.backend.sociallogin.service.CustomOAuth2UserService;

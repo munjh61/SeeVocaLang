@@ -1,8 +1,9 @@
 package com.ssafy.a303.backend.common.security;
 
-import com.ssafy.a303.backend.common.redis.RefreshTokenStore;
+import com.ssafy.a303.backend.common.utility.redis.RefreshTokenStore;
+import com.ssafy.a303.backend.common.security.jwt.JwtProperties;
+import com.ssafy.a303.backend.common.security.jwt.JwtUtil;
 import com.ssafy.a303.backend.common.utility.CookieUtil;
-import com.ssafy.a303.backend.user.repository.UserRepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,12 +26,11 @@ import java.util.UUID;
 public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
     private final JwtUtil jwtUtil;
     private final RefreshTokenStore refreshTokenStore;
-    private final UserRepository userRepository;
+    private final JwtProperties jwtProperties;
+    private final CookieUtil cookieUtil;
 
     private static final String DEFAULT_REDIRECT_URI = "http://localhost:8080";
     private static final String REDIRECT_URI_COOKIE_NAME = "redirect_uri";
-    private static final int REFRESH_EXP_SEC = 60 * 60 * 24 * 14;
-    private final CookieUtil cookieUtil;
 
     // 인증 성공 했엉 그러면 이제
     @Override
@@ -46,8 +46,9 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         String refreshToken = jwtUtil.createRefreshToken(userId, jti);
 
         // refreshToken 저장
-        refreshTokenStore.save(userId, jti, refreshToken, REFRESH_EXP_SEC); // redis에 저장
-        cookieUtil.attachRefreshToken(response, refreshToken);
+        Duration ttl = jwtProperties.getRefreshDays();
+        refreshTokenStore.save(userId, jti, refreshToken, ttl); // redis에 저장
+        response.addHeader("Set-Cookie", cookieUtil.createRefreshTokenCookie(refreshToken).toString()); // 쿠키에 담아주기
 
         // accessToken 헤더 전달
         response.setHeader("Authorization", "Bearer " + accessToken);

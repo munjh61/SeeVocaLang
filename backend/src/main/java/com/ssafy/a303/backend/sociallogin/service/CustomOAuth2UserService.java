@@ -27,6 +27,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private final SocialLoginRepository socialLoginRepository;
     private final UserRepository userRepository;
+    private final SocialLoginService socialLoginService;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -60,23 +61,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             log.info("기존 유저 로그인 성공: userId={}, nickname={}", user.getUserId(), user.getNickname());
         } else {
             log.info("신규 유저 소셜 로그인 감지: 자동 회원가입 진행");
-            user = registerNewUser(userInfo, provider, providerUid);
+            user = socialLoginService.registerNewSocialUser(userInfo, provider, providerUid);
         }
 
         return CustomUserDetails.from(user);
-    }
-
-    private UserEntity registerNewUser(OAuth2UserInfo userInfo, Provider provider, String socialUid) {
-        String baseNickname = userInfo.getNickname();
-        String uniqueNickname = generateUniqueNickname(baseNickname);
-
-        UserEntity user = new UserEntity(null, null, uniqueNickname, true);
-        userRepository.save(user);
-
-        socialLoginRepository.save(new SocialLoginEntity(user, provider, socialUid));
-        log.info("신규 유저 가입 완료: userId={}, nickname={}, provider={}", user.getUserId(), user.getNickname(), provider);
-
-        return user;
     }
 
     private String generateUniqueNickname(String baseNickname) {
