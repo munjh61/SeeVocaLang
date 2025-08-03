@@ -30,7 +30,7 @@ public class UserEntity {
     private boolean socialUser;
     private String profileImage;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "is_deleted")
     private boolean isDeleted = false;
 
     private LocalDate birthday;
