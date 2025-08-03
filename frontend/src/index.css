@@ -1,6 +1,11 @@
-@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
 @import "tailwindcss";
 
 @theme {
-    --default-font-family: 'Pretendard', 'sans-serif';
+  --default-font-family: "Pretendard", "sans-serif";
+}
+html,
+body,
+#root {
+  height: 100%;
 }

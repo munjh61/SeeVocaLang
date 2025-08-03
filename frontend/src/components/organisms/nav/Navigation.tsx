@@ -22,7 +22,7 @@ export const Navigation = ({ loc }: NavProps) => {
   const [select, setSelect] = useState(loc);
 
   return (
-    <div className="sticky inset-x-0 bottom-0 flex justify-around bg-white">
+    <div className="flex justify-around bg-white">
       {navItems.map(({ icon, label, value, path }) => (
         <Nav
           key={value}

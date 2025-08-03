@@ -4,7 +4,9 @@ import { MainDashboardTemplate } from "../components/templates/MainDashboardTemp
 function MainPage() {
   return (
     <div className="flex flex-col h-screen">
-      <MainDashboardTemplate />
+      <div className="flex-grow overflow-y-auto">
+        <MainDashboardTemplate />
+      </div>
       <Navigation loc="home" />
     </div>
   );

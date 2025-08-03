@@ -5,8 +5,10 @@ import { VocaDetailTemplate } from "../components/templates/voca/VocaDetailTempl
 function VocaDetailPage() {
   const { bookId } = useParams<{ bookId: string }>();
   return (
-    <div className="flex flex-col align-center mt-4 h-screen">
-      <VocaDetailTemplate workId={Number(bookId)} />
+    <div className="flex flex-col h-screen">
+      <div className="flex-grow overflow-y-auto">
+        <VocaDetailTemplate workId={Number(bookId)} />
+      </div>
       <Navigation loc="book" />
     </div>
   );

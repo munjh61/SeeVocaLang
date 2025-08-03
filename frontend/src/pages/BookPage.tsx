@@ -4,8 +4,10 @@ import { BookSelectTemplate } from "../components/templates/voca/VocaBookSelectT
 
 function BookPage() {
   return (
-    <div className="flex flex-col align-center mt-4 h-screen">
-      <BookSelectTemplate vocaDatas={VocaSampleDatas} />
+    <div className="flex flex-col h-screen">
+      <div className="flex-grow overflow-y-auto">
+        <BookSelectTemplate vocaDatas={VocaSampleDatas} />
+      </div>
       <Navigation loc="book" />
     </div>
   );
