@@ -30,7 +30,11 @@ public class UserEntity {
     private boolean socialUser;
     private String profileImage;
 
+    @Column(nullable = false, name = "is_deleted")
+    private boolean isDeleted = false;
+
     private LocalDate birthday;
+
     @Column(nullable = false)
     private int totalDays;
     @Column(nullable = false)
@@ -44,5 +48,9 @@ public class UserEntity {
         this.socialUser = socialUser;
         this.totalDays = 0;
         this.streakDays = 0;
+    }
+
+    public void softDelete() {
+        this.isDeleted = true;
     }
 }

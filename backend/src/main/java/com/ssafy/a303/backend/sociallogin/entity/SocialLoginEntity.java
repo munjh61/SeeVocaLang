@@ -26,4 +26,10 @@ public class SocialLoginEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity user;
+
+    public SocialLoginEntity(UserEntity user, Provider provider, String socialUid) {
+        this.user = user;
+        this.provider = provider;
+        this.socialUid = socialUid;
+    }
 }

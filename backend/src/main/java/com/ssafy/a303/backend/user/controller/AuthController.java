@@ -15,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequiredArgsConstructor
 public class AuthController {
@@ -67,7 +69,6 @@ public class AuthController {
             @RequestHeader(value = "X-Refresh-Token", required = false) String refreshTokenFromHeader,
             @RequestParam(value = "refreshToken", required = false) String refreshTokenFromParam
     ) {
-        // 1) HttpOnly 쿠키 (권장), 2) X-Refresh-Token 헤더, 3) query/body 파라미터 순으로 시도
         String refreshToken = resolveRefreshToken(request, refreshTokenFromHeader, refreshTokenFromParam);
 
         if (!StringUtils.hasText(refreshToken)) {
@@ -85,6 +86,24 @@ public class AuthController {
                         .message("로그아웃 되었습니다.")
                         .build()
         );
+    }
+
+    @PostMapping("/api/v1/auth/refresh")
+    public ResponseEntity<BaseResponseDto<Map<String, String>>> refreshToken(
+            @RequestHeader(value = "X-Refresh-Token", required = false) String refreshTokenFromHeader,
+            @RequestParam(value = "refreshToken", required = false) String refreshTokenFromParam,
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) {
+        String refreshToken = resolveRefreshToken(request, refreshTokenFromHeader, refreshTokenFromParam);
+
+        Map<String, String> result = authService.reissue(refreshToken, response);
+
+        return ResponseEntity.ok(BaseResponseDto.<Map<String, String>>builder()
+                .message("액세스 토큰이 재발급되었습니다")
+                .content(result)
+                .build());
+
     }
 
     private String resolveRefreshToken(HttpServletRequest request, String headerToken, String paramToken) {

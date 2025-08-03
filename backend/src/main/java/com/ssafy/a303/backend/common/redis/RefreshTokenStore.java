@@ -13,22 +13,22 @@ public class RefreshTokenStore {
     private final StringRedisTemplate redis;
 
     // refreshToken 저장 (TTL 적용)
-    public void save(String userId, String jti, String refreshToken, long ttlSeconds) {
+    public void save(Long userId, String jti, String refreshToken, long ttlSeconds) {
         redis.opsForValue().set("rt:" + userId + ":" + jti, refreshToken, ttlSeconds, TimeUnit.SECONDS);
     }
 
     // refreshToken 존재 여부 체크
-    public boolean exists(String userId, String jti) {
+    public boolean exists(Long userId, String jti) {
         return Boolean.TRUE.equals(redis.hasKey("rt:" + userId + ":" + jti));
     }
 
     // 특정 RefreshToken 삭제
-    public void delete(String userId, String jti) {
+    public void delete(Long userId, String jti) {
         redis.delete("rt:" + userId + ":" + jti);
     }
 
     // 해당 유저의 모든 RefreshToken 삭제
-    public void deleteAll(String userId) {
+    public void deleteAll(Long userId) {
         Set<String> keys = redis.keys("rt:" + userId + ":*");
         if (keys != null && !keys.isEmpty()) {
             redis.delete(keys);
