@@ -41,7 +41,7 @@ export const IconButton = ({
     if (path) navigate(path); // 경로 이동
   };
   return (
-    <div className={className}>
+    <div className={`overflow-hidden ${className}`}>
       <Button
         bgColor={bg}
         textColor={color}

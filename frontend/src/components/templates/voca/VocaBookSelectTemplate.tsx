@@ -8,6 +8,8 @@ import {
 import { Modal } from "../../atoms/modal/modal";
 import { VocaForm } from "../../organisms/vocaBookForm/vocaBookForm";
 import hangul from "hangul-js";
+import { IconButton } from "../../molecules/iconButton/IconButton";
+import { useNavigate } from "react-router-dom";
 
 export type VocaBookDataProps = {
   vocaBookDatas?: VocaBookProps[];
@@ -23,6 +25,7 @@ export const BookSelectTemplate = ({
   const [isToggle, setIsToggle] = useState(true);
   const [isFavoriteOnly, setIsFavoriteOnly] = useState(false);
   const [searchKey, setSearchKey] = useState("");
+  const navigate = useNavigate();
 
   // 여기서 전체 단어장 상태 관리
   const [vocaList, setVocaList] = useState<VocaBookProps[]>(vocaBookDatas);
@@ -124,17 +127,32 @@ export const BookSelectTemplate = ({
       )}
 
       <div className="flex flex-col px-5 w-full gap-4">
-        <SearchbarSegment
-          iconColor="blue"
-          onSearch={searchFunction}
-          className="w-full h-20"
-          segmentControl={{
-            options: [
-              { value: "book", label: "단어장으로 검색하기" },
-              { value: "word", label: "단어로 검색하기" },
-            ],
-          }}
-        />
+        <div className="flex flex-row">
+          <div className="flex py-4 pl-4 bg-gray-100 rounded-r-sm">
+            <IconButton
+              ButtonVariant={{
+                bgColor: "purple",
+                textColor: "white",
+                size: "xxxl",
+              }}
+              buttonValue={() => navigate(-1)}
+              className="w-30"
+            >
+              뒤로 가기
+            </IconButton>
+          </div>
+          <SearchbarSegment
+            iconColor="blue"
+            onSearch={searchFunction}
+            className="w-full h-20"
+            segmentControl={{
+              options: [
+                { value: "book", label: "단어장으로 검색하기" },
+                { value: "word", label: "단어로 검색하기" },
+              ],
+            }}
+          />
+        </div>
 
         <VocaBookSecondHeader
           isToggle={isToggle}

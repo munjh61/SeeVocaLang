@@ -31,15 +31,25 @@ export const VocaCard = ({
 }: VocaCardProps) => {
   return (
     <div className="rounded-md shadow-md w-80 p-3 inline-flex flex-col gap-2 bg-white select-none">
+      <Text
+        size={"xxxl"}
+        font={"outline"}
+        className="text-green-700 border border-green-400"
+        onlyOneLine={"yes"}
+        align={"center"}
+      >
+        {blurEn ? "□".repeat(nameEn.length) : nameEn}
+      </Text>
       <div className="relative border-b border-gray-200">
-        <div className="absolute top-0 left-0">
+        <div className="absolute top-1 left-1">
           <IconButton
-            IconVariant={{ icon: trash, color: "red" }}
+            IconVariant={{ icon: trash, color: "white" }}
             buttonValue={onDelete}
-            ButtonVariant={{ border: "red" }}
+            ButtonVariant={{ bgColor: "red" }}
+            className="rounded-full h-9"
           ></IconButton>
         </div>
-        <div className="absolute top-0 right-0">
+        <div className="absolute top-1 right-1">
           {books && (
             <>
               {books[0] && (
@@ -69,12 +79,15 @@ export const VocaCard = ({
         </div>
         <ImageBox src={imgUrl ? imgUrl : noImage} className="h-60" />
       </div>
-      <div className="flex flex-col text-center">
-        <Text color="green" size={"lg"} className="font-semibold">
-          {blurEn ? "*".repeat(nameEn.length) : nameEn}
-        </Text>
-        <Text color="gray">{blurKo ? "*".repeat(nameKo.length) : nameKo}</Text>
-      </div>
+      <Text
+        size={"xxxl"}
+        font={"outline"}
+        color="gray"
+        onlyOneLine={"yes"}
+        align={"center"}
+      >
+        {blurKo ? "□".repeat(nameKo.length) : nameKo}
+      </Text>
       <div className="flex flex-row flex-wrap justify-center">
         <IconButton
           IconVariant={{ icon: speaker, color: "white" }}
@@ -83,6 +96,7 @@ export const VocaCard = ({
             bgColor: "green",
             className: "font-medium",
           }}
+          className="w-full"
         >
           발음 듣기
         </IconButton>
