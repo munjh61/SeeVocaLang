@@ -2,6 +2,7 @@ package com.ssafy.a303.backend.folder.entity;
 
 import com.ssafy.a303.backend.user.entity.UserEntity;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -36,5 +37,12 @@ public class FolderEntity {
     public void update(String description, String name){
         this.description =  description;
         this.name =  name;
+    }
+
+    @Builder
+    public FolderEntity(String name, UserEntity user, String description) {
+        this.name = name;
+        this.user = user;
+        this.description = description;
     }
 }
