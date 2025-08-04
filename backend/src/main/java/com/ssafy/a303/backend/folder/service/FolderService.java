@@ -110,4 +110,8 @@ public class FolderService {
                 .message("성공적으로 단어들을 단어장에서 삭제했습니다.")
                 .build();
     }
+
+    public boolean existsByFolderIdAndUserId(long folderId, Long userId) {
+        return folderRepository.existsByFolderIdAndUserUserId(folderId, userId);
+    }
 }

@@ -49,7 +49,7 @@ public class FolderController {
                                                               @AuthenticationPrincipal CustomUserDetails userDetails) {
         BaseResponseDto<Long> response = folderService.createFolder(FolderMapper
                 .INSTANCE
-                .toCreateFolderCommandDto(createFolderRequestDto, 1L));
+                .toCreateFolderCommandDto(createFolderRequestDto, userDetails.getUserId()));
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

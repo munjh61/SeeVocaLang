@@ -9,4 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface FolderRepository extends JpaRepository<FolderEntity, Long>, FolderQueryRepository {
 
     Page<FolderEntity> findByUserUserIdOrderByFolderIdDesc(long userId, Pageable pageable);
+
+    boolean existsByFolderIdAndUserUserId(long folderId, Long userUserId);
 }
