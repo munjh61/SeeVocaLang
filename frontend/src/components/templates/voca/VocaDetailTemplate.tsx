@@ -59,7 +59,7 @@ export const VocaDetailTemplate = ({
           </ToggleButton>
         </div>
       </div>
-      <div className="flex gap-4 flex-wrap justify-center bg-[#F3F4FF] py-10 px-5">
+      <div className="flex gap-4 flex-wrap justify-center bg-[#F3F4FF] py-10 px-5 h-full">
         {filteredList.map(card => (
           <VocaCard
             key={card.wordId}
