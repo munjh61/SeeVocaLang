@@ -9,6 +9,7 @@ import com.ssafy.a303.backend.folder.exception.FolderNotFoundException;
 import com.ssafy.a303.backend.folder.mapper.FolderMapper;
 import com.ssafy.a303.backend.folder.repository.FolderRepository;
 import com.ssafy.a303.backend.user.entity.UserEntity;
+import com.ssafy.a303.backend.user.exception.UserNotFoundException;
 import com.ssafy.a303.backend.user.service.UserService;
 import com.ssafy.a303.backend.word.dto.ReadWordResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -46,7 +47,8 @@ public class FolderService {
     }
 
     public BaseResponseDto<Long> createFolder(CreateFolderCommandDto createFolderCommandDto) {
-        UserEntity user = userService.findById(createFolderCommandDto.getUserId());
+        UserEntity user = userService.getUser(createFolderCommandDto.getUserId())
+                .orElseThrow(() -> new UserNotFoundException(CommonErrorCode.RESOURCE_NOT_FOUND));
         FolderEntity folder = FolderMapper.INSTANCE.toEntity(createFolderCommandDto, user);
 
         long folderId = folderRepository.save(folder).getFolderId();
