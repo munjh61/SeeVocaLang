@@ -63,8 +63,6 @@ public class SecurityConfig {
         http.cors(cors -> cors.configurationSource(corsConfigurationSource));
 
         http.authorizeHttpRequests(auth -> {
-            auth.requestMatchers("/login/oauth2/code/**").permitAll();
-            auth.requestMatchers("/oauth2/**").permitAll();
             auth.anyRequest().permitAll();
         });
 

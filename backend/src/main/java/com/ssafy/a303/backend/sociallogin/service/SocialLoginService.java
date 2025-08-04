@@ -39,7 +39,7 @@ public class SocialLoginService {
         String uniqueNickname = generateUniqueNickname(baseNickname);
 
         // 2. 신규 UserEntity 생성
-        UserEntity user = new UserEntity(null, null, uniqueNickname, true);
+        UserEntity user = new UserEntity(null, null, uniqueNickname, true, null);
         userRepository.save(user);
 
         // 3. 소셜 로그인 정보 등록
