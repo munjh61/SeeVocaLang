@@ -8,6 +8,7 @@ export const textVariants = cva("", {
       base: "text-base",
       lg: "text-lg",
       xl: "text-xl",
+      xxxl: "font-semibold text-3xl",
     },
     weight: {
       light: "font-light",
@@ -38,6 +39,10 @@ export const textVariants = cva("", {
     onlyOneLine: {
       yes: "w-full whitespace-nowrap overflow-hidden text-ellipsis",
       no: "",
+    },
+    font: {
+      default: "", // Tailwind 기본 폰트
+      outline: "font-sds-outline", // 우리가 직접 설정한 클래스
     },
   },
   defaultVariants: {

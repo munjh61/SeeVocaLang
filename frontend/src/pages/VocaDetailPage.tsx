@@ -5,6 +5,7 @@ import VocaCardSample from "../components/templates/voca/VocaCardSample";
 
 function VocaDetailPage() {
   const { bookId } = useParams<{ bookId: string }>();
+
   return (
     <div className="flex flex-col h-screen">
       <div className="flex-grow overflow-y-auto">

@@ -35,6 +35,7 @@ export const buttonVariants = cva(
         xs: "px-2 py-0.5 text-xs font-light",
         sm: "px-2 py-1 text-xs font-normal",
         md: "px-4 py-1 text-xs font-medium",
+        xxxl: "px-10 py-1 text-xxl font-bold",
         xl5: "px-25 py-1 text-xs",
         word: "px-30 py-30 text-xl",
         onboard: "w-80 h-12 text-lg",

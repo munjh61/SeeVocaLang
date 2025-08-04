@@ -32,7 +32,7 @@ export const ImageBox = ({
         <img
           src={src}
           alt={alt}
-          className="w-full h-full object-contain"
+          className="w-full h-full object-cover rounded-md"
           onClick={data ? () => imageValue?.(data) : undefined}
         />
       )}
