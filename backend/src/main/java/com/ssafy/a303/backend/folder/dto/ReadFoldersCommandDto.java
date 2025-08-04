@@ -11,6 +11,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ReadFoldersCommandDto {
     private int size;
-    private long lastId;
     private long userId;
 }

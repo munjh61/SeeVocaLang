@@ -19,11 +19,9 @@ public class FolderController {
     private final FolderService folderService;
 
     @GetMapping("/api/v1/folders/{userId}")
-    public ResponseEntity<PageResponseDto<ReadFoldersResponseDto>> getFolders(@PathVariable long userId,
-                                                                              @RequestParam(defaultValue = "-1") long lastId) {
+    public ResponseEntity<PageResponseDto<ReadFoldersResponseDto>> getFolders(@PathVariable long userId) {
         PageResponseDto<ReadFoldersResponseDto> response = folderService.getFolders(ReadFoldersCommandDto
                 .builder()
-                .lastId(lastId)
                 .size(10)
                 .userId(userId)
                 .build());
@@ -32,11 +30,9 @@ public class FolderController {
     }
 
     @GetMapping("/api/v1/folders/{folderId}/words")
-    public ResponseEntity<PageResponseDto<ReadWordResponseDto>> getFolderWords(@PathVariable long folderId,
-                                                                               @RequestParam(defaultValue = "-1") long lastId) {
+    public ResponseEntity<PageResponseDto<ReadWordResponseDto>> getFolderWords(@PathVariable long folderId) {
         PageResponseDto<ReadWordResponseDto> response = folderService.getWordsByFolderId(ReadFolderWordCommandDto
                 .builder()
-                .lastId(lastId)
                 .size(10)
                 .folderId(folderId)
                 .build());
