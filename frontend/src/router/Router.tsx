@@ -10,6 +10,7 @@ import FriendPage from "../pages/FriendPage.tsx";
 import MyPage from "../pages/MyPage.tsx";
 import { SignupFlow } from "../components/organisms/signUp/SignupFlow.tsx";
 import VocaDetailPage from "../pages/VocaDetailPage.tsx";
+import { LoginPage } from "../pages/LoginPage.tsx";
 
 export const Router = () => {
   return (
@@ -25,6 +26,7 @@ export const Router = () => {
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/friend" element={<FriendPage />} />
         <Route path="/signup" element={<SignupFlow />} />
+        <Route path="/login" element={<LoginPage />} />
       </Routes>
     </BrowserRouter>
   );

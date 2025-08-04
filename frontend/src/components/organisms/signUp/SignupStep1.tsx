@@ -3,6 +3,7 @@ import { SelectBox } from "../../atoms/Select.tsx";
 import { Button } from "../../atoms/button/Button.tsx";
 import { useState } from "react";
 import { Text } from "../../atoms/text/Text.tsx";
+import { Logo } from "../../atoms/Logo.tsx";
 
 type SignupStep1Props = {
   name: string;
@@ -45,14 +46,17 @@ export const SignupStep1 = ({
 
   return (
     <div className="flex flex-col gap-4">
-      <Text
-        size={"xl"}
-        color={"black"}
-        weight={"extrabold"}
-        className={"text-center mb-10"}
-      >
-        이름 / 생년월일
-      </Text>
+      <div className={"flex flex-col items-center justify-center gap-6 mb-5"}>
+        <Logo />
+        <Text
+          size={"xl"}
+          color={"black"}
+          weight={"extrabold"}
+          className={"text-center"}
+        >
+          이름 / 생년월일
+        </Text>
+      </div>
       <div className="flex flex-col gap-1">
         <Input
           scale={"onboard"}
