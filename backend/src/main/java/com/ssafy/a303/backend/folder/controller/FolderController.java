@@ -1,0 +1,87 @@
+package com.ssafy.a303.backend.folder.controller;
+
+import com.ssafy.a303.backend.common.dto.BaseResponseDto;
+import com.ssafy.a303.backend.common.dto.PageResponseDto;
+import com.ssafy.a303.backend.common.security.CustomUserDetails;
+import com.ssafy.a303.backend.folder.dto.*;
+import com.ssafy.a303.backend.folder.mapper.FolderMapper;
+import com.ssafy.a303.backend.folder.service.FolderService;
+import com.ssafy.a303.backend.word.dto.ReadWordResponseDto;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequiredArgsConstructor
+public class FolderController {
+    private final FolderService folderService;
+
+    @GetMapping("/api/v1/folders/{userId}")
+    public ResponseEntity<PageResponseDto<ReadFoldersResponseDto>> getFolders(@PathVariable long userId,
+                                                                              @RequestParam(defaultValue = "-1") long lastId) {
+        PageResponseDto<ReadFoldersResponseDto> response = folderService.getFolders(ReadFoldersCommandDto
+                .builder()
+                .lastId(lastId)
+                .size(10)
+                .userId(userId)
+                .build());
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/api/v1/folders/{folderId}/words")
+    public ResponseEntity<PageResponseDto<ReadWordResponseDto>> getFolderWords(@PathVariable long folderId,
+                                                                               @RequestParam(defaultValue = "-1") long lastId) {
+        PageResponseDto<ReadWordResponseDto> response = folderService.getWordsByFolderId(ReadFolderWordCommandDto
+                .builder()
+                .lastId(lastId)
+                .size(10)
+                .folderId(folderId)
+                .build());
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/api/v1/folders")
+    public ResponseEntity<BaseResponseDto<Long>> createFolder(@RequestBody CreateFolderRequestDto createFolderRequestDto,
+                                                              @AuthenticationPrincipal CustomUserDetails userDetails) {
+        BaseResponseDto<Long> response = folderService.createFolder(FolderMapper
+                .INSTANCE
+                .toCreateFolderCommandDto(createFolderRequestDto, 1L));
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @DeleteMapping("/api/v1/folders/{folderId}")
+    public ResponseEntity<BaseResponseDto<Void>> deleteFolder(@PathVariable long folderId) {
+        BaseResponseDto<Void> response = folderService.deleteFolder(DeleteFolderCommandDto.builder()
+                .folderId(folderId)
+                .userId(1L)
+                .build());
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/api/v1/folders/{folderId}")
+    public ResponseEntity<BaseResponseDto<Void>> updateFolder(@PathVariable long folderId,
+                                                              @RequestBody UpdateFolderRequestDto updateFolderRequestDto) {
+        BaseResponseDto<Void> response = folderService.updateFolder(FolderMapper.INSTANCE
+                .toUpdateFolderCommandDto(updateFolderRequestDto, folderId, 1L));
+
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/api/v1/folders/{folderId}/words")
+    public ResponseEntity<BaseResponseDto<Void>> deleteFolderWords(@PathVariable long folderId,
+                                                                   @RequestBody DeleteFolderWordsRequestDto deleteFolderWordsRequestDto) {
+        BaseResponseDto<Void> response = folderService.deleteFolderWords(DeleteFolderWordsCommandDto
+                .builder()
+                .folderId(folderId)
+                .wordIds(deleteFolderWordsRequestDto.getWordIds())
+                .build());
+
+        return ResponseEntity.ok(response);
+    }
+}
