@@ -12,6 +12,7 @@ public enum UserErrorCode implements ErrorCode {
     // 사용자 등록 관련
     USER_ID_ALREADY_EXISTS(409, "이미 사용 중인 아이디입니다."),
     USER_NICKNAME_ALREADY_EXISTS(409, "이미 사용 중인 닉네임입니다."),
+    NICKNAME_GENERATION_FAILED(409, "닉네임 중복이 너무 많습니다. 다른 닉네임을 사용해주세요."),
     
     // 사용자 정보 관련
     INVALID_PASSWORD_FORMAT(400, "비밀번호는 8자 이상, 영문/숫자/특수문자 조합이어야 합니다."),

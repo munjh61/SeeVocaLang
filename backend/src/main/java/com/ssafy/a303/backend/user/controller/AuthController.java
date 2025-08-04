@@ -14,6 +14,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.HashMap;
+import java.util.Arrays;
 
 @RestController
 @RequiredArgsConstructor
@@ -90,6 +92,39 @@ public class AuthController {
 
         return ResponseEntity.ok(result);
 
+    }
+
+    @GetMapping("/oauth2/test")
+    public ResponseEntity<String> oauth2Test() {
+        return ResponseEntity.ok("OAuth2 테스트 엔드포인트가 정상적으로 작동합니다.");
+    }
+
+    @GetMapping("/oauth2/login")
+    public ResponseEntity<String> oauth2LoginInfo() {
+        return ResponseEntity.ok("""
+            OAuth2 로그인 정보:
+            - 카카오: /oauth2/authorization/kakao
+            - 네이버: /oauth2/authorization/naver  
+            - 구글: /oauth2/authorization/google
+            """);
+    }
+
+    @GetMapping("/oauth2/debug")
+    public ResponseEntity<Map<String, Object>> oauth2Debug() {
+        Map<String, Object> debugInfo = new HashMap<>();
+        debugInfo.put("message", "OAuth2 디버그 정보");
+        debugInfo.put("timestamp", System.currentTimeMillis());
+        debugInfo.put("endpoints", Arrays.asList(
+            "/oauth2/authorization/kakao",
+            "/oauth2/authorization/naver", 
+            "/oauth2/authorization/google"
+        ));
+        return ResponseEntity.ok(debugInfo);
+    }
+
+    @GetMapping("/oauth2/success")
+    public ResponseEntity<String> oauth2Success() {
+        return ResponseEntity.ok("OAuth2 로그인 성공!");
     }
 
     // 쿠키에서 refreshToken 추출

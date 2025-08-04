@@ -1,6 +1,6 @@
 package com.ssafy.a303.backend.common.security.jwt;
 
-import com.ssafy.a303.backend.user.exception.AuthErrorCode;
+import com.ssafy.a303.backend.common.exception.AuthErrorCode;
 import com.ssafy.a303.backend.user.exception.AuthException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;

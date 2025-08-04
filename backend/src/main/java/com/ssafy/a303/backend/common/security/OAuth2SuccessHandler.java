@@ -35,9 +35,16 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
     // 인증 성공 했엉 그러면 이제
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        Long userId = userDetails.getUserId();
+        Object principal = authentication.getPrincipal();
 
+        if (!(principal instanceof CustomUserDetails userDetails)) {
+            log.error("OAuth2 로그인 실패: 예상한 CustomUserDetails가 아님. 실제 타입={}", principal.getClass().getName());
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unsupported authentication principal");
+            return;
+        }
+
+        Long userId = userDetails.getUserId();
+        log.info("✅ 소셜 로그인 성공! userId = {}", userId);
         // accesstoken 발급해주고
         String accessToken = jwtUtil.createAccessToken(userId);
 

@@ -7,12 +7,15 @@ import com.ssafy.a303.backend.sociallogin.exception.SocialLoginException;
 import com.ssafy.a303.backend.sociallogin.oauth.OAuth2UserInfo;
 import com.ssafy.a303.backend.sociallogin.repository.SocialLoginRepository;
 import com.ssafy.a303.backend.user.entity.UserEntity;
+import com.ssafy.a303.backend.user.exception.UserErrorCode;
+import com.ssafy.a303.backend.user.exception.UserNicknameAlreadyExistsException;
 import com.ssafy.a303.backend.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -47,17 +50,10 @@ public class SocialLoginService {
     }
 
     private String generateUniqueNickname(String baseNickname) {
-        String candidate = baseNickname;
-        int attempt = 0;
-
-        while (userRepository.existsByNickname(candidate)) {
-            attempt++;
-            candidate = baseNickname + "_" + (int)(Math.random() * 10000);
-            if (attempt > 10) break;
-        }
-
-        return candidate;
+        String uniqueSuffix = UUID.randomUUID().toString().substring(0, 8); // 고유성 확보 + 길이 제한
+        return baseNickname + "_" + uniqueSuffix;
     }
+
 
     public void registerSocialLogin(UserEntity user, Provider provider, String socialUid) {
         if (socialLoginRepository.existsByProviderAndSocialUid(provider, socialUid)) {

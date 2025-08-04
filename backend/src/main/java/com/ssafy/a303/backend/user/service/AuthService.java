@@ -132,7 +132,7 @@ public class AuthService {
         // 토큰 유효성 검사
         if (!jwtUtil.validate(refreshToken)) {
             log.warn("로그아웃 실패 - 유효하지 않은 토큰");
-            throw new AuthException(AuthErrorCode.REFRESH_TOKEN_INVALID);
+            throw new AuthException(AuthErrorCode.TOKEN_INVALID);
         }
 
         // 토큰 정보 추출
@@ -170,7 +170,7 @@ public class AuthService {
 
         if (!jwtUtil.validate(refreshToken)) {
             log.warn("토큰 재발급 실패 - 유효하지 않은 토큰");
-            throw new AuthException(AuthErrorCode.REFRESH_TOKEN_INVALID);
+            throw new AuthException(AuthErrorCode.TOKEN_INVALID);
         }
 
         Long userId = jwtUtil.getUserId(refreshToken);
@@ -186,8 +186,8 @@ public class AuthService {
         String newRefreshToken = jwtUtil.createRefreshToken(userId, newJti);
 
         Duration ttl = jwtProperties.getRefreshDays();
-        refreshTokenStore.save(userId, newJti, newRefreshToken, ttl);
         refreshTokenStore.delete(userId, jti);
+        refreshTokenStore.save(userId, newJti, newRefreshToken, ttl);
 
         response.addHeader("Set-Cookie", cookieUtil.createRefreshTokenCookie(newRefreshToken).toString());
         response.setHeader("Authorization", "Bearer " + newAccessToken);
