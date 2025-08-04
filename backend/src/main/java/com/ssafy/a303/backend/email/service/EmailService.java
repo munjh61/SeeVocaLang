@@ -54,7 +54,13 @@ public class EmailService {
         String key = PREFIX + to;
         String savedCode = stringRedisTemplate.opsForValue().get(key);
 
-        if (savedCode == null || !savedCode.equals(code)) {
+        if (savedCode == null) {
+            log.warn("이메일 인증코드 검증 실패 - 저장된 코드 없음: to={}", to);
+            throw new EmailVerificationException(EmailErrorCode.INVALID_VERIFICATION_CODE);
+        }
+
+        if (!savedCode.equals(code)) {
+            log.warn("이메일 인증코드 검증 실패 - 코드 불일치: to={}, 입력코드={}, 저장코드={}", to, code, savedCode);
             throw new EmailVerificationException(EmailErrorCode.INVALID_VERIFICATION_CODE);
         }
 
@@ -63,9 +69,7 @@ public class EmailService {
     }
 
     // 임시 비밀번호 보내기
-    public String sendTemporaryPassword(String to) {
-        String tempPassword = randomCodeGenerator.generateAlphanumericCode(10);
-
+    public void sendTemporaryPassword(String to, String tempPassword) {
         String subject = "[SVL] 임시 비밀번호 발급 안내";
 
         String html = "<div style='font-family: sans-serif;'>" +
@@ -78,7 +82,5 @@ public class EmailService {
                 "</div>";
 
         emailUtil.sendMail(to, subject, html);
-
-        return tempPassword;
     }
 }

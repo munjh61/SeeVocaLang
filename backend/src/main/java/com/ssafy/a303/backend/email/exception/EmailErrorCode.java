@@ -10,7 +10,7 @@ public enum EmailErrorCode implements ErrorCode {
 
     EMAIL_SEND_FAILED(500, "이메일 전송에 실패했습니다"),
     INVALID_VERIFICATION_CODE(400, "인증 코드가 일치하지 않습니다"),
-    ALREADY_VERIFIED(409, "이미 인증된 이메일입니다.");
+    EMAIL_ALREADY_EXISTS(409, "이미 등록된 이메일입니다.");
 
     private final int statusCode;
     private final String message;
