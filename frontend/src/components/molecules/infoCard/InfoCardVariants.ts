@@ -11,6 +11,18 @@ export const infoCard = cva(
         gradientRed: `
           bg-gradient-to-r from-[#DE86B7] to-[#D15550]
         `,
+        red: `
+          bg-[#D0546C]
+        `,
+        blue:`
+        bg-[#5960E2]
+        `,
+        green:`
+        bg-[#5DA86B]
+        `,
+        white:`
+        bg-[#F9FAFB]
+        `
       },
       size: {
         lg: "px-2 py-1 text-xs",
