@@ -4,8 +4,8 @@ spring:
       client:
         registration:
           kakao:
-            client-id: 6bc8672c1f71b66bbea1e782c0a12f74
-            client-secret: 4Uu4M8nOKVhsBD76oUshQMxWgHmUmisF
+            client-id: ENC(7xnldnt3C2V35eey9i50WkHVWLaLdGvoLUg0idBRCfsanl9kMEIK+RtRdpdjBg59)
+            client-secret: ENC(Et6aon3BnU++zVMogZBbV7b8N7cNI4Qg8cnEKJt0Afb9wCXQhHUrUYLdVKw+RxX9)
             client-authentication-method: client_secret_post
             redirect-uri: http://localhost:8080/login/oauth2/code/kakao
             authorization-grant-type: authorization_code
@@ -13,8 +13,8 @@ spring:
             scope:
               - profile_nickname
           naver:
-            client-id: iujwNPkAdgGUkWSbdDuE
-            client-secret: wBSNRv8bAP
+            client-id: ENC(DDHJl1RdijqlnDP6VBWByalCam3DogyMW4pr+WSRgtw=)
+            client-secret: ENC(69rpCKqMj81D2kAsqUdUPahcE1AQng/j)
             client-authentication-method: client_secret_post
             redirect-uri: http://localhost:8080/login/oauth2/code/naver
             authorization-grant-type: authorization_code
@@ -22,8 +22,8 @@ spring:
             scope:
               - nickname
           google:
-            client-id: 136847245298-qiu402lhg3fbljp2vphehisdhjaft7mn.apps.googleusercontent.com
-            client-secret: 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
+            client-id: ENC(jvWjtmDQNZPBwVjTKc8oyeZobNP0sPjms1tvT5FIVBV9FJZVCl24KPF1Z+5oYpcjcf/X+UnCTwISPv79jPurZx/8dT5ORMslCP8uvdWtnpOzoEl2JRHKqg==)
+            client-secret: ENC(HgEDndjdx02Voz7VohkN6bln/iGWbfpHsoRSE98MKS2PLm4tIp9VvFjnPJ0nQF5L)
             redirect-uri: http://localhost:8080/login/oauth2/code/google
             scope:
               - openid
@@ -44,9 +44,9 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${jdbcUrl}
-    username: ${jdbcUsername}
-    password: ${jdbcPassword}
+    url: ENC(hptFpQ3djxAH6TW/uqBcnuZcjAqanCtNs6Y+awJibjyhDi4Cp1NobA==)
+    username: ENC(7gqOcyrwBEPvO4NSETiCFw==)
+    password: ENC(zv4JIq6FbWXUysXuaIwO3pIjU+xig1gi)
 
   jpa:
     hibernate:
@@ -71,12 +71,12 @@ spring:
   cloud:
     aws:
       region:
-        static: ${region}
+        static: ENC(BtfL0sVwdELMPhALyb0MTIe46MJbeKIW)
       credentials:
-        access-key: ${awsAccesskey}
-        secret-key: ${awsSecretkey}
+        access-key: ENC(hCxkFZn+/uKzGBJN8mbssw4ZdWlxwEh6RcGEgRPx/eg=)
+        secret-key: ENC(XN2PxgNxu/xBd+R+M0TIk9ILh0K5aDcSQIXswnzlt66sjSPe2j4u1+t0eVzYiBrXdZkQgks98ns=)
       s3:
-        bucket-name: ${bucketName}
+        bucket-name: ENC(UOSrTPaHVuHvR9uCBSTCnZ0AqGz9wwtM)
 
   servlet:
     multipart:
@@ -88,4 +88,4 @@ server:
     max-http-form-post-size: 15MB
 
   ai:
-    url: ${aiServerUrl}
+    url: ENC(0FnCnLQ3VVYBWJWsF5Q3MM87EuqNtAe0D8mO0N1Dl9qtnhvx1NOeXg==)
