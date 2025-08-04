@@ -1,11 +1,11 @@
-package com.ssafy.a303.backend.common.redis;
+package com.ssafy.a303.backend.common.utility.redis;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 @Component
 @RequiredArgsConstructor
@@ -13,8 +13,8 @@ public class RefreshTokenStore {
     private final StringRedisTemplate redis;
 
     // refreshToken 저장 (TTL 적용)
-    public void save(Long userId, String jti, String refreshToken, long ttlSeconds) {
-        redis.opsForValue().set("rt:" + userId + ":" + jti, refreshToken, ttlSeconds, TimeUnit.SECONDS);
+    public void save(Long userId, String jti, String refreshToken, Duration ttl) {
+        redis.opsForValue().set("rt:" + userId + ":" + jti, refreshToken, ttl);
     }
 
     // refreshToken 존재 여부 체크

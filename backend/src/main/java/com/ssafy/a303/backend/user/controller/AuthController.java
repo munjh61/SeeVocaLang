@@ -1,9 +1,7 @@
 package com.ssafy.a303.backend.user.controller;
 
 import com.ssafy.a303.backend.common.dto.BaseResponseDto;
-import com.ssafy.a303.backend.user.dto.SignInRequestDto;
-import com.ssafy.a303.backend.user.dto.SignInResponseDto;
-import com.ssafy.a303.backend.user.dto.SignUpRequestDto;
+import com.ssafy.a303.backend.user.dto.*;
 import com.ssafy.a303.backend.user.service.AuthService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,6 +14,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.HashMap;
+import java.util.Arrays;
 
 @RestController
 @RequiredArgsConstructor
@@ -54,7 +54,7 @@ public class AuthController {
         SignInResponseDto data = authService.signIn(requestDto, response);
 
         BaseResponseDto<SignInResponseDto> body = BaseResponseDto.<SignInResponseDto>builder()
-                .message("로그인에 성공했습니다.")
+                .message(ResponseMessages.SIGN_IN_SUCCESS)
                 .content(data)
                 .build();
 
@@ -65,63 +65,46 @@ public class AuthController {
     @PostMapping("/api/v1/auth/signout")
     public ResponseEntity<BaseResponseDto<Void>> signOut(
             HttpServletRequest request,
-            HttpServletResponse response,
-            @RequestHeader(value = "X-Refresh-Token", required = false) String refreshTokenFromHeader,
-            @RequestParam(value = "refreshToken", required = false) String refreshTokenFromParam
+            HttpServletResponse response
     ) {
-        String refreshToken = resolveRefreshToken(request, refreshTokenFromHeader, refreshTokenFromParam);
+        String refreshToken = extractRefreshTokenFromCookie(request);
 
         if (!StringUtils.hasText(refreshToken)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                     BaseResponseDto.<Void>builder()
-                            .message("리프레시 토큰이 없습니다. 쿠키 또는 헤더/파라미터를 확인하세요.")
+                            .message(ResponseMessages.SIGN_OUT_NO_REFRESH_TOKEN)
                             .build()
             );
         }
 
-        authService.signOut(refreshToken, response);
-
-        return ResponseEntity.ok(
-                BaseResponseDto.<Void>builder()
-                        .message("로그아웃 되었습니다.")
-                        .build()
-        );
+        BaseResponseDto<Void> res = authService.signOut(refreshToken, response);
+        return ResponseEntity.ok(res);
     }
 
     @PostMapping("/api/v1/auth/refresh")
-    public ResponseEntity<BaseResponseDto<Map<String, String>>> refreshToken(
-            @RequestHeader(value = "X-Refresh-Token", required = false) String refreshTokenFromHeader,
-            @RequestParam(value = "refreshToken", required = false) String refreshTokenFromParam,
+    public ResponseEntity<BaseResponseDto<AccessTokenResponseDto>> refreshToken(
             HttpServletRequest request,
             HttpServletResponse response
     ) {
-        String refreshToken = resolveRefreshToken(request, refreshTokenFromHeader, refreshTokenFromParam);
+        String refreshToken = extractRefreshTokenFromCookie(request);
 
-        Map<String, String> result = authService.reissue(refreshToken, response);
+        BaseResponseDto<AccessTokenResponseDto> result = authService.reissue(refreshToken, response);
 
-        return ResponseEntity.ok(BaseResponseDto.<Map<String, String>>builder()
-                .message("액세스 토큰이 재발급되었습니다")
-                .content(result)
-                .build());
+        return ResponseEntity.ok(result);
 
     }
 
-    private String resolveRefreshToken(HttpServletRequest request, String headerToken, String paramToken) {
-        String cookieToken = findCookieValue(request, "refreshToken");
-        if (StringUtils.hasText(cookieToken)) return cookieToken;
-        if (StringUtils.hasText(headerToken)) return headerToken;
-        if (StringUtils.hasText(paramToken)) return paramToken;
-        return null;
-    }
-
-    private String findCookieValue(HttpServletRequest request, String name) {
+    // 쿠키에서 refreshToken 추출
+    private String extractRefreshTokenFromCookie(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         if (cookies == null) return null;
-        for (Cookie c : cookies) {
-            if (name.equals(c.getName())) {
-                return c.getValue();
+        for (Cookie cookie : cookies) {
+            if ("refreshToken".equals(cookie.getName())) {
+                return cookie.getValue();
             }
         }
         return null;
     }
+
+
 }

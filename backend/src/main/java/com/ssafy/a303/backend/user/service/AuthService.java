@@ -2,44 +2,54 @@ package com.ssafy.a303.backend.user.service;
 
 import com.ssafy.a303.backend.common.dto.BaseResponseDto;
 import com.ssafy.a303.backend.common.exception.CommonErrorCode;
-import com.ssafy.a303.backend.common.exception.SVLRuntimeException;
-import com.ssafy.a303.backend.common.redis.RefreshTokenStore;
-import com.ssafy.a303.backend.common.security.JwtUtil;
+import com.ssafy.a303.backend.user.exception.UserErrorCode;
+import com.ssafy.a303.backend.common.exception.AuthErrorCode;
+import com.ssafy.a303.backend.common.utility.redis.RefreshTokenStore;
+import com.ssafy.a303.backend.common.security.jwt.JwtProperties;
+import com.ssafy.a303.backend.common.security.jwt.JwtUtil;
 import com.ssafy.a303.backend.common.utility.CookieUtil;
-import com.ssafy.a303.backend.user.dto.SignInRequestDto;
-import com.ssafy.a303.backend.user.dto.SignInResponseDto;
-import com.ssafy.a303.backend.user.dto.SignUpRequestDto;
+import com.ssafy.a303.backend.user.dto.*;
 import com.ssafy.a303.backend.user.entity.UserEntity;
-import com.ssafy.a303.backend.user.exception.*;
+import com.ssafy.a303.backend.user.exception.UserIdAlreadyExistsException;
+import com.ssafy.a303.backend.user.exception.UserNicknameAlreadyExistsException;
+import com.ssafy.a303.backend.user.exception.InvalidCredentialsException;
+import com.ssafy.a303.backend.user.exception.AuthException;
 import com.ssafy.a303.backend.user.repository.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.Map;
+import java.time.Duration;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final RefreshTokenStore rts;
     private final JwtUtil jwtUtil;
-    private final CookieUtil cookie;
+    private final JwtProperties jwtProperties;
+    private final RefreshTokenStore refreshTokenStore;
+    private final CookieUtil cookieUtil;
 
     // 회원가입
     public BaseResponseDto<Void> signUp(SignUpRequestDto requestDto) {
+        log.info("회원가입 요청: loginId={}", requestDto.getLoginId());
+        
         // 아이디 중복 체크
         if (userRepository.existsByLoginId(requestDto.getLoginId())) {
-            throw new UserIdAlreadyExistsException(CommonErrorCode.RESOURCE_ALREADY_EXIST);
+            log.warn("회원가입 실패 - 아이디 중복: loginId={}", requestDto.getLoginId());
+            throw new UserIdAlreadyExistsException(UserErrorCode.USER_ID_ALREADY_EXISTS);
         }
 
         // 닉네임 중복 체크
         if (userRepository.existsByNickname(requestDto.getNickname())) {
-            throw new UserNicknameAlreadyExistsException(CommonErrorCode.RESOURCE_ALREADY_EXIST);
+            log.warn("회원가입 실패 - 닉네임 중복: nickname={}", requestDto.getNickname());
+            throw new UserNicknameAlreadyExistsException(UserErrorCode.USER_NICKNAME_ALREADY_EXISTS);
         }
 
         // 저장
@@ -47,84 +57,128 @@ public class AuthService {
                 requestDto.getLoginId(),
                 passwordEncoder.encode(requestDto.getPassword()),
                 requestDto.getNickname(),
-                false
+                false,
+                requestDto.getBirthday() // nullable 그대로 전달됨
         );
 
         userRepository.save(user);
+        log.info("회원가입 성공: userId={}, loginId={}", user.getUserId(), user.getLoginId());
 
         return BaseResponseDto.<Void>builder()
-                .message("회원가입이 완료되었습니다.")
+                .message(ResponseMessages.SIGN_UP_SUCCESS)
                 .build();
     }
 
     // 아이디 중복 확인
     public BaseResponseDto<Void> validateLoginId(String loginId) {
         if (userRepository.existsByLoginId(loginId)) {
-            throw new UserIdAlreadyExistsException(CommonErrorCode.RESOURCE_ALREADY_EXIST);
+            throw new UserIdAlreadyExistsException(UserErrorCode.USER_ID_ALREADY_EXISTS);
         }
         return BaseResponseDto.<Void>builder()
-                .message("사용 가능한 아이디입니다.")
+                .message(ResponseMessages.VALID_ID)
                 .build();
     }
 
-    // 닉네임 사용 가능 여부 검증
+    // 닉네임 중복 확인
     public BaseResponseDto<Void> validateNickname(String nickname) {
         if (userRepository.existsByNickname(nickname)) {
-            throw new UserNicknameAlreadyExistsException(CommonErrorCode.RESOURCE_ALREADY_EXIST);
+            throw new UserNicknameAlreadyExistsException(UserErrorCode.USER_NICKNAME_ALREADY_EXISTS);
         }
         return BaseResponseDto.<Void>builder()
-                .message("사용 가능한 닉네임입니다.")
+                .message(ResponseMessages.VALID_NICKNAME)
                 .build();
     }
 
     // 로그인
     public SignInResponseDto signIn(SignInRequestDto requestDto, HttpServletResponse response) {
+        log.info("로그인 요청: loginId={}", requestDto.getLoginId());
+        
+        // 유저 조회, 비밀번호 검증
         UserEntity user = userRepository.findByLoginId(requestDto.getLoginId())
-                .orElseThrow(() -> new InvalidCredentialsException(CommonErrorCode.INVALID_INPUT));
+                .orElseThrow(() -> {
+                    log.warn("로그인 실패 - 사용자 없음: loginId={}", requestDto.getLoginId());
+                    return new InvalidCredentialsException(UserErrorCode.INVALID_CREDENTIALS);
+                });
 
         if (!passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
-            throw new InvalidCredentialsException(CommonErrorCode.INVALID_INPUT);
+            log.warn("로그인 실패 - 비밀번호 불일치: loginId={}", requestDto.getLoginId());
+            throw new InvalidCredentialsException(UserErrorCode.INVALID_CREDENTIALS);
         }
 
         String jti = UUID.randomUUID().toString();
-        String at = jwtUtil.createAccessToken(user.getUserId());
-        String rt = jwtUtil.createRefreshToken(user.getUserId(), jti);
+        Long userId = user.getUserId();
 
-        long refreshTokenTTL = 60 * 60 * 24 * 14;
+        // JWT 발급
+        String accessToken = jwtUtil.createAccessToken(userId);
+        String refreshToken = jwtUtil.createRefreshToken(userId, jti);
 
-        rts.save(user.getUserId(), jti, rt, refreshTokenTTL);
+        // redis에 refreshtoken 저장
+        Duration ttl = jwtProperties.getRefreshDays();
+        refreshTokenStore.save(userId, jti, refreshToken, ttl);
 
-        cookie.attachRefreshToken(response, rt);
+        // refreshToken 쿠키 전송
+        response.addHeader("Set-Cookie", cookieUtil.createRefreshTokenCookie(refreshToken).toString());
 
-        response.addHeader("X-Access-Token", at);
+        // accessToken 헤더 전달
+        response.setHeader("Authorization", "Bearer " + accessToken);
 
+        log.info("로그인 성공: userId={}, loginId={}, jti={}", userId, user.getLoginId(), jti);
         return new SignInResponseDto(user.getNickname(), user.getProfileImage());
-
     }
 
     // 로그아웃
-    public void signOut(String refreshToken, HttpServletResponse response) {
+    public BaseResponseDto<Void> signOut(String refreshToken, HttpServletResponse response) {
+        log.info("로그아웃 요청");
+
+        // 토큰 유효성 검사
+        if (!jwtUtil.validate(refreshToken)) {
+            log.warn("로그아웃 실패 - 유효하지 않은 토큰");
+            throw new AuthException(AuthErrorCode.TOKEN_INVALID);
+        }
+
+        // 토큰 정보 추출
         Long userId = jwtUtil.getUserId(refreshToken);
         String jti = jwtUtil.getJti(refreshToken);
-        rts.delete(userId, jti);
 
-        cookie.clearRefreshToken(response);
+        // redis 존재 여부 확인
+        if (!refreshTokenStore.exists(userId, jti)) {
+            log.warn("로그아웃 실패 - Redis에 토큰 없음: userId={}, jti={}", userId, jti);
+            throw new AuthException(AuthErrorCode.REFRESH_TOKEN_EXPIRED_OR_NOT_FOUND);
+        }
+
+        // redis에서 리프레시 토큰 삭제
+        refreshTokenStore.delete(userId, jti);
+
+        // 쿠키 삭제
+        response.addHeader("Set-Cookie", cookieUtil.deleteRefreshTokenCookie().toString());
+
+        log.info("로그아웃 성공: userId={}, jti={}", userId, jti);
+        
+        // 응답 반환
+        return BaseResponseDto.<Void>builder()
+                .message(ResponseMessages.SIGN_OUT_SUCCESS)
+                .build();
     }
 
     // accessToken 재발금
-    public Map<String, String> reissue(String refreshToken, HttpServletResponse response) {
+    public BaseResponseDto<AccessTokenResponseDto> reissue(String refreshToken, HttpServletResponse response) {
+        log.info("토큰 재발급 요청");
+
         if (!StringUtils.hasText(refreshToken)) {
+            log.warn("토큰 재발급 실패 - 토큰 없음");
             throw new AuthException(AuthErrorCode.REFRESH_TOKEN_NOT_PROVIDED);
         }
 
         if (!jwtUtil.validate(refreshToken)) {
-            throw new AuthException(AuthErrorCode.REFRESH_TOKEN_INVALID);
+            log.warn("토큰 재발급 실패 - 유효하지 않은 토큰");
+            throw new AuthException(AuthErrorCode.TOKEN_INVALID);
         }
 
         Long userId = jwtUtil.getUserId(refreshToken);
         String jti = jwtUtil.getJti(refreshToken);
 
-        if (!rts.exists(userId, jti)) {
+        if (!refreshTokenStore.exists(userId, jti)) {
+            log.warn("토큰 재발급 실패 - Redis에 토큰 없음: userId={}, jti={}", userId, jti);
             throw new AuthException(AuthErrorCode.REFRESH_TOKEN_EXPIRED_OR_NOT_FOUND);
         }
 
@@ -132,13 +186,19 @@ public class AuthService {
         String newJti = UUID.randomUUID().toString();
         String newRefreshToken = jwtUtil.createRefreshToken(userId, newJti);
 
-        rts.save(userId, newJti, newRefreshToken, 60 * 60 * 24 * 14); // 14일 TTL
-        rts.delete(userId, jti);
+        Duration ttl = jwtProperties.getRefreshDays();
+        refreshTokenStore.delete(userId, jti);
+        refreshTokenStore.save(userId, newJti, newRefreshToken, ttl);
 
-        cookie.attachRefreshToken(response, newRefreshToken);
+        response.addHeader("Set-Cookie", cookieUtil.createRefreshTokenCookie(newRefreshToken).toString());
         response.setHeader("Authorization", "Bearer " + newAccessToken);
 
-        return Map.of("accessToken", newAccessToken);
+        log.info("토큰 재발급 성공: userId={}, oldJti={}, newJti={}", userId, jti, newJti);
+
+        return BaseResponseDto.<AccessTokenResponseDto>builder()
+                .message(ResponseMessages.TOKEN_REISSUE_SUCCESS)
+                .content(new AccessTokenResponseDto(newAccessToken))
+                .build();
     }
 
 }
