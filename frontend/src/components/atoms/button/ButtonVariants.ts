@@ -34,6 +34,7 @@ export const buttonVariants = cva(
         blue: "bg-[#6083EE]",
         purple: "bg-[#9D5EEE]",
         noBg: `bg-transparent`,
+        profileButton: `bg-[#613ECF]`
       },
       size: {
         xs: "px-2 py-0.5 text-xs",
@@ -41,6 +42,7 @@ export const buttonVariants = cva(
         md: "px-4 py-1 text-xs",
         xl5: "px-25 py-1 text-xs",
         word: "px-30 py-30 text-xl",
+        long: "px-50 py-1 text-xl"
       },
       textColor: {
         white: "text-white",
