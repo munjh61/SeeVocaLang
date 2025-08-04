@@ -86,3 +86,6 @@ spring:
 server:
   tomcat:
     max-http-form-post-size: 15MB
+
+  ai:
+    url: ${aiServerUrl}
