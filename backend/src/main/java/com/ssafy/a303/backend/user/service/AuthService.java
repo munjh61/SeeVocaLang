@@ -57,7 +57,8 @@ public class AuthService {
                 requestDto.getLoginId(),
                 passwordEncoder.encode(requestDto.getPassword()),
                 requestDto.getNickname(),
-                false
+                false,
+                requestDto.getBirthday() // nullable 그대로 전달됨
         );
 
         userRepository.save(user);

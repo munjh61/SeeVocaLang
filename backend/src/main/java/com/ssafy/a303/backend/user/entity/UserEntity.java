@@ -41,14 +41,16 @@ public class UserEntity {
     private int streakDays;
 
     // 회원가입 생성자
-    public UserEntity(String loginId, String password, String nickname, boolean socialUser) {
+    public UserEntity(String loginId, String password, String nickname, boolean socialUser, LocalDate birthday) {
         this.loginId = loginId;
         this.password = password;
         this.nickname = nickname;
         this.socialUser = socialUser;
+        this.birthday = birthday;
         this.totalDays = 0;
         this.streakDays = 0;
     }
+
 
     public void softDelete() {
         this.isDeleted = true;

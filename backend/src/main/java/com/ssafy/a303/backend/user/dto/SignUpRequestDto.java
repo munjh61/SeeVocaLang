@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,4 +24,6 @@ public class SignUpRequestDto {
     @NotBlank(message = "닉네임은 필수 입력값입니다.")
     @Size(max = 20, message = "닉네임은 20자 이하로 설정해주세요")
     private String nickname;
+
+    private LocalDate birthday;
 }
