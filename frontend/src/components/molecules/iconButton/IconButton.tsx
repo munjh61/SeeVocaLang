@@ -9,7 +9,7 @@ type ButtonProps = ComponentProps<typeof Button>;
 type IconButtonProps = {
   // icon: ComponentType<SVGProps<SVGSVGElement>>;
   className?: string;
-  IconVariant: IconProps;
+  IconVariant?: IconProps;
   ButtonVariant?: ButtonProps;
   children?: React.ReactNode;
   data?: number | string;
@@ -51,7 +51,7 @@ export const IconButton = ({
         type="button"
         onClick={onClick}
       >
-        <Icon {...IconVariant} />
+        {IconVariant && <Icon {...IconVariant} />}
         {children}
       </Button>
     </div>

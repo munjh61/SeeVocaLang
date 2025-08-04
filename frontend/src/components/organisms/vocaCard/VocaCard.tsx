@@ -12,7 +12,10 @@ export type VocaCardProps = {
   audioUrl?: string;
   nameEn: string;
   nameKo: string;
-  onDelete: () => void;
+  onDelete?: () => void;
+  blurKo?: boolean;
+  blurEn?: boolean;
+  books?: { id: number; name: string }[];
 };
 
 export const VocaCard = ({
@@ -21,6 +24,9 @@ export const VocaCard = ({
   // audioUrl,
   nameEn,
   nameKo,
+  blurKo,
+  blurEn,
+  books,
   onDelete,
 }: VocaCardProps) => {
   return (
@@ -30,21 +36,44 @@ export const VocaCard = ({
           <IconButton
             IconVariant={{ icon: trash, color: "red" }}
             buttonValue={onDelete}
+            ButtonVariant={{ border: "red" }}
           ></IconButton>
         </div>
         <div className="absolute top-0 right-0">
-          <VocaLoc bg={"red"}>단어장1</VocaLoc>
-          <VocaLoc bg={"yellow"}>단어장2</VocaLoc>
-          <VocaLoc bg={"green"}>단어장3단어장3단어장3단어장3</VocaLoc>
-          <VocaLoc bg={"blue"}>더보기</VocaLoc>
+          {books && (
+            <>
+              {books[0] && (
+                <VocaLoc
+                  bg={"red"}
+                  folderId={books[0].id}
+                  foldername={books[0].name}
+                />
+              )}
+              {books[1] && (
+                <VocaLoc
+                  bg={"yellow"}
+                  folderId={books[1].id}
+                  foldername={books[1].name}
+                />
+              )}
+              {books[2] && (
+                <VocaLoc
+                  bg={"green"}
+                  folderId={books[2].id}
+                  foldername={books[2].name}
+                />
+              )}
+              {books.length > 3 && <VocaLoc bg={"blue"}>더보기</VocaLoc>}
+            </>
+          )}
         </div>
         <ImageBox src={imgUrl ? imgUrl : noImage} className="h-60" />
       </div>
       <div className="flex flex-col text-center">
         <Text color="green" size={"lg"} className="font-semibold">
-          {nameEn}
+          {blurEn ? "*".repeat(nameEn.length) : nameEn}
         </Text>
-        <Text color="gray">{nameKo}</Text>
+        <Text color="gray">{blurKo ? "*".repeat(nameKo.length) : nameKo}</Text>
       </div>
       <div className="flex flex-row flex-wrap justify-center">
         <IconButton

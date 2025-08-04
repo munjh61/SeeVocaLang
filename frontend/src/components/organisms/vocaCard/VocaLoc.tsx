@@ -1,17 +1,25 @@
 import type { VariantProps } from "class-variance-authority";
-import { Button } from "../../atoms/button/Button";
+import { IconButton } from "../../molecules/iconButton/IconButton";
+import type { buttonVariants } from "../../atoms/button/ButtonVariants";
 
 type VocaLoc = {
-  bg?: VariantProps<typeof Button>["bgColor"];
+  bg?: VariantProps<typeof buttonVariants>["bgColor"];
+  folderId?: number;
+  foldername?: string;
   children?: string;
 };
 
-export const VocaLoc = ({ bg, children }: VocaLoc) => {
+export const VocaLoc = ({ bg, folderId, foldername, children }: VocaLoc) => {
   return (
-    <Button textColor={"white"} bgColor={bg} className="p-1 w-15">
+    <IconButton
+      ButtonVariant={{ bgColor: bg, textColor: "white" }}
+      className="p-1 w-15 inline-flex"
+      path={`/book/${folderId}`}
+    >
       <span className="w-full whitespace-nowrap overflow-hidden text-ellipsis font-light text-xs">
+        {foldername}
         {children}
       </span>
-    </Button>
+    </IconButton>
   );
 };
