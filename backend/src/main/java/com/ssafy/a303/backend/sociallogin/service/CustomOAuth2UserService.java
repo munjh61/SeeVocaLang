@@ -12,11 +12,13 @@ import com.ssafy.a303.backend.user.entity.UserEntity;
 import com.ssafy.a303.backend.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Hibernate;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -27,12 +29,14 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private final SocialLoginRepository socialLoginRepository;
     private final UserRepository userRepository;
+    private final SocialLoginService socialLoginService;
 
     @Override
+    @Transactional(readOnly = true)
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = super.loadUser(userRequest);
 
-        String registrationId = userRequest.getClientRegistration().getRegistrationId();
+        String registrationId = userRequest.getClientRegistration().getRegistrationId().toUpperCase();
         log.info("소셜 로그인 시도: {}", registrationId);
 
         Provider provider;
@@ -52,7 +56,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         UserEntity user;
         if (socialLoginOpt.isPresent()) {
-            user = socialLoginOpt.get().getUser();
+            SocialLoginEntity socialLogin = socialLoginOpt.get();
+            user = socialLogin.getUser();
+            Hibernate.initialize(user);
             if (user.isDeleted()) {
                 log.warn("탈퇴 유저 로그인 시도 차단: userId={}, provider={}, uid={}", user.getUserId(), provider, providerUid);
                 throw new SocialLoginException(SocialLoginErrorCode.SOCIAL_LOGIN_FAILED);
@@ -60,39 +66,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             log.info("기존 유저 로그인 성공: userId={}, nickname={}", user.getUserId(), user.getNickname());
         } else {
             log.info("신규 유저 소셜 로그인 감지: 자동 회원가입 진행");
-            user = registerNewUser(userInfo, provider, providerUid);
+            user = socialLoginService.registerNewSocialUser(userInfo, provider, providerUid);
         }
 
         return CustomUserDetails.from(user);
-    }
-
-    private UserEntity registerNewUser(OAuth2UserInfo userInfo, Provider provider, String socialUid) {
-        String baseNickname = userInfo.getNickname();
-        String uniqueNickname = generateUniqueNickname(baseNickname);
-
-        UserEntity user = new UserEntity(null, null, uniqueNickname, true);
-        userRepository.save(user);
-
-        socialLoginRepository.save(new SocialLoginEntity(user, provider, socialUid));
-        log.info("신규 유저 가입 완료: userId={}, nickname={}, provider={}", user.getUserId(), user.getNickname(), provider);
-
-        return user;
-    }
-
-    private String generateUniqueNickname(String baseNickname) {
-        String candidate = baseNickname;
-        int attempt = 0;
-
-        while (userRepository.existsByNickname(candidate)) {
-            attempt++;
-            candidate = baseNickname + "_" + (int)(Math.random() * 10000);
-            if (attempt > 10) break;
-        }
-
-        if (!candidate.equals(baseNickname)) {
-            log.info("닉네임 중복 회피: {} → {}", baseNickname, candidate);
-        }
-
-        return candidate;
     }
 }

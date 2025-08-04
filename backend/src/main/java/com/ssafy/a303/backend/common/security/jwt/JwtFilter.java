@@ -1,6 +1,7 @@
-package com.ssafy.a303.backend.common.security;
+package com.ssafy.a303.backend.common.security.jwt;
 
 import com.ssafy.a303.backend.common.exception.CommonErrorCode;
+import com.ssafy.a303.backend.common.security.CustomUserDetails;
 import com.ssafy.a303.backend.user.entity.UserEntity;
 import com.ssafy.a303.backend.user.exception.UserNotFoundException;
 import com.ssafy.a303.backend.user.repository.UserRepository;
