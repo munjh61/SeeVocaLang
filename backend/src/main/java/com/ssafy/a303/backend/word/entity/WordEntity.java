@@ -35,6 +35,8 @@ public class WordEntity {
         isDeleted = true;
     }
 
+    public void updateImageUrl(String url) { this.imageUrl = url; }
+
     @Builder
     public WordEntity(UserEntity user, String nameEn, String nameKo, String imageUrl, String audioUrl) {
         this.user = user;

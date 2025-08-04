@@ -77,3 +77,12 @@ spring:
         secret-key: ${awsSecretkey}
       s3:
         bucket-name: ${bucketName}
+
+  servlet:
+    multipart:
+      max-file-size: 15MB
+      max-request-size: 15MB
+
+server:
+  tomcat:
+    max-http-form-post-size: 15MB
