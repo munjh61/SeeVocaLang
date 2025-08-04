@@ -3,10 +3,9 @@ package com.ssafy.a303.backend.word.service;
 import com.ssafy.a303.backend.common.dto.BaseResponseDto;
 import com.ssafy.a303.backend.common.dto.PageResponseDto;
 import com.ssafy.a303.backend.common.exception.CommonErrorCode;
-import com.ssafy.a303.backend.word.dto.DeleteWordCommandDto;
-import com.ssafy.a303.backend.word.dto.ReadWordCommandDto;
-import com.ssafy.a303.backend.word.dto.ReadWordResponseDto;
+import com.ssafy.a303.backend.word.dto.*;
 import com.ssafy.a303.backend.word.entity.WordEntity;
+import com.ssafy.a303.backend.word.exception.WordNotAccessibleRuntimeException;
 import com.ssafy.a303.backend.word.exception.WordNotFoundException;
 import com.ssafy.a303.backend.word.mapper.WordMapper;
 import com.ssafy.a303.backend.word.repository.WordRepository;
@@ -17,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -64,5 +64,38 @@ public class WordService {
         return BaseResponseDto.<Void>builder()
                 .message("단어가 성공적으로 삭제되었습니다.")
                 .build();
+    }
+
+    public boolean getWordExistence(String name, Long userId) {
+        return wordRepository.existsByNameEnAndUserUserId(name, userId);
+    }
+
+    public Long getWordId(Long userId, String nameEn) {
+        return wordRepository
+                .findByUserUserIdAndNameEn(userId, nameEn)
+                .map(WordEntity::getWordId)
+                .orElse(null);
+    }
+
+    public void createWord(CreateWordCommandDto comandDto) {
+        WordEntity wordEntity = WordEntity.builder()
+                .user(comandDto.user())
+                .nameEn(comandDto.nameEn())
+                .nameKo(comandDto.nameKo())
+                .imageUrl(comandDto.imageUrl())
+                .build();
+
+        wordRepository.save(wordEntity);
+    }
+
+    public void updateWord(Long wordId, Long userId, String imageUrl) {
+        WordEntity word = wordRepository.findById(wordId)
+                .orElseThrow(() -> new WordNotFoundException(CommonErrorCode.RESOURCE_NOT_FOUND));
+
+        if (!userId.equals(word.getUser().getUserId()))
+            throw new WordNotAccessibleRuntimeException(CommonErrorCode.FORBIDDEN_REQUEST);
+
+        word.updateImageUrl(imageUrl);
+        wordRepository.save(word);
     }
 }

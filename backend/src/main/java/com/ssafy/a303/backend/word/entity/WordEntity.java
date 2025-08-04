@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Getter
@@ -31,9 +30,11 @@ public class WordEntity {
 
     private boolean isDeleted = false;
 
-    public void delete(){
+    public void delete() {
         isDeleted = true;
     }
+
+    public void updateImageUrl(String url) { this.imageUrl = url; }
 
     @Builder
     public WordEntity(UserEntity user, String nameEn, String nameKo, String imageUrl, String audioUrl) {
