@@ -1,5 +1,5 @@
 import type { VocaCardProps } from "../../organisms/vocaCard/VocaCard";
-import apple from "../asset/png/apple.png";
+import apple from "../../../asset/png/apple.png";
 
 const VocaCardSample: VocaCardProps[] = [
   {
