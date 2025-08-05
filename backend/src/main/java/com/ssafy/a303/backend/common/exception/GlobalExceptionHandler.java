@@ -7,16 +7,13 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.Collections;
-import java.util.Map;
-
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(SVLRuntimeException.class)
     public ResponseEntity<ErrorResponse> handleSVLRuntimeException(SVLRuntimeException exception) {
         int statusCode = exception.getErrorCode().getStatusCode();
-        ErrorResponse response = new ErrorResponse(exception.getMessage());
+        ErrorResponse response = new ErrorResponse(exception.getErrorCode().getMessage());
         return ResponseEntity.status(statusCode).body(response);
     }
 

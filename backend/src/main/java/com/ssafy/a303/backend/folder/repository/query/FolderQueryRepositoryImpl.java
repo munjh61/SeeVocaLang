@@ -52,7 +52,8 @@ public class FolderQueryRepositoryImpl extends QuerydslRepositorySupport impleme
                         folderEntity.isFavorite
                 ))
                 .where(
-                        folderEntity.user.userId.eq(userId)
+                        folderEntity.user.userId.eq(userId),
+                        folderEntity.isDeleted.eq(false)
                 )
                 .orderBy(folderEntity.folderId.desc())
                 .fetch();
