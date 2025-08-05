@@ -26,7 +26,7 @@ export const QuizButton = ({ en, ko, lang, answer, onClick }: QuizButton) => {
       size={"word"}
       textColor={selected ? selectColor : "gray"}
       bgColor={"noBg"}
-      className="p-5 relative w-full bg-emerald-100 shadow-2xl"
+      className="p-10 relative w-full h-full bg-emerald-100 shadow-2xl"
     >
       <img
         src={cardDeco}

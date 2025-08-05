@@ -8,6 +8,7 @@ type ImageBoxProps = {
   data?: string;
   imageValue?: (v: string) => void;
   className?: string;
+  imgClassName?: string;
 };
 
 export const ImageBox = ({
@@ -17,6 +18,7 @@ export const ImageBox = ({
   data,
   imageValue,
   className,
+  imgClassName,
 }: ImageBoxProps) => {
   const hasImage = Boolean(src);
 
@@ -32,7 +34,7 @@ export const ImageBox = ({
         <img
           src={src}
           alt={alt}
-          className="w-full h-full object-cover rounded-md"
+          className={`w-full h-full object-cover rounded-md ${imgClassName}`}
           onClick={data ? () => imageValue?.(data) : undefined}
         />
       )}

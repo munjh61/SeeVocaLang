@@ -45,10 +45,16 @@ export const Quiz = ({
     }
   };
   return (
-    <div className={`flex flex-col item-center relative ${classname}`}>
+    <div
+      className={`flex flex-col items-center justify-center relative h-full ${classname}`}
+    >
       {toggleC && <img src={correct} className={feedbackClass} />}
       {toggleW && <img src={wrong} className={feedbackClass} />}
-      <ImageBox src={answerImg} className="w-full" />
+      <ImageBox
+        src={answerImg}
+        className="flex-grow w-full"
+        imgClassName="object-contain max-h-full w-auto"
+      />
       <div className="grid grid-cols-4 grid-rows-2 gap-1 w-full">
         {quizDatas.map((data, index) => (
           <QuizButton

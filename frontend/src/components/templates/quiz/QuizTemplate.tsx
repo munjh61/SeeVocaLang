@@ -37,27 +37,30 @@ export const QuizTemplate = ({ vocaCardDatas }: QuizTemplateProps) => {
   const goToNext = () => setCurrentIndex(prev => prev + 1);
 
   return (
-    <div className="flex flex-col items-center gap-6">
-      <h1 className="text-2xl font-bold mt-4">
-        문제 {currentIndex + 1} / {quizOrder.length}
-      </h1>
-      <SegmentControl
-        options={[
-          { label: "영어", value: "en" },
-          { label: "한글", value: "ko" },
-          { label: "복합", value: "both" },
-        ]}
-        defaultValue="en"
-        onChange={v => setLang(v)}
-      />
-      <Quiz
-        answerImg={current.imgUrl ?? ""}
-        answerEn={current.nameEn}
-        answerKo={current.nameKo}
-        quizDatas={quizDatas}
-        lang={lang}
-        onClick={goToNext}
-      />
+    <div className="flex flex-col min-h-[calc(100vh-64px)]">
+      <div className="flex flex-col items-center gap-6">
+        <h1 className="text-2xl font-bold mt-4">
+          문제 {currentIndex + 1} / {quizOrder.length}
+        </h1>
+        <SegmentControl
+          options={[
+            { label: "영어", value: "en" },
+            { label: "한글", value: "ko" },
+          ]}
+          defaultValue="en"
+          onChange={v => setLang(v)}
+        />
+        <div className="flex-grow flex items-center justify-center">
+          <Quiz
+            answerImg={current.imgUrl ?? ""}
+            answerEn={current.nameEn}
+            answerKo={current.nameKo}
+            quizDatas={quizDatas}
+            lang={lang}
+            onClick={goToNext}
+          />
+        </div>
+      </div>
     </div>
   );
 };
