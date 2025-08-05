@@ -1,4 +1,4 @@
-FROM openjdk:17 AS builder
+FROM openjdk:17-slim AS builder
 
 RUN apt-get update && apt-get install -y findutils
 
