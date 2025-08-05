@@ -59,7 +59,7 @@ export const SignupStep1 = ({
       </div>
       <div className="flex flex-col gap-1">
         <Input
-          scale={"onboard"}
+          scale={"signup"}
           border={showErrors && !isNameValid ? "red" : "lightgray"}
           text={"gray"}
           placeholder={"이름"}
@@ -139,7 +139,7 @@ export const SignupStep1 = ({
 
       <div className="flex flex-col justify-between mt-4 gap-2">
         <Button
-          size={"onboard"}
+          size={"signup"}
           onClick={handleNext}
           rounded={"lg"}
           className="bg-blue-500 text-white px-4 py-2 disabled:opacity-50"
@@ -147,7 +147,7 @@ export const SignupStep1 = ({
           다음
         </Button>
         <Button
-          size={"onboard"}
+          size={"signup"}
           border={"blue"}
           onClick={onBack}
           rounded={"lg"}

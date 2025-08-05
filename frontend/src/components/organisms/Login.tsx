@@ -65,7 +65,7 @@ export const Login = () => {
           </Label>
           <Input
             id="id"
-            scale="onboard"
+            scale="signup"
             border={showErrors && id.trim() === "" ? "red" : "lightgray"}
             text="gray"
             placeholder="아이디"
@@ -91,7 +91,7 @@ export const Login = () => {
           <Input
             id="password"
             type="password"
-            scale="onboard"
+            scale="signup"
             border={showErrors && password.trim() === "" ? "red" : "lightgray"}
             text="gray"
             placeholder="비밀번호"
@@ -142,7 +142,7 @@ export const Login = () => {
         <div className="flex flex-col justify-between mt-4 gap-2 w-full">
           <Button
             type="submit"
-            size="onboard"
+            size="signup"
             rounded="lg"
             className="bg-blue-500 text-white px-4 py-2 disabled:opacity-50"
           >
@@ -150,7 +150,7 @@ export const Login = () => {
           </Button>
           <Button
             type="button"
-            size="onboard"
+            size="signup"
             border="blue"
             rounded="lg"
             textColor="blue"

@@ -1,22 +1,18 @@
 import { useState } from "react";
 import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css"; // 기본 스타일 적용
+import "react-calendar/dist/Calendar.css";
+import "../../../style/calendar.css";
 
-type CalendarCardProps = {
-  className?: string;
-};
-
-export const CalendarCard = ({ className = "" }: CalendarCardProps) => {
+export const CalendarCard = () => {
   const [date, setDate] = useState<Date | null>(new Date());
 
   return (
-    <div className={`p-4 rounded-xl shadow-md bg-white ${className}`}>
+    <div className={`w-full`}>
       <Calendar
-        onChange={(value) => setDate(value as Date)}
+        onChange={value => setDate(value as Date)}
         value={date}
-        locale="ko-KR" // 한글화
+        locale="en-US"
       />
-
     </div>
   );
 };
