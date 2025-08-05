@@ -107,4 +107,9 @@ public class FolderService {
     public boolean existsByFolderIdAndUserId(long folderId, Long userId) {
         return folderRepository.existsByFolderIdAndUserUserId(folderId, userId);
     }
+
+    public FolderEntity getFolderById(long folderId) {
+        return folderRepository.findById(folderId)
+                .orElseThrow(() -> new FolderNotFoundException(CommonErrorCode.RESOURCE_NOT_FOUND));
+    }
 }
