@@ -1,43 +1,43 @@
+import { useState } from "react";
 import { Button } from "../../atoms/button/Button";
 import { AddFriendButton } from "../friendButtons/AddFriendButton";
 import { DeleteFriendButton } from "../friendButtons/DeleteFriendButton";
 import { RequestFriendButton } from "../friendButtons/RequestFriendButton";
 
-type FriendStatus = "none" | "requested"  | "delete" | "response";
+
+type FriendStatus = "NONE" | "PENDING" | "APPROVED"| "REQUEST";
 type FriendInfoProps = {
+  id: number;
   profileUrl?: string;
   name: string;
   status: FriendStatus;
-  // onAdd?: () => void;
-  // onDelete?: () => void;
-  // onAccept?: () => void;
-  // onRefuse?: () => void;
+
 };
 
-export const FriendInfoCard = ({ profileUrl, name, status }: FriendInfoProps) => {
+export const FriendInfoCard = ({ id, profileUrl, name, status: initialStatus }: FriendInfoProps) => {
+  const [status, setStatus] = useState<FriendStatus>(initialStatus);
   const renderButton = () => {
     switch (status) {
-      case "none":
+      case "NONE":
         return (
-          <AddFriendButton data="user123" className="w-full"/>
+          <AddFriendButton data= {id} className="w-full" onRequestComplete={() => setStatus("REQUEST")}/>
         );
-      case "requested":
+      case "PENDING":
         return (
-          <RequestFriendButton className="w-full"/>
+          <DeleteFriendButton data= {id} className="w-full" friendName={name} onRequestComplete={() => setStatus("NONE")}/>
         );
-      case "delete":
+        case "REQUEST":
         return (
-          <DeleteFriendButton data="user123" className="w-full"/>
+          <RequestFriendButton className="w-full" />
         );
-      case "response":
+      case "APPROVED":
         return (
           <div className="flex  gap-2">
             <Button
             bgColor="green"
             size="md"
             textColor="white"
-            className="gap-1 px-3 py-1.5"
-            // onClick={onAccept}
+            className="gap-1 px-3 py-1.5"      
           >
             수락
           </Button>
@@ -46,7 +46,6 @@ export const FriendInfoCard = ({ profileUrl, name, status }: FriendInfoProps) =>
             size="md"
             textColor="white"
             className="gap-1 px-3 py-1.5"
-            // onClick={onRefuse}
           >
             거절
           </Button>
