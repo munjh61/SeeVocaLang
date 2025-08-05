@@ -11,6 +11,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ReadFolderWordCommandDto {
     private long folderId;
-    private long lastId;
     private int size;
 }

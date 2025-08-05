@@ -25,7 +25,7 @@ public class FolderQueryRepositoryImpl extends QuerydslRepositorySupport impleme
 
     // 폴더 안에 있는 가장 최근의 단어의 이미지를 썸네일로 한다.
     @Override
-    public List<ReadFoldersResponseDto> findAllByUserId(long userId, long folderId, Pageable pageable) {
+    public List<ReadFoldersResponseDto> findAllByUserId(long userId) {
         QFolderEntity folderEntity = QFolderEntity.folderEntity;
 
         QWordEntity resultWord = new QWordEntity("resultWord");
@@ -52,16 +52,14 @@ public class FolderQueryRepositoryImpl extends QuerydslRepositorySupport impleme
                         folderEntity.isFavorite
                 ))
                 .where(
-                        folderEntity.user.userId.eq(userId),
-                        folderId != -1 ? folderEntity.folderId.lt(folderId) : null
+                        folderEntity.user.userId.eq(userId)
                 )
                 .orderBy(folderEntity.folderId.desc())
-                .limit(pageable.getPageSize() + 1)
                 .fetch();
     }
 
     @Override
-    public List<ReadWordResponseDto> deleteAllWordsByFolderId(long folderId, long wordId, Pageable pageable) {
+    public List<ReadWordResponseDto> deleteAllWordsByFolderId(long folderId) {
         QFolderWordEntity folderWord = QFolderWordEntity.folderWordEntity;
         QWordEntity word = new QWordEntity("resultWord");
 
@@ -76,11 +74,9 @@ public class FolderQueryRepositoryImpl extends QuerydslRepositorySupport impleme
                 ))
                 .join(folderWord).on(folderWord.word.wordId.eq(word.wordId))
                 .where(
-                        folderWord.folder.folderId.eq(folderId),
-                        wordId != -1 ? word.wordId.lt(wordId) : null
+                        folderWord.folder.folderId.eq(folderId)
                 )
                 .orderBy(word.wordId.desc())
-                .limit(pageable.getPageSize() + 1)
                 .fetch();
     }
 
