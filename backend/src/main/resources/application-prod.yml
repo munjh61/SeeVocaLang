@@ -4,11 +4,11 @@ spring:
       client:
         registration:
           kakao:
-            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
+            redirect-uri: ENC(6og+mxVUzEsg7Lf7oTFQefkNeqOrneoUpE3a4WtFiagDHkQNq6H3tOwhYhwZGJhElyNnYOZiOEJ395A9WvrqFg==)
           naver:
-            redirect-uri: http://localhost:8080/login/oauth2/code/naver
+            redirect-uri: ENC(vIOOt6xZkp99nKiFNSKv3MIZfgENlddLFL/VKLPif+3yiH3vMD7QzcKgkYHb4KGvnwU4K+GqyPt2ULXlOlT8fg==)
           google:
-            redirect-uri: http://localhost:8080/login/oauth2/code/google
+            redirect-uri: ENC(yWGqpxmNqpfidKMKke0D11NxvBrb5WWO89t6MDLLA+BjRw0U21Km35L53IfVi2r4MMytt16VeKPM3kXGiae+TA==)
 
 
   datasource:
