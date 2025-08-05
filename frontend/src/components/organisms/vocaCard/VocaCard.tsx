@@ -31,7 +31,7 @@ export const VocaCard = ({
   onDelete,
 }: VocaCardProps) => {
   return (
-    <div className="rounded-md shadow-md w-80 h-100 p-3 inline-flex flex-col gap-2 bg-white select-none relative">
+    <div className="rounded-md shadow-md w-full h-full p-3 inline-flex flex-col gap-2 bg-white select-none relative">
       <img
         src={cardDeco}
         className="absolute inset-0 w-full h-full opacity-20 z-0 pointer-events-none"
