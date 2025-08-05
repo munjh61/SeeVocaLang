@@ -1,5 +1,7 @@
 FROM openjdk:17 AS builder
 
+RUN apt-get update && apt-get install -y findutils
+
 WORKDIR /app
 COPY . .
 RUN chmod +x ./gradlew
