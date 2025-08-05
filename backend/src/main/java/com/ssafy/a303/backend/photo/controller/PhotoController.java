@@ -7,7 +7,6 @@ import com.ssafy.a303.backend.photo.mapper.PhotoMapper;
 import com.ssafy.a303.backend.photo.service.PhotoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,10 +22,10 @@ public class PhotoController {
 
     @PostMapping("/api/v1/photos")
     public BaseResponseDto<ReadObjectDetectionResponseDto> readObjectDetection(
-            @RequestPart("image") MultipartFile file
+            @RequestPart("image") MultipartFile file,
+            @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) {
-        // TODO: JWT 토큰 도입 이후에 변경할 예정입니다.
-        Long userId = 1L;
+        Long userId = customUserDetails.getUserId();
         ReadObjectDetectionResultDto resultDto = photoService.readObjectDetection(PhotoMapper.INSTANCE.toCommandDto(userId, file));
         ReadObjectDetectionResponseDto responseDto = PhotoMapper.INSTANCE.toResponseDto(resultDto);
         return new BaseResponseDto<>(UPLOAD_SUCCESS_MESSAGE, responseDto);
@@ -34,10 +33,10 @@ public class PhotoController {
 
     @PostMapping("/api/v1/photos/words")
     public BaseResponseDto<Void> createWord(
-            @RequestBody CreateWordRequestDto requestDto
+            @RequestBody CreateWordRequestDto requestDto,
+            @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) {
-        // TODO: JWT 토큰 도입 이후에 변경할 예정입니다.
-        Long userId = 1L;
+        Long userId = customUserDetails.getUserId();
         photoService.createWord(PhotoMapper.INSTANCE.toCommandDto(userId, requestDto));
         return BaseResponseDto.<Void>builder()
                 .message(SAVE_WORD_SUCCESS_MESSAGE)
@@ -47,9 +46,10 @@ public class PhotoController {
     @PutMapping("/api/v1/photos/words/{wordId}")
     public BaseResponseDto<Void> updateWord(
             @PathVariable Long wordId,
-            @RequestBody UpdateWordRequestDto requestDto
+            @RequestBody UpdateWordRequestDto requestDto,
+            @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) {
-        Long userId = 1L;
+        Long userId = customUserDetails.getUserId();
         photoService.updateWord(new UpdatePhotoWordCommandDto(userId, wordId, requestDto.imageKey()));
         return BaseResponseDto.<Void>builder()
                 .message(UPDATE_WORD_SUCCESS_MESSAGE)
