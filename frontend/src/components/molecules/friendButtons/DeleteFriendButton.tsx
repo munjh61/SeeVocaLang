@@ -1,40 +1,79 @@
-import { IconButton } from "../iconButton/IconButton";
+import { useState } from "react";
+import { Button } from "../../atoms/button/Button";
+import { Icon } from "../../atoms/icon/Icon";
+import { Text } from "../../atoms/text/Text";
 import DeleteFriendIcon from "../../../asset/friend_del.svg?react";
+import { FriendDeleteConfirmModal } from "../../molecules/friendModal/FriendDeleteModal";
 
 type DeleteFriendButtonProps = {
   className: string;
-  // 친구 ID 같은 것
-  data: string;
-  children?: React.ReactNode;
+  data: number;
+  friendName: string; // ✅ 친구 이름도 받아야 모달에서 보여줄 수 있어요
+  onRequestComplete: () => void;
 };
 
 export const DeleteFriendButton = ({
   className,
   data,
+  friendName,
+  onRequestComplete
 }: DeleteFriendButtonProps) => {
-  const handleSearch = (value: string) => {
-    console.log(value);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const handleDeleteRequest = async () => {
+    try {
+      setLoading(true);
+      // await axios.post("/api/friends/request", { friendId: data }); // 💡 백엔드 API 주소 맞게 수정
+      setIsModalOpen(true); // ✅ 요청 성공 시 완료 모달 열기
+    } catch (error) {
+      console.error("친구 삭제 실패:", error);
+      alert("친구 삭제에 실패했어요.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  
+  
+  
+  
+  const handleDelete = () => {
+    console.log("삭제할 친구 ID:", data);
+    // 여기에 실제 삭제 로직을 추가하세요.
+    setIsModalOpen(false);
+     onRequestComplete();
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
   };
 
   return (
-    <IconButton
-      className={className}
-      IconVariant={{
-        icon: DeleteFriendIcon,
-        color: "white",
-        className: "w-4 h-4",
-      }}
-      ButtonVariant={{
-        bgColor: "red",
-        textColor: "white",
-        children: "",
-        size: "md",
-        className: "gap-1 px-3 py-1.5 ",
-      }}
-      data={data}
-      buttonValue={handleSearch}
-    >
-      친구 삭제
-    </IconButton>
+    <>
+      <Button
+        bgColor="red"
+        textColor="white"
+        size="md"
+        className={`gap-1 px-3 py-1.5 ${className}`}
+        onClick={handleDeleteRequest} // ✅ 모달 열기
+        disabled={loading}
+      >
+        <div className="flex items-center gap-2">
+          <Icon icon={DeleteFriendIcon} color="white" className="w-4 h-4" />
+          <Text size="base" color="white" weight="medium">
+            친구 삭제
+          </Text>
+        </div>
+      </Button>
+
+      {/* ✅ 모달 렌더링 */}
+      <FriendDeleteConfirmModal
+        isOpen={isModalOpen}
+        friendName={friendName}
+        onCancel={handleCancel}
+        onDelete={handleDelete}
+      />
+    </>
   );
 };

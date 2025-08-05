@@ -1,3 +1,4 @@
+import { Button } from "../../atoms/button/Button";
 import { Modal } from "../../atoms/modal/modal";
 
 
@@ -24,18 +25,18 @@ export const FriendDeleteConfirmModal = ({
         </p>
         <p className="text-sm text-gray-400">삭제된 친구는 다시 추가할 수 있습니다.</p>
         <div className="flex gap-4 mt-6">
-          <button
+          <Button
             onClick={onCancel}
             className="px-6 py-2 bg-gray-100 text-gray-700 rounded-xl"
           >
             취소
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={onDelete}
             className="px-6 py-2 bg-gradient-to-r from-orange-400 to-orange-600 text-white rounded-xl"
           >
             삭제
-          </button>
+          </Button>
         </div>
       </div>
     </Modal>
