@@ -12,7 +12,14 @@ import BookIcon from "../../../asset/book.svg?react"
 import CalendarIcon from "../../../asset/calendar.svg?react"
 import TrophyIcon from "../../../asset/trophy.svg?react"
 import ProfileIcon from "../../../asset/profile.svg?react"
+import Calendar from "../../../asset/calicon.svg?react"
+import { useState } from "react"
+import { ProfileModal } from "../profileModal/ProfileModal"
 export const MyPageTemplate = ()=>{
+   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
     return (
 <div className="p-6 bg-gray-100 min-h-screen">
 
@@ -50,13 +57,14 @@ export const MyPageTemplate = ()=>{
   </div>
 
   <div className="flex justify-center">
-    <Button bgColor={"profileButton"} textColor={"white"} size={"long"} >
+    <Button bgColor={"profileButton"} textColor={"white"} size={"long"} onClick={openModal}>
       <div className="flex items-center gap-2">
     <Icon icon={EditIcon} color={"white"} />
     <Text size={"base"} color="white" weight={"medium"}>프로필 수정</Text>
   </div>
     </Button>
   </div>
+  <ProfileModal isOpen={isModalOpen} onClose={closeModal} />
 </div>
 </div>
 
@@ -67,6 +75,11 @@ export const MyPageTemplate = ()=>{
             title="학습 캘린더"
             subtitle="2024년 12월"
             bgColor="from-green-400 to-green-600"
+            rightElement={
+          <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+           <Icon icon={Calendar} color="white" className="w-5 h-5" />
+         </div>
+            }
           />
           <div className="p-4">
             <CalendarCard/>
