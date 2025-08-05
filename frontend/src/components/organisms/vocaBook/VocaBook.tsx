@@ -29,7 +29,7 @@ export const VocaBookCard = ({
 }: VocaBookProps) => {
   return (
     <div
-      className="rounded-md shadow-md w-55 p-3 inline-flex flex-col gap-2 bg-white select-none"
+      className="rounded-md shadow-md w-full p-3 inline-flex flex-col gap-2 bg-white select-none"
       onDragStart={e => e.preventDefault()}
     >
       <div className="relative">

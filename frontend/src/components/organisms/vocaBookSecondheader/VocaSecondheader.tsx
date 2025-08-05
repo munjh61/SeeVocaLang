@@ -18,43 +18,39 @@ export const VocaBookSecondHeader = ({
   onClickCreate,
 }: VocaBookSecondHeaderProps) => {
   return (
-    <div className="flex align-center justify-between">
-      <div>
-        <IconButton
-          IconVariant={{ icon: favorite, color: "white", size: "sm" }}
-          ButtonVariant={{ bgColor: "yellow", textColor: "white", size: "sm" }}
-          className="min-w-25 h-8"
-          buttonValue={onClickFavorite}
-        >
-          즐겨찾기
-        </IconButton>
-      </div>
-      <div className="flex gap-2">
-        <IconButton
-          IconVariant={{
-            icon: isToggle ? all : list,
-            size: "sm",
-            color: "white",
-          }}
-          ButtonVariant={{
-            bgColor: isToggle ? "green" : "orange",
-            textColor: "white",
-            size: "sm",
-          }}
-          buttonValue={onClickToggle}
-          className="min-w-25 h-8"
-        >
-          {isToggle ? "단어장" : "ALL"}
-        </IconButton>
-        <IconButton
-          IconVariant={{ icon: book, size: "sm", color: "white" }}
-          ButtonVariant={{ bgColor: "blue", textColor: "white", size: "sm" }}
-          buttonValue={onClickCreate}
-          className="min-w-25 h-8"
-        >
-          단어장 추가하기
-        </IconButton>
-      </div>
+    <div className="flex align-center gap-4">
+      <IconButton
+        IconVariant={{ icon: favorite, color: "white", size: "sm" }}
+        ButtonVariant={{ bgColor: "yellow", textColor: "white", size: "sm" }}
+        className="min-w-25 h-8"
+        buttonValue={onClickFavorite}
+      >
+        즐겨찾기
+      </IconButton>
+      <IconButton
+        IconVariant={{
+          icon: isToggle ? all : list,
+          size: "sm",
+          color: "white",
+        }}
+        ButtonVariant={{
+          bgColor: isToggle ? "green" : "orange",
+          textColor: "white",
+          size: "sm",
+        }}
+        buttonValue={onClickToggle}
+        className="min-w-25 h-8"
+      >
+        {isToggle ? "단어장" : "ALL"}
+      </IconButton>
+      <IconButton
+        IconVariant={{ icon: book, size: "sm", color: "white" }}
+        ButtonVariant={{ bgColor: "blue", textColor: "white", size: "sm" }}
+        buttonValue={onClickCreate}
+        className="min-w-25 h-8"
+      >
+        단어장 추가하기
+      </IconButton>
     </div>
   );
 };

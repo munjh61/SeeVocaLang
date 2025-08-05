@@ -147,28 +147,29 @@ export const BookSelectTemplate = ({
             className="w-full h-20"
             segmentControl={{
               options: [
-                { value: "book", label: "단어장으로 검색하기" },
-                { value: "word", label: "단어로 검색하기" },
+                { value: "book", label: "단어장 검색" },
+                { value: "word", label: "단어로 검색" },
               ],
             }}
           />
         </div>
-
-        <VocaBookSecondHeader
-          isToggle={isToggle}
-          onClickToggle={() => setIsToggle(prev => !prev)}
-          onClickCreate={openCreateModal}
-          onClickFavorite={() => setIsFavoriteOnly(prev => !prev)}
-        />
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6 bg-[#F3F4FF] py-10 px-5 h-full">
-          {filteredList.map(data => (
-            <VocaBookCard
-              key={data.id}
-              {...data}
-              onEditClick={openEditModal}
-              onToggleFavorite={toggleFavorite}
-            />
-          ))}
+        <div className="flex flex-col gap-4 bg-[#F3F4FF] p-5 h-full">
+          <VocaBookSecondHeader
+            isToggle={isToggle}
+            onClickToggle={() => setIsToggle(prev => !prev)}
+            onClickCreate={openCreateModal}
+            onClickFavorite={() => setIsFavoriteOnly(prev => !prev)}
+          />
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
+            {filteredList.map(data => (
+              <VocaBookCard
+                key={data.id}
+                {...data}
+                onEditClick={openEditModal}
+                onToggleFavorite={toggleFavorite}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>

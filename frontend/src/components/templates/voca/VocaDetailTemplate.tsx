@@ -98,7 +98,6 @@ export const VocaDetailTemplate = ({
           />
         ))}
       </div>
-      <h1>확인용... {bookId}번의 단어장.</h1>
     </div>
   );
 };
