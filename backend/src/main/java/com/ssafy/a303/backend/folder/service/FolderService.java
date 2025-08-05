@@ -13,7 +13,6 @@ import com.ssafy.a303.backend.user.exception.UserNotFoundException;
 import com.ssafy.a303.backend.user.service.UserService;
 import com.ssafy.a303.backend.word.dto.ReadWordResponseDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,8 +26,7 @@ public class FolderService {
 
     @Transactional(readOnly = true)
     public PageResponseDto<ReadFoldersResponseDto> getFolders(ReadFoldersCommandDto readFoldersCommandDto) {
-        List<ReadFoldersResponseDto> folders = folderRepository.findAllByUserId(readFoldersCommandDto.getUserId(),
-                readFoldersCommandDto.getLastId(), PageRequest.of(0, readFoldersCommandDto.getSize()));
+        List<ReadFoldersResponseDto> folders = folderRepository.findAllByUserId(readFoldersCommandDto.getUserId());
 
         boolean hasNext = folders.size() > readFoldersCommandDto.getSize();
 
@@ -36,12 +34,9 @@ public class FolderService {
             folders = folders.subList(0, readFoldersCommandDto.getSize());
         }
 
-        long lastId = folders.isEmpty() ? -1 : folders.get(folders.size() - 1).getFolderId();
-
         return PageResponseDto.<ReadFoldersResponseDto>builder()
                 .message("성공적으로 단어장을 불러왔습니다.")
                 .content(folders)
-                .lastId(lastId)
                 .hasNext(hasNext)
                 .build();
     }
@@ -82,9 +77,7 @@ public class FolderService {
 
     @Transactional(readOnly = true)
     public PageResponseDto<ReadWordResponseDto> getWordsByFolderId(ReadFolderWordCommandDto readFolderWordCommandDto) {
-        List<ReadWordResponseDto> words = folderRepository.deleteAllWordsByFolderId(readFolderWordCommandDto.getFolderId(),
-                readFolderWordCommandDto.getLastId(),
-                PageRequest.of(0, readFolderWordCommandDto.getSize()));
+        List<ReadWordResponseDto> words = folderRepository.deleteAllWordsByFolderId(readFolderWordCommandDto.getFolderId());
 
         boolean hasNext = words.size() > readFolderWordCommandDto.getSize();
 
