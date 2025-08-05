@@ -1,0 +1,16 @@
+import { Navigation } from "../components/organisms/nav/Navigation";
+import VocaSampleDatas from "../components/templates/voca/VocaBookSample";
+import { BookSelectTemplate } from "../components/templates/voca/VocaBookSelectTemplate";
+
+function BookPage() {
+  return (
+    <div className="flex flex-col h-screen">
+      <div className="flex-grow overflow-y-auto">
+        <BookSelectTemplate vocaBookDatas={VocaSampleDatas} />
+      </div>
+      <Navigation loc="book" />
+    </div>
+  );
+}
+
+export default BookPage;

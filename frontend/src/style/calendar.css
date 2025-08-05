@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+/* 커스텀 컴포넌트 스타일 정의 */
+@layer components {
+    /* 전체 달력 컨테이너 스타일 */
+    .react-calendar {
+        @apply !w-full !border !border-none;
+    }
+
+    /* 타일 */
+    .react-calendar__tile {
+        @apply w-1 h-10;
+    }
+
+    /* 상단 네비게이션 (연/월, 이전/다음 버튼 포함) */
+    .react-calendar__navigation {
+        @apply flex items-center justify-between mb-4;
+    }
+
+    /* 상단의 이전/다음 화살표 및 연/월 버튼 */
+    .react-calendar__navigation button {
+        @apply text-lg font-bold hover:text-blue-500 transition;
+    }
+
+    /* 각 날짜 타일 (일자 셀) */
+    .react-calendar__month-view__days__day {
+        @apply p-2 text-center rounded-md hover:bg-gray-100;
+    }
+
+    /* 선택된 날짜 스타일 */
+    .react-calendar__tile--active {
+        @apply !bg-green-500 text-white rounded-md;
+    }
+
+    /* 이달이 아닌 이전/다음 달의 날짜 (옅게 표시) */
+    .react-calendar__month-view__days__day--neighboringMonth {
+        @apply text-gray-300;
+    }
+
+    .react-calendar__navigation__next-button,
+    .react-calendar__navigation__next2-button,
+    .react-calendar__navigation__prev-button,
+    .react-calendar__navigation__prev2-button,
+    .react-calendar__navigation__label{
+        @apply bg-blue-500 text-green-500 rounded-md;
+    }
+
+    .react-calendar__navigation__next-button:hover,
+    .react-calendar__navigation__next2-button:hover,
+    .react-calendar__navigation__prev-button:hover,
+    .react-calendar__navigation__prev2-button:hover,
+    .react-calendar__navigation__label:hover{
+        @apply !bg-gray-100 !text-green-500 rounded-md;
+    }
+}
