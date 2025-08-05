@@ -54,6 +54,7 @@ export const VocaFormModal = ({
             value={title}
             onChange={e => onChangeTitle(e.target.value)}
             placeholder="단어장 이름을 입력하세요"
+            border={"lightgray"}
           />
         </div>
 
@@ -63,6 +64,7 @@ export const VocaFormModal = ({
             value={subtitle}
             onChange={e => onChangeSubtitle(e.target.value)}
             placeholder="단어장 설명을 입력하세요"
+            border={"lightgray"}
           />
         </div>
 
