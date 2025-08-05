@@ -6,12 +6,12 @@ import { EduCard } from "../../molecules/eduCard/EduCard"
 import { MyScoreCard } from "../../molecules/eduCard/MyScoreCard"
 import { MyPageHeader } from "../../molecules/myPage/MyPageHeader"
 import CameraIcon from "../../../asset/camera.svg?react"
-import UploadIcon from "../../../asset/image_upload.svg?react"
+import EditIcon from "../../../asset/edit-line.svg?react"
 import ThunderIcon from "../../../asset/thunder.svg?react"
 import BookIcon from "../../../asset/book.svg?react"
 import CalendarIcon from "../../../asset/calendar.svg?react"
 import TrophyIcon from "../../../asset/trophy.svg?react"
-
+import ProfileIcon from "../../../asset/profile.svg?react"
 export const MyPageTemplate = ()=>{
     return (
 <div className="p-6 bg-gray-100 min-h-screen">
@@ -23,7 +23,9 @@ export const MyPageTemplate = ()=>{
             subtitle="내 정보 관리"
             bgColor="from-purple-500 to-blue-500"
             rightElement={
-              <Button bgColor={"blue"} textColor={"white"} size={"md"}>수정</Button>
+             <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+           <Icon icon={ProfileIcon} color="white" className="w-5 h-5" />
+         </div>
             }
           />
           
@@ -49,8 +51,8 @@ export const MyPageTemplate = ()=>{
   <div className="flex justify-center">
     <Button bgColor={"profileButton"} textColor={"white"} size={"long"}>
       <div className="flex items-center gap-2">
-    <Icon icon={UploadIcon} color={"white"} />
-    <Text size={"base"} color="white" weight={"medium"}>프로필 사진 변경</Text>
+    <Icon icon={EditIcon} color={"white"} />
+    <Text size={"base"} color="white" weight={"medium"}>프로필 수정</Text>
   </div>
     </Button>
   </div>
@@ -103,7 +105,6 @@ export const MyPageTemplate = ()=>{
           </div>
         </div>
       </div>
-      {/* <Navigation loc="mypage" /> */}
     </div>
     )
 }
