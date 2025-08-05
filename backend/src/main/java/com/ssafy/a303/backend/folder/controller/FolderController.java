@@ -82,4 +82,11 @@ public class FolderController {
 
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/api/v1/folders/favorites")
+    public ResponseEntity<PageResponseDto<ReadFoldersResponseDto>> getFavorites(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        PageResponseDto<ReadFoldersResponseDto> response = folderService.getFavorites(userDetails.getUserId());
+
+        return ResponseEntity.ok(response);
+    }
 }

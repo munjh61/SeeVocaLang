@@ -26,7 +26,7 @@ public class FolderService {
 
     @Transactional(readOnly = true)
     public PageResponseDto<ReadFoldersResponseDto> getFolders(ReadFoldersCommandDto readFoldersCommandDto) {
-        List<ReadFoldersResponseDto> folders = folderRepository.findAllByUserId(readFoldersCommandDto.getUserId());
+        List<ReadFoldersResponseDto> folders = folderRepository.findAllByUserId(readFoldersCommandDto.getUserId(), false);
 
         boolean hasNext = folders.size() > readFoldersCommandDto.getSize();
 
@@ -111,5 +111,13 @@ public class FolderService {
     public FolderEntity getFolderById(long folderId) {
         return folderRepository.findById(folderId)
                 .orElseThrow(() -> new FolderNotFoundException(CommonErrorCode.RESOURCE_NOT_FOUND));
+    }
+
+    public PageResponseDto<ReadFoldersResponseDto> getFavorites(long userId) {
+        List<ReadFoldersResponseDto> folders = folderRepository.findAllByUserId(userId, true);
+
+        return PageResponseDto.<ReadFoldersResponseDto>builder()
+                .content(folders)
+                .build();
     }
 }
