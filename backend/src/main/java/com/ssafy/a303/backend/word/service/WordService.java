@@ -3,7 +3,10 @@ package com.ssafy.a303.backend.word.service;
 import com.ssafy.a303.backend.common.dto.BaseResponseDto;
 import com.ssafy.a303.backend.common.dto.PageResponseDto;
 import com.ssafy.a303.backend.common.exception.CommonErrorCode;
-import com.ssafy.a303.backend.word.dto.*;
+import com.ssafy.a303.backend.word.dto.CreateWordCommandDto;
+import com.ssafy.a303.backend.word.dto.DeleteWordCommandDto;
+import com.ssafy.a303.backend.word.dto.ReadWordCommandDto;
+import com.ssafy.a303.backend.word.dto.ReadWordResponseDto;
 import com.ssafy.a303.backend.word.entity.WordEntity;
 import com.ssafy.a303.backend.word.exception.WordNotAccessibleRuntimeException;
 import com.ssafy.a303.backend.word.exception.WordNotFoundException;
@@ -16,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -77,7 +79,7 @@ public class WordService {
                 .orElse(null);
     }
 
-    public void createWord(CreateWordCommandDto comandDto) {
+    public WordEntity createWord(CreateWordCommandDto comandDto) {
         WordEntity wordEntity = WordEntity.builder()
                 .user(comandDto.user())
                 .nameEn(comandDto.nameEn())
@@ -85,7 +87,7 @@ public class WordService {
                 .imageUrl(comandDto.imageUrl())
                 .build();
 
-        wordRepository.save(wordEntity);
+        return wordRepository.save(wordEntity);
     }
 
     public void updateWord(Long wordId, Long userId, String imageUrl) {

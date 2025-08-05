@@ -5,6 +5,9 @@ import com.ssafy.a303.backend.common.exception.CommonErrorCode;
 import com.ssafy.a303.backend.common.utility.redis.RedisWordImageHelper;
 import com.ssafy.a303.backend.common.utility.redis.RedisWordImage;
 import com.ssafy.a303.backend.common.utility.s3.ImageUploader;
+import com.ssafy.a303.backend.folder.entity.FolderEntity;
+import com.ssafy.a303.backend.folder.service.FolderService;
+import com.ssafy.a303.backend.folderword.service.FolderWordService;
 import com.ssafy.a303.backend.photo.dto.CreateWordPhotoCommandDto;
 import com.ssafy.a303.backend.photo.dto.ReadObjectDetectionCommandDto;
 import com.ssafy.a303.backend.photo.dto.ReadObjectDetectionResultDto;
@@ -14,6 +17,7 @@ import com.ssafy.a303.backend.user.entity.UserEntity;
 import com.ssafy.a303.backend.user.exception.UserNotFoundException;
 import com.ssafy.a303.backend.user.service.UserService;
 import com.ssafy.a303.backend.word.dto.CreateWordCommandDto;
+import com.ssafy.a303.backend.word.entity.WordEntity;
 import com.ssafy.a303.backend.word.exception.WordAlreadExistException;
 import com.ssafy.a303.backend.word.service.WordService;
 import jakarta.transaction.Transactional;
@@ -29,6 +33,8 @@ public class PhotoService {
     private final AIServerClient aiServerClient;
 
     private final WordService wordService;
+    private final FolderWordService folderWordService;
+    private final FolderService folderService;
     private final UserService userService;
 
     public ReadObjectDetectionResultDto readObjectDetection(ReadObjectDetectionCommandDto command) {
@@ -55,7 +61,10 @@ public class PhotoService {
                 .orElseThrow(() -> new UserNotFoundException(CommonErrorCode.RESOURCE_NOT_FOUND));
 
         CreateWordCommandDto createWordCommandDto = new CreateWordCommandDto(commandDto.nameEn(), commandDto.nameKo(), imageUrl, userEntity);
-        wordService.createWord(createWordCommandDto);
+        WordEntity wordEntity = wordService.createWord(createWordCommandDto);
+        FolderEntity folderEntity = folderService.getFolderById(commandDto.folderId());
+        folderWordService.saveWordInFolder(wordEntity, folderEntity);
+
         redisWordImageHelper.deleteImage(userId, word);
     }
 
