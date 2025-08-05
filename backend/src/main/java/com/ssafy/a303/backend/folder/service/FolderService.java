@@ -120,4 +120,15 @@ public class FolderService {
                 .content(folders)
                 .build();
     }
+
+    public BaseResponseDto<Void> updateFavorite(long folderId, boolean favorite) {
+        FolderEntity folder = folderRepository.findById(folderId)
+                .orElseThrow(() -> new FolderNotFoundException(CommonErrorCode.RESOURCE_NOT_FOUND));
+
+        folder.setFavorite(favorite);
+
+        return BaseResponseDto.<Void>builder()
+                .message("성공적으로 즐겨 찾기를 수정했습니다.")
+                .build();
+    }
 }

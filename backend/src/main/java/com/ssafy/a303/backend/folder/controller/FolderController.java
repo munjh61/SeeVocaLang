@@ -89,4 +89,18 @@ public class FolderController {
 
         return ResponseEntity.ok(response);
     }
+
+    @PostMapping("/api/v1/folders/{folderId}/favorites")
+    public ResponseEntity<BaseResponseDto<Void>> registerFavorite(@PathVariable long folderId) {
+        BaseResponseDto<Void> response = folderService.updateFavorite(folderId, true);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/api/v1/folders/{folderId}/favorites")
+    public ResponseEntity<BaseResponseDto<Void>> removeFavorite(@PathVariable long folderId) {
+        BaseResponseDto<Void> response = folderService.updateFavorite(folderId, false);
+
+        return ResponseEntity.ok(response);
+    }
 }
