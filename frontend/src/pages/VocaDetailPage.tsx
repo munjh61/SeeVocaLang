@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { Navigation } from "../components/organisms/nav/Navigation";
 import { VocaDetailTemplate } from "../components/templates/voca/VocaDetailTemplate";
-import VocaCardSample from "../components/templates/voca/VocaCardSample";
+import VocaCardSample from "../components/templates/voca/SampleVocaCard";
 
 function VocaDetailPage() {
   const { bookId } = useParams<{ bookId: string }>();

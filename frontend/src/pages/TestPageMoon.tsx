@@ -1,10 +1,10 @@
-import apple from "../asset/png/apple.png";
-import { VocaCard } from "../components/organisms/vocaCard/VocaCard";
+import { QuizTemplate } from "../components/templates/quiz/QuizTemplate";
+import VocaCardSample from "../components/templates/voca/SampleVocaCard";
 
 function TestPageMoon() {
   return (
     <>
-      <VocaCard imgUrl={apple} nameEn="Apple" nameKo="사과" />
+      <QuizTemplate vocaCardDatas={VocaCardSample}></QuizTemplate>
     </>
   );
 }

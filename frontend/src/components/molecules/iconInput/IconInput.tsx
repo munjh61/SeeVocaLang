@@ -36,13 +36,13 @@ export const IconInput = ({
     <div className={`w-full h-full flex items-center gap-2 ${className}`}>
       <Icon {...iconVariant} />
       <Input
-        {...inputVariant}
         onKeyDown={pressEnter}
         onChange={e => {
           inputProps?.onChange?.(e);
           onChange?.(e.target.value);
         }}
         {...inputProps}
+        {...inputVariant}
       />
     </div>
   );

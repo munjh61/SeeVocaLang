@@ -1,5 +1,5 @@
 import { Navigation } from "../components/organisms/nav/Navigation";
-import VocaSampleDatas from "../components/templates/voca/VocaBookSample";
+import VocaSampleDatas from "../components/templates/voca/SampleVocaBook";
 import { BookSelectTemplate } from "../components/templates/voca/VocaBookSelectTemplate";
 
 function BookPage() {

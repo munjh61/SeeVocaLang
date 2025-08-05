@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { ToggleButton } from "../../molecules/toggleButton/ToggleButton";
-import { SearchbarSegment } from "../../organisms/searchbarSegment/SearchbarSegment";
 import {
   VocaCard,
   type VocaCardProps,
@@ -8,6 +7,7 @@ import {
 import hangul from "hangul-js";
 import { IconButton } from "../../molecules/iconButton/IconButton";
 import { useNavigate } from "react-router-dom";
+import { Searchbar } from "../../organisms/searchbarSegment/Searchbar";
 
 type VocaDetailTemplateProps = {
   bookId: number;
@@ -40,65 +40,58 @@ export const VocaDetailTemplate = ({
 
   return (
     <div className="flex flex-col px-5 w-full gap-4">
-      <div>
-        <div className="flex flex-row">
-          <div className="flex py-4 pl-4 bg-gray-100 rounded-r-sm">
-            <IconButton
-              ButtonVariant={{
-                bgColor: "purple",
-                textColor: "white",
-                size: "xxxl",
-              }}
-              buttonValue={() => navigate(-1)}
-              className="w-30"
-            >
-              뒤로 가기
-            </IconButton>
-          </div>
-          <SearchbarSegment
-            iconColor="blue"
-            onSearch={searchFunction}
-            className="w-full h-20 rounded-r-none"
-          />
-          <div className="flex flex-row gap-2 py-4 pr-4 bg-gray-100 rounded-r-sm">
-            <ToggleButton
-              selected={blurEn}
-              onClick={() => setblurEn(prev => !prev)}
-            >
-              영어가리기
-            </ToggleButton>
-            <ToggleButton
-              selected={blurKo}
-              onClick={() => setblurKo(prev => !prev)}
-            >
-              한글가리기
-            </ToggleButton>
-            <IconButton
-              ButtonVariant={{
-                bgColor: "purple",
-                textColor: "white",
-              }}
-              path={`/quiz?bookId=${bookId}`}
-              className="w-30"
-            >
-              퀴즈 풀기
-            </IconButton>
-          </div>
+      <div className="flex flex-row gap-4 p-4 bg-gray-100">
+        <IconButton
+          ButtonVariant={{
+            bgColor: "purple",
+            textColor: "white",
+            size: "xxxl",
+          }}
+          buttonValue={() => navigate(-1)}
+          className="w-30"
+        >
+          뒤로 가기
+        </IconButton>
+        <Searchbar iconColor="blue" onSearch={searchFunction} />
+        <IconButton
+          ButtonVariant={{
+            bgColor: "purple",
+            textColor: "white",
+          }}
+          path={`/quiz/${bookId}`}
+          className="w-30"
+        >
+          퀴즈 풀기
+        </IconButton>
+      </div>
+      <div className="flex flex-col gap-4 bg-[#F3F4FF] p-4 h-full">
+        <div className="flex flex-row gap-2">
+          <ToggleButton
+            selected={blurEn}
+            onClick={() => setblurEn(prev => !prev)}
+          >
+            영어가리기
+          </ToggleButton>
+          <ToggleButton
+            selected={blurKo}
+            onClick={() => setblurKo(prev => !prev)}
+          >
+            한글가리기
+          </ToggleButton>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
+          {filteredList.map(card => (
+            <VocaCard
+              key={card.wordId}
+              {...card}
+              blurEn={blurEn}
+              blurKo={blurKo}
+              onDelete={() => deleteFunction(card.wordId!)}
+              books={card.books}
+            />
+          ))}
         </div>
       </div>
-      <div className="flex gap-4 flex-wrap justify-center bg-[#F3F4FF] py-10 px-5 h-full">
-        {filteredList.map(card => (
-          <VocaCard
-            key={card.wordId}
-            {...card}
-            blurEn={blurEn}
-            blurKo={blurKo}
-            onDelete={() => deleteFunction(card.wordId!)}
-            books={card.books}
-          />
-        ))}
-      </div>
-      <h1>확인용... {bookId}번의 단어장.</h1>
     </div>
   );
 };

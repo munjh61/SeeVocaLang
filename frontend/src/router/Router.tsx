@@ -10,7 +10,11 @@ import FriendPage from "../pages/FriendPage.tsx";
 import MyPage from "../pages/MyPage.tsx";
 import { SignupFlow } from "../components/organisms/signUp/SignupFlow.tsx";
 import VocaDetailPage from "../pages/VocaDetailPage.tsx";
+<<<<<<< HEAD
 import { LoginPage } from "../pages/LoginPage.tsx";
+=======
+import QuizPage from "../pages/QuizPage.tsx";
+>>>>>>> feat/9
 
 export const Router = () => {
   return (
@@ -22,6 +26,7 @@ export const Router = () => {
         <Route path="/doh" element={<TestPageDoh />} />
         <Route path="/book" element={<BookPage />} />
         <Route path="/book/:bookId" element={<VocaDetailPage />} />
+        <Route path="/quiz/:bookId" element={<QuizPage />} />
         <Route path="/game" element={<GamePage />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/friend" element={<FriendPage />} />

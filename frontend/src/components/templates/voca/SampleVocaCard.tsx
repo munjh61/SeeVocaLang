@@ -4,7 +4,9 @@ import bear from "../../../asset/png/bear.png";
 import duck from "../../../asset/png/duck.png";
 import fish from "../../../asset/png/fish.png";
 import fox from "../../../asset/png/fox.png";
-import pig from "../../../asset/png/pig.png";
+import hippo from "../../../asset/png/hippo.png";
+import owl from "../../../asset/png/owl.png";
+import squirrel from "../../../asset/png/squirrel.png";
 
 const VocaCardSample: VocaCardProps[] = [
   {
@@ -53,24 +55,24 @@ const VocaCardSample: VocaCardProps[] = [
   },
   {
     wordId: 6,
-    imgUrl: pig,
+    imgUrl: hippo,
     audioUrl: "https://example.com/audio/laptop.mp3",
-    nameEn: "pig",
-    nameKo: "돼지",
+    nameEn: "hippo",
+    nameKo: "하마",
   },
   {
     wordId: 7,
-    imgUrl: apple,
-    audioUrl: "https://example.com/audio/clock.mp3",
-    nameEn: "clock",
-    nameKo: "시계",
+    imgUrl: owl,
+    audioUrl: "https://example.com/audio/owl.mp3",
+    nameEn: "owl",
+    nameKo: "부엉이",
   },
   {
     wordId: 8,
-    imgUrl: apple,
-    audioUrl: "https://example.com/audio/phone.mp3",
-    nameEn: "phone",
-    nameKo: "핸드폰",
+    imgUrl: squirrel,
+    audioUrl: "https://example.com/audio/squirrel.mp3",
+    nameEn: "squirrel",
+    nameKo: "다람쥐",
   },
 ];
 
