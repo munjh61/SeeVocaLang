@@ -27,5 +27,5 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     boolean existsByNickname(String nickname);
 
     // 이미 등록된 이메일인지 체크
-    boolean existsByEmail(String email);
+    boolean existsByEmailAndIsDeletedFalse(String email);
 }

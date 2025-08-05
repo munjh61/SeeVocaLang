@@ -36,7 +36,7 @@ public class UserService {
     }
 
     public void sendEmailVerificationCode(Long userId, String email) {
-        if (userRepository.existsByEmail(email)) {
+        if (userRepository.existsByEmailAndIsDeletedFalse(email)) {
             log.warn("이메일 인증코드 전송 실패 - 이메일 중복: email={}", email);
             throw new EmailSendException(EmailErrorCode.EMAIL_ALREADY_EXISTS);
         }
