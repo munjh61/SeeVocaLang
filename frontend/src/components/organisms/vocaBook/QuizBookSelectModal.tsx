@@ -31,7 +31,7 @@ export const QuizBookSelectModal = ({
               }}
               buttonValue={() => {
                 onClose(); // 모달 닫기
-                navigate(`/quiz?bookId=${book.id}`); // 페이지 이동
+                navigate(`/quiz/${book.id}`); // 페이지 이동
               }}
               className="w-full"
             >

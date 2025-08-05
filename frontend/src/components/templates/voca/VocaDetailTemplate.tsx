@@ -58,7 +58,7 @@ export const VocaDetailTemplate = ({
             bgColor: "purple",
             textColor: "white",
           }}
-          path={`/quiz?bookId=${bookId}`}
+          path={`/quiz/${bookId}`}
           className="w-30"
         >
           퀴즈 풀기
