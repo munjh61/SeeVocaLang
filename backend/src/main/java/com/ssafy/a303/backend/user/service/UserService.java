@@ -33,7 +33,7 @@ public class UserService {
     private final ImageUploader imageUploader;
 
     public Optional<UserEntity> getUser(Long userId) {
-        Optional<UserEntity> user = userRepository.findById(userId);
+        Optional<UserEntity> user = userRepository.findByUserIdAndIsDeletedFalse(userId);
         if (user.isEmpty()) {
             log.warn("사용자 조회 실패 - 사용자 없음: userId={}", userId);
         }
