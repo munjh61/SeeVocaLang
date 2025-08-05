@@ -6,6 +6,7 @@ import { Input } from "../atoms/input/Input.tsx";
 import { Checkbox } from "../atoms/Checkbox.tsx";
 import { Button } from "../atoms/button/Button.tsx";
 import { useNavigate } from "react-router-dom";
+import { signin } from "../../api/LoginApi.ts";
 
 export const Login = () => {
   const [id, setId] = useState("");
@@ -35,7 +36,7 @@ export const Login = () => {
   // 로그인 처리
   const handleLogin = () => {
     console.log("로그인 시도:", { id, password });
-    // TODO: 실제 로그인 API 호출 등 처리
+    signin(id, password);
   };
 
   const handleSubmit = (e: React.FormEvent) => {

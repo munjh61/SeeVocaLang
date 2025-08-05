@@ -1,22 +1,39 @@
 // 임시 api
+import axios from "axios";
+
+const BASE_URL =
+  "http://ec2-13-125-250-93.ap-northeast-2.compute.amazonaws.com:8080";
+
 export const checkIdDuplicate = async (id: string): Promise<boolean> => {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      const isAvailable = id !== "dojin9654";
-      resolve(isAvailable);
-    }, 800);
-  });
+  try {
+    const response = await axios.get(`${BASE_URL}/api/v1/auth/validation-id`, {
+      params: { value: id },
+    });
+    console.log("응답 메시지 : ", response.data.message);
+
+    return response.status === 200;
+  } catch (error) {
+    console.error("❌ 아이디 중복 확인 실패", error);
+    return false;
+  }
 };
 
 export const checkNicknameDuplicate = async (
   nickname: string
 ): Promise<boolean> => {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      const isAvailable = nickname !== "김도현";
-      resolve(isAvailable);
-    }, 800);
-  });
+  try {
+    const response = await axios.get(
+      `${BASE_URL}/api/v1/auth/validation-nickname`,
+      {
+        params: { value: nickname },
+      }
+    );
+    console.log("닉네임 중복 여부 : ", response.data.message);
+    return response.status === 200;
+  } catch (error) {
+    console.error("❌ 닉네임 중복 확인 실패", error);
+    return false;
+  }
 };
 
 export const registerUser = async (form: {
