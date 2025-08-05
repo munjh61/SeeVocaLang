@@ -4,8 +4,6 @@ import {
   VocaBookCard,
   type VocaBookProps,
 } from "../../organisms/vocaBook/VocaBook";
-import { Modal } from "../../atoms/modal/modal";
-import { VocaForm } from "../../organisms/vocaBook/vocaBookForm";
 import hangul from "hangul-js";
 import { IconButton } from "../../molecules/iconButton/IconButton";
 import { useNavigate } from "react-router-dom";

@@ -53,6 +53,18 @@ export const VocaDetailTemplate = ({
           뒤로 가기
         </IconButton>
         <Searchbar iconColor="blue" onSearch={searchFunction} />
+        <IconButton
+          ButtonVariant={{
+            bgColor: "purple",
+            textColor: "white",
+          }}
+          path={`/quiz?bookId=${bookId}`}
+          className="w-30"
+        >
+          퀴즈 풀기
+        </IconButton>
+      </div>
+      <div className="flex flex-col gap-4 bg-[#F3F4FF] p-4 h-full">
         <div className="flex flex-row gap-2">
           <ToggleButton
             selected={blurEn}
@@ -66,29 +78,19 @@ export const VocaDetailTemplate = ({
           >
             한글가리기
           </ToggleButton>
-          <IconButton
-            ButtonVariant={{
-              bgColor: "purple",
-              textColor: "white",
-            }}
-            path={`/quiz?bookId=${bookId}`}
-            className="w-30"
-          >
-            퀴즈 풀기
-          </IconButton>
         </div>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
-        {filteredList.map(card => (
-          <VocaCard
-            key={card.wordId}
-            {...card}
-            blurEn={blurEn}
-            blurKo={blurKo}
-            onDelete={() => deleteFunction(card.wordId!)}
-            books={card.books}
-          />
-        ))}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
+          {filteredList.map(card => (
+            <VocaCard
+              key={card.wordId}
+              {...card}
+              blurEn={blurEn}
+              blurKo={blurKo}
+              onDelete={() => deleteFunction(card.wordId!)}
+              books={card.books}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
