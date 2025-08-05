@@ -25,8 +25,7 @@ public class FolderWordEntity {
     private FolderEntity folder;
 
     @Builder
-    public FolderWordEntity(long id, WordEntity word, FolderEntity folder) {
-        this.id = id;
+    public FolderWordEntity(WordEntity word, FolderEntity folder) {
         this.word = word;
         this.folder = folder;
     }
