@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
@@ -17,6 +18,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Arrays;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class AuthController {
@@ -70,6 +72,7 @@ public class AuthController {
         String refreshToken = extractRefreshTokenFromCookie(request);
 
         if (!StringUtils.hasText(refreshToken)) {
+            log.warn("로그아웃 실패 - 리프레시 토큰 없음");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                     BaseResponseDto.<Void>builder()
                             .message(ResponseMessages.SIGN_OUT_NO_REFRESH_TOKEN)

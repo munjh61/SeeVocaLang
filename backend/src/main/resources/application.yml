@@ -79,6 +79,22 @@ spring:
       s3:
         bucket-name: ENC(UOSrTPaHVuHvR9uCBSTCnZ0AqGz9wwtM)
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ENC(Rle6A8ba1tA+ddwlW3cftmfGXEaohBj4)
+    password: ENC(kYqjD2+EY1OBD3TiU46Kqcxk0oMh+H3Ff0veFrOQz3s=)
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+email:
+  verification:
+    ttl: 5m
+
 jwt:
   secret: ${JWT_SECRET:see-vocabulary-language-ssafy-project-a303}
   access-minutes: 15m
