@@ -28,7 +28,6 @@ public class AIServerClient {
                     .retrieve()
                     .body(String.class);
         } catch (RestClientException exception) {
-            System.out.println(exception.getMessage());
             throw new PhotoUnRecognizableImageRuntimeException();
         }
     }
