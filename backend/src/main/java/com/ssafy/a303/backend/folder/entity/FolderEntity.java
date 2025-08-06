@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
@@ -24,6 +25,7 @@ public class FolderEntity {
     private String description;
 
     @Column(nullable = false)
+    @Setter
     private boolean isFavorite = false;
     @Column(nullable = false)
     private boolean isDefault = false;
