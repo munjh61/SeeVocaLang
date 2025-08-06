@@ -3,6 +3,7 @@ package com.ssafy.a303.backend.folderword.entity;
 import com.ssafy.a303.backend.folder.entity.FolderEntity;
 import com.ssafy.a303.backend.word.entity.WordEntity;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -22,4 +23,10 @@ public class FolderWordEntity {
     @ManyToOne
     @JoinColumn(name = "folder_id", nullable = false)
     private FolderEntity folder;
+
+    @Builder
+    public FolderWordEntity(WordEntity word, FolderEntity folder) {
+        this.word = word;
+        this.folder = folder;
+    }
 }

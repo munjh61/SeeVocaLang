@@ -7,7 +7,8 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum PhotoErrorCode implements ErrorCode {
-    PHOTO_NOT_READABLE(400, "업로드한 이미지를 읽어올 수 없습니다.");
+    PHOTO_NOT_READABLE(400, "업로드한 이미지를 읽어올 수 없습니다."),
+    CANNOT_RECOGNIZE_OBJECT_FROM_IMAGE(500, "업로드한 이미지로부터 객체를 인식하지 못 했습니다.");
 
     private final int statusCode;
     private final String message;

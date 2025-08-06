@@ -51,10 +51,11 @@ public class FolderController {
     }
 
     @DeleteMapping("/api/v1/folders/{folderId}")
-    public ResponseEntity<BaseResponseDto<Void>> deleteFolder(@PathVariable long folderId) {
+    public ResponseEntity<BaseResponseDto<Void>> deleteFolder(@PathVariable long folderId,
+                                                              @AuthenticationPrincipal CustomUserDetails userDetails) {
         BaseResponseDto<Void> response = folderService.deleteFolder(DeleteFolderCommandDto.builder()
                 .folderId(folderId)
-                .userId(1L)
+                .userId(userDetails.getUserId())
                 .build());
 
         return ResponseEntity.ok(response);
@@ -62,9 +63,10 @@ public class FolderController {
 
     @PutMapping("/api/v1/folders/{folderId}")
     public ResponseEntity<BaseResponseDto<Void>> updateFolder(@PathVariable long folderId,
-                                                              @RequestBody UpdateFolderRequestDto updateFolderRequestDto) {
+                                                              @RequestBody UpdateFolderRequestDto updateFolderRequestDto,
+                                                              @AuthenticationPrincipal CustomUserDetails userDetails) {
         BaseResponseDto<Void> response = folderService.updateFolder(FolderMapper.INSTANCE
-                .toUpdateFolderCommandDto(updateFolderRequestDto, folderId, 1L));
+                .toUpdateFolderCommandDto(updateFolderRequestDto, folderId, userDetails.getUserId()));
 
         return ResponseEntity.ok(response);
     }

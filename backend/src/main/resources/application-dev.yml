@@ -1,0 +1,81 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
+          naver:
+            redirect-uri: http://localhost:8080/login/oauth2/code/naver
+          google:
+            redirect-uri: http://localhost:8080/login/oauth2/code/google
+
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ENC(aJIPyJadZudun81iUJTO9obGowF69PrvJwqE31dv43Vh0uBSGktOIg==)
+    username: ENC(IYZIRo9c4O+Gs2Ya1HNnmg==)
+    password: ENC(4PJm8RlrVLS/fjFOPlx4FLF2nXdmHnk3)
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: ""
+
+  cloud:
+    aws:
+      region:
+        static: ENC(BtfL0sVwdELMPhALyb0MTIe46MJbeKIW)
+      credentials:
+        access-key: ENC(hCxkFZn+/uKzGBJN8mbssw4ZdWlxwEh6RcGEgRPx/eg=)
+        secret-key: ENC(XN2PxgNxu/xBd+R+M0TIk9ILh0K5aDcSQIXswnzlt66sjSPe2j4u1+t0eVzYiBrXdZkQgks98ns=)
+      s3:
+        bucket-name: ENC(UOSrTPaHVuHvR9uCBSTCnZ0AqGz9wwtM)
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ENC(Rle6A8ba1tA+ddwlW3cftmfGXEaohBj4)
+    password: ENC(kYqjD2+EY1OBD3TiU46Kqcxk0oMh+H3Ff0veFrOQz3s=)
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+email:
+  verification:
+    ttl: 5m
+
+jwt:
+  secret: ${JWT_SECRET:see-vocabulary-language-ssafy-project-a303}
+  access-minutes: 15m
+  refresh-days: 14d
+
+logging:
+  level:
+    org.springframework.security.oauth2: DEBUG
+    org.springframework.security: DEBUG
+    com.ssafy.a303.backend: DEBUG
+
+  servlet:
+    multipart:
+      max-file-size: 15MB
+      max-request-size: 15MB
+
+server:
+  tomcat:
+    max-http-form-post-size: 15MB
+
+  ai:
+    url: ENC(BxEDzsvkHllg+FKfx0nqa5mbta3+r28LkC/Q8MmdXuDxurtPQgdRSw==)
