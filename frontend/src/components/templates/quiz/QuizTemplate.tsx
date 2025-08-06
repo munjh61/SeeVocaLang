@@ -54,7 +54,7 @@ export const QuizTemplate = ({
   // 조건부 렌더링은 아래에서 처리
   if (!current || quizDatas.length === 0) return null;
 
-  const goToNext = () => setCurrentIndex(prev => prev + 1);
+  const goToNext = () => setCurrentIndex((prev) => prev + 1);
 
   return (
     <div className="flex flex-col grow p-2 gap-2">
@@ -72,7 +72,8 @@ export const QuizTemplate = ({
               { label: "한글", value: "ko" },
             ]}
             defaultValue="en"
-            onChange={v => setLang(v)}
+            // ✅ 타입 단언 추가하여 빌드 에러 방지
+            onChange={(v) => setLang(v as "en" | "ko")}
           />
         </div>
         <Quiz
@@ -94,9 +95,9 @@ function getQuizOptions(
   all: VocaCardProps[],
   answer: VocaCardProps
 ): { en: string; ko: string }[] {
-  const wrongChoices = shuffle(all.filter(v => v.nameEn !== answer.nameEn))
+  const wrongChoices = shuffle(all.filter((v) => v.nameEn !== answer.nameEn))
     .slice(0, 7)
-    .map(v => ({ en: v.nameEn, ko: v.nameKo }));
+    .map((v) => ({ en: v.nameEn, ko: v.nameKo }));
 
   return shuffle([{ en: answer.nameEn, ko: answer.nameKo }, ...wrongChoices]);
 }

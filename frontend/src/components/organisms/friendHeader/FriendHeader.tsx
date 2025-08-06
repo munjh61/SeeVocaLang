@@ -11,24 +11,27 @@ type FriendHeaderProps = {
   setSelectedTab: (tab: TabKey) => void;
 };
 
-export const FriendHeader = ({ 
-  searchValue, 
+export const FriendHeader = ({
+  searchValue,
   onSearchChange,
   selectedTab,
-  setSelectedTab, 
-  }: FriendHeaderProps) => {
+  setSelectedTab,
+}: FriendHeaderProps) => {
   return (
     <div className="space-y-4">
       <Text
-      size="sm"
-      weight="bold"
-      color="black"
-      align="center"
-      className="mt-4"
+        size="sm"
+        weight="bold"
+        color="black"
+        align="center"
+        className="mt-4"
       >
-      친구를 찾고 함께 영어를 학습해보세요!
+        친구를 찾고 함께 영어를 학습해보세요!
       </Text>
-      <FriendNavBar selectedTab={selectedTab} setSelectedTab={setSelectedTab}  />
+      <FriendNavBar
+        selectedTab={selectedTab}
+        setSelectedTab={(tab) => setSelectedTab(tab)}
+      />
 
       <FriendSearchBar value={searchValue} onChange={onSearchChange} />
     </div>

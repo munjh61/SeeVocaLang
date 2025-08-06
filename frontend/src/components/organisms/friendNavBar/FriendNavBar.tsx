@@ -1,17 +1,20 @@
-
 import SearchIcon from "../../../asset/search.svg?react";
 import BellIcon from "../../../asset/bell.svg?react";
 
 import { NavTab } from "../../molecules/friend/NavTab";
 
-type TabKey = "search" | "friend" | "request";
+// ✅ 외부에서 사용할 수 있게 export 추가!
+export type TabKey = "search" | "friend" | "request";
 
 type FriendNavBarProps = {
   selectedTab: TabKey;
   setSelectedTab: (tab: TabKey) => void;
 };
 
-export const FriendNavBar = ({ selectedTab, setSelectedTab }: FriendNavBarProps) => {
+export const FriendNavBar = ({
+  selectedTab,
+  setSelectedTab,
+}: FriendNavBarProps) => {
   return (
     <div className="flex gap-2 px-4 py-2 bg-white sticky top-0 z-50 justify-end">
       <NavTab

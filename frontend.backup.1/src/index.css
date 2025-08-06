@@ -1,0 +1,26 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
+@import "tailwindcss";
+
+@theme {
+  --default-font-family: "Pretendard", "sans-serif";
+
+}
+
+/* 단어 카드에서 사용하는 폰트 */
+@font-face {
+  font-family: 'SDSamliphopangche_Outline';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts-20-12@1.0/SDSamliphopangche_Outline.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+.font-sds-outline {
+  font-family: 'SDSamliphopangche_Outline', sans-serif;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}

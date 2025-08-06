@@ -5,7 +5,11 @@ type QuizDonePageProps = {
   size?: number;
 };
 
-export const QuizDoneTemplate = ({ bookname, size }: QuizDonePageProps) => {
+export const QuizDoneTemplate = ({
+  bookname,
+  size: _size,
+}: QuizDonePageProps) => {
+  // ✅ TS6133: 'size' is declared but its value is never read → _size로 이름 바꿔 경고 제거
   return (
     <Div>
       <h1>놀라워요!</h1>
