@@ -5,14 +5,33 @@ import { CalendarCard } from "../../molecules/calendarCard/CalendarCard"
 import { EduCard } from "../../molecules/eduCard/EduCard"
 import { MyScoreCard } from "../../molecules/eduCard/MyScoreCard"
 import { MyPageHeader } from "../../molecules/myPage/MyPageHeader"
-import CameraIcon from "../../../asset/camera.svg?react"
 import EditIcon from "../../../asset/edit-line.svg?react"
 import ThunderIcon from "../../../asset/thunder.svg?react"
 import BookIcon from "../../../asset/book.svg?react"
 import CalendarIcon from "../../../asset/calendar.svg?react"
 import TrophyIcon from "../../../asset/trophy.svg?react"
 import ProfileIcon from "../../../asset/profile.svg?react"
+import Calendar from "../../../asset/calicon.svg?react"
+import { useEffect, useState } from "react"
+import { ProfileModal } from "../profileModal/ProfileModal"
 export const MyPageTemplate = ()=>{
+   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+  const [profileImage, setProfileImage] = useState<string | null>(null);
+
+  useEffect(() => {
+    // 예시: 백엔드 API로부터 이미지 URL 받기
+    fetch("/api/user/me")
+      .then((res) => res.json())
+      .then((data) => {
+        setProfileImage(data.profileImageUrl); // 예: "https://example.com/images/user123.jpg"
+      })
+      .catch((err) => {
+        console.error("프로필 이미지 로딩 실패:", err);
+      });
+  }, []);
     return (
 <div className="p-6 bg-gray-100 min-h-screen">
 
@@ -30,18 +49,23 @@ export const MyPageTemplate = ()=>{
             }
           />
           
-          <div className="flex flex-col gap-10 p-4">  
-  <div className="flex items-center gap-5">
-    <Button
-      bgColor={"gradientPurple"}
-      rounded={"full"}
-      className={"relative w-20 h-20"}
-    >
-      <Icon icon={CameraIcon} color={"white"} size={"lg"} />
-      <span className="absolute top-0 right-0 bg-yellow-400 text-white text-xs px-1.5 py-0.5 rounded-full">
-        ✨
-      </span>
-    </Button>
+        <div className="flex flex-col gap-10 p-4">  
+          <div className="flex items-center gap-5">
+            <Button
+              bgColor={"gradientPurple"}
+              rounded={"full"}
+              className={"relative w-20 h-20"}
+            >
+          {profileImage ? (
+        <img
+          src={profileImage}
+          alt="프로필 이미지"
+          className="w-full h-full object-cover rounded-full"
+        />
+      ) : (
+        <span className="text-white text-sm">No Image</span>
+      )}
+        </Button>
     <div className="flex flex-col gap-1">
       <Text size="xl" weight="extrabold" color="black">줄리언 홀란드</Text>
       <Text size="sm" weight="normal" color="gray">생년월일: 1996.09.19</Text>
@@ -50,13 +74,14 @@ export const MyPageTemplate = ()=>{
   </div>
 
   <div className="flex justify-center">
-    <Button bgColor={"profileButton"} textColor={"white"} size={"long"} >
+    <Button bgColor={"profileButton"} textColor={"white"} size={"long"} onClick={openModal}>
       <div className="flex items-center gap-2">
     <Icon icon={EditIcon} color={"white"} />
     <Text size={"base"} color="white" weight={"medium"}>프로필 수정</Text>
   </div>
     </Button>
   </div>
+  <ProfileModal isOpen={isModalOpen} onClose={closeModal} />
 </div>
 </div>
 
@@ -67,6 +92,11 @@ export const MyPageTemplate = ()=>{
             title="학습 캘린더"
             subtitle="2024년 12월"
             bgColor="from-green-400 to-green-600"
+            rightElement={
+          <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+           <Icon icon={Calendar} color="white" className="w-5 h-5" />
+         </div>
+            }
           />
           <div className="p-4">
             <CalendarCard/>
