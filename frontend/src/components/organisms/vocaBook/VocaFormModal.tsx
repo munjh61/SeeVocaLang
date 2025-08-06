@@ -73,7 +73,7 @@ export const VocaFormModal = ({
             <Button
               bgColor={"red"}
               textColor={"white"}
-              className="p-1 flex-grow"
+              className="p-1 grow"
               onClick={onDelete}
             >
               삭제하기
@@ -82,7 +82,7 @@ export const VocaFormModal = ({
           <Button
             bgColor={"blue"}
             textColor={"white"}
-            className="p-1 flex-grow"
+            className="p-1 grow"
             onClick={handleSubmit}
           >
             저장하기

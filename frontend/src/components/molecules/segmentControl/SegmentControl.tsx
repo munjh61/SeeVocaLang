@@ -11,12 +11,14 @@ type SegmentControlProps = {
   options: SegmentOption[];
   defaultValue?: string;
   onChange?: (value: string) => void;
+  classname?: string;
 };
 
 export const SegmentControl = ({
   options,
   defaultValue,
   onChange,
+  classname,
 }: SegmentControlProps) => {
   const [selected, setSelected] = useState(defaultValue || options[0].value);
 
@@ -26,17 +28,18 @@ export const SegmentControl = ({
   };
 
   return (
-    <div className="inline-flex w-fit rounded-md p-1 bg-gray-300">
+    <div
+      className={`inline-flex w-fit rounded-md p-1 bg-gray-300 ${classname}`}
+    >
       {options.map(opt => (
         <Button
           key={opt.value}
           onClick={() => handleClick(opt.value)}
           bgColor={selected === opt.value ? "white" : "noBg"}
           textColor={selected === opt.value ? "purple" : "gray"}
-          size="md"
           className="rounded-md px-4 py-2 hover:font-bold"
         >
-          <p className="whitespace-nowrap">{opt.label}</p>
+          <span className="whitespace-nowrap text-xl">{opt.label}</span>
         </Button>
       ))}
     </div>

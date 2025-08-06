@@ -7,7 +7,7 @@ import {
 import hangul from "hangul-js";
 import { IconButton } from "../../molecules/iconButton/IconButton";
 import { useNavigate } from "react-router-dom";
-import { Searchbar } from "../../organisms/searchbarSegment/Searchbar";
+import { Searchbar } from "../../molecules/searchbar/Searchbar";
 
 type VocaDetailTemplateProps = {
   bookId: number;

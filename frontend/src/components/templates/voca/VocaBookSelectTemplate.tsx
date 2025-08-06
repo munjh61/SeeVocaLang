@@ -7,7 +7,7 @@ import {
 import hangul from "hangul-js";
 import { IconButton } from "../../molecules/iconButton/IconButton";
 import { useNavigate } from "react-router-dom";
-import { Searchbar } from "../../organisms/searchbarSegment/Searchbar";
+import { Searchbar } from "../../molecules/searchbar/Searchbar";
 import { QuizBookSelectModal } from "../../organisms/vocaBook/QuizBookSelectModal";
 import { VocaFormModal } from "../../organisms/vocaBook/VocaFormModal";
 
@@ -134,8 +134,8 @@ export const BookSelectTemplate = ({
         vocaList={vocaList}
       />
 
-      <div className="flex flex-col px-5 w-full gap-4">
-        <div className="flex flex-row gap-4 p-4 bg-gray-100">
+      <div className="flex flex-col p-2 w-full gap-2">
+        <div className="flex flex-row gap-2 p-4 bg-gray-100 rounded-md">
           <IconButton
             ButtonVariant={{
               bgColor: "purple",
@@ -159,7 +159,7 @@ export const BookSelectTemplate = ({
             퀴즈 풀기
           </IconButton>
         </div>
-        <div className="flex flex-col gap-4 bg-[#F3F4FF] p-4 h-full">
+        <div className="flex flex-col gap-4 bg-[#F3F4FF] p-4 h-full rounded-md">
           <VocaBookSecondHeader
             isToggle={isToggle}
             onClickToggle={() => setIsToggle(prev => !prev)}

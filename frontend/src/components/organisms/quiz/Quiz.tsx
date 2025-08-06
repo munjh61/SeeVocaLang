@@ -6,7 +6,7 @@ import { useState } from "react";
 
 export type QuizProps = {
   quizDatas: { en: string; ko: string }[];
-  lang: "en" | "ko" | "both";
+  lang: "en" | "ko";
   answerKo: string;
   answerEn: string;
   answerImg: string;
@@ -45,11 +45,19 @@ export const Quiz = ({
     }
   };
   return (
-    <div className={`flex flex-col item-center relative ${classname}`}>
+    <div
+      className={`flex flex-col items-center w-full grow p-4 rounded-md gap-2 ${classname}`}
+    >
       {toggleC && <img src={correct} className={feedbackClass} />}
       {toggleW && <img src={wrong} className={feedbackClass} />}
-      <ImageBox src={answerImg} className="w-full" />
-      <div className="grid grid-cols-4 grid-rows-2 gap-1 w-full">
+
+      {/* 이미지 영역 */}
+      <div className="flex items-center justify-center grow">
+        <ImageBox src={answerImg} className="w-[500px] h-[300px]" />
+      </div>
+
+      {/* 보기 버튼 영역 */}
+      <div className="grid grid-cols-4 grid-rows-2 gap-1 w-full px-20">
         {quizDatas.map((data, index) => (
           <QuizButton
             key={`${data.en}-${index}`}

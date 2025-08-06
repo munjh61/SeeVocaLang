@@ -1,4 +1,4 @@
-import { IconInput } from "../../molecules/iconInput/IconInput.tsx";
+import { IconInput } from "../iconInput/IconInput.tsx";
 import type { ComponentProps } from "react";
 import searchSVG from "../../../asset/search.svg?react";
 import type { Icon } from "../../atoms/icon/Icon.tsx";

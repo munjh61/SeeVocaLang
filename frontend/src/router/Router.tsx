@@ -12,6 +12,7 @@ import { SignupFlow } from "../components/organisms/signUp/SignupFlow.tsx";
 import VocaDetailPage from "../pages/VocaDetailPage.tsx";
 import { LoginPage } from "../pages/LoginPage.tsx";
 import QuizPage from "../pages/QuizPage.tsx";
+import QuizDonePage from "../pages/QuizDonePage.tsx";
 
 export const Router = () => {
   return (
@@ -24,6 +25,7 @@ export const Router = () => {
         <Route path="/book" element={<BookPage />} />
         <Route path="/book/:bookId" element={<VocaDetailPage />} />
         <Route path="/quiz/:bookId" element={<QuizPage />} />
+        <Route path="/done/" element={<QuizDonePage />} />
         <Route path="/game" element={<GamePage />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/friend" element={<FriendPage />} />
