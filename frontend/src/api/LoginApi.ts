@@ -1,8 +1,8 @@
 import axios from "axios";
+import { BASE_URL } from "../types/Regex.ts";
 
 // 요청 보낼 API 주소
-const LOGIN_URL =
-  "http://ec2-13-125-250-93.ap-northeast-2.compute.amazonaws.com:8080/api/v1/auth/signin";
+const LOGIN_URL = `${BASE_URL}/api/v1/auth/signin`;
 
 // 로그인 함수
 export const signin = async (loginId: string, password: string) => {

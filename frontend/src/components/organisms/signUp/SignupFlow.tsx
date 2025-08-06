@@ -10,10 +10,12 @@ import { useNavigate } from "react-router-dom";
 type Step = 1 | 2 | 3 | 4;
 
 export const SignupFlow = () => {
-  const { form, validation, handleChange, setValidation, resetForm } =
-    useSignupForm();
-  const [step, setStep] = useState<Step>(1);
   const navigate = useNavigate();
+
+  // ──────────────────────────────────────────────
+  //  1. 스텝 상태 및 이동 함수
+  // ──────────────────────────────────────────────
+  const [step, setStep] = useState<Step>(1);
 
   const goToNextStep = () =>
     setStep(prev => (prev < 4 ? ((prev + 1) as Step) : prev));
@@ -21,12 +23,13 @@ export const SignupFlow = () => {
   const goToPrevStep = () =>
     setStep(prev => (prev > 1 ? ((prev - 1) as Step) : prev));
 
-  const [idCheckError, setIdCheckError] = useState("");
-  const [isChecking, setIsChecking] = useState(false);
-  const [showIdErrors, setShowIdErrors] = useState(false);
-  const [localId, setLocalId] = useState(form.id);
-  const [nicknameError, setNicknameError] = useState("");
-  const [checkingNickname, setCheckingNickname] = useState(false);
+  // ──────────────────────────────────────────────
+  //  2. 폼 입력 및 유효성 상태
+  // ──────────────────────────────────────────────
+  const { form, validation, handleChange, setValidation, resetForm } =
+    useSignupForm();
+
+  const [localId, setLocalId] = useState(form.id); // Step2용 별도 ID 입력 상태
 
   const isFormValid =
     validation.id &&
@@ -34,22 +37,45 @@ export const SignupFlow = () => {
     validation.passwordMatch &&
     validation.nickname;
 
+  // ──────────────────────────────────────────────
+  //  3. 중복 체크 및 에러 상태
+  // ──────────────────────────────────────────────
+  const [idCheckError, setIdCheckError] = useState("");
+  const [isChecking, setIsChecking] = useState(false);
+  const [showIdErrors, setShowIdErrors] = useState(false);
+  const [nicknameError, setNicknameError] = useState("");
+  const [checkingNickname, setCheckingNickname] = useState(false);
+
+  // ──────────────────────────────────────────────
+  //  4. 회원가입 처리 함수
+  // ──────────────────────────────────────────────
   const handleSignup = async () => {
-    if (!isFormValid || !validation.nickname) {
+    if (!isFormValid) {
       alert("모든 입력 조건을 만족해주세요.");
       return;
     }
 
-    const res = await registerUser(form);
+    const signupPayload = {
+      loginId: form.id,
+      password: form.password,
+      nickname: form.nickname,
+      birthday: `${form.birthYear}-${form.birthMonth.padStart(2, "0")}-${form.birthDay.padStart(2, "0")}`,
+    };
+
+    const res = await registerUser(signupPayload);
+
     if (res.success) {
       alert("회원가입이 완료되었습니다!");
-      resetForm(); // 입력값 초기화
-      navigate("/game"); // ✅ game 페이지로 이동
+      resetForm();
+      navigate("/game");
     } else {
       alert("회원가입에 실패했습니다.");
     }
   };
 
+  // ──────────────────────────────────────────────
+  //  5. 스텝별 컴포넌트 렌더링
+  // ──────────────────────────────────────────────
   const renderStep = () => {
     switch (step) {
       case 1:

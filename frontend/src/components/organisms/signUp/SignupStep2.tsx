@@ -54,7 +54,6 @@ export const SignupStep2 = ({
     setError("");
 
     const result = await checkIdDuplicate(id);
-    console.log(checkIdDuplicate(id));
     if (result) {
       onValidate(true);
     } else {
