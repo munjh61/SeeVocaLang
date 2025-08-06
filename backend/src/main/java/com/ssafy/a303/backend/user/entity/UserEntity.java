@@ -3,8 +3,10 @@ package com.ssafy.a303.backend.user.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -51,15 +53,34 @@ public class UserEntity {
         this.streakDays = 0;
     }
 
-    public void updateEmail(String email){
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void updateProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+    }
+
+    public void updateEmail(String email) {
         this.email = email;
     }
 
-    public void updatePassword(String password){
+    public void updatePassword(String password) {
         this.password = password;
     }
 
+    public boolean checkPasswordMatch(String rawPassword, PasswordEncoder passwordEncoder) {
+        return passwordEncoder.matches(rawPassword, this.password);
+    }
+
     public void softDelete() {
+        this.nickname = "deleted_" + UUID.randomUUID();  // 중복 방지용 유니크한 닉네임
+        this.loginId = null;
+        this.email = null;
+        this.password = null;
+        this.profileImage = null;
+        this.birthday = null;
         this.isDeleted = true;
     }
+
 }

@@ -13,15 +13,12 @@ public enum UserErrorCode implements ErrorCode {
     USER_ID_ALREADY_EXISTS(409, "이미 사용 중인 아이디입니다."),
     USER_NICKNAME_ALREADY_EXISTS(409, "이미 사용 중인 닉네임입니다."),
     NICKNAME_GENERATION_FAILED(409, "닉네임 중복이 너무 많습니다. 다른 닉네임을 사용해주세요."),
+    IMAGE_UPLOAD_FAILED(500, "프로필 사진 업로드에 실패했습니다."),
     
-    // 사용자 정보 관련
+    // 정규식 관련
     INVALID_PASSWORD_FORMAT(400, "비밀번호는 8자 이상, 영문/숫자/특수문자 조합이어야 합니다."),
     INVALID_NICKNAME_FORMAT(400, "닉네임은 2-10자 영문/한글/숫자 조합이어야 합니다."),
-    INVALID_LOGIN_ID_FORMAT(400, "아이디는 4-20자 영문/숫자 조합이어야 합니다."),
-    
-    // 사용자 상태 관련
-    USER_ACCOUNT_DISABLED(403, "비활성화된 계정입니다."),
-    USER_ACCOUNT_LOCKED(423, "잠긴 계정입니다.");
+    INVALID_LOGIN_ID_FORMAT(400, "아이디는 4-20자 영문/숫자 조합이어야 합니다.");
 
     private final int statusCode;
     private final String message;

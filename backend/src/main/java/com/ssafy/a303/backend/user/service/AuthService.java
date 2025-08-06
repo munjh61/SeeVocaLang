@@ -1,7 +1,6 @@
 package com.ssafy.a303.backend.user.service;
 
 import com.ssafy.a303.backend.common.dto.BaseResponseDto;
-import com.ssafy.a303.backend.common.exception.CommonErrorCode;
 import com.ssafy.a303.backend.user.exception.UserErrorCode;
 import com.ssafy.a303.backend.common.exception.AuthErrorCode;
 import com.ssafy.a303.backend.common.utility.redis.RefreshTokenStore;
@@ -41,13 +40,13 @@ public class AuthService {
         log.info("회원가입 요청: loginId={}", requestDto.getLoginId());
         
         // 아이디 중복 체크
-        if (userRepository.existsByLoginId(requestDto.getLoginId())) {
+        if (userRepository.existsByLoginIdAndIsDeletedFalse(requestDto.getLoginId())) {
             log.warn("회원가입 실패 - 아이디 중복: loginId={}", requestDto.getLoginId());
             throw new UserIdAlreadyExistsException(UserErrorCode.USER_ID_ALREADY_EXISTS);
         }
 
         // 닉네임 중복 체크
-        if (userRepository.existsByNickname(requestDto.getNickname())) {
+        if (userRepository.existsByNicknameAndIsDeletedFalse(requestDto.getNickname())) {
             log.warn("회원가입 실패 - 닉네임 중복: nickname={}", requestDto.getNickname());
             throw new UserNicknameAlreadyExistsException(UserErrorCode.USER_NICKNAME_ALREADY_EXISTS);
         }
@@ -65,27 +64,27 @@ public class AuthService {
         log.info("회원가입 성공: userId={}, loginId={}", user.getUserId(), user.getLoginId());
 
         return BaseResponseDto.<Void>builder()
-                .message(ResponseMessages.SIGN_UP_SUCCESS)
+                .message(UserResponseMessages.SIGN_UP_SUCCESS)
                 .build();
     }
 
     // 아이디 중복 확인
     public BaseResponseDto<Void> validateLoginId(String loginId) {
-        if (userRepository.existsByLoginId(loginId)) {
+        if (userRepository.existsByLoginIdAndIsDeletedFalse(loginId)) {
             throw new UserIdAlreadyExistsException(UserErrorCode.USER_ID_ALREADY_EXISTS);
         }
         return BaseResponseDto.<Void>builder()
-                .message(ResponseMessages.VALID_ID)
+                .message(UserResponseMessages.VALID_ID)
                 .build();
     }
 
     // 닉네임 중복 확인
     public BaseResponseDto<Void> validateNickname(String nickname) {
-        if (userRepository.existsByNickname(nickname)) {
+        if (userRepository.existsByNicknameAndIsDeletedFalse(nickname)) {
             throw new UserNicknameAlreadyExistsException(UserErrorCode.USER_NICKNAME_ALREADY_EXISTS);
         }
         return BaseResponseDto.<Void>builder()
-                .message(ResponseMessages.VALID_NICKNAME)
+                .message(UserResponseMessages.VALID_NICKNAME)
                 .build();
     }
 
@@ -94,7 +93,7 @@ public class AuthService {
         log.info("로그인 요청: loginId={}", requestDto.getLoginId());
         
         // 유저 조회, 비밀번호 검증
-        UserEntity user = userRepository.findByLoginId(requestDto.getLoginId())
+        UserEntity user = userRepository.findByLoginIdAndIsDeletedFalse(requestDto.getLoginId())
                 .orElseThrow(() -> {
                     log.warn("로그인 실패 - 사용자 없음: loginId={}", requestDto.getLoginId());
                     return new InvalidCredentialsException(UserErrorCode.INVALID_CREDENTIALS);
@@ -156,7 +155,7 @@ public class AuthService {
         
         // 응답 반환
         return BaseResponseDto.<Void>builder()
-                .message(ResponseMessages.SIGN_OUT_SUCCESS)
+                .message(UserResponseMessages.SIGN_OUT_SUCCESS)
                 .build();
     }
 
@@ -196,7 +195,7 @@ public class AuthService {
         log.info("토큰 재발급 성공: userId={}, oldJti={}, newJti={}", userId, jti, newJti);
 
         return BaseResponseDto.<AccessTokenResponseDto>builder()
-                .message(ResponseMessages.TOKEN_REISSUE_SUCCESS)
+                .message(UserResponseMessages.TOKEN_REISSUE_SUCCESS)
                 .content(new AccessTokenResponseDto(newAccessToken))
                 .build();
     }

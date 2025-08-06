@@ -4,6 +4,8 @@ import com.ssafy.a303.backend.common.dto.BaseResponseDto;
 import com.ssafy.a303.backend.common.security.CustomUserDetails;
 import com.ssafy.a303.backend.email.dto.EmailMessages;
 import com.ssafy.a303.backend.email.dto.EmailSendRequestDto;
+import com.ssafy.a303.backend.user.dto.ProfileUpdateDto;
+import com.ssafy.a303.backend.user.dto.UserResponseMessages;
 import com.ssafy.a303.backend.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RestController
@@ -35,6 +38,18 @@ public class UserController {
 
     /// 마이페이지
     // 회원 탈퇴
+    @DeleteMapping("/api/v1/users")
+    public ResponseEntity<BaseResponseDto<Void>> deleteUser(
+            @AuthenticationPrincipal CustomUserDetails user
+    ) {
+        userService.deleteUser(user.getUserId());
+
+        BaseResponseDto<Void> response = BaseResponseDto.<Void>builder()
+                .message(UserResponseMessages.USER_WITHDRAWN)
+                .build();
+
+        return ResponseEntity.ok(response);
+    }
 
     // 이메일 인증코드 전송
     @GetMapping("/api/v1/users/validation-code")
@@ -57,7 +72,7 @@ public class UserController {
             @RequestParam("email") String email,
             @RequestParam("code") String code,
             @AuthenticationPrincipal CustomUserDetails user
-    ){
+    ) {
         userService.verifyEmailCode(user.getUserId(), email, code);
 
         BaseResponseDto<Void> response = BaseResponseDto.<Void>builder()
@@ -68,5 +83,18 @@ public class UserController {
     }
 
     // 사용자 정보 수정
+    @PatchMapping("/api/v1/users")
+    public ResponseEntity<BaseResponseDto<Void>> updateUserInfo(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @RequestPart("data") @Valid ProfileUpdateDto dto,
+            @RequestPart(value = "profile", required = false) MultipartFile profile
+    ) {
+        userService.updateUserInfo(userDetails.getUserId(), dto, profile);
 
+        BaseResponseDto<Void> response = BaseResponseDto.<Void>builder()
+                .message(UserResponseMessages.USER_INFO_UPDATED)
+                .build();
+
+        return ResponseEntity.ok(response);
+    }
 }
