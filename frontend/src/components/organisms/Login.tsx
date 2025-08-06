@@ -7,7 +7,6 @@ import { Checkbox } from "../atoms/Checkbox.tsx";
 import { Button } from "../atoms/button/Button.tsx";
 import { useNavigate } from "react-router-dom";
 import { signin } from "../../api/LoginApi.ts";
-import { decodeJwtPayload } from "../../utils/jwtDecode.ts";
 import { getUserInfo } from "../../api/userInfo.ts";
 import { useAuthStore } from "../../stores/AuthStore.ts";
 
@@ -32,19 +31,10 @@ export const Login = () => {
     try {
       console.log("로그인 시도:", { id, password });
       const { token, nickname, profileImage } = await signin(id, password);
-
-      const payload = decodeJwtPayload(token);
-      const userId = payload?.userId;
-
-      if (!userId) {
-        alert("유효하지 않은 토큰입니다.");
-        return;
-      }
-
       const userInfo = await getUserInfo();
 
       useAuthStore.getState().login(token, {
-        id: userId,
+        id: userInfo.id,
         nickname: userInfo.nickname ?? nickname,
         email: userInfo.email ?? null,
         profileImage: profileImage ?? null,

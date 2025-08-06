@@ -1,4 +1,10 @@
-export const decodeJwtPayload = (token: string): never | null => {
+type JwtPayload = {
+  userId: number;
+  iat?: number;
+  exp?: number;
+};
+
+export const decodeJwtPayload = (token: string): JwtPayload | null => {
   try {
     const payloadBase64 = token.split(".")[1];
     const decodedPayload = atob(payloadBase64);

@@ -26,7 +26,7 @@ export const signin = async (loginId: string, password: string) => {
 
     return { nickname, profileImage, token };
   } catch (error) {
-    console.error("❌ 로그인 실패", error);
+    console.error("로그인 실패", error);
     throw error;
   }
 };
