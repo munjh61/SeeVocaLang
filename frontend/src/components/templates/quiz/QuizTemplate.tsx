@@ -1,17 +1,25 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { shuffle } from "lodash-es";
 import { useNavigate } from "react-router-dom";
 import type { VocaCardProps } from "../../organisms/vocaCard/VocaCard";
 import { Quiz } from "../../organisms/quiz/Quiz";
 import { SegmentControl } from "../../molecules/segmentControl/SegmentControl";
+import { QuizHeader } from "../../organisms/quiz/QuizHeader";
+import { Div } from "../../atoms/div/Div";
 
 type QuizTemplateProps = {
+  name: string;
+  description: string;
   vocaCardDatas: VocaCardProps[];
 };
 
-export const QuizTemplate = ({ vocaCardDatas }: QuizTemplateProps) => {
+export const QuizTemplate = ({
+  vocaCardDatas,
+  name,
+  description,
+}: QuizTemplateProps) => {
   const nav = useNavigate();
-  const questionCount = 5;
+  const questionCount = vocaCardDatas.length;
 
   const [lang, setLang] = useState<"en" | "ko">("en");
   const [quizOrder, setQuizOrder] = useState<VocaCardProps[]>([]);
@@ -25,42 +33,58 @@ export const QuizTemplate = ({ vocaCardDatas }: QuizTemplateProps) => {
 
   // 현재 문제가 없거나 퀴즈 완료 시 처리
   useEffect(() => {
-    if (quizOrder.length === 0) return;
-    if (currentIndex >= quizOrder.length) nav("/quiz/done");
+    if (questionCount === 0) return;
+    if (currentIndex >= questionCount - 1)
+      nav("/done", {
+        state: {
+          bookname: name,
+          size: questionCount,
+        },
+      });
   }, [quizOrder, currentIndex, nav]);
 
-  if (quizOrder.length === 0 || currentIndex >= quizOrder.length) return null;
-
   const current = quizOrder[currentIndex];
-  const quizDatas = getQuizOptions(vocaCardDatas, current);
+
+  // 🔥 useMemo는 조건문 전에 위치해야 함
+  const quizDatas = useMemo(() => {
+    if (!current) return []; // current가 undefined일 때 방어
+    return getQuizOptions(vocaCardDatas, current);
+  }, [current, vocaCardDatas]);
+
+  // 조건부 렌더링은 아래에서 처리
+  if (!current || quizDatas.length === 0) return null;
 
   const goToNext = () => setCurrentIndex(prev => prev + 1);
 
   return (
-    <div className="flex flex-col min-h-[calc(100vh-64px)]">
-      <div className="flex flex-col items-center gap-6">
-        <h1 className="text-2xl font-bold mt-4">
-          문제 {currentIndex + 1} / {quizOrder.length}
-        </h1>
-        <SegmentControl
-          options={[
-            { label: "영어", value: "en" },
-            { label: "한글", value: "ko" },
-          ]}
-          defaultValue="en"
-          onChange={v => setLang(v)}
-        />
-        <div className="flex-grow flex items-center justify-center">
-          <Quiz
-            answerImg={current.imgUrl ?? ""}
-            answerEn={current.nameEn}
-            answerKo={current.nameKo}
-            quizDatas={quizDatas}
-            lang={lang}
-            onClick={goToNext}
+    <div className="flex flex-col grow p-2 gap-2">
+      <QuizHeader
+        name={name}
+        description={description}
+        index={currentIndex}
+        total={quizDatas.length}
+      />
+      <Div bg={"sky"} className="flex flex-col grow rounded-md p-2">
+        <div className="flex justify-end">
+          <SegmentControl
+            options={[
+              { label: "영어", value: "en" },
+              { label: "한글", value: "ko" },
+            ]}
+            defaultValue="en"
+            onChange={v => setLang(v)}
           />
         </div>
-      </div>
+        <Quiz
+          answerImg={current.imgUrl ?? ""}
+          answerEn={current.nameEn}
+          answerKo={current.nameKo}
+          quizDatas={quizDatas}
+          lang={lang}
+          onClick={goToNext}
+          classname="grow"
+        />
+      </Div>
     </div>
   );
 };

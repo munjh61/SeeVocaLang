@@ -7,6 +7,7 @@ import fox from "../../../asset/png/fox.png";
 import hippo from "../../../asset/png/hippo.png";
 import owl from "../../../asset/png/owl.png";
 import squirrel from "../../../asset/png/squirrel.png";
+import crocodile from "../../../asset/png/crocodile.webp";
 
 const VocaCardSample: VocaCardProps[] = [
   {
@@ -73,6 +74,13 @@ const VocaCardSample: VocaCardProps[] = [
     audioUrl: "https://example.com/audio/squirrel.mp3",
     nameEn: "squirrel",
     nameKo: "다람쥐",
+  },
+  {
+    wordId: 9,
+    imgUrl: crocodile,
+    audioUrl: "https://example.com/audio/crocodile.mp3",
+    nameEn: "Tralalero Tralala",
+    nameKo: "트랄랄레로 트랄랄라",
   },
 ];
 

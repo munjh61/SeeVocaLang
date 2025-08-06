@@ -8,7 +8,7 @@ function VocaDetailPage() {
 
   return (
     <div className="flex flex-col h-screen">
-      <div className="flex-grow overflow-y-auto">
+      <div className="flex grow overflow-y-auto">
         <VocaDetailTemplate
           bookId={Number(bookId)}
           vocaCardDatas={VocaCardSample}

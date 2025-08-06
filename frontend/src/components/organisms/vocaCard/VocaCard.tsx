@@ -83,7 +83,11 @@ export const VocaCard = ({
               </>
             )}
           </div>
-          <ImageBox src={imgUrl ? imgUrl : noImage} className="h-50" />
+          <ImageBox
+            src={imgUrl ? imgUrl : noImage}
+            className="h-50"
+            imgClassName="object-cover"
+          />
         </div>
         <Text
           size={"xxxl"}

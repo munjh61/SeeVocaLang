@@ -1,6 +1,7 @@
 import { Button } from "../../atoms/button/Button";
 import cardDeco from "../../../asset/png/cardDecoration.png";
 import { useState } from "react";
+import { Text } from "../../atoms/text/Text";
 
 type QuizButton = {
   en: string;
@@ -23,16 +24,19 @@ export const QuizButton = ({ en, ko, lang, answer, onClick }: QuizButton) => {
   return (
     <Button
       onClick={handleOnclick}
-      size={"word"}
+      size={"long"}
       textColor={selected ? selectColor : "gray"}
-      bgColor={"noBg"}
-      className="p-10 relative w-full h-full bg-emerald-100 shadow-2xl"
+      bgColor={"green"}
+      border={"white"}
+      className="px-10 py-3 relative w-full h-full shadow-2xl"
     >
       <img
         src={cardDeco}
         className="absolute inset-0 w-full h-full opacity-20 z-0 pointer-events-none"
       />
-      <span className="z-10">{lang === "en" ? en : ko}</span>
+      <Text font={"outline"} size={"xxxl"} color="white" className="z-10">
+        {lang === "en" ? en : ko}
+      </Text>
     </Button>
   );
 };

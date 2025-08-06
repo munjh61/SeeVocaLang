@@ -25,8 +25,10 @@ export const ImageBox = ({
   return (
     <div
       className={cn(
+        "flex items-center justify-center", // 이미지를 가운데로
         imageboxVariants({ shape }),
-        !hasImage && "bg-gray-100 w-32 h-32", // 이미지 없을 때만 회색 배경
+        !hasImage && "bg-gray-100 w-32 h-32", // 없을 때
+        "bg-gray-200",
         className
       )}
     >
@@ -34,38 +36,14 @@ export const ImageBox = ({
         <img
           src={src}
           alt={alt}
-          className={`w-full h-full object-cover rounded-md ${imgClassName}`}
+          className={cn(
+            "w-full max-w-full h-full max-h-full object-contain", // 비율 유지
+            "mx-auto my-auto", // 가운데 정렬
+            imgClassName
+          )}
           onClick={data ? () => imageValue?.(data) : undefined}
         />
       )}
     </div>
   );
 };
-
-// 사용 방법
-// import { ImageBox } from "../components/molecules/imagebox/Imagebox";
-// import apple from "../asset/png/apple.png";
-
-// function TestPageMoon() {
-//   const handleSearch = (value: string) => {
-//     console.log(value);
-//   };
-//   return (
-//     <>
-//       {/* 이미지를 안주면 회색 */}
-//       <ImageBox shape="circle"></ImageBox>
-//       {/* 꽉 채움 */}
-//       <ImageBox src={apple} shape="circle" />
-//       {/* 크기는 className으로 넣으셈 */}
-//       <ImageBox src={apple} shape="circle" className="w-[200px]" />
-//       {/* 클릭시 함수 */}
-//       <ImageBox
-//         src={apple}
-//         className="w-200"
-//         data="apple"
-//         imageValue={handleSearch}
-//       />
-//     </>
-//   );
-// }
-// export default TestPageMoon;

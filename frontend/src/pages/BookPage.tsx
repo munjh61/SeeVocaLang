@@ -5,7 +5,7 @@ import { BookSelectTemplate } from "../components/templates/voca/VocaBookSelectT
 function BookPage() {
   return (
     <div className="flex flex-col h-screen">
-      <div className="flex-grow overflow-y-auto">
+      <div className="grow overflow-y-auto">
         <BookSelectTemplate vocaBookDatas={VocaSampleDatas} />
       </div>
       <Navigation loc="book" />
