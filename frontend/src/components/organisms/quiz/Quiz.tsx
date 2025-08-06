@@ -27,21 +27,27 @@ export const Quiz = ({
   const [toggleW, setToggleW] = useState(false);
   const feedbackClass =
     "w-48 h-48 z-10 absolute top-1/3 left-1/2 -translate-x-1/2 animate-fade";
+  const [timer, setTimer] = useState(true);
 
   const handleOnclick = (v: boolean) => {
-    if (v) {
-      setToggleW(false);
-      setToggleC(true);
-      setTimeout(() => {
-        setToggleC(false);
-        onClick?.();
-      }, 1500);
-    } else {
-      setToggleC(false);
-      setToggleW(true);
-      setTimeout(() => {
+    if (timer) {
+      setTimer(false);
+      if (v) {
         setToggleW(false);
-      }, 1500);
+        setToggleC(true);
+        setTimeout(() => {
+          setToggleC(false);
+          setTimer(true);
+          onClick?.();
+        }, 1500);
+      } else {
+        setToggleC(false);
+        setToggleW(true);
+        setTimeout(() => {
+          setToggleW(false);
+          setTimer(true);
+        }, 1500);
+      }
     }
   };
   return (

@@ -61,8 +61,8 @@ export const QuizTemplate = ({
       <QuizHeader
         name={name}
         description={description}
-        index={currentIndex}
-        total={quizDatas.length}
+        index={currentIndex + 1}
+        total={quizDatas.length + 1}
       />
       <Div bg={"sky"} className="flex flex-col grow rounded-md p-2">
         <div className="flex justify-end">
