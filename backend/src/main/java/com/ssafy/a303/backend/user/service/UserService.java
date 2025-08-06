@@ -149,4 +149,17 @@ public class UserService {
 
         user.softDelete();
     }
+
+    // 현재 비밀번호 일치하는지 확인
+    public boolean validatePassword(Long userId, String password) {
+        UserEntity user = getUser(userId)
+                .orElseThrow(() -> new UserNotFoundException(UserErrorCode.USER_NOT_FOUND));
+
+        // 소셜 로그인 유저 빼기
+        if (user.isSocialUser()) {
+            return false;
+        }
+
+        return user.checkPasswordMatch(password, passwordEncoder);
+    }
 }
