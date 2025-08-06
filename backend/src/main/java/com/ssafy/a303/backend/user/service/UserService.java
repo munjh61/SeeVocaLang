@@ -1,10 +1,12 @@
 package com.ssafy.a303.backend.user.service;
 
 import com.ssafy.a303.backend.common.exception.CommonErrorCode;
+import com.ssafy.a303.backend.common.utility.s3.ImageUploader;
 import com.ssafy.a303.backend.email.exception.EmailErrorCode;
 import com.ssafy.a303.backend.email.exception.EmailSendException;
 import com.ssafy.a303.backend.email.service.EmailService;
 import com.ssafy.a303.backend.email.util.RandomCodeGenerator;
+import com.ssafy.a303.backend.user.dto.ProfileUpdateDto;
 import com.ssafy.a303.backend.user.entity.UserEntity;
 import com.ssafy.a303.backend.user.exception.UserErrorCode;
 import com.ssafy.a303.backend.user.exception.UserException;
@@ -15,6 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -22,13 +26,15 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserService {
+
     private final UserRepository userRepository;
     private final EmailService emailService;
     private final RandomCodeGenerator randomCodeGenerator;
     private final PasswordEncoder passwordEncoder;
+    private final ImageUploader imageUploader;
 
     public Optional<UserEntity> getUser(Long userId) {
-        Optional<UserEntity> user = userRepository.findById(userId);
+        Optional<UserEntity> user = userRepository.findByUserIdAndIsDeletedFalse(userId);
         if (user.isEmpty()) {
             log.warn("사용자 조회 실패 - 사용자 없음: userId={}", userId);
         }
@@ -36,11 +42,10 @@ public class UserService {
     }
 
     public void sendEmailVerificationCode(Long userId, String email) {
-        if (userRepository.existsByEmail(email)) {
+        if (userRepository.existsByEmailAndIsDeletedFalse(email)) {
             log.warn("이메일 인증코드 전송 실패 - 이메일 중복: email={}", email);
             throw new EmailSendException(EmailErrorCode.EMAIL_ALREADY_EXISTS);
         }
-
         emailService.sendVerificationCode(email);
     }
 
@@ -57,25 +62,90 @@ public class UserService {
         userRepository.save(user);
     }
 
-    // 비밀번호 찾기 -> 이메일 입력
     @Transactional
     public void resetPasswordByEmail(String email) {
-        // 유저 조회
         UserEntity user = userRepository.findByEmailAndIsDeletedFalse(email)
                 .orElseThrow(() -> {
                     log.warn("비밀번호 재설정 실패 - 사용자 없음: email={}", email);
                     return new UserException(UserErrorCode.USER_NOT_FOUND);
                 });
 
-        // 임시 비밀번호 생성
         String tempPassword = randomCodeGenerator.generateStrongPassword(10);
+        user.updatePassword(passwordEncoder.encode(tempPassword));
 
-        // 비밀번호 암호화, 저장
-        String encryptedPassword = passwordEncoder.encode(tempPassword);
-        user.updatePassword(encryptedPassword);
-
-        // 이메일 전송
         emailService.sendTemporaryPassword(email, tempPassword);
     }
 
+    @Transactional
+    public void updateUserInfo(Long userId, ProfileUpdateDto dto, MultipartFile profileImg) {
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(UserErrorCode.USER_NOT_FOUND));
+
+        updateNickname(user, dto.getNickname());
+        updatePassword(user, dto.getCurrentPassword(), dto.getNewPassword());
+        updateProfileImage(user, userId, profileImg);
+    }
+
+    private void updateNickname(UserEntity user, String newNickname) {
+        if (user.getNickname().equals(newNickname)) return;
+
+        if (userRepository.existsByNicknameAndIsDeletedFalse(newNickname)) {
+            throw new UserException(UserErrorCode.USER_NICKNAME_ALREADY_EXISTS);
+        }
+
+        user.updateNickname(newNickname);
+    }
+
+    private void updatePassword(UserEntity user, String currentPassword, String newPassword) {
+        // 소셜 로그인 -> 비번 변경 X
+        if (user.isSocialUser()) {
+            if (currentPassword != null || newPassword != null) {
+                throw new UserException(CommonErrorCode.FORBIDDEN_REQUEST);
+            }
+            return;
+        }
+
+        // 소셜로그인은 아닌데 안 되는 경우들...
+        if (!StringUtils.hasText(currentPassword) && !StringUtils.hasText(newPassword)) return;
+
+        if (!StringUtils.hasText(currentPassword) || !StringUtils.hasText(newPassword)) {
+            throw new UserException(CommonErrorCode.INVALID_INPUT);
+        }
+
+        if (!user.checkPasswordMatch(currentPassword, passwordEncoder)) {
+            throw new UserException(UserErrorCode.INVALID_CREDENTIALS);
+        }
+
+        // 여기까지 무사통과 -> 변경 가능
+        user.updatePassword(passwordEncoder.encode(newPassword));
+    }
+
+    private void updateProfileImage(UserEntity user, Long userId, MultipartFile profileImg) {
+        if (profileImg == null || profileImg.isEmpty()) return;
+
+        try {
+            String imageUrl = imageUploader.update(
+                    userId,
+                    "profile",
+                    profileImg.getBytes(),
+                    profileImg.getContentType()
+            );
+            user.updateProfileImage(imageUrl);
+        } catch (Exception e) {
+            log.error("프로필 이미지 업데이트 실패", e);
+            throw new UserException(UserErrorCode.IMAGE_UPLOAD_FAILED);
+        }
+    }
+
+    @Transactional
+    public void deleteUser(Long userId) {
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(UserErrorCode.USER_NOT_FOUND));
+
+        if (user.getProfileImage() != null) {
+            imageUploader.delete(userId, "profile");
+        }
+
+        user.softDelete();
+    }
 }

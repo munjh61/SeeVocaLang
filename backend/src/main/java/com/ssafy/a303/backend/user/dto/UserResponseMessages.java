@@ -1,12 +1,16 @@
 package com.ssafy.a303.backend.user.dto;
 
-public class ResponseMessages {
-    private ResponseMessages() {}
+public class UserResponseMessages {
+    private UserResponseMessages() {}
 
     // 회원가입 & 로그인
     public static final String SIGN_UP_SUCCESS = "회원가입이 완료되었습니다.";
     public static final String SIGN_IN_SUCCESS = "로그인 성공";
     public static final String SIGN_OUT_SUCCESS = "로그아웃 성공";
+
+    // 회원 정보 변경
+    public static final String USER_INFO_UPDATED = "회원정보가 수정되었습니다";
+    public static final String USER_WITHDRAWN = "성공적으로 회원 탈퇴되었습니다.";
 
     // 토큰 관련
     public static final String TOKEN_REISSUE_SUCCESS = "토큰 재발급 성공";

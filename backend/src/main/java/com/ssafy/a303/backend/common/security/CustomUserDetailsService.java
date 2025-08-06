@@ -32,7 +32,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new SocialLoginException(SocialLoginErrorCode.SOCIAL_LOGIN_FAILED);
         }
 
-        UserEntity user = userRepository.findByLoginId(loginId)
+        UserEntity user = userRepository.findByLoginIdAndIsDeletedFalse(loginId)
                 .orElseThrow(() -> new UserNotFoundException(CommonErrorCode.RESOURCE_NOT_FOUND));
 
         if (user.isDeleted()) {

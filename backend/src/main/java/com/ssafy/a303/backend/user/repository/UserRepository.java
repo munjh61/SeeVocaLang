@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     // 로그인 시 ID로 유저 조회
-    Optional<UserEntity> findByLoginId(String loginId);
+    Optional<UserEntity> findByLoginIdAndIsDeletedFalse(String loginId);
 
     // 삭제되지 않은 유저만 조회
     Optional<UserEntity> findByUserIdAndIsDeletedFalse(Long userId);
@@ -21,11 +21,11 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     Optional<UserEntity> findByEmailAndIsDeletedFalse(String email);
 
     // 아이디 중복 체크
-    boolean existsByLoginId(String loginId);
+    boolean existsByLoginIdAndIsDeletedFalse(String loginId);
 
     // 닉네임 중복 체크
-    boolean existsByNickname(String nickname);
+    boolean existsByNicknameAndIsDeletedFalse(String nickname);
 
     // 이미 등록된 이메일인지 체크
-    boolean existsByEmail(String email);
+    boolean existsByEmailAndIsDeletedFalse(String email);
 }
