@@ -4,16 +4,18 @@ import com.ssafy.a303.backend.common.dto.BaseResponseDto;
 import com.ssafy.a303.backend.common.security.CustomUserDetails;
 import com.ssafy.a303.backend.email.dto.EmailMessages;
 import com.ssafy.a303.backend.email.dto.EmailSendRequestDto;
-import com.ssafy.a303.backend.user.dto.ProfileUpdateDto;
-import com.ssafy.a303.backend.user.dto.UserResponseMessages;
+import com.ssafy.a303.backend.user.dto.*;
+import com.ssafy.a303.backend.user.entity.UserEntity;
+import com.ssafy.a303.backend.user.exception.UserErrorCode;
+import com.ssafy.a303.backend.user.exception.UserNotFoundException;
 import com.ssafy.a303.backend.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestClient;
 import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
@@ -22,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class UserController {
 
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
     /// 회원가입
     // 비밀번호 찾기 -> 임시 비밀번호 발급
@@ -97,4 +100,36 @@ public class UserController {
 
         return ResponseEntity.ok(response);
     }
+
+    // 유저 정보 조회 api
+    @GetMapping("/api/v1/users/info")
+    public ResponseEntity<BaseResponseDto<UserInfoResponseDto>> getUserInfo(
+            @AuthenticationPrincipal CustomUserDetails user
+    ) {
+        UserEntity userEntity = userService.getUser(user.getUserId())
+                .orElseThrow(() -> new UserNotFoundException(UserErrorCode.USER_NOT_FOUND));
+
+        UserInfoResponseDto userInfo = UserInfoResponseDto.from(userEntity);
+
+        BaseResponseDto<UserInfoResponseDto> response = BaseResponseDto.<UserInfoResponseDto>builder()
+                .content(userInfo)
+                .build();
+
+        return ResponseEntity.ok(response);
+    }
+
+    // 비밀번호 확인 api
+    @PostMapping("/api/v1/users/password-validation")
+    public ResponseEntity<BaseResponseDto<PasswordValidationResponseDto>> validateCurrentPassword(
+            @Valid @RequestBody PasswordValidationRequestDto requestDto,
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        boolean isValid = userService.validatePassword(userDetails.getUserId(), requestDto.getPassword());
+
+        return ResponseEntity.ok(BaseResponseDto.<PasswordValidationResponseDto>builder()
+                .message(isValid ? "비밀번호가 일치합니다" : "현재 비밀번호가 일치하지 않습니다")
+                .content(PasswordValidationResponseDto.builder().isValid(isValid).build())
+                .build());
+    }
+
 }

@@ -7,6 +7,7 @@ import com.ssafy.a303.backend.email.exception.EmailSendException;
 import com.ssafy.a303.backend.email.service.EmailService;
 import com.ssafy.a303.backend.email.util.RandomCodeGenerator;
 import com.ssafy.a303.backend.user.dto.ProfileUpdateDto;
+import com.ssafy.a303.backend.user.dto.UserInfoResponseDto;
 import com.ssafy.a303.backend.user.entity.UserEntity;
 import com.ssafy.a303.backend.user.exception.UserErrorCode;
 import com.ssafy.a303.backend.user.exception.UserException;
@@ -147,5 +148,18 @@ public class UserService {
         }
 
         user.softDelete();
+    }
+
+    // 현재 비밀번호 일치하는지 확인
+    public boolean validatePassword(Long userId, String password) {
+        UserEntity user = getUser(userId)
+                .orElseThrow(() -> new UserNotFoundException(UserErrorCode.USER_NOT_FOUND));
+
+        // 소셜 로그인 유저 빼기
+        if (user.isSocialUser()) {
+            return false;
+        }
+
+        return user.checkPasswordMatch(password, passwordEncoder);
     }
 }

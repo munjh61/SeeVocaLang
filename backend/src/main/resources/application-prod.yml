@@ -4,12 +4,11 @@ spring:
       client:
         registration:
           kakao:
-            redirect-uri: ENC(6og+mxVUzEsg7Lf7oTFQefkNeqOrneoUpE3a4WtFiagDHkQNq6H3tOwhYhwZGJhElyNnYOZiOEJ395A9WvrqFg==)
+            redirect-uri: ENC(V8sTvXbi0dMdKhX2T4CLyfuwVcs2j+Do05eLkDdO52Z2AJMk3q9B5txQ9/JZ3N0Eo1hPBTxE7fQdU3+SDqVRDg==)
           naver:
-            redirect-uri: ENC(vIOOt6xZkp99nKiFNSKv3MIZfgENlddLFL/VKLPif+3yiH3vMD7QzcKgkYHb4KGvnwU4K+GqyPt2ULXlOlT8fg==)
+            redirect-uri: ENC(3U0xXnXy57dGmTAT0pi0AKeMLykbhzGvsLdZMG7dBA4K9OPZrs95mn6gbvN2MWzRJz7HwMHSE6OBAkkOUkPq8w==)
           google:
-            redirect-uri: ENC(yWGqpxmNqpfidKMKke0D11NxvBrb5WWO89t6MDLLA+BjRw0U21Km35L53IfVi2r4MMytt16VeKPM3kXGiae+TA==)
-
+            redirect-uri: ENC(MNVzzvXthb9kFMyOgyYSwvnZm7O7AfVnOXiDNajkPe+Ae/dYKgS+xKRPI2ZUvdiuEYBvmWbZmnR+xZpvScfcEw==)
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver

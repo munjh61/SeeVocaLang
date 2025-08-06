@@ -25,7 +25,7 @@ public class FolderQueryRepositoryImpl extends QuerydslRepositorySupport impleme
 
     // 폴더 안에 있는 가장 최근의 단어의 이미지를 썸네일로 한다.
     @Override
-    public List<ReadFoldersResponseDto> findAllByUserId(long userId, boolean favorite) {
+    public List<ReadFoldersResponseDto> findAllByUserId(long userId) {
         QFolderEntity folderEntity = QFolderEntity.folderEntity;
 
         QWordEntity resultWord = new QWordEntity("resultWord");
@@ -43,12 +43,6 @@ public class FolderQueryRepositoryImpl extends QuerydslRepositorySupport impleme
                 .from(resultWord)
                 .where(resultWord.wordId.eq(thumbnail));
 
-        BooleanBuilder condition = new BooleanBuilder();
-        condition.and(folderEntity.user.userId.eq(userId)).and(folderEntity.isDeleted.eq(false));
-
-        if(favorite)
-            condition.and(folderEntity.isFavorite.eq(favorite));
-
         return from(folderEntity)
                 .select(Projections.constructor(ReadFoldersResponseDto.class,
                         folderEntity.folderId,
@@ -57,7 +51,10 @@ public class FolderQueryRepositoryImpl extends QuerydslRepositorySupport impleme
                         folderEntity.description,
                         folderEntity.isFavorite
                 ))
-                .where(condition)
+                .where(
+                        folderEntity.user.userId.eq(userId),
+                        folderEntity.isDeleted.eq(false)
+                )
                 .orderBy(folderEntity.folderId.desc())
                 .fetch();
     }

@@ -29,7 +29,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
     private final JwtProperties jwtProperties;
     private final CookieUtil cookieUtil;
 
-    private static final String DEFAULT_REDIRECT_URI = "http://localhost:8080";
+    private static final String DEFAULT_REDIRECT_URI = "http://ec2-13-125-250-93.ap-northeast-2.compute.amazonaws.com:8080";
     private static final String REDIRECT_URI_COOKIE_NAME = "redirect_uri";
 
     // 인증 성공 했엉 그러면 이제
