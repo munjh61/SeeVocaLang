@@ -5,7 +5,11 @@ import com.ssafy.a303.backend.common.security.CustomUserDetails;
 import com.ssafy.a303.backend.email.dto.EmailMessages;
 import com.ssafy.a303.backend.email.dto.EmailSendRequestDto;
 import com.ssafy.a303.backend.user.dto.ProfileUpdateDto;
+import com.ssafy.a303.backend.user.dto.UserInfoResponseDto;
 import com.ssafy.a303.backend.user.dto.UserResponseMessages;
+import com.ssafy.a303.backend.user.entity.UserEntity;
+import com.ssafy.a303.backend.user.exception.UserErrorCode;
+import com.ssafy.a303.backend.user.exception.UserNotFoundException;
 import com.ssafy.a303.backend.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -93,6 +97,23 @@ public class UserController {
 
         BaseResponseDto<Void> response = BaseResponseDto.<Void>builder()
                 .message(UserResponseMessages.USER_INFO_UPDATED)
+                .build();
+
+        return ResponseEntity.ok(response);
+    }
+
+    // 유저 정보 조회 api
+    @GetMapping("/api/v1/users/me")
+    public ResponseEntity<BaseResponseDto<UserInfoResponseDto>> getUserInfo(
+            @AuthenticationPrincipal CustomUserDetails user
+    ) {
+        UserEntity userEntity = userService.getUser(user.getUserId())
+                .orElseThrow(() -> new UserNotFoundException(UserErrorCode.USER_NOT_FOUND));
+
+        UserInfoResponseDto userInfo = UserInfoResponseDto.from(userEntity);
+
+        BaseResponseDto<UserInfoResponseDto> response = BaseResponseDto.<UserInfoResponseDto>builder()
+                .content(userInfo)
                 .build();
 
         return ResponseEntity.ok(response);

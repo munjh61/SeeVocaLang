@@ -26,7 +26,7 @@ public class FolderService {
 
     @Transactional(readOnly = true)
     public PageResponseDto<ReadFoldersResponseDto> getFolders(ReadFoldersCommandDto readFoldersCommandDto) {
-        List<ReadFoldersResponseDto> folders = folderRepository.findAllByUserId(readFoldersCommandDto.getUserId(), false);
+        List<ReadFoldersResponseDto> folders = folderRepository.findAllByUserId(readFoldersCommandDto.getUserId());
 
         boolean hasNext = folders.size() > readFoldersCommandDto.getSize();
 
@@ -111,24 +111,5 @@ public class FolderService {
     public FolderEntity getFolderById(long folderId) {
         return folderRepository.findById(folderId)
                 .orElseThrow(() -> new FolderNotFoundException(CommonErrorCode.RESOURCE_NOT_FOUND));
-    }
-
-    public PageResponseDto<ReadFoldersResponseDto> getFavorites(long userId) {
-        List<ReadFoldersResponseDto> folders = folderRepository.findAllByUserId(userId, true);
-
-        return PageResponseDto.<ReadFoldersResponseDto>builder()
-                .content(folders)
-                .build();
-    }
-
-    public BaseResponseDto<Void> updateFavorite(long folderId, boolean favorite) {
-        FolderEntity folder = folderRepository.findById(folderId)
-                .orElseThrow(() -> new FolderNotFoundException(CommonErrorCode.RESOURCE_NOT_FOUND));
-
-        folder.setFavorite(favorite);
-
-        return BaseResponseDto.<Void>builder()
-                .message("성공적으로 즐겨 찾기를 수정했습니다.")
-                .build();
     }
 }

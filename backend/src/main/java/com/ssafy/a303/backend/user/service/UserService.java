@@ -7,6 +7,7 @@ import com.ssafy.a303.backend.email.exception.EmailSendException;
 import com.ssafy.a303.backend.email.service.EmailService;
 import com.ssafy.a303.backend.email.util.RandomCodeGenerator;
 import com.ssafy.a303.backend.user.dto.ProfileUpdateDto;
+import com.ssafy.a303.backend.user.dto.UserInfoResponseDto;
 import com.ssafy.a303.backend.user.entity.UserEntity;
 import com.ssafy.a303.backend.user.exception.UserErrorCode;
 import com.ssafy.a303.backend.user.exception.UserException;
