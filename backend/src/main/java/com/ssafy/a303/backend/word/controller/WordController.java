@@ -2,12 +2,15 @@ package com.ssafy.a303.backend.word.controller;
 
 import com.ssafy.a303.backend.common.dto.BaseResponseDto;
 import com.ssafy.a303.backend.common.dto.PageResponseDto;
+import com.ssafy.a303.backend.common.security.CustomUserDetails;
+import com.ssafy.a303.backend.word.dto.CardGameResponseDto;
 import com.ssafy.a303.backend.word.dto.DeleteWordCommandDto;
 import com.ssafy.a303.backend.word.dto.ReadWordCommandDto;
 import com.ssafy.a303.backend.word.dto.ReadWordResponseDto;
 import com.ssafy.a303.backend.word.service.WordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -39,4 +42,11 @@ public class WordController {
         return ResponseEntity.ok(baseResponseDto);
     }
 
+    @GetMapping("/api/v1/card-game")
+    public ResponseEntity<BaseResponseDto<CardGameResponseDto>> getCardGameWords(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        CardGameResponseDto result = wordService.getCardGameWords(userDetails.getUserId());
+        return ResponseEntity.ok(BaseResponseDto.<CardGameResponseDto>builder()
+                .content(result)
+                .build());
+    }
 }
