@@ -7,6 +7,9 @@ import { Checkbox } from "../atoms/Checkbox.tsx";
 import { Button } from "../atoms/button/Button.tsx";
 import { useNavigate } from "react-router-dom";
 import { signin } from "../../api/LoginApi.ts";
+import { decodeJwtPayload } from "../../utils/jwtDecode.ts";
+import { getUserInfo } from "../../api/userInfo.ts";
+import { useAuthStore } from "../../stores/AuthStore.ts";
 
 export const Login = () => {
   const [id, setId] = useState("");
@@ -14,15 +17,6 @@ export const Login = () => {
   const [showErrors, setShowErrors] = useState(false);
   const [isRemembered, setIsRemembered] = useState(false);
   const navigate = useNavigate();
-
-  // 로컬스토리지에서 저장된 아이디 불러오기
-  useEffect(() => {
-    const saved = localStorage.getItem("savedId");
-    if (saved) {
-      setId(saved);
-      setIsRemembered(true);
-    }
-  }, []);
 
   // 아이디 저장/삭제 처리
   useEffect(() => {
@@ -34,9 +28,32 @@ export const Login = () => {
   }, [isRemembered, id]);
 
   // 로그인 처리
-  const handleLogin = () => {
-    console.log("로그인 시도:", { id, password });
-    signin(id, password);
+  const handleLogin = async () => {
+    try {
+      console.log("로그인 시도:", { id, password });
+      const { token, nickname, profileImage } = await signin(id, password);
+
+      const payload = decodeJwtPayload(token);
+      const userId = payload?.userId;
+
+      if (!userId) {
+        alert("유효하지 않은 토큰입니다.");
+        return;
+      }
+
+      const userInfo = await getUserInfo();
+
+      useAuthStore.getState().login(token, {
+        id: userId,
+        nickname: userInfo.nickname ?? nickname,
+        email: userInfo.email ?? null,
+        profileImage: profileImage ?? null,
+      });
+
+      navigate("/game");
+    } catch {
+      alert("아이디 또는 비밀번호가 올바르지 않습니다.");
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {

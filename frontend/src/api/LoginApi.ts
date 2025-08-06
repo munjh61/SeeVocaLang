@@ -1,10 +1,8 @@
 import axios from "axios";
 import { BASE_URL } from "../types/Regex.ts";
 
-// 요청 보낼 API 주소
 const LOGIN_URL = `${BASE_URL}/api/v1/auth/signin`;
 
-// 로그인 함수
 export const signin = async (loginId: string, password: string) => {
   try {
     const response = await axios.post(
@@ -13,18 +11,22 @@ export const signin = async (loginId: string, password: string) => {
       { headers: { "Content-Type": "application/json" } }
     );
 
-    const { data } = response.data;
-    const nickname = data.nickname;
-    const profileImage = data.profile_image ?? null;
+    console.log("🔍 전체 응답:", response);
+    console.log("전체 헤더:", response.headers);
+
+    const responseBody = response.data;
+    const nickname = responseBody?.content?.nickname;
+    const profileImage = responseBody?.content?.profileImage ?? null;
+
     const token = response.headers["authorization"];
 
-    console.log("✅ 로그인 성공");
-    console.log("닉네임:", nickname);
-    console.log("프로필 이미지:", profileImage);
-    console.log("토큰:", token);
+    if (!nickname || !token) {
+      throw new Error("응답에서 필수 정보가 없습니다.");
+    }
 
     return { nickname, profileImage, token };
   } catch (error) {
     console.error("❌ 로그인 실패", error);
+    throw error;
   }
 };
