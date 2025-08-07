@@ -14,24 +14,41 @@ import ProfileIcon from "../../../asset/profile.svg?react"
 import Calendar from "../../../asset/calicon.svg?react"
 import { useEffect, useState } from "react"
 import { ProfileModal } from "../profileModal/ProfileModal"
+import { getUserInfo, type UserInfo } from "../../../api/userInfo"
+
+
 export const MyPageTemplate = ()=>{
    const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-  const [profileImage, setProfileImage] = useState<string | null>(null);
+  // const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
 
-  useEffect(() => {
-    // 예시: 백엔드 API로부터 이미지 URL 받기
-    fetch("/api/user/me")
-      .then((res) => res.json())
-      .then((data) => {
-        setProfileImage(data.profileImageUrl); // 예: "https://example.com/images/user123.jpg"
-      })
-      .catch((err) => {
-        console.error("프로필 이미지 로딩 실패:", err);
-      });
-  }, []);
+useEffect(() => {
+  const fetchUserInfo = async () => {
+    try {
+      const data = await getUserInfo(); // ✅ 실제 API 호출
+      setUserInfo(data); // data에는 nickname, email, profileImage 등이 들어있음
+    } catch (error) {
+      console.error("유저 정보 불러오기 실패:", error);
+    }
+  };
+
+  fetchUserInfo();
+}, []);
+
+  // useEffect(() => {
+  //   // 예시: 백엔드 API로부터 이미지 URL 받기
+  //   fetch("/api/user/me")
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setProfileImage(data.profileImageUrl); // 예: "https://example.com/images/user123.jpg"
+  //     })
+  //     .catch((err) => {
+  //       console.error("프로필 이미지 로딩 실패:", err);
+  //     });
+  // }, []);
     return (
 <div className="p-6 bg-gray-100 min-h-screen">
 
@@ -56,9 +73,9 @@ export const MyPageTemplate = ()=>{
               rounded={"full"}
               className={"relative w-20 h-20"}
             >
-          {profileImage ? (
+          {userInfo?.profileImage ? (
         <img
-          src={profileImage}
+          src={userInfo.profileImage}
           alt="프로필 이미지"
           className="w-full h-full object-cover rounded-full"
         />
@@ -67,9 +84,9 @@ export const MyPageTemplate = ()=>{
       )}
         </Button>
     <div className="flex flex-col gap-1">
-      <Text size="xl" weight="extrabold" color="black">줄리언 홀란드</Text>
-      <Text size="sm" weight="normal" color="gray">생년월일: 1996.09.19</Text>
-      <Text size="sm" weight="normal" color="gray">이메일: dojin8351@gmail.com</Text>
+      <Text size="xl" weight="extrabold" color="black">{userInfo?.nickname ?? "닉네임 없음"}</Text>
+      <Text size="sm" weight="normal" color="gray">생년월일: 1996.09.19</Text> 
+      <Text size="sm" weight="normal" color="gray">{userInfo?.email ?? "이메일 없음"}</Text>
     </div>
   </div>
   
