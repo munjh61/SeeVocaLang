@@ -1,5 +1,6 @@
 package com.ssafy.a303.backend.friend.controller;
 
+import com.ssafy.a303.backend.common.dto.BaseResponseDto;
 import com.ssafy.a303.backend.common.dto.PageResponseDto;
 import com.ssafy.a303.backend.common.security.CustomUserDetails;
 import com.ssafy.a303.backend.friend.dto.ReadFriendResponseDto;
@@ -22,5 +23,13 @@ public class FriendController {
                 .getPendingFriends(customUserDetails.getUserId(), friendStatus);
 
         return ResponseEntity.ok(pageResponseDto);
+    }
+
+    @PostMapping("/api/v1/friends/{receiverId}")
+    public ResponseEntity<BaseResponseDto<Void>> requestFriend(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                               @PathVariable long receiverId){
+        BaseResponseDto<Void> response = friendService.requestFriend(userDetails.getUserId(), receiverId);
+
+        return ResponseEntity.ok(response);
     }
 }

@@ -2,6 +2,7 @@ package com.ssafy.a303.backend.friend.entity;
 
 import com.ssafy.a303.backend.user.entity.UserEntity;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -25,5 +26,11 @@ public class FriendEntity {
     private UserEntity friend;
 
     @Enumerated(EnumType.STRING)
-    private FriendStatus status;
+    private FriendStatus status = FriendStatus.PENDING;
+
+    @Builder
+    public FriendEntity(UserEntity user, UserEntity friend) {
+        this.friend = friend;
+        this.user = user;
+    }
 }
