@@ -13,7 +13,7 @@ type AddFriendButtonProps = {
   onRequestComplete: () => void;
 };
 
-export const AddFriendButton = ({ className, data,onRequestComplete}: AddFriendButtonProps) => {
+export const AddFriendButton = ({ className,onRequestComplete}: AddFriendButtonProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
  
