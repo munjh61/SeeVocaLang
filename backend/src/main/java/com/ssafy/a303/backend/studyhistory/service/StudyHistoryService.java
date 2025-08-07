@@ -23,4 +23,8 @@ public class StudyHistoryService {
         studyHistoryRepository.save(studyHistoryEntity);
     }
 
+    public LocalDateTime getLastCompletedQuizTime(Long userId) {
+        return studyHistoryRepository.findTopByUser_UserIdOrderByIdDesc(userId).getCreatedAt();
+    }
+
 }

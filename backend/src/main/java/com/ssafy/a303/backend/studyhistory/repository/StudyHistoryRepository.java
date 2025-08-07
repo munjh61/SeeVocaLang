@@ -7,6 +7,8 @@ import java.time.LocalDateTime;
 
 public interface StudyHistoryRepository extends JpaRepository<StudyHistoryEntity, Long> {
 
-    boolean existsByUser_UserIdAndCreatedAtBetween(long userId, LocalDateTime start, LocalDateTime end);
+    boolean existsByUser_UserIdAndCreatedAtBetween(Long userId, LocalDateTime start, LocalDateTime end);
+
+    StudyHistoryEntity findTopByUser_UserIdOrderByIdDesc(Long userId);
 
 }
