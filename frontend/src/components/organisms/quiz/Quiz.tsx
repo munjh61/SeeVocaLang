@@ -11,6 +11,7 @@ export type QuizProps = {
   answerEn: string;
   answerImg: string;
   onClick: () => void;
+  result: (maxCombo: number) => void;
   classname?: string;
 };
 
@@ -21,11 +22,14 @@ export const Quiz = ({
   answerEn,
   answerKo,
   onClick,
+  result,
   classname,
 }: QuizProps) => {
   const [toggleC, setToggleC] = useState(false);
   const [toggleW, setToggleW] = useState(false);
   const [timer, setTimer] = useState(true);
+  const [combo, setCombo] = useState(0);
+  const [maxCombo, setMaxCombo] = useState(0);
   const feedbackClass =
     "w-48 h-48 z-10 absolute top-1/3 left-1/2 -translate-x-1/2 animate-fade";
 
@@ -35,6 +39,16 @@ export const Quiz = ({
       if (v) {
         setToggleW(false);
         setToggleC(true);
+        setCombo(prev => {
+          const newCombo = prev + 1;
+          setMaxCombo(prevMax => {
+            const newMax = Math.max(prevMax, newCombo);
+            result(newMax); // 여기서 부모에게 전달
+            return newMax;
+          });
+          return newCombo;
+        });
+
         setTimeout(() => {
           setToggleC(false);
           setTimer(true);
@@ -43,6 +57,7 @@ export const Quiz = ({
       } else {
         setToggleC(false);
         setToggleW(true);
+        setCombo(0);
         setTimeout(() => {
           setToggleW(false);
           setTimer(true);
@@ -50,13 +65,13 @@ export const Quiz = ({
       }
     }
   };
+
   return (
     <div
       className={`flex flex-col items-center w-full grow p-4 rounded-md gap-2 ${classname}`}
     >
       {toggleC && <img src={correct} className={feedbackClass} />}
       {toggleW && <img src={wrong} className={feedbackClass} />}
-
       {/* 이미지 영역 */}
       <div className="flex items-center justify-center grow">
         <ImageBox src={answerImg} className="w-[500px] h-[300px]" />
@@ -66,7 +81,7 @@ export const Quiz = ({
       <div className="grid grid-cols-4 grid-rows-2 gap-1 w-full px-20">
         {quizDatas.map((data, index) => (
           <QuizButton
-            key={`${data.en}-${index}`}
+            key={data.en}
             en={data.en}
             ko={data.ko}
             lang={lang}

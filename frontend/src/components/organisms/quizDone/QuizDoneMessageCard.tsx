@@ -1,7 +1,11 @@
 import { Div } from "../../atoms/div/Div";
 import { Text } from "../../atoms/text/Text";
 
-export const MessageCard = () => {
+type MessageCardProps = {
+  result: number;
+};
+
+export const MessageCard = ({ result }: MessageCardProps) => {
   return (
     <Div
       bg="white"
@@ -16,9 +20,11 @@ export const MessageCard = () => {
       <Text size="base" color="gray" className="mb-3">
         엄마 아빠께 자랑해보세요!
       </Text>
-      <Text size="sm" color="gray">
-        📚 클리어한 에픽 카드로 저장하고!
-      </Text>
+      <Text
+        size="sm"
+        color="gray"
+        children={`연속으로 {result} 문제 맞췄어요.`}
+      ></Text>
     </Div>
   );
 };

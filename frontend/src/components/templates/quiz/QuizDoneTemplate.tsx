@@ -1,5 +1,5 @@
-import { CompletionHeader } from "../../organisms/quizDone/quizDoneHeader";
-import { BookInfoCard } from "../../organisms/quizDone/quizDoneBookInfo";
+import { CompletionHeader } from "../../organisms/quizDone/QuizDoneHeader";
+import { BookInfoCard } from "../../organisms/quizDone/QuizDoneBookInfo";
 import { StatsCard } from "../../organisms/quizDone/QuizDoneStat";
 import { MessageCard } from "../../organisms/quizDone/QuizDoneMessageCard";
 import { ActionButtons } from "../../organisms/quizDone/QuizDoneActionButton";
@@ -7,9 +7,14 @@ import { ActionButtons } from "../../organisms/quizDone/QuizDoneActionButton";
 type QuizDoneTemplateProps = {
   bookname: string;
   size: number;
+  result: number;
 };
 
-export const QuizDoneTemplate = ({ bookname, size }: QuizDoneTemplateProps) => {
+export const QuizDoneTemplate = ({
+  bookname,
+  size,
+  result,
+}: QuizDoneTemplateProps) => {
   return (
     <div
       className="min-h-screen p-4 relative overflow-hidden"
@@ -28,7 +33,7 @@ export const QuizDoneTemplate = ({ bookname, size }: QuizDoneTemplateProps) => {
         <CompletionHeader />
         <BookInfoCard bookname={bookname} />
         <StatsCard size={size} />
-        <MessageCard />
+        <MessageCard result={result} />
         <ActionButtons />
       </div>
     </div>
