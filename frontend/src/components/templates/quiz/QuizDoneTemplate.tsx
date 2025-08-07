@@ -2,6 +2,7 @@ import { QuizDoneBookInfo } from "../../organisms/quizDone/QuizDoneBookInfo";
 import { QuizDoneStatCard } from "../../organisms/quizDone/QuizDoneStat";
 import { QuizDoneButtons } from "../../organisms/quizDone/QuizDoneButtons";
 import { Div } from "../../atoms/div/Div";
+import { RainyBalls } from "../../atoms/deco/RainyBall";
 
 type QuizDoneTemplateProps = {
   bookname: string;
@@ -26,10 +27,7 @@ export const QuizDoneTemplate = ({
       }}
     >
       {/* 배경 데코 요소들 */}
-      <div className="absolute top-20 left-10 w-8 h-8 bg-yellow-300 rounded-full opacity-60" />
-      <div className="absolute top-40 right-16 w-6 h-6 bg-pink-400 rounded-full opacity-50" />
-      <div className="absolute bottom-32 left-8 w-10 h-10 bg-blue-400 rounded-full opacity-40" />
-      <div className="absolute bottom-60 right-12 w-4 h-4 bg-orange-400 rounded-full opacity-60" />
+      <RainyBalls />
 
       <Div align={"center"}>
         <QuizDoneStatCard day={day} />

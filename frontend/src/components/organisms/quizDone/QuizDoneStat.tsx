@@ -47,8 +47,7 @@ export const QuizDoneStatCard = ({ day }: QuizDoneStatProps) => {
             color="orange"
             align={"center"}
             children={`${day}일째`}
-          ></Text>
-          <Div className="w-8 h-1 bg-orange-500 rounded-full mx-auto mt-2" />
+          />
         </Div>
         {/* 완료일 */}
         <Div>

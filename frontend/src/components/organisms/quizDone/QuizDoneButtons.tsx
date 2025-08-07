@@ -16,7 +16,7 @@ export const QuizDoneButtons = () => {
         className="w-full py-4 px-6 shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
         onClick={() => navigate(-1)} // 이전 페이지로
       >
-        ⚡ 다시 해볼래요 ⚡
+        다시 해볼래요
       </Button>
 
       {/* 새로운 단어장 → 단어장 선택 페이지로 */}
