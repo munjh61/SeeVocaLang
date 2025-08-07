@@ -38,7 +38,7 @@ public class JwtUtil {
         long expMillis = jwtProperties.getAccessMinutes().toMillis();
 
         return Jwts.builder()
-                .setSubject(userId.toString())
+                .claim("userId", userId)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expMillis))
                 .signWith(key, SignatureAlgorithm.HS256)
@@ -50,7 +50,7 @@ public class JwtUtil {
          long expMillis = jwtProperties.getRefreshDays().toMillis();
 
          return Jwts.builder()
-                 .setSubject(userId.toString())
+                 .claim("userId", userId)
                  .setId(jti)
                  .setIssuedAt(new Date())
                  .setExpiration(new Date(System.currentTimeMillis() + expMillis))
@@ -73,14 +73,12 @@ public class JwtUtil {
 
     // 토큰에서 userId 추출
     public Long getUserId(String token) {
-        String subject = Jwts.parserBuilder()
+        return Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
-                .getSubject();
-
-        return Long.parseLong(subject);
+                .get("userId", Long.class);
     }
 
     // refreshToken에서 jti 추출 -> 서버에 등록된 유효한 토큰인지 검증
