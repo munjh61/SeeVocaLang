@@ -2,7 +2,8 @@ import { create } from "zustand";
 
 // 🔹 공통 타입 정의
 export type AuthUser = {
-  id: string;
+  userId: number;
+  loginId: string;
   nickname: string;
   email: string | null;
   profileImage: string | null;
@@ -15,7 +16,8 @@ type AuthState = {
   login: (
     token: string,
     user: {
-      id: string;
+      userId: number;
+      loginId: string;
       nickname: string;
       email: string | null;
       profileImage: string | null;
