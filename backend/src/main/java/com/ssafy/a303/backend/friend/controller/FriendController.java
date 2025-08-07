@@ -1,0 +1,26 @@
+package com.ssafy.a303.backend.friend.controller;
+
+import com.ssafy.a303.backend.common.dto.PageResponseDto;
+import com.ssafy.a303.backend.common.security.CustomUserDetails;
+import com.ssafy.a303.backend.friend.dto.ReadFriendResponseDto;
+import com.ssafy.a303.backend.friend.entity.FriendStatus;
+import com.ssafy.a303.backend.friend.service.FriendService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequiredArgsConstructor
+public class FriendController {
+    private final FriendService friendService;
+
+    @GetMapping("/api/v1/friends")
+    public ResponseEntity<PageResponseDto<ReadFriendResponseDto>> getPendingFriends(@AuthenticationPrincipal CustomUserDetails customUserDetails,
+                                                                                    @RequestParam("status") FriendStatus friendStatus) {
+        PageResponseDto<ReadFriendResponseDto> pageResponseDto = friendService
+                .getPendingFriends(customUserDetails.getUserId(), friendStatus);
+
+        return ResponseEntity.ok(pageResponseDto);
+    }
+}
