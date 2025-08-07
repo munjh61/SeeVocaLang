@@ -4,4 +4,5 @@ import org.springframework.stereotype.Repository;
 
 public interface FriendQueryRepository {
     boolean existsFriend(long senderId, long receiverId);
+    long deleteFriend(long senderId, long receiverId);
 }

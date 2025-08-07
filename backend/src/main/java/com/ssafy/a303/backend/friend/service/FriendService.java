@@ -86,4 +86,16 @@ public class FriendService {
                 .message("성공적으로 친구 요청을 수락했습니다.")
                 .build();
     }
+
+    @Transactional
+    public BaseResponseDto<Void> deleteFriend(long senderId, long receiverId) {
+        long count = friendRepository.deleteFriend(receiverId, senderId);
+
+        if(count >= 1)
+            return BaseResponseDto.<Void>builder()
+                    .message("성공적으로 친구 및 요청을 삭제했습니다.")
+                    .build();
+
+        throw new FriendCantDelete(FriendErrorCode.FRIEND_CANT_DELETE);
+    }
 }

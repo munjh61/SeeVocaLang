@@ -7,7 +7,7 @@ import com.ssafy.a303.backend.friend.dto.ReadFriendResponseDto;
 import com.ssafy.a303.backend.friend.entity.FriendStatus;
 import com.ssafy.a303.backend.friend.service.FriendService;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +28,7 @@ public class FriendController {
 
     @PostMapping("/api/v1/friends/{receiverId}")
     public ResponseEntity<BaseResponseDto<Void>> requestFriend(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                                               @PathVariable long receiverId){
+                                                               @PathVariable long receiverId) {
         BaseResponseDto<Void> response = friendService.requestFriend(userDetails.getUserId(), receiverId);
 
         return ResponseEntity.ok(response);
@@ -36,9 +36,18 @@ public class FriendController {
 
     @PutMapping("/api/v1/friends/{senderId}")
     public ResponseEntity<BaseResponseDto<Void>> requestApproved(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                                                 @PathVariable long senderId){
+                                                                 @PathVariable long senderId) {
         BaseResponseDto<Void> response = friendService.updateFriendRequest(senderId, userDetails.getUserId());
 
         return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/api/v1/friends/{deleteId}")
+    public ResponseEntity<BaseResponseDto<Void>> deleteFriend(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                              @PathVariable long deleteId) {
+        BaseResponseDto<Void> response = friendService.deleteFriend(deleteId, userDetails.getUserId());
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
+
     }
 }

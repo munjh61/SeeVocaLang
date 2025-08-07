@@ -28,4 +28,20 @@ public class FriendQueryRepositoryImpl extends QuerydslRepositorySupport impleme
                 .select(Expressions.ONE)
                 .where(condition).fetchFirst() != null;
     }
+
+    @Override
+    public long deleteFriend(long senderId, long receiverId) {
+        QFriendEntity friendTable = QFriendEntity.friendEntity;
+
+        BooleanExpression userIdEq = friendTable.user.userId.eq(senderId);
+        BooleanExpression friendIdEq = friendTable.friend.userId.eq(receiverId);
+        BooleanExpression userIdEq2 = friendTable.user.userId.eq(receiverId);
+        BooleanExpression friendIdEq2 = friendTable.friend.userId.eq(senderId);
+
+        BooleanExpression condition = userIdEq.and(friendIdEq).or(friendIdEq2.and(userIdEq2));
+
+        return delete(friendTable)
+                .where(condition)
+                .execute();
+    }
 }
