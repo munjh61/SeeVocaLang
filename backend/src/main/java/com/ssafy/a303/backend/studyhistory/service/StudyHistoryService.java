@@ -24,7 +24,7 @@ public class StudyHistoryService {
     }
 
     public LocalDateTime getLastCompletedQuizTime(Long userId) {
-        return studyHistoryRepository.findTopByUser_UserIdOrderByIdDesc(userId).getCreatedAt();
+        return studyHistoryRepository.findTopByUser_UserIdOrderByStudyHistoryIdDesc(userId).getCreatedAt();
     }
 
 }

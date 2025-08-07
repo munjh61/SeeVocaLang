@@ -9,6 +9,6 @@ public interface StudyHistoryRepository extends JpaRepository<StudyHistoryEntity
 
     boolean existsByUser_UserIdAndCreatedAtBetween(Long userId, LocalDateTime start, LocalDateTime end);
 
-    StudyHistoryEntity findTopByUser_UserIdOrderByIdDesc(Long userId);
+    StudyHistoryEntity findTopByUser_UserIdOrderByStudyHistoryIdDesc(Long userId);
 
 }
