@@ -5,9 +5,9 @@ import VocaCardSample from "../components/templates/voca/SampleVocaCard";
 import VocaBookSampleDatas from "../components/templates/voca/SampleVocaBook";
 
 function QuizPage() {
-  const { bookId } = useParams<{ bookId: string }>();
+  const { folderId } = useParams<{ folderId: string }>();
   const bookData = VocaBookSampleDatas.filter(
-    data => data.id === Number(bookId)
+    data => data.folderId === Number(folderId)
   )[0];
   return (
     <div className="flex flex-col h-screen">

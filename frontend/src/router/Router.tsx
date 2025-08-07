@@ -31,8 +31,8 @@ export const Router = () => {
           <Route path="/kwon" element={<TestPageKwon />} />
           <Route path="/doh" element={<TestPageDoh />} />
           <Route path="/book" element={<BookPage />} />
-          <Route path="/book/:bookId" element={<VocaDetailPage />} />
-          <Route path="/quiz/:bookId" element={<QuizPage />} />
+          <Route path="/book/:folderId" element={<VocaDetailPage />} />
+          <Route path="/quiz/:folderId" element={<QuizPage />} />
           <Route path="/done" element={<QuizDonePage />} />
           <Route path="/game" element={<GamePage />} />
           <Route path="/mypage" element={<MyPage />} />

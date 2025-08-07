@@ -9,21 +9,23 @@ import starE from "../../../asset/star_empty.svg?react";
 import noImage from "../../../asset/png/noimage.png";
 
 export type VocaBookProps = {
-  id: number;
-  thumbnail?: string;
+  folderId: number;
+  thumbnailUrl?: string | null;
   name: string;
   description: string;
   favorite: boolean;
+  onLearnClick?: (id: number) => void;
   onEditClick?: (id: number) => void;
   onToggleFavorite?: (id: number) => void;
 };
 
 export const VocaBookCard = ({
-  id,
-  thumbnail,
+  folderId,
+  thumbnailUrl,
   name,
   description,
   favorite,
+  onLearnClick,
   onEditClick,
   onToggleFavorite,
 }: VocaBookProps) => {
@@ -37,10 +39,10 @@ export const VocaBookCard = ({
           icon={favorite ? starF : starE}
           color={"yellow"}
           className="absolute top-0 right-0 cursor-pointer"
-          onClick={() => onToggleFavorite?.(id)}
+          onClick={() => onToggleFavorite?.(folderId)}
         />
         <ImageBox
-          src={thumbnail ? thumbnail : noImage}
+          src={thumbnailUrl ? thumbnailUrl : noImage}
           className="w-full h-full"
         />
       </div>
@@ -63,14 +65,15 @@ export const VocaBookCard = ({
           <IconButton
             IconVariant={{ icon: book, color: "white" }}
             ButtonVariant={{ bgColor: "blue", textColor: "white" }}
-            path={`/book/${id}`}
+            buttonValue={v => onLearnClick?.(Number(v))}
+            path={`/book/${folderId}`}
           >
             학습하기
           </IconButton>
           <IconButton
             IconVariant={{ icon: gear }}
             ButtonVariant={{ bgColor: "white", border: "gray" }}
-            data={id}
+            data={folderId}
             buttonValue={v => onEditClick?.(Number(v))}
           >
             수정

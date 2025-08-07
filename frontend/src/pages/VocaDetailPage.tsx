@@ -4,13 +4,13 @@ import { VocaDetailTemplate } from "../components/templates/voca/VocaDetailTempl
 import VocaCardSample from "../components/templates/voca/SampleVocaCard";
 
 function VocaDetailPage() {
-  const { bookId } = useParams<{ bookId: string }>();
+  const { folderId } = useParams<{ folderId: string }>();
 
   return (
     <div className="flex flex-col h-screen">
       <div className="flex grow overflow-y-auto">
         <VocaDetailTemplate
-          bookId={Number(bookId)}
+          folderId={Number(folderId)}
           vocaCardDatas={VocaCardSample}
         />
       </div>

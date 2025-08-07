@@ -7,7 +7,7 @@ import { useState } from "react";
 type VocaFormModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  bookId: number | null;
+  folderId: number | null;
   formType: "create" | "update" | null;
   title: string;
   subtitle: string;
@@ -20,7 +20,7 @@ type VocaFormModalProps = {
 export const VocaFormModal = ({
   isOpen,
   onClose,
-  bookId,
+  folderId,
   formType,
   title,
   subtitle,
@@ -38,7 +38,6 @@ export const VocaFormModal = ({
     }
     setCheck(true);
     onSubmit();
-    onClose();
   };
 
   return (
@@ -69,7 +68,7 @@ export const VocaFormModal = ({
         </div>
 
         <div className="flex flex-row justify-between gap-4">
-          {bookId && (
+          {folderId && (
             <Button
               bgColor={"red"}
               textColor={"white"}
