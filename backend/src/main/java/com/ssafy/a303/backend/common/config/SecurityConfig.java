@@ -47,6 +47,9 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(Arrays.asList(
                 "http://localhost:5173",
                 "http://127.0.0.1:5173",
+                "http://70.12.246.81:5173",
+                "http://70.12.246.82:5173",
+                "http://70.12.246.92:5173",
                 "http://ec2-13-125-250-93.ap-northeast-2.compute.amazonaws.com"
         ));
         configuration.setAllowedMethods(Arrays.asList(
