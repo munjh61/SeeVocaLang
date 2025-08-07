@@ -69,6 +69,10 @@ public class TodayQuizService {
                 .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
 
         LocalDateTime endTime = currentTime.plusDays(1).minusNanos(1);
+        user.incrementTotalDays();
+        LocalDateTime lastSolvedTime = studyHistoryService.getLastCompletedQuizTime(userId);
+        int streakDays = lastSolvedTime.isBefore(endTime) ? user.getStreakDays() + 1 : 1;
+        user.updateStreakDays(streakDays);
         studyHistoryService.completeTodayQuiz(user, currentTime, endTime);
     }
 }
