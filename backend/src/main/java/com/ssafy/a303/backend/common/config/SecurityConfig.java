@@ -45,7 +45,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList(
-                "http://localhost:5177",
+                "http://localhost:5173",
                 "http://127.0.0.1:5173",
                 "http://ec2-13-125-250-93.ap-northeast-2.compute.amazonaws.com"
         ));
