@@ -39,6 +39,7 @@ spring:
         secret-key: ENC(XN2PxgNxu/xBd+R+M0TIk9ILh0K5aDcSQIXswnzlt66sjSPe2j4u1+t0eVzYiBrXdZkQgks98ns=)
       s3:
         bucket-name: ENC(UOSrTPaHVuHvR9uCBSTCnZ0AqGz9wwtM)
+        root-directory: ENC(dpdtB8giK3LGbRXpeQMSww==)
 
   mail:
     host: smtp.gmail.com
