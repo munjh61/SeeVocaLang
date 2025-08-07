@@ -21,6 +21,7 @@ public class QuizController {
     private static final String GET_QUIZ_STATUS_SUCCESS_MESSAGE = "오늘의 학습 현황을 성공적으로 조회했습니다.";
     private static final String GET_QUIZ_LIST_STATUS_MESSAGE = "오늘의 학습 단어 목록을 성공적으로 조회했습니다.";
     private static final String SAVE_QUIZ_STATUS_MESSAGE = "오늘의 학습 현황을 성공적으로 저장했습니다.";
+    private static final String COMPLETE_QUIZ_SUCCESS_MESSAGE = "오늘의 학습을 성공적으로 완료했습니다.";
 
     private final TodayQuizService todayQuizService;
 
@@ -54,5 +55,15 @@ public class QuizController {
         UpdateTodayQuizCommandDto commandDto = QuizMapper.INSTANCE.toUpdateTodayQuizCommandDto(userId, requestDto.quizNumber(), currentTime);
         todayQuizService.saveTodayQuizProgress(commandDto);
         return ResponseEntity.ok(new BaseResponseDto<>(SAVE_QUIZ_STATUS_MESSAGE, null));
+    }
+
+    @PostMapping("/api/v1/completion-quiz")
+    public ResponseEntity<BaseResponseDto<Void>> completeQuiz(
+            @AuthenticationPrincipal CustomUserDetails user
+    ) {
+        Long userId = user.getUserId();
+        LocalDateTime currentTime = LocalDate.now().atStartOfDay();
+        todayQuizService.completeTodayQuiz(userId, currentTime);
+        return ResponseEntity.ok(new BaseResponseDto<>(COMPLETE_QUIZ_SUCCESS_MESSAGE, null));
     }
 }
