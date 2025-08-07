@@ -72,12 +72,12 @@ export const MyPageTemplate = ()=>{
       <Text size="sm" weight="normal" color="gray">이메일: dojin8351@gmail.com</Text>
     </div>
   </div>
-
+  
   <div className="flex justify-center">
     <Button bgColor={"profileButton"} textColor={"white"} size={"long"} onClick={openModal}>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center whitespace-nowrap gap-2">
     <Icon icon={EditIcon} color={"white"} />
-    <Text size={"base"} color="white" weight={"medium"}>프로필 수정</Text>
+    <Text size={"base"} color="white" weight={"medium"}>프로필 편집</Text>
   </div>
     </Button>
   </div>
