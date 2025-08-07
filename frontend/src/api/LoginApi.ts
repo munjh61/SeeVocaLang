@@ -1,7 +1,6 @@
 import axios from "axios";
-import { BASE_URL } from "../types/Regex.ts";
 
-const LOGIN_URL = `${BASE_URL}/api/v1/auth/signin`;
+const LOGIN_URL = `${import.meta.env.VITE_API_URL}/v1/auth/signin`;
 
 export const signin = async (loginId: string, password: string) => {
   try {
@@ -10,6 +9,7 @@ export const signin = async (loginId: string, password: string) => {
       { loginId, password },
       { headers: { "Content-Type": "application/json" } }
     );
+    console.log("로그인 요청 URL:", LOGIN_URL);
 
     console.log("🔍 전체 응답:", response);
     console.log("전체 헤더:", response.headers);
