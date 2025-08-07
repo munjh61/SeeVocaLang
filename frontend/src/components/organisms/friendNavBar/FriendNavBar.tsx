@@ -28,7 +28,7 @@ export const FriendNavBar = ({ selectedTab, setSelectedTab }: FriendNavBarProps)
       <NavTab
         label="친구 요청"
         icon={<BellIcon className="w-4 h-4" />}
-        badgeCount={3}
+        badgeCount={3}          //내 userid에게 친구요청 보낸 사람 수
         selected={selectedTab === "request"}
         onClick={() => setSelectedTab("request")}
       />
