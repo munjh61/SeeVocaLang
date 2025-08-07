@@ -5,10 +5,11 @@ import KaKaoIcon from "../asset/png/kakologo.png";
 import NaverIcon from "../asset/png/naverIcon.png";
 import GoogleIcon from "../asset/googleIcon.svg";
 import { Logo } from "../components/atoms/Logo.tsx";
+import { BASE_URL } from "../types/Regex.ts";
 
+const baseurl = BASE_URL;
 export const OnBoardingPage = () => {
   const navigate = useNavigate();
-
   return (
     <div className="flex flex-col w-full h-full items-center justify-center p-10 bg-[#F3F4FF] gap-6">
       <div className="flex flex-col items-center justify-center gap-5">
@@ -61,16 +62,25 @@ export const OnBoardingPage = () => {
             src={KaKaoIcon}
             alt="카카오 로그인"
             className="w-10 h-10 cursor-pointer"
+            onClick={() => {
+              window.location.href = `${baseurl}/oauth2/authorization/kakao`;
+            }}
           />
           <img
             src={NaverIcon}
             alt="네이버 로그인"
             className="w-10 h-10 cursor-pointer"
+            onClick={() => {
+              window.location.href = `${baseurl}/oauth2/authorization/naver`;
+            }}
           />
           <img
             src={GoogleIcon}
             alt="구글 로그인"
             className="w-10 h-10 cursor-pointer"
+            onClick={() => {
+              window.location.href = `${baseurl}/oauth2/authorization/google`;
+            }}
           />
         </div>
       </section>

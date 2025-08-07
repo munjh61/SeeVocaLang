@@ -6,7 +6,11 @@ type LabelProps = {
   className?: string;
 };
 
-export const Label: React.FC<LabelProps> = ({ htmlFor, children, className }) => {
+export const Label: React.FC<LabelProps> = ({
+  htmlFor,
+  children,
+  className,
+}) => {
   return (
     <label
       htmlFor={htmlFor}
