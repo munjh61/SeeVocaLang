@@ -8,7 +8,7 @@ public enum FriendStatus {
 
     public static FriendStatus convert(String status) {
         if (status == null || status.isEmpty()) {
-            throw new StatusInvalidException(FriendErrorCode.STATUS_IS_EMPTY);
+            throw new StatusInvalidException(FriendErrorCode.FRIEND_STATUS_IS_EMPTY);
         }
 
         for (FriendStatus friendStatus : FriendStatus.values()) {
@@ -17,6 +17,6 @@ public enum FriendStatus {
             }
         }
 
-        throw new StatusInvalidException(FriendErrorCode.STATUS_IS_EMPTY);
+        throw new StatusInvalidException(FriendErrorCode.FRIEND_STATUS_IS_EMPTY);
     }
 }

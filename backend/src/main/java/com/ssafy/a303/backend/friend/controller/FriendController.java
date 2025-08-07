@@ -7,6 +7,7 @@ import com.ssafy.a303.backend.friend.dto.ReadFriendResponseDto;
 import com.ssafy.a303.backend.friend.entity.FriendStatus;
 import com.ssafy.a303.backend.friend.service.FriendService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,14 @@ public class FriendController {
     public ResponseEntity<BaseResponseDto<Void>> requestFriend(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                                @PathVariable long receiverId){
         BaseResponseDto<Void> response = friendService.requestFriend(userDetails.getUserId(), receiverId);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/api/v1/friends/{senderId}")
+    public ResponseEntity<BaseResponseDto<Void>> requestApproved(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                                 @PathVariable long senderId){
+        BaseResponseDto<Void> response = friendService.updateFriendRequest(senderId, userDetails.getUserId());
 
         return ResponseEntity.ok(response);
     }

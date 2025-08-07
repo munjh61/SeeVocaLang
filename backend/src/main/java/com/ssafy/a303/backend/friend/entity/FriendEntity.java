@@ -33,4 +33,8 @@ public class FriendEntity {
         this.friend = friend;
         this.user = user;
     }
+
+    public void updateStatus(FriendStatus status) {
+        this.status = status;
+    }
 }
