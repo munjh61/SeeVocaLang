@@ -4,11 +4,11 @@ import { Text } from "../../atoms/text/Text";
 import Flame from "../../../asset/flower.svg?react";
 import Calendar from "../../../asset/calendar.svg?react";
 
-type Props = {
-  size: number;
+type QuizDoneStatProps = {
+  day: number;
 };
 
-export const StatsCard = ({ size }: Props) => {
+export const QuizDoneStatCard = ({ day }: QuizDoneStatProps) => {
   const today = new Date();
   const dateStr = `${today.getFullYear()}년 ${today.getMonth() + 1}월 ${today.getDate()}일`;
   const days = [
@@ -39,7 +39,7 @@ export const StatsCard = ({ size }: Props) => {
             size="xxl"
             weight="bold"
             color="orange"
-            children={`${size}일째`}
+            children={`${day}일째`}
           ></Text>
           <Div className="w-8 h-1 bg-orange-500 rounded-full mx-auto mt-2" />
         </Div>

@@ -5,9 +5,10 @@ import BookOpen from "../../../asset/book.svg?react";
 
 type Props = {
   bookname: string;
+  size: number;
 };
 
-export const BookInfoCard = ({ bookname }: Props) => {
+export const QuizDoneBookInfo = ({ bookname, size }: Props) => {
   return (
     <Div
       bg="white"
@@ -26,9 +27,7 @@ export const BookInfoCard = ({ bookname }: Props) => {
         className="mb-2"
         children={bookname}
       />
-      <Text size="base" weight="medium" color="blue">
-        모든 단어를 완벽하게 맞췄어요!
-      </Text>
+      <Text children={`${size}개 문제를 풀었어요!`} />
     </Div>
   );
 };

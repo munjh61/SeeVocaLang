@@ -28,8 +28,8 @@ export const Quiz = ({
   const [toggleC, setToggleC] = useState(false);
   const [toggleW, setToggleW] = useState(false);
   const [timer, setTimer] = useState(true);
-  const [combo, setCombo] = useState(0);
-  const [maxCombo, setMaxCombo] = useState(0);
+  const [, setCombo] = useState(0);
+  const [, setMaxCombo] = useState(0);
   const feedbackClass =
     "w-48 h-48 z-10 absolute top-1/3 left-1/2 -translate-x-1/2 animate-fade";
 
@@ -79,7 +79,7 @@ export const Quiz = ({
 
       {/* 보기 버튼 영역 */}
       <div className="grid grid-cols-4 grid-rows-2 gap-1 w-full px-20">
-        {quizDatas.map((data, index) => (
+        {quizDatas.map(data => (
           <QuizButton
             key={data.en}
             en={data.en}
