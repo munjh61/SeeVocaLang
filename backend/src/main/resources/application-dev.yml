@@ -4,11 +4,11 @@ spring:
       client:
         registration:
           kakao:
-            redirect-uri: http://ec2-13-125-250-93.ap-northeast-2.compute.amazonaws.com:8080/login/oauth2/code/kakao
+            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
           naver:
-            redirect-uri: http://ec2-13-125-250-93.ap-northeast-2.compute.amazonaws.com:8080/login/oauth2/code/naver
+            redirect-uri: http://localhost:8080/login/oauth2/code/naver
           google:
-            redirect-uri: http://ec2-13-125-250-93.ap-northeast-2.compute.amazonaws.com:8080/login/oauth2/code/google
+            redirect-uri: http://localhost:8080/login/oauth2/code/google
 
 
   datasource:
@@ -40,6 +40,7 @@ spring:
         secret-key: ENC(XN2PxgNxu/xBd+R+M0TIk9ILh0K5aDcSQIXswnzlt66sjSPe2j4u1+t0eVzYiBrXdZkQgks98ns=)
       s3:
         bucket-name: ENC(UOSrTPaHVuHvR9uCBSTCnZ0AqGz9wwtM)
+        root-directory: ENC(NH356lkutlYIJnVZ+JIo7A==)
 
   mail:
     host: smtp.gmail.com

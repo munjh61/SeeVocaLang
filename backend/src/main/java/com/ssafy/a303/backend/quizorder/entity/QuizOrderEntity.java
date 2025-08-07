@@ -3,6 +3,7 @@ package com.ssafy.a303.backend.quizorder.entity;
 import com.ssafy.a303.backend.quiz.entity.QuizEntity;
 import com.ssafy.a303.backend.user.entity.UserEntity;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -22,4 +23,14 @@ public class QuizOrderEntity {
     @ManyToOne
     @JoinColumn(name = "quiz_id", nullable = false)
     private QuizEntity quiz;
+
+    public void updateQuizId(QuizEntity quiz) {
+        this.quiz = quiz;
+    }
+
+    @Builder
+    public QuizOrderEntity(UserEntity user, QuizEntity quiz) {
+        this.user = user;
+        this.quiz = quiz;
+    }
 }
