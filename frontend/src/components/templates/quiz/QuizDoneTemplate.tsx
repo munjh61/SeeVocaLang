@@ -1,19 +1,21 @@
-import { CompletionHeader } from "../../organisms/quizDone/QuizDoneHeader";
-import { BookInfoCard } from "../../organisms/quizDone/QuizDoneBookInfo";
-import { StatsCard } from "../../organisms/quizDone/QuizDoneStat";
-import { MessageCard } from "../../organisms/quizDone/QuizDoneMessageCard";
-import { ActionButtons } from "../../organisms/quizDone/QuizDoneActionButton";
+import { QuizDoneHeader } from "../../organisms/quizDone/QuizDoneHeader";
+import { QuizDoneBookInfo } from "../../organisms/quizDone/QuizDoneBookInfo";
+import { QuizDoneStatCard } from "../../organisms/quizDone/QuizDoneStat";
+import { QuizDoneMessageCard } from "../../organisms/quizDone/QuizDoneMessageCard";
+import { QuizDoneButtons } from "../../organisms/quizDone/QuizDoneButtons";
 
 type QuizDoneTemplateProps = {
   bookname: string;
   size: number;
   result: number;
+  day: number;
 };
 
 export const QuizDoneTemplate = ({
   bookname,
   size,
   result,
+  day,
 }: QuizDoneTemplateProps) => {
   return (
     <div
@@ -30,11 +32,11 @@ export const QuizDoneTemplate = ({
       <div className="absolute bottom-60 right-12 w-4 h-4 bg-orange-400 rounded-full opacity-60" />
 
       <div className="max-w-md mx-auto space-y-6 pt-8">
-        <CompletionHeader />
-        <BookInfoCard bookname={bookname} />
-        <StatsCard size={size} />
-        <MessageCard result={result} />
-        <ActionButtons />
+        <QuizDoneHeader />
+        <QuizDoneBookInfo bookname={bookname} size={size} />
+        <QuizDoneMessageCard result={result} day={day} />
+        <QuizDoneStatCard day={day} />
+        <QuizDoneButtons />
       </div>
     </div>
   );
