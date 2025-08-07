@@ -47,7 +47,7 @@ export const Login = () => {
       });
 
       console.log("로그인 유저 정보 : ", useAuthStore.getState().user);
-      navigate("/game");
+      navigate("/main");
     } catch {
       alert("아이디 또는 비밀번호가 올바르지 않습니다.");
     }
@@ -169,7 +169,7 @@ export const Login = () => {
             border="blue"
             rounded="lg"
             textColor="blue"
-            onClick={() => navigate("/game")}
+            onClick={() => navigate("/")}
           >
             &lt; 돌아가기
           </Button>

@@ -24,7 +24,6 @@ export const signin = async (loginId: string, password: string) => {
     if (!nickname || !token) {
       throw new Error("응답에서 필수 정보가 없습니다.");
     }
-
     // ✅ 토큰을 Zustand에 즉시 저장
     useAuthStore.getState().login(token, {
       userId: -1, // userInfo 요청 후 덮어쓸 값

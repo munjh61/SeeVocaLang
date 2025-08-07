@@ -5,9 +5,15 @@ type Props = {
   file: File;
   onBack: () => void;
   onAnalyze: () => void;
+  isAnalyzing: boolean; // ⬅️ 추가
 };
 
-export const UploadStep2 = ({ file, onBack, onAnalyze }: Props) => {
+export const UploadStep2 = ({
+  file,
+  onBack,
+  onAnalyze,
+  isAnalyzing,
+}: Props) => {
   const fileUrl = URL.createObjectURL(file);
 
   return (
@@ -38,11 +44,21 @@ export const UploadStep2 = ({ file, onBack, onAnalyze }: Props) => {
       </div>
 
       <div className="flex justify-end gap-2 mt-4">
-        <Button size="md" bgColor="gray" onClick={onBack}>
+        <Button
+          size="md"
+          bgColor="gray"
+          onClick={onBack}
+          disabled={isAnalyzing}
+        >
           다시 선택
         </Button>
-        <Button size="md" bgColor="gradientPurple" onClick={onAnalyze}>
-          업로드 분석 시작
+        <Button
+          size="md"
+          bgColor="gradientPurple"
+          onClick={onAnalyze}
+          disabled={isAnalyzing}
+        >
+          {isAnalyzing ? "분석 중..." : "업로드 분석 시작"}
         </Button>
       </div>
     </div>

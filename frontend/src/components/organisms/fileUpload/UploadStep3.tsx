@@ -1,9 +1,11 @@
-import { Text } from "../../atoms/text/Text";
-import { Button } from "../../atoms/button/Button";
-
 type Props = {
   file: File;
-  result: string[];
+  result: {
+    name_en: string;
+    name_ko: string;
+    image_key: string;
+    is_already_exist: boolean;
+  };
   onClose: () => void;
 };
 
@@ -12,43 +14,41 @@ export const UploadStep3 = ({ file, result, onClose }: Props) => {
 
   return (
     <div className="flex flex-col gap-4">
-      <Text size="xl" weight="bold">
-        AI 분석 결과
-      </Text>
+      <h2 className="text-xl font-bold">AI 분석 결과</h2>
 
       <div className="flex gap-6">
         <div className="flex-1">
-          <Text size="sm" weight="bold" className="mb-1">
-            분석된 이미지
-          </Text>
           <img
             src={fileUrl}
-            alt="result"
+            alt="분석 이미지"
             className="rounded-lg border shadow-sm w-full max-w-[240px]"
           />
-          <p className="text-xs text-gray-400 mt-1">
-            처리 시간: 847ms | 감지된 단어: {result.length}개
-          </p>
         </div>
 
-        <div className="flex-1">
-          <Text size="sm" weight="bold">
-            감지된 단어들
-          </Text>
-          <ul className="mt-2 text-sm text-gray-700">
-            {result.length > 0 ? (
-              result.map((word, idx) => <li key={idx}>• {word}</li>)
-            ) : (
-              <p className="text-muted">감지된 단어가 없습니다.</p>
-            )}
-          </ul>
+        <div className="flex-1 text-sm text-gray-700">
+          <p>
+            📌 영어 이름: <strong>{result.name_en}</strong>
+          </p>
+          <p>
+            📌 한국어 이름: <strong>{result.name_ko}</strong>
+          </p>
+          <p>
+            📦 Redis Key: <code>{result.image_key}</code>
+          </p>
+          <p>
+            ✅ 존재 여부:{" "}
+            {result.is_already_exist ? "이미 존재함" : "신규 단어"}
+          </p>
         </div>
       </div>
 
-      <div className="flex justify-end gap-2 mt-4">
-        <Button size="md" bgColor="gradientGreen" onClick={onClose}>
-          단어 저장하기
-        </Button>
+      <div className="flex justify-end mt-4">
+        <button
+          className="px-4 py-2 bg-green-500 text-white rounded"
+          onClick={onClose}
+        >
+          저장하기
+        </button>
       </div>
     </div>
   );

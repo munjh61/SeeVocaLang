@@ -67,7 +67,7 @@ export const SignupFlow = () => {
     if (res.success) {
       alert("회원가입이 완료되었습니다!");
       resetForm();
-      navigate("/game");
+      navigate("/main");
     } else {
       alert("회원가입에 실패했습니다.");
     }
@@ -89,7 +89,7 @@ export const SignupFlow = () => {
             onNext={goToNextStep}
             onBack={() => {
               resetForm();
-              navigate("/game");
+              navigate("/");
             }}
           />
         );

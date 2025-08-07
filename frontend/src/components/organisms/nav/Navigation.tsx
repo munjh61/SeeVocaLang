@@ -11,7 +11,7 @@ type NavProps = {
 };
 
 const navItems = [
-  { icon: home, label: "홈", value: "home", path: "/" },
+  { icon: home, label: "홈", value: "home", path: "/main" },
   { icon: game, label: "게임", value: "game", path: "/game" },
   { icon: book, label: "단어장", value: "book", path: "/book" },
   { icon: friend, label: "친구", value: "friend", path: "/friend" },

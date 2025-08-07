@@ -15,13 +15,15 @@ export const ProgressBar = ({ current, total, height }: ProgressBarProps) => {
           className="w-full bg-gray-200 rounded-full overflow-hidden"
           style={{ height }}
         >
-          <div
-            className="bg-blue-500 transition-all duration-300"
-            style={{
-              width: `${percentage}%`,
-              height: "100%",
-            }}
-          />
+          {percentage > 0 && (
+            <div
+              className="bg-blue-500 transition-all duration-300"
+              style={{
+                width: `${percentage}%`,
+                height: "100%",
+              }}
+            />
+          )}
         </div>
       </div>
       <div className="text-xs text-gray-600 text-right font-bold">
