@@ -14,7 +14,16 @@ type QuizButton = {
 export const QuizButton = ({ en, ko, lang, answer, onClick }: QuizButton) => {
   const [selected, setSelected] = useState(false);
   const selectColor = answer ? "green" : "red";
+  const speak = (text: string) => {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "en-US";
+    utterance.rate = 1; // 읽기 속도 (0.1 ~ 10, 기본값: 1)
+    utterance.pitch = 1; // 음 높이 (0 ~ 2)
+    utterance.volume = 1; // 볼륨 (0 ~ 1)
+    window.speechSynthesis.speak(utterance);
+  };
   const handleOnclick = () => {
+    speak(en);
     setSelected(true);
     setTimeout(() => {
       setSelected(false);

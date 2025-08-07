@@ -2,15 +2,14 @@ import noImage from "../../../asset/png/noimage.png";
 import { Text } from "../../atoms/text/Text";
 import { IconButton } from "../../molecules/iconButton/IconButton";
 import { ImageBox } from "../../molecules/imagebox/Imagebox";
-import speaker from "../../../asset/speaker.svg?react";
 import { VocaLoc } from "./VocaLoc";
 import trash from "../../../asset/delete.svg?react";
 import cardDeco from "../../../asset/png/cardDecoration.png";
+import { TTSButton } from "../../molecules/ttsButton/TTSButton";
 
 export type VocaCardProps = {
   wordId?: number;
   imgUrl?: string;
-  audioUrl?: string;
   nameEn: string;
   nameKo: string;
   onDelete?: () => void;
@@ -22,7 +21,6 @@ export type VocaCardProps = {
 export const VocaCard = ({
   // wordId,
   imgUrl,
-  // audioUrl,
   nameEn,
   nameKo,
   blurKo,
@@ -30,6 +28,9 @@ export const VocaCard = ({
   books,
   onDelete,
 }: VocaCardProps) => {
+  const enLength = nameEn.length;
+  const koLength = nameKo.length;
+
   return (
     <div className="rounded-md shadow-md w-full h-full p-3 inline-flex flex-col gap-2 bg-white select-none relative">
       <img
@@ -38,13 +39,13 @@ export const VocaCard = ({
       />
       <div className="relative z-10 flex flex-col gap-2 h-full p-5">
         <Text
-          size={"xxxl"}
+          size={nameEn.length < 12 ? "xxxl" : "xxl"}
           font={"outline"}
-          className="text-green-700"
+          className="text-green-700 flex items-center justify-center h-10"
           onlyOneLine={"yes"}
           align={"center"}
         >
-          {blurEn ? "□".repeat(nameEn.length) : nameEn}
+          {blurEn ? "□".repeat(enLength) : nameEn}
         </Text>
         <div className="relative border-b border-gray-200">
           <div className="absolute top-1 left-1">
@@ -96,20 +97,10 @@ export const VocaCard = ({
           onlyOneLine={"yes"}
           align={"center"}
         >
-          {blurKo ? "□".repeat(nameKo.length) : nameKo}
+          {blurKo ? "□".repeat(koLength) : nameKo}
         </Text>
         <div className="flex flex-row flex-wrap justify-center">
-          <IconButton
-            IconVariant={{ icon: speaker, color: "white" }}
-            ButtonVariant={{
-              textColor: "white",
-              bgColor: "green",
-              className: "font-medium",
-            }}
-            className="w-[80%]"
-          >
-            발음 듣기
-          </IconButton>
+          <TTSButton text={nameEn} />
         </div>
       </div>
     </div>

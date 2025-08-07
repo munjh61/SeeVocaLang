@@ -31,7 +31,7 @@ export const Quiz = ({
   const [, setCombo] = useState(0);
   const [, setMaxCombo] = useState(0);
   const feedbackClass =
-    "w-48 h-48 z-10 absolute top-1/3 left-1/2 -translate-x-1/2 animate-fade";
+    "w-64 h-64 z-10 absolute top-1/3 left-1/2 -translate-x-1/2 animate-fade";
 
   const handleOnclick = (v: boolean) => {
     if (timer) {

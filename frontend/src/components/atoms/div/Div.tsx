@@ -18,6 +18,7 @@ export const Div = ({
   border,
   className,
   children,
+  align,
   ...props
 }: DivProps) => {
   return (
@@ -28,6 +29,7 @@ export const Div = ({
           bg,
           rounded,
           color,
+          align,
         }),
         className
       )}
