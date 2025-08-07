@@ -116,11 +116,7 @@ public class WordService {
         List<WordEntity> selected = words.subList(0, 4);
 
         List<CardGamePhotoDto> dtoList = selected.stream()
-                .map(word -> new CardGamePhotoDto(
-                        word.getImageUrl(),
-                        word.getNameEn(),
-                        word.getAudioUrl()
-                ))
+                .map(WordMapper.INSTANCE::toCardGamePhotoDto)
                 .toList();
 
         return new CardGameResponseDto(dtoList);
