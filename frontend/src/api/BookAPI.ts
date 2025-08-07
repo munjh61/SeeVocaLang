@@ -69,10 +69,30 @@ export const updateBook = async (
   }
 };
 
+// 단어장 즐겨찾기
+export const addFavorite = async (folderId: number) => {
+  try {
+    const res = await authApi.post(`${BooksURL}/${folderId}/favorite`);
+    console.log(res.data);
+  } catch (error) {
+    console.error("❌ 폴더 요청 실패:", error);
+    throw error;
+  }
+};
+export const delFavorite = async (folderId: number) => {
+  try {
+    const res = await authApi.delete(`${BooksURL}/${folderId}/favorite`);
+    console.log(res.data);
+  } catch (error) {
+    console.error("❌ 폴더 요청 실패:", error);
+    throw error;
+  }
+};
+
 // 단어장에 수록된 단어 가져오기
 export const getWords = async (folderId: number) => {
   try {
-    const res = await authApi.get(`/api/v1/folders/${folderId}/words`);
+    const res = await authApi.get(`${BooksURL}/${folderId}/words`);
     console.log("✅ words:", res?.data?.content);
     return res?.data?.content || [];
   } catch (error) {

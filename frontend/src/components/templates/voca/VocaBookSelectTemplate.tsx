@@ -130,7 +130,6 @@ export const BookSelectTemplate = ({
 
   const searchFunction = (v: string) => setSearchKey(v);
 
-  console.log(getWords(1));
   // 단어장 불러오기
   const handleLearnClick = async (folderId: number) => {
     const list = await getWords(folderId);
