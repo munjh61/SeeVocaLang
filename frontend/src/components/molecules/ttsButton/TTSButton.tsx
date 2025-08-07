@@ -1,4 +1,3 @@
-import { Button } from "../../atoms/button/Button";
 import speaker from "../../../asset/speaker.svg?react";
 import { IconButton } from "../iconButton/IconButton";
 
