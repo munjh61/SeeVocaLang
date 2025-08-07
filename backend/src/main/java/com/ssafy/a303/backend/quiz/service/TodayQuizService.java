@@ -7,6 +7,7 @@ import com.ssafy.a303.backend.quiz.entity.QuizEntity;
 import com.ssafy.a303.backend.quiz.exception.QuizAlreadyCompleteRuntimeException;
 import com.ssafy.a303.backend.quiz.exception.QuizNumberExceedRuntimeException;
 import com.ssafy.a303.backend.quizorder.service.QuizOrderService;
+import com.ssafy.a303.backend.studyhistory.service.StudyHistoryService;
 import com.ssafy.a303.backend.user.entity.UserEntity;
 import com.ssafy.a303.backend.user.exception.UserErrorCode;
 import com.ssafy.a303.backend.user.exception.UserException;
@@ -25,6 +26,7 @@ public class TodayQuizService {
 
     private final QuizService quizService;
     private final QuizOrderService quizOrderService;
+    private final StudyHistoryService studyHistoryService;
     private final UserService userService;
 
     public GetTodayQuizStatusResultDto getTodayQuizStatus(Long userId, LocalDateTime currentTime) {
@@ -59,5 +61,14 @@ public class TodayQuizService {
                 .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
         QuizEntity quiz = quizService.getQuiz(commandDto.quizNumber(), currentTime, endTime);
         quizOrderService.saveTodayQuizProgress(user, quiz);
+    }
+
+    @Transactional
+    public void completeTodayQuiz(Long userId, LocalDateTime currentTime) {
+        UserEntity user = userService.getUser(userId)
+                .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
+
+        LocalDateTime endTime = currentTime.plusDays(1).minusNanos(1);
+        studyHistoryService.completeTodayQuiz(user, currentTime, endTime);
     }
 }
