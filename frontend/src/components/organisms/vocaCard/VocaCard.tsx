@@ -2,10 +2,10 @@ import noImage from "../../../asset/png/noimage.png";
 import { Text } from "../../atoms/text/Text";
 import { IconButton } from "../../molecules/iconButton/IconButton";
 import { ImageBox } from "../../molecules/imagebox/Imagebox";
-import speaker from "../../../asset/speaker.svg?react";
 import { VocaLoc } from "./VocaLoc";
 import trash from "../../../asset/delete.svg?react";
 import cardDeco from "../../../asset/png/cardDecoration.png";
+import { TTSButton } from "../../molecules/ttsButton/TTSButton";
 
 export type VocaCardProps = {
   wordId?: number;
@@ -99,17 +99,7 @@ export const VocaCard = ({
           {blurKo ? "□".repeat(nameKo.length) : nameKo}
         </Text>
         <div className="flex flex-row flex-wrap justify-center">
-          <IconButton
-            IconVariant={{ icon: speaker, color: "white" }}
-            ButtonVariant={{
-              textColor: "white",
-              bgColor: "green",
-              className: "font-medium",
-            }}
-            className="w-[80%]"
-          >
-            발음 듣기
-          </IconButton>
+          <TTSButton text={nameEn} />
         </div>
       </div>
     </div>
