@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { Logo } from "../atoms/Logo.tsx";
-import { Text } from "../atoms/text/Text.tsx";
-import { Label } from "../atoms/Label.tsx";
-import { Input } from "../atoms/input/Input.tsx";
-import { Checkbox } from "../atoms/Checkbox.tsx";
-import { Button } from "../atoms/button/Button.tsx";
-import { useNavigate } from "react-router-dom";
-import { signin } from "../../api/LoginApi.ts";
-import { getUserInfo } from "../../api/userInfo.ts";
-import { useAuthStore } from "../../stores/AuthStore.ts";
+import React, {useEffect, useState} from "react";
+import {Logo} from "../atoms/Logo.tsx";
+import {Text} from "../atoms/text/Text.tsx";
+import {Label} from "../atoms/Label.tsx";
+import {Input} from "../atoms/input/Input.tsx";
+import {Checkbox} from "../atoms/Checkbox.tsx";
+import {Button} from "../atoms/button/Button.tsx";
+import {useNavigate} from "react-router-dom";
+import {signin} from "../../api/LoginApi.ts";
+import {getUserInfo} from "../../api/userInfo.ts";
+import {useAuthStore} from "../../stores/AuthStore.ts";
 
 export const Login = () => {
   const [id, setId] = useState("");
@@ -31,15 +31,22 @@ export const Login = () => {
     try {
       console.log("로그인 시도:", { id, password });
       const { token, nickname, profileImage } = await signin(id, password);
+
+      // ✅ 유저 정보 content에서 꺼내기
       const userInfo = await getUserInfo();
 
+      console.log("userInfo : ", userInfo);
+
+      // ✅ 상태 업데이트
       useAuthStore.getState().login(token, {
-        id: userInfo.id,
+        userId: userInfo.userId,
+        loginId: userInfo.loginId,
         nickname: userInfo.nickname ?? nickname,
         email: userInfo.email ?? null,
         profileImage: profileImage ?? null,
       });
 
+      console.log("로그인 유저 정보 : ", useAuthStore.getState().user);
       navigate("/game");
     } catch {
       alert("아이디 또는 비밀번호가 올바르지 않습니다.");
