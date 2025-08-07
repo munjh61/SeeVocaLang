@@ -5,7 +5,6 @@ type TTSButtonProps = {
   text: string;
   label?: string;
 };
-
 export const TTSButton = ({ text }: TTSButtonProps) => {
   const speak = (text: string) => {
     const utterance = new SpeechSynthesisUtterance(text);

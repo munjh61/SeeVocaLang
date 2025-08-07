@@ -35,7 +35,7 @@ export const Ball = ({
         }}
       />
 
-      {/* ✅ 컴포넌트 내부에만 적용되는 <style> */}
+      {/* 컴포넌트 내부에만 적용되는 <style> */}
       <style>
         {`
           @keyframes fall {

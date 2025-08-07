@@ -29,10 +29,10 @@ export const QuizDoneTemplate = ({
       {/* 배경 데코 요소들 */}
       <RainyBalls />
 
-      <Div align={"center"}>
+      <Div align={"center"} className="gap-0">
         <QuizDoneStatCard day={day} />
         <QuizDoneBookInfo bookname={bookname} size={size} result={result} />
-        <QuizDoneButtons />
+        <QuizDoneButtons className="mt-10" />
       </Div>
     </Div>
   );
