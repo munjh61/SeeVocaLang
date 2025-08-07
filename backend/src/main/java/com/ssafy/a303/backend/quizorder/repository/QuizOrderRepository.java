@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface QuizOrderRepository extends JpaRepository<QuizOrderEntity, Long> {
 
-    Optional<QuizOrderEntity> findTopByUser_UserIdAndQuiz_CreatedAtBetweenOrderByIdDesc(
+    Optional<QuizOrderEntity> findByUser_UserIdAndQuiz_CreatedAtBetweenOrderByIdDesc(
             Long userId,
             LocalDateTime start,
             LocalDateTime end

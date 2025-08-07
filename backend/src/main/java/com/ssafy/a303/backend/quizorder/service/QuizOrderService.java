@@ -18,7 +18,7 @@ public class QuizOrderService {
     private final QuizOrderRepository quizOrderRepository;
 
     public int getLastResolvedQuiz(Long userId, LocalDateTime currentTime, LocalDateTime endTime) {
-        Optional<QuizOrderEntity> quizOrder = quizOrderRepository.findTopByUser_UserIdAndQuiz_CreatedAtBetweenOrderByIdDesc(userId, currentTime, endTime);
+        Optional<QuizOrderEntity> quizOrder = quizOrderRepository.findByUser_UserIdAndQuiz_CreatedAtBetweenOrderByIdDesc(userId, currentTime, endTime);
         return quizOrder.map(quizOrderEntity -> quizOrderEntity.getQuiz().getProblemNumber())
                 .orElse(0);
     }
