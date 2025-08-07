@@ -12,7 +12,7 @@ export const DivVariants = cva("", {
       gradientOrange: `
           bg-gradient-to-r from-orange-400 to-orange-700
         `,
-      white: "bg-white",
+      white: "bg-white/80",
       black: "bg-black",
       gray: `bg-[#F3F4F6]`,
       pp: `bg -[#F1F6FE]`,
@@ -53,6 +53,9 @@ export const DivVariants = cva("", {
       md: "rounded-md",
       full: "rounded-full",
       lg: "rounded-lg",
+    },
+    align: {
+      center: "flex flex-col items-center gap-2",
     },
   },
 });

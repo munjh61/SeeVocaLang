@@ -11,28 +11,37 @@ type Props = {
 
 export const QuizDoneBookInfo = ({ bookname, size, result }: Props) => {
   return (
-    <Div
-      bg="white"
-      className="flex flex-col gap-2 items-center bg-white/80 rounded-3xl p-2"
-    >
-      <Div className="flex items-center gap-3">
+    <Div bg="white" align={"center"} className="w-full rounded-3xl p-2">
+      <Div align={"center"}>
         <Icon icon={BookOpen} color="blue" size="sm" />
         <Text size="base" weight="medium" color="gray">
           완료한 단어장
         </Text>
+        <Text size="xl" weight="bold" color="gray" children={bookname} />
       </Div>
-      <Text size="xl" weight="bold" color="gray" children={bookname} />
-      <Div>
-        <Text
-          size="base"
-          color="gray"
-          children={`${size}개 문제를 풀었어요!`}
-        />
-        <Text
-          size="sm"
-          color="gray"
-          children={`연속으로 ${result} 문제 맞췄어요.`}
-        ></Text>
+      <Div align={"center"} className="grid grid-cols-2 w-full">
+        <Div align={"center"}>
+          <Text size="sm" color="gray">
+            푼 문제 수
+          </Text>
+          <Text
+            size="lg"
+            color="orange"
+            className="font-bold"
+            children={`${size} 개`}
+          />
+        </Div>
+        <Div align={"center"}>
+          <Text size="sm" color="gray">
+            최대 연속 정답 수
+          </Text>
+          <Text
+            size="lg"
+            color="green"
+            className="font-bold"
+            children={`${result} 개`}
+          />
+        </Div>
       </Div>
     </Div>
   );

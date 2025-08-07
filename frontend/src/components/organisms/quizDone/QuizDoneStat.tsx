@@ -23,8 +23,8 @@ export const QuizDoneStatCard = ({ day }: QuizDoneStatProps) => {
   const dayOfWeek = days[today.getDay()];
 
   return (
-    <Div bg="white" className="flex flex-col items-center rounded-xl p-4">
-      <Div>
+    <Div bg="white" align={"center"} className="rounded-3xl p-4 w-full">
+      <Div align={"center"}>
         <Text size="xl" weight="bold" color="purple" className="mb-3">
           🌟 대단해요! 🌟
         </Text>
@@ -32,10 +32,10 @@ export const QuizDoneStatCard = ({ day }: QuizDoneStatProps) => {
           {compliment(day)}
         </Text>
       </Div>
-      <Div className="grid grid-cols-2 gap-6">
+      <Div align={"center"} className="grid grid-cols-2 w-full">
         {/* 연속학습일 */}
         <Div>
-          <Div className="flex justify-center items-center gap-2 mb-2">
+          <Div align={"center"} className=" gap-2 mb-2">
             <Icon icon={Flame} color="orange" size="sm" />
             <Text size="sm" weight="medium" color="gray">
               연속 학습
@@ -45,22 +45,23 @@ export const QuizDoneStatCard = ({ day }: QuizDoneStatProps) => {
             size="xxl"
             weight="bold"
             color="orange"
+            align={"center"}
             children={`${day}일째`}
           ></Text>
           <Div className="w-8 h-1 bg-orange-500 rounded-full mx-auto mt-2" />
         </Div>
         {/* 완료일 */}
         <Div>
-          <Div className="flex justify-center items-center gap-2 mb-2">
+          <Div align={"center"}>
             <Icon icon={Calendar} color="green" size="sm" />
             <Text size="sm" weight="medium" color="gray">
               완료일
             </Text>
           </Div>
-          <Text size="lg" weight="bold" color="green">
+          <Text size="lg" weight="bold" color="green" align={"center"}>
             {dateStr}
           </Text>
-          <Text size="sm" weight="medium" color="green">
+          <Text size="sm" weight="medium" color="green" align={"center"}>
             {dayOfWeek}
           </Text>
         </Div>

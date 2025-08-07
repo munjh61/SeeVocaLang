@@ -6,7 +6,7 @@ export const QuizDoneButtons = () => {
   const navigate = useNavigate();
 
   return (
-    <Div className="space-y-4">
+    <Div align={"center"} className="w-full grid grid-cols-2">
       {/* 다시 해볼래요 → quiz 재시작 */}
       <Button
         size="lg"

@@ -1,7 +1,7 @@
-import { QuizDoneHeader } from "../../organisms/quizDone/QuizDoneHeader";
 import { QuizDoneBookInfo } from "../../organisms/quizDone/QuizDoneBookInfo";
 import { QuizDoneStatCard } from "../../organisms/quizDone/QuizDoneStat";
 import { QuizDoneButtons } from "../../organisms/quizDone/QuizDoneButtons";
+import { Div } from "../../atoms/div/Div";
 
 type QuizDoneTemplateProps = {
   bookname: string;
@@ -17,8 +17,9 @@ export const QuizDoneTemplate = ({
   day,
 }: QuizDoneTemplateProps) => {
   return (
-    <div
-      className="min-h-screen p-4 relative overflow-hidden"
+    <Div
+      align={"center"}
+      className="grow p-4 relative overflow-hidden justify-center"
       style={{
         background:
           "linear-gradient(to bottom right, #d8b4fe, #f9a8d4, #93c5fd)",
@@ -30,12 +31,11 @@ export const QuizDoneTemplate = ({
       <div className="absolute bottom-32 left-8 w-10 h-10 bg-blue-400 rounded-full opacity-40" />
       <div className="absolute bottom-60 right-12 w-4 h-4 bg-orange-400 rounded-full opacity-60" />
 
-      <div className="">
-        <QuizDoneHeader />
-        <QuizDoneBookInfo bookname={bookname} size={size} result={result} />
+      <Div align={"center"}>
         <QuizDoneStatCard day={day} />
+        <QuizDoneBookInfo bookname={bookname} size={size} result={result} />
         <QuizDoneButtons />
-      </div>
-    </div>
+      </Div>
+    </Div>
   );
 };
