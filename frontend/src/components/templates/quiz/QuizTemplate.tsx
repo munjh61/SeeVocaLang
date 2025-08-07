@@ -24,6 +24,7 @@ export const QuizTemplate = ({
   const [lang, setLang] = useState<"en" | "ko">("en");
   const [quizOrder, setQuizOrder] = useState<VocaCardProps[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [result, setResult] = useState(0);
 
   // 초기 퀴즈 순서 준비
   useEffect(() => {
@@ -39,6 +40,7 @@ export const QuizTemplate = ({
         state: {
           bookname: name,
           size: questionCount,
+          result: result,
         },
       });
   }, [quizOrder, currentIndex, nav]);
@@ -61,8 +63,8 @@ export const QuizTemplate = ({
       <QuizHeader
         name={name}
         description={description}
-        index={currentIndex}
-        total={quizDatas.length}
+        index={currentIndex + 1}
+        total={quizDatas.length + 1}
       />
       <Div bg={"sky"} className="flex flex-col grow rounded-md p-2">
         <div className="flex justify-end">
@@ -72,7 +74,9 @@ export const QuizTemplate = ({
               { label: "한글", value: "ko" },
             ]}
             defaultValue="en"
-            onChange={v => setLang(v)}
+            onChange={v => {
+              if (v === "en" || v === "ko") setLang(v);
+            }}
           />
         </div>
         <Quiz
@@ -82,6 +86,7 @@ export const QuizTemplate = ({
           quizDatas={quizDatas}
           lang={lang}
           onClick={goToNext}
+          result={v => setResult(v)}
           classname="grow"
         />
       </Div>

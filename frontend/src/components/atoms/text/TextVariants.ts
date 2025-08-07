@@ -8,6 +8,7 @@ export const textVariants = cva("", {
       base: "text-base",
       lg: "text-lg",
       xl: "text-xl",
+      xxl: "text-2xl",
       xxxl: "font-semibold text-3xl",
     },
     weight: {
