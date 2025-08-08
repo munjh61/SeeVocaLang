@@ -9,7 +9,8 @@ export const signin = async (loginId: string, password: string) => {
     const response = await axios.post(
       LOGIN_URL,
       { loginId, password },
-      { headers: { "Content-Type": "application/json" } }
+
+      { headers: { "Content-Type": "application/json" }, withCredentials: true }
     );
     console.log("로그인 요청 URL:", LOGIN_URL);
     console.log("🔍 전체 응답:", response);
