@@ -27,7 +27,7 @@ export const QuizDoneButtons = ({ className }: QuizDoneButtonsProps) => {
         textColor="white"
         rounded="lg"
         className="w-full py-4 px-6 shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
-        onClick={() => navigate("/book")}
+        onClick={() => navigate("/folder")}
       >
         단어장 페이지로
       </Button>

@@ -14,7 +14,7 @@ export const VocaLoc = ({ bg, folderId, foldername, children }: VocaLoc) => {
     <IconButton
       ButtonVariant={{ bgColor: bg, textColor: "white" }}
       className="p-1 w-18 block"
-      path={`/book/${folderId}`}
+      path={`/folder/${folderId}`}
     >
       <span className="w-full whitespace-nowrap overflow-hidden text-ellipsis font-light text-xs">
         {foldername}

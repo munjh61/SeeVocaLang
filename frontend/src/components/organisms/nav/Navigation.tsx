@@ -1,6 +1,6 @@
 import home from "../../../asset/nav_home.svg?react";
 import game from "../../../asset/nav_game.svg?react";
-import book from "../../../asset/nav_book.svg?react";
+import folder from "../../../asset/nav_folder.svg?react";
 import friend from "../../../asset/nav_friend.svg?react";
 import setting from "../../../asset/nav_setting.svg?react";
 import { useState } from "react";
@@ -13,7 +13,7 @@ type NavProps = {
 const navItems = [
   { icon: home, label: "홈", value: "home", path: "/main" },
   { icon: game, label: "게임", value: "game", path: "/game" },
-  { icon: book, label: "단어장", value: "book", path: "/book" },
+  { icon: folder, label: "단어장", value: "folder", path: "/folder" },
   { icon: friend, label: "친구", value: "friend", path: "/friend" },
   { icon: setting, label: "마이페이지", value: "mypage", path: "/mypage" },
 ];

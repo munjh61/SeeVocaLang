@@ -15,7 +15,7 @@ const VocaCardSample: VocaCardProps[] = [
     imgUrl: apple,
     nameEn: "apple",
     nameKo: "사과",
-    books: [
+    folders: [
       { id: 1, name: "단어장1" },
       { id: 2, name: "과일" },
     ],
@@ -25,7 +25,7 @@ const VocaCardSample: VocaCardProps[] = [
     imgUrl: bear,
     nameEn: "bear",
     nameKo: "곰",
-    books: [
+    folders: [
       { id: 1, name: "단어장1" },
       { id: 2, name: "동물" },
       { id: 3, name: "포유류" },

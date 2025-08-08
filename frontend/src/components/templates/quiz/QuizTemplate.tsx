@@ -39,7 +39,7 @@ export const QuizTemplate = ({
       // if (currentIndex >= 1)
       nav("/done", {
         state: {
-          bookname: name,
+          foldername: name,
           size: questionCount,
           result: result,
         },

@@ -3,12 +3,12 @@ import { IconButton } from "../../molecules/iconButton/IconButton";
 import { ImageBox } from "../../molecules/imagebox/Imagebox";
 import { Icon } from "../../atoms/icon/Icon";
 import gear from "../../../asset/gear.svg?react";
-import book from "../../../asset/nav_book.svg?react";
+import folder from "../../../asset/nav_folder.svg?react";
 import starF from "../../../asset/star-fill.svg?react";
 import starE from "../../../asset/star_empty.svg?react";
 import noImage from "../../../asset/png/noimage.png";
 
-export type VocaBookProps = {
+export type FolderProps = {
   folderId: number;
   thumbnailUrl?: string | null;
   name: string;
@@ -19,7 +19,7 @@ export type VocaBookProps = {
   onToggleFavorite?: (id: number) => void;
 };
 
-export const VocaBookCard = ({
+export const FolderCard = ({
   folderId,
   thumbnailUrl,
   name,
@@ -28,7 +28,7 @@ export const VocaBookCard = ({
   onLearnClick,
   onEditClick,
   onToggleFavorite,
-}: VocaBookProps) => {
+}: FolderProps) => {
   return (
     <div
       className="rounded-md shadow-md w-full p-3 inline-flex flex-col gap-2 bg-white select-none"
@@ -63,10 +63,10 @@ export const VocaBookCard = ({
         </div>
         <div className="flex flex-row justify-evenly">
           <IconButton
-            IconVariant={{ icon: book, color: "white" }}
+            IconVariant={{ icon: folder, color: "white" }}
             ButtonVariant={{ bgColor: "blue", textColor: "white" }}
             buttonValue={v => onLearnClick?.(Number(v))}
-            path={`/book/${folderId}`}
+            path={`/folder/${folderId}`}
           >
             학습하기
           </IconButton>

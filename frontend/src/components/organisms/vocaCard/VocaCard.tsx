@@ -15,7 +15,7 @@ export type VocaCardProps = {
   onDelete?: () => void;
   blurKo?: boolean;
   blurEn?: boolean;
-  books?: { id: number; name: string }[];
+  folders?: { id: number; name: string }[];
 };
 
 export const VocaCard = ({
@@ -25,7 +25,7 @@ export const VocaCard = ({
   nameKo,
   blurKo,
   blurEn,
-  books,
+  folders,
   onDelete,
 }: VocaCardProps) => {
   const enLength = nameEn.length;
@@ -57,30 +57,30 @@ export const VocaCard = ({
             ></IconButton>
           </div>
           <div className="absolute top-1 right-1">
-            {books && (
+            {folders && (
               <>
-                {books[0] && (
+                {folders[0] && (
                   <VocaLoc
                     bg={"red"}
-                    folderId={books[0].id}
-                    foldername={books[0].name}
+                    folderId={folders[0].id}
+                    foldername={folders[0].name}
                   />
                 )}
-                {books[1] && (
+                {folders[1] && (
                   <VocaLoc
                     bg={"yellow"}
-                    folderId={books[1].id}
-                    foldername={books[1].name}
+                    folderId={folders[1].id}
+                    foldername={folders[1].name}
                   />
                 )}
-                {books[2] && (
+                {folders[2] && (
                   <VocaLoc
                     bg={"green"}
-                    folderId={books[2].id}
-                    foldername={books[2].name}
+                    folderId={folders[2].id}
+                    foldername={folders[2].name}
                   />
                 )}
-                {books.length > 3 && <VocaLoc bg={"blue"}>더보기</VocaLoc>}
+                {folders.length > 3 && <VocaLoc bg={"blue"}>더보기</VocaLoc>}
               </>
             )}
           </div>
