@@ -36,6 +36,7 @@ export const QuizTemplate = ({
   useEffect(() => {
     if (questionCount === 0) return;
     if (currentIndex >= questionCount)
+      // if (currentIndex >= 1)
       nav("/done", {
         state: {
           bookname: name,

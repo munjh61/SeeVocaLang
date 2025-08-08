@@ -18,9 +18,15 @@ export const QuizDoneStatCard = ({ day }: QuizDoneStatProps) => {
     <Div bg="white" align={"center"} className="rounded-t-xl p-4 w-full">
       <Div align={"center"}>
         <Text size="xxl" weight="extrabold" color="danger" className="mb-3">
-          🌟 대단해요! 🌟
+          🌟
         </Text>
-        <Text size="lg" weight="medium" color="muted" className="mb-2">
+        <Text
+          size="xxl"
+          weight="extrabold"
+          color="green"
+          font={"outline"}
+          className="mb-2"
+        >
           {compliment(day)}
         </Text>
       </Div>

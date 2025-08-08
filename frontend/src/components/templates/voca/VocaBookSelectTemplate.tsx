@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { VocaBookSecondHeader } from "../../organisms/vocaBook/VocaSecondheader";
 import {
   VocaBookCard,
@@ -10,14 +10,23 @@ import { useNavigate } from "react-router-dom";
 import { Searchbar } from "../../molecules/searchbar/Searchbar";
 import { QuizBookSelectModal } from "../../organisms/vocaBook/QuizBookSelectModal";
 import { VocaFormModal } from "../../organisms/vocaBook/VocaFormModal";
+import {
+  createBook,
+  deleteBook,
+  getWords,
+  updateBook,
+} from "../../../api/BookAPI";
 
-export type VocaBookDataProps = {
-  vocaBookDatas?: VocaBookProps[];
+/** 🔑 props는 '배열' 자체로 받는다. (중요!)
+ *  getBooks가 VocaBookProps[] 를 반환한다는 가정 하에 동일하게 맞춤
+ */
+type BookSelectTemplateProps = {
+  vocaBookDatas: VocaBookProps[]; // ← 배열 타입 (선택 아님)
 };
 
 export const BookSelectTemplate = ({
-  vocaBookDatas = [],
-}: VocaBookDataProps) => {
+  vocaBookDatas,
+}: BookSelectTemplateProps) => {
   const [modalType, setModalType] = useState<"create" | "update" | null>(null);
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [title, setTitle] = useState("");
@@ -27,10 +36,15 @@ export const BookSelectTemplate = ({
   const [searchKey, setSearchKey] = useState("");
   const navigate = useNavigate();
 
-  // 여기서 전체 단어장 상태 관리
+  /** 🧠 내부 상태: prop으로 받은 목록을 로컬 편집하기 위해 별도 상태로 보관 */
   const [vocaList, setVocaList] = useState<VocaBookProps[]>(vocaBookDatas);
 
-  // 추가 수정 삭제 모달
+  /** 📌 prop 변경 시 내부 상태 동기화 (API 재호출 등으로 상위에서 배열이 바뀔 수 있음) */
+  useEffect(() => {
+    setVocaList(vocaBookDatas);
+  }, [vocaBookDatas]);
+
+  // 모달 공통 핸들러
   const closeModal = () => {
     setModalType(null);
     setSelectedId(null);
@@ -38,12 +52,12 @@ export const BookSelectTemplate = ({
     setSubtitle("");
   };
 
-  const openEditModal = (id: number) => {
-    const selected = vocaList.find(item => item.id === id);
+  const openEditModal = (folderId: number) => {
+    const selected = vocaList.find(item => item.folderId === folderId);
     if (!selected) return;
     setTitle(selected.name);
     setSubtitle(selected.description);
-    setSelectedId(id);
+    setSelectedId(folderId);
     setModalType("update");
   };
 
@@ -54,61 +68,72 @@ export const BookSelectTemplate = ({
     setModalType("create");
   };
 
-  const handleSubmit = () => {
-    console.log(`${modalType === "create" ? "생성" : "수정"} 요청`, {
-      id: selectedId,
-      title,
-      subtitle,
-    });
-    if (modalType === "create") {
-      const newId = Math.max(...vocaList.map(v => v.id), 0) + 1; // ID 자동 증가, 나중에 서버 붙이면 번호 가져와야함
-      const newItem: VocaBookProps = {
-        id: newId,
-        name: title,
-        description: subtitle,
-        favorite: false,
-      };
-      setVocaList(prev => [...prev, newItem]);
-    } else if (modalType === "update" && selectedId !== null) {
-      setVocaList(prev =>
-        prev.map(item =>
-          item.id === selectedId
-            ? { ...item, name: title, description: subtitle }
-            : item
-        )
-      );
-    }
-    closeModal();
-  };
+  const handleSubmit = async () => {
+    try {
+      if (modalType === "create") {
+        // 1) 서버에 생성 요청
+        const created = await createBook(title, subtitle);
+        // 2) VocaBookProps 객체로 만들기
+        const newItem: VocaBookProps = {
+          folderId: created.folderId ?? created.folderId,
+          name: created.name ?? title,
+          description: created.description ?? subtitle,
+          favorite: Boolean(created.favorite),
+          thumbnailUrl: created.thumbnailUrl ?? null,
+        };
+        // 3) 목록에 반영(낙관적 업데이트)
+        setVocaList(prev => [...prev, newItem]);
+      } else if (modalType === "update" && selectedId !== null) {
+        // 1) 서버에 수정 요청
+        await updateBook(selectedId, title, subtitle);
+        // 2) 목록에 반영(낙관적 업데이트)
+        setVocaList(prev =>
+          prev.map(item =>
+            item.folderId === selectedId
+              ? { ...item, name: title, description: subtitle }
+              : item
+          )
+        );
+      }
 
-  const handleDelete = () => {
+      // 성공 시에만 모달 닫기
+      closeModal();
+    } catch (e) {
+      console.error(e);
+      // TODO: 토스트로 "생성 실패" 같은 에러 UI 표시
+    }
+  };
+  const handleDelete = async () => {
     if (selectedId !== null) {
-      console.log(`삭제 요청`, {
-        id: selectedId,
-        title,
-        subtitle,
-      });
-      setVocaList(prev => prev.filter(item => item.id !== selectedId));
+      await deleteBook(selectedId);
+      setVocaList(prev => prev.filter(item => item.folderId !== selectedId));
       closeModal();
     }
   };
 
-  // 즐겨찾기
-  const toggleFavorite = (id: number) => {
+  // 즐겨찾기 토글
+  const toggleFavorite = (folderId: number) => {
     setVocaList(prev =>
       prev.map(item =>
-        item.id === id ? { ...item, favorite: !item.favorite } : item
+        item.folderId === folderId
+          ? { ...item, favorite: !item.favorite }
+          : item
       )
     );
   };
 
+  // 검색/필터링
   const filteredList = vocaList.filter(voca => {
     const isMatched = hangul.search(voca.name, searchKey) > -1;
     return isFavoriteOnly ? voca.favorite && isMatched : isMatched;
   });
-  // 검색
-  const searchFunction = (v: string) => {
-    setSearchKey(v);
+
+  const searchFunction = (v: string) => setSearchKey(v);
+
+  // 단어장 불러오기
+  const handleLearnClick = async (folderId: number) => {
+    const list = await getWords(folderId);
+    console.log("📦 학습용 단어 리스트:", list);
   };
 
   // 퀴즈 이동 모달
@@ -116,10 +141,11 @@ export const BookSelectTemplate = ({
 
   return (
     <div className="flex flex-col justify-center">
+      {/* 생성/수정 폼 모달 */}
       <VocaFormModal
         isOpen={modalType !== null}
         onClose={closeModal}
-        bookId={selectedId}
+        folderId={selectedId}
         formType={modalType}
         title={title}
         subtitle={subtitle}
@@ -128,12 +154,15 @@ export const BookSelectTemplate = ({
         onDelete={handleDelete}
         onSubmit={handleSubmit}
       />
+
+      {/* 퀴즈 선택 모달 */}
       <QuizBookSelectModal
         isOpen={quizModalOpen}
         onClose={() => setQuizModalOpen(false)}
         vocaList={vocaList}
       />
 
+      {/* 상단 툴바 */}
       <div className="flex flex-col p-2 w-full gap-2">
         <div className="flex flex-row gap-2 p-4 bg-gray-100 rounded-md">
           <IconButton
@@ -147,18 +176,19 @@ export const BookSelectTemplate = ({
           >
             뒤로 가기
           </IconButton>
-          <Searchbar iconColor="blue" onSearch={searchFunction}></Searchbar>
+
+          <Searchbar iconColor="blue" onSearch={searchFunction} />
+
           <IconButton
-            ButtonVariant={{
-              bgColor: "purple",
-              textColor: "white",
-            }}
+            ButtonVariant={{ bgColor: "purple", textColor: "white" }}
             buttonValue={() => setQuizModalOpen(true)}
             className="w-30"
           >
             퀴즈 풀기
           </IconButton>
         </div>
+
+        {/* 본문 */}
         <div className="flex flex-col gap-4 bg-[#F3F4FF] p-4 h-full rounded-md">
           <VocaBookSecondHeader
             isToggle={isToggle}
@@ -166,11 +196,17 @@ export const BookSelectTemplate = ({
             onClickCreate={openCreateModal}
             onClickFavorite={() => setIsFavoriteOnly(prev => !prev)}
           />
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
+
+          {/* 카드 목록 */}
+          <div
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3
+                          lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4"
+          >
             {filteredList.map(data => (
               <VocaBookCard
-                key={data.id}
+                key={data.folderId}
                 {...data}
+                onLearnClick={handleLearnClick}
                 onEditClick={openEditModal}
                 onToggleFavorite={toggleFavorite}
               />

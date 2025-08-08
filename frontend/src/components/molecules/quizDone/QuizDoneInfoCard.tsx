@@ -29,16 +29,17 @@ export const QuizDoneInfoCard = ({
         bg={titleColor}
       >
         <Icon icon={icon} color="white" size="sm" />
-        <Text size="sm" weight="medium" color="white">
+        <Text size="sm" weight="medium" color="white" font={"outline"}>
           {title}
         </Text>
       </Div>
       <Text
-        size="xxl"
+        size={data.length < 10 ? "xxl" : "xl"}
         weight="bold"
         color={dataColor}
         align={"center"}
         children={data}
+        font={"outline"}
         className="bg-white/80 rounded-b-md p-2"
       />
     </Div>

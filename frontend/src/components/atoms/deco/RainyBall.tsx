@@ -1,7 +1,8 @@
 import { Div } from "../div/Div";
-import { Ball } from "./ball";
+import { Ball } from "./Ball";
 import { BallVariants } from "./BallVariants";
 import type { VariantProps } from "class-variance-authority";
+import React from "react";
 
 type BallColor = VariantProps<typeof BallVariants>["color"];
 
@@ -14,7 +15,7 @@ const ballColors: BallColor[] = [
   "purple",
 ];
 
-export const RainyBalls = () => {
+const RainyBallsComponent = () => {
   return (
     <Div className="w-full overflow-hidden">
       {[...Array(30)].map((_, i) => (
@@ -30,3 +31,5 @@ export const RainyBalls = () => {
     </Div>
   );
 };
+
+export const RainyBalls = React.memo(RainyBallsComponent);
