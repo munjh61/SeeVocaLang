@@ -94,7 +94,7 @@ email:
 
 jwt:
   secret: ${JWT_SECRET:see-vocabulary-language-ssafy-project-a303}
-  access-minutes: 15m
+  access-minutes: 3m
   refresh-days: 14d
 
 logging:

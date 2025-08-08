@@ -66,10 +66,10 @@ public class AuthService {
                 requestDto.getBirthday() // nullable 그대로 전달됨
         );
 
-        UserEntity newUSer = userRepository.save(user);
+        UserEntity newUser = userRepository.save(user);
         log.info("회원가입 성공: userId={}, loginId={}", user.getUserId(), user.getLoginId());
 
-        createDefaultFolder(newUSer.getUserId());
+        createDefaultFolder(newUser.getUserId());
 
         return BaseResponseDto.<Void>builder()
                 .message(UserResponseMessages.SIGN_UP_SUCCESS)
