@@ -14,9 +14,9 @@ COPY gradle ./gradle
 COPY build.gradle settings.gradle ./
 
 # 2) 권한 + 의존성만 선반영 (캐시됨)
-RUN chmod +x gradlew
+RUN chmod +x ./gradlew
 # dependencies 태스크가 없다면 아래 줄은 건너뛰어도 OK
-RUN ./gradlew dependencies --no-daemon || true
+RUN ./gradlew compileJava -x test --no-daemon > /dev/null 2>&1 || true
 
 # 3) 실제 소스 복사
 COPY . .
