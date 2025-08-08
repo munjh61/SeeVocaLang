@@ -1,5 +1,5 @@
 import { Div } from "../div/Div";
-import { Ball } from "./Ballzz";
+import { Ball } from "./Ball";
 import { BallVariants } from "./BallVariants";
 import type { VariantProps } from "class-variance-authority";
 
