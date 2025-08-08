@@ -29,31 +29,10 @@ public class WordService {
 
     @Transactional(readOnly = true)
     public PageResponseDto<ReadWordResponseDto> getWords(ReadWordCommandDto readWordCommandDto) {
-        long lastId = readWordCommandDto.getLastId();
-        int size = readWordCommandDto.getSize();
-        long userId = readWordCommandDto.getUserId();
-
-        PageRequest pageable = PageRequest.of(0, size);
-
-        Page<WordEntity> pages;
-        if (lastId == -1)
-            pages = wordRepository.findByUserUserIdOrderByWordIdDesc(userId, pageable);
-        else
-            pages = wordRepository.findByUserUserIdAndWordIdLessThanOrderByWordIdDesc(userId, lastId, pageable);
-
-        List<ReadWordResponseDto> words = pages
-                .getContent()
-                .stream()
-                .map(WordMapper.INSTANCE::readWordCommandDto)
-                .toList();
-
-        long id = words.isEmpty() ? -1 : words.get(words.size() - 1).getWordId();
-
+        List<ReadWordResponseDto> words = wordRepository.getWords(readWordCommandDto.getUserId());
         return PageResponseDto.<ReadWordResponseDto>builder()
-                .message("전체 사진을 성공적으로 불러왔습니다.")
                 .content(words)
-                .hasNext(pages.hasNext())
-                .lastId(id)
+                .message("성공적으로 단어들을 불러왔습니다.")
                 .build();
     }
 
