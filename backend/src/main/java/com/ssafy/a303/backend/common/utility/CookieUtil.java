@@ -19,8 +19,8 @@ public class CookieUtil {
 
         return ResponseCookie.from("refreshToken", refreshToken)
                 .httpOnly(true)
-                .secure(true)
-                .sameSite("Strict")
+                .secure(false)
+                .sameSite("Lax")
                 .maxAge(maxAgeSeconds)
                 .path("/")
                 .build();
@@ -30,8 +30,8 @@ public class CookieUtil {
     public ResponseCookie deleteRefreshTokenCookie() {
         return ResponseCookie.from("refreshToken", "")
                 .httpOnly(true)
-                .secure(true)
-                .sameSite("Strict")
+                .secure(false)
+                .sameSite("Lax")
                 .maxAge(0)
                 .path("/")
                 .build();
