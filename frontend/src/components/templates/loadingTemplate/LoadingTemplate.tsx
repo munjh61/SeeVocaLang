@@ -1,7 +1,20 @@
+import { useEffect, useState } from "react";
 import { RainyBalls } from "../../atoms/deco/RainyBall";
 import { Div } from "../../atoms/div/Div";
+import { Text } from "../../atoms/text/Text";
 
 export const LoadingPage = () => {
+  const [count, setCount] = useState(0);
+  const dot = [".", "..", "..."];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCount(prev => (prev + 1) % 3);
+    }, 500);
+
+    return () => clearInterval(interval); // 언마운트 시 정리
+  }, []);
+
   return (
     <Div
       align={"center"}
@@ -13,7 +26,7 @@ export const LoadingPage = () => {
     >
       {/* 배경 데코 요소들 */}
       <RainyBalls />
-      <Div>로딩 중</Div>
+      <Text size={"xxxl"} font={"outline"}>{`로딩중 ${dot[count]}`}</Text>
     </Div>
   );
 };
