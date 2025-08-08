@@ -19,23 +19,20 @@ public class WordController {
     private final WordService wordService;
 
     @GetMapping("/api/v1/words")
-    public ResponseEntity<PageResponseDto<ReadWordResponseDto>> readWords(@RequestParam(defaultValue = "-1") long lastId) {
+    public ResponseEntity<PageResponseDto<ReadWordResponseDto>> readWords(@AuthenticationPrincipal CustomUserDetails userDetails) {
 
-        PageResponseDto<ReadWordResponseDto> pageResponseDto = wordService.getWords(ReadWordCommandDto
-                .builder()
-                .userId(1)
-                .lastId(lastId)
-                .size(10)
-                .build());
+        PageResponseDto<ReadWordResponseDto> pageResponseDto = wordService.getWords(ReadWordCommandDto.builder()
+                .userId(userDetails.getUserId()).build());
 
         return ResponseEntity.ok(pageResponseDto);
     }
 
     @DeleteMapping("/api/v1/words/{wordId}")
-    public ResponseEntity<BaseResponseDto<Void>> deleteWord(@PathVariable long wordId) {
+    public ResponseEntity<BaseResponseDto<Void>> deleteWord(@PathVariable long wordId,
+                                                            @AuthenticationPrincipal CustomUserDetails userDetails) {
         BaseResponseDto<Void> baseResponseDto = wordService.deleteWord(DeleteWordCommandDto
                 .builder()
-                .userId(1)
+                .userId(userDetails.getUserId())
                 .wordId(wordId)
                 .build());
 

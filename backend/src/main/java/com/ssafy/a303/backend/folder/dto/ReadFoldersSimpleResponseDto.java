@@ -1,4 +1,4 @@
-package com.ssafy.a303.backend.word.dto;
+package com.ssafy.a303.backend.folder.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ReadWordCommandDto {
-    private Long userId;
+public class ReadFoldersSimpleResponseDto {
+    private long folderId;
+    private String name;
 }
