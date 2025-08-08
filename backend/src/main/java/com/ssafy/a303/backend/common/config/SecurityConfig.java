@@ -53,7 +53,7 @@ public class SecurityConfig {
                 "http://ec2-13-125-250-93.ap-northeast-2.compute.amazonaws.com"
         ));
         configuration.setAllowedMethods(Arrays.asList(
-                "GET", "POST", "PUT", "DELETE", "OPTIONS"
+                "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"
         ));
         configuration.addExposedHeader("Authorization");
         configuration.setAllowedHeaders(Arrays.asList("*"));
