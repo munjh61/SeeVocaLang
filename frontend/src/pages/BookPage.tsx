@@ -7,6 +7,7 @@ import { BookSelectTemplate } from "../components/templates/voca/VocaBookSelectT
 // API 응답을 화면에서 쓰는 타입(카드 컴포넌트가 기대하는 형태)
 import type { VocaBookProps } from "../components/organisms/vocaBook/VocaBook";
 import { useAuthStore } from "../stores/AuthStore";
+import { LoadingPage } from "../components/templates/loadingTemplate/LoadingTemplate";
 
 function BookPage() {
   const [books, setBooks] = useState<VocaBookProps[] | null>(null);
@@ -40,7 +41,7 @@ function BookPage() {
   }, [userId]);
 
   if (error) return <div>에러: {error}</div>;
-  if (!books) return <div>로딩 중…</div>;
+  if (!books) return <LoadingPage />;
 
   return (
     <div className="flex flex-col h-screen">
