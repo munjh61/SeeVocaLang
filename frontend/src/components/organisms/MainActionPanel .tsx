@@ -19,6 +19,7 @@ export const MainActionPanel = () => {
     const fetchData = async () => {
       try {
         const result = await todayStudyStatus();
+        // 🔹 totalProblemCount를 20으로 강제 설정
         setStudyStatus({
           lastSolvedNumber: result.lastSolvedNumber,
           totalProblemCount: 20,
@@ -30,6 +31,7 @@ export const MainActionPanel = () => {
 
     fetchData();
   }, []);
+
   return (
     <section className="flex flex-col flex-1/2 gap-2">
       <InfoCardLarge
