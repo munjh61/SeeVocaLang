@@ -7,15 +7,18 @@ import UploadIcon from "../../../asset/image_upload.svg?react";
 import MailIcon from "../../../asset/mail.svg?react";
 import { useState, useEffect } from "react";
 import { FileUploadModalFlow } from "../../organisms/fileUpload/FileUploadModalFlow";
+import type { UserInfo } from "../../../api/userInfo";
+import { checkPassword, getEmailCode, sendEmailCode, updateProfile } from "../../../api/MyPageApi";
 
-const LOGIN_USER_PASSWORD = "test1234";
+
 
 type ProfileModalProps = {
   isOpen: boolean;
   onClose: () => void;
+  userInfo?: UserInfo | null;
 };
 
-export const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
+export const ProfileModal = ({ isOpen, onClose, userInfo}: ProfileModalProps) => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [imageURL, setImageURL] = useState<string | null>(null);
   const [nickname, setNickname] = useState("");
@@ -27,33 +30,56 @@ export const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isVerified, setIsVerified] = useState(false);
   const [isPasswordChanged, setIsPasswordChanged] = useState(false);
-  const TEST_CODE = "123456";
+  const [profileFile, setProfileFile] = useState<File | null>(null);
 
-  useEffect(() => {
-    return () => {
-      if (imageURL) {
-        URL.revokeObjectURL(imageURL);
-      }
-    };
-  }, [imageURL]);
+ 
+ useEffect(() => {
+  if (userInfo) {
+    setNickname(userInfo.nickname ?? "");
+    setEmail(userInfo.email ?? "");
+    setImageURL(userInfo.profileImage ?? null);
+    if (userInfo.email) {
+      setEmailStep("completed");
+    }
+  }
 
-  const handleVerifyPassword = () => {
-    if (currentPassword === LOGIN_USER_PASSWORD) {
+}, [userInfo]);
+ 
+  const handleVerifyPassword = async() => {
+    const success = await checkPassword(currentPassword)
+    if (success) {
       setIsVerified(true);
     } else {
       alert("현재 비밀번호가 일치하지 않습니다.");
     }
   };
 
-  const handleVerifyEmailCode = () => {
-    if (emailCode === TEST_CODE) {
-      alert("이메일 인증이 완료되었습니다.");
-      setEmailStep("completed");
-    } else {
-      alert("인증번호가 일치하지 않습니다.");
-    }
+  const handleVerifyEmailCode = async() => {
+  const success = await sendEmailCode(email, emailCode);
+  if (success) {
+    alert("✅ 이메일 인증이 완료되었습니다.");
+    setEmailStep("completed");
+  } else {
+    alert("❌ 인증번호가 올바르지 않습니다.");
+  }
   };
 
+const changeProfile = async () => {
+  console.log({
+  currentPassword,
+  newPassword,
+  nickname,
+  profileFile
+});
+
+  const success = await updateProfile(currentPassword, newPassword, nickname, profileFile);
+  if (success) {
+    alert("✅ 프로필 수정이 완료되었습니다.");
+    onClose();
+  } else {
+    alert("❌ 프로필 수정에 실패했습니다. 다시 시도해주세요.");
+  }
+};
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -91,6 +117,7 @@ export const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
                 onChange={(e) => {
                   const file = e.target.files?.[0];
                   if (file) {
+                      setProfileFile(file);
                     const newImageURL = URL.createObjectURL(file);
                     setImageURL(newImageURL);
                   }
@@ -106,7 +133,7 @@ export const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
             <div className="flex items-center gap-2 mb-2">
               <Text size="sm" weight="bold">닉네임</Text>
             </div>
-            <Input placeholder="김철수" value={nickname} onChange={(e) => setNickname(e.target.value)} />
+            <Input placeholder="닉네임" value={nickname} onChange={(e) => setNickname(e.target.value)} />
           </div>
 
           <div className="bg-orange-100 rounded-xl p-4">
@@ -126,7 +153,14 @@ export const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
               <>
                 <Input type="email" placeholder="✉️ 연동할 이메일 주소를 입력하세요" value={email} onChange={(e) => setEmail(e.target.value)} className="mb-4" />
                 <div className="flex gap-2">
-                  <Button bgColor="gradientPurple" className="w-full" onClick={() => setEmailStep("sent")}>✨ 인증 메일 발송</Button>
+                  <Button bgColor="gradientPurple" className="w-full" onClick={async () => {
+          const success = await getEmailCode(email);
+          if (success) {
+            setEmailStep("sent");
+          } else {
+            alert("❌ 이메일 인증 코드 발송에 실패했습니다. 이메일을 다시 확인해주세요.");
+          }
+        }}>✨ 인증 메일 발송</Button>
                   <Button bgColor="orange" className="w-full" onClick={() => setEmailStep("idle")}>❌ 취소</Button>
                 </div>
               </>
@@ -174,6 +208,7 @@ export const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
                 <Text size="sm" color="green" weight="bold" className="text-center">🔒 비밀번호 변경 완료하였습니다.</Text>
               ) : (
                 <>
+                  <Text size={"xs"} weight={"normal"}>새로운 비밀번호는 8~12자리로 입력해주세요</Text>
                   <Input type="password" placeholder="새 비밀번호" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
                   <Input type="password" placeholder="새 비밀번호 확인" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
                   <Button bgColor="purple" size="sm" className="w-full" onClick={() => {
@@ -190,9 +225,7 @@ export const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
           </div>
 
           <div className="mt-8">
-            <Button bgColor="gradientPurple" size="md" className="w-full flex justify-center items-center gap-2" onClick={() => {
-              console.log({ nickname, email, emailCode, newPassword: isPasswordChanged ? newPassword : undefined, imageURL });
-            }}>
+               <Button bgColor="gradientPurple" size="md" className="w-full flex justify-center items-center gap-2" onClick={changeProfile }>
               <Text color="black" weight="bold">프로필 저장하기</Text>
             </Button>
           </div>

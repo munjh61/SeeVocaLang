@@ -22,7 +22,6 @@ export const MyPageTemplate = ()=>{
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-  // const [profileImage, setProfileImage] = useState<string | null>(null);
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
 
 useEffect(() => {
@@ -38,17 +37,6 @@ useEffect(() => {
   fetchUserInfo();
 }, []);
 
-  // useEffect(() => {
-  //   // 예시: 백엔드 API로부터 이미지 URL 받기
-  //   fetch("/api/user/me")
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       setProfileImage(data.profileImageUrl); // 예: "https://example.com/images/user123.jpg"
-  //     })
-  //     .catch((err) => {
-  //       console.error("프로필 이미지 로딩 실패:", err);
-  //     });
-  // }, []);
     return (
 <div className="p-6 bg-gray-100 min-h-screen">
 
@@ -69,7 +57,7 @@ useEffect(() => {
         <div className="flex flex-col gap-10 p-4">  
           <div className="flex items-center gap-5">
             <Button
-              bgColor={"gradientPurple"}
+              bgColor={"gray"}
               rounded={"full"}
               className={"relative w-20 h-20"}
             >
@@ -80,7 +68,7 @@ useEffect(() => {
           className="w-full h-full object-cover rounded-full"
         />
       ) : (
-        <span className="text-white text-sm">No Image</span>
+        <span className="flex items-center justify-center w-full h-full text-gray-400 text-sm">이미지</span>
       )}
         </Button>
     <div className="flex flex-col gap-1">
@@ -98,7 +86,7 @@ useEffect(() => {
   </div>
     </Button>
   </div>
-  <ProfileModal isOpen={isModalOpen} onClose={closeModal} />
+  <ProfileModal isOpen={isModalOpen} onClose={closeModal} userInfo={userInfo} />
 </div>
 </div>
 
