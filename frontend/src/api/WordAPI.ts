@@ -5,7 +5,7 @@ import { authApi } from "../utils/axios.ts";
 const WordURL = `${BASE_URL}/api/v1/words`;
 
 // 내 단어 전부 가져오기
-export const getWords = async () => {
+export const getAllWords = async () => {
   try {
     const res = await authApi.get(WordURL);
     const words: VocaCardProps[] = res.data.content.map((w: VocaCardProps) => ({
@@ -15,7 +15,6 @@ export const getWords = async () => {
       folders: w.folders,
     }));
     return words;
-    // return res?.data?.content || [];
   } catch (error) {
     console.error("❌ 내 단어 전부 가져오기 요청 실패:", error);
     throw error;
