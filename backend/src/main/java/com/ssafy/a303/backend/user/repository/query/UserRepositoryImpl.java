@@ -1,15 +1,18 @@
 package com.ssafy.a303.backend.user.repository.query;
 
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.JPQLQuery;
 import com.ssafy.a303.backend.folder.entity.QFolderEntity;
 import com.ssafy.a303.backend.studyhistory.entity.QStudyHistoryEntity;
+import com.ssafy.a303.backend.user.dto.UserMonthlyStatsDto;
 import com.ssafy.a303.backend.user.entity.QUserEntity;
 import com.ssafy.a303.backend.word.entity.QWordEntity;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Repository
 public class UserRepositoryImpl extends QuerydslRepositorySupport implements UserQueryRepository {
@@ -19,7 +22,7 @@ public class UserRepositoryImpl extends QuerydslRepositorySupport implements Use
     }
 
     @Override
-    public Optional<UserMonthlyStatsDto> findUserMonthlyStats(
+    public UserMonthlyStatsDto findUserMonthlyStats(
             Long userId,
             LocalDateTime start,
             LocalDateTime end
@@ -47,18 +50,16 @@ public class UserRepositoryImpl extends QuerydslRepositorySupport implements Use
                 .from(f)
                 .where(f.user.userId.eq(userId));
 
-        UserMonthlyStatsDto dto = from(u)
+        return from(u)
                 .select(Projections.constructor(UserMonthlyStatsDto.class,
                         u.totalDays.coalesce(0).longValue(),      // totalDaysCount
                         u.streakDays.coalesce(0).longValue(),     // streakDaysCount
-                        monthStudyCount.coalesce(0L),
-                        totalWordsCount.coalesce(0L),
-                        totalFoldersCount.coalesce(0L)
+                        monthStudyCount,
+                        totalWordsCount,
+                        totalFoldersCount
                 ))
                 .where(u.userId.eq(userId))
                 .fetchOne();
-
-        return Optional.ofNullable(dto);
     }
 
 }
