@@ -6,12 +6,12 @@ import com.ssafy.a303.backend.email.exception.EmailErrorCode;
 import com.ssafy.a303.backend.email.exception.EmailSendException;
 import com.ssafy.a303.backend.email.service.EmailService;
 import com.ssafy.a303.backend.email.util.RandomCodeGenerator;
-import com.ssafy.a303.backend.user.dto.ProfileUpdateDto;
-import com.ssafy.a303.backend.user.dto.UserInfoResponseDto;
+import com.ssafy.a303.backend.user.dto.*;
 import com.ssafy.a303.backend.user.entity.UserEntity;
 import com.ssafy.a303.backend.user.exception.UserErrorCode;
 import com.ssafy.a303.backend.user.exception.UserException;
 import com.ssafy.a303.backend.user.exception.UserNotFoundException;
+import com.ssafy.a303.backend.user.mapper.UserMapper;
 import com.ssafy.a303.backend.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Slf4j
@@ -161,5 +163,13 @@ public class UserService {
         }
 
         return user.checkPasswordMatch(password, passwordEncoder);
+    }
+
+    public GetStatisticsResultDto getStatistics(GetStatisticsCommandDto commandDto) {
+        Long userId = commandDto.userId();
+        LocalDateTime startTime = commandDto.startTime();
+        LocalDateTime endTime = commandDto.endTime();
+        UserMonthlyStatsDto dto = userRepository.findUserMonthlyStats(userId, startTime, endTime);
+        return UserMapper.INSTANCE.toResultDto(dto);
     }
 }
