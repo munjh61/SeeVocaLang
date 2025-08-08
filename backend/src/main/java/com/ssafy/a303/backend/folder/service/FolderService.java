@@ -77,26 +77,16 @@ public class FolderService {
 
     @Transactional(readOnly = true)
     public PageResponseDto<ReadWordResponseDto> getWordsByFolderId(ReadFolderWordCommandDto readFolderWordCommandDto) {
-        List<ReadWordResponseDto> words = folderRepository.deleteAllWordsByFolderId(readFolderWordCommandDto.getFolderId());
-
-        boolean hasNext = words.size() > readFolderWordCommandDto.getSize();
-
-        if (hasNext) {
-            words = words.subList(0, readFolderWordCommandDto.getSize());
-        }
-
-        long lastId = words.isEmpty() ? -1 : words.get(words.size() - 1).getWordId();
-
+        List<ReadWordResponseDto> words = folderRepository.getWordsByFolderId(readFolderWordCommandDto.getFolderId());
+        
         return PageResponseDto.<ReadWordResponseDto>builder()
                 .message("성공적으로 단어장을 불러왔습니다.")
                 .content(words)
-                .lastId(lastId)
-                .hasNext(hasNext)
                 .build();
     }
 
     public BaseResponseDto<Void> deleteFolderWords(DeleteFolderWordsCommandDto deleteFolderWordsCommandDto) {
-        folderRepository.deleteAllWordsByFolderId(deleteFolderWordsCommandDto.getFolderId(),
+        folderRepository.deleteWordsByFolderId(deleteFolderWordsCommandDto.getFolderId(),
                 deleteFolderWordsCommandDto.getWordIds());
 
         return BaseResponseDto.<Void>builder()

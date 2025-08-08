@@ -33,7 +33,6 @@ public class FolderController {
     public ResponseEntity<PageResponseDto<ReadWordResponseDto>> getFolderWords(@PathVariable long folderId) {
         PageResponseDto<ReadWordResponseDto> response = folderService.getWordsByFolderId(ReadFolderWordCommandDto
                 .builder()
-                .size(10)
                 .folderId(folderId)
                 .build());
 
