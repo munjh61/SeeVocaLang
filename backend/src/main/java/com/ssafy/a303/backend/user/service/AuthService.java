@@ -1,6 +1,8 @@
 package com.ssafy.a303.backend.user.service;
 
 import com.ssafy.a303.backend.common.dto.BaseResponseDto;
+import com.ssafy.a303.backend.folder.dto.CreateFolderCommandDto;
+import com.ssafy.a303.backend.folder.service.FolderService;
 import com.ssafy.a303.backend.user.exception.UserErrorCode;
 import com.ssafy.a303.backend.common.exception.AuthErrorCode;
 import com.ssafy.a303.backend.common.utility.redis.RefreshTokenStore;
@@ -19,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.time.Duration;
@@ -28,6 +31,8 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
+
+    private final FolderService folderService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
@@ -36,6 +41,7 @@ public class AuthService {
     private final CookieUtil cookieUtil;
 
     // 회원가입
+    @Transactional
     public BaseResponseDto<Void> signUp(SignUpRequestDto requestDto) {
         log.info("회원가입 요청: loginId={}", requestDto.getLoginId());
         
@@ -60,12 +66,24 @@ public class AuthService {
                 requestDto.getBirthday() // nullable 그대로 전달됨
         );
 
-        userRepository.save(user);
+        UserEntity newUser = userRepository.save(user);
         log.info("회원가입 성공: userId={}, loginId={}", user.getUserId(), user.getLoginId());
+
+        createDefaultFolder(newUser.getUserId());
 
         return BaseResponseDto.<Void>builder()
                 .message(UserResponseMessages.SIGN_UP_SUCCESS)
                 .build();
+    }
+
+    private void createDefaultFolder(Long userId) {
+        CreateFolderCommandDto defaultFolder = CreateFolderCommandDto.builder()
+                .userId(userId)
+                .name("기본 단어장")
+                .description("기본 단어장입니다")
+                .build();
+
+        folderService.createFolder(defaultFolder);
     }
 
     // 아이디 중복 확인
