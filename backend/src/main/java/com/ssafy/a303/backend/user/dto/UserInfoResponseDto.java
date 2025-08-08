@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Getter
 @Builder
 @NoArgsConstructor
@@ -16,6 +18,7 @@ public class UserInfoResponseDto {
     private String nickname;
     private String email;
     private String profileImage;
+    private LocalDate birthday;
 
     public static UserInfoResponseDto from(UserEntity user) {
         return UserInfoResponseDto.builder()
@@ -24,6 +27,7 @@ public class UserInfoResponseDto {
                 .nickname(user.getNickname())
                 .email(user.getEmail())
                 .profileImage(user.getProfileImage())
+                .birthday(user.getBirthday())
                 .build();
     }
 }
