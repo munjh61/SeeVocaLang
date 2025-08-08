@@ -1,34 +1,34 @@
 import { Div } from "../../atoms/div/Div";
-import BookOpen from "../../../asset/book.svg?react";
+import folderOpen from "../../../asset/folder.svg?react";
 import { QuizDoneInfoCard } from "../../molecules/quizDone/QuizDoneInfoCard";
 
 type Props = {
-  bookname: string;
+  foldername: string;
   size: number;
   result: number;
 };
 
-export const QuizDoneBookInfo = ({ bookname, size, result }: Props) => {
+export const QuizDonefolderInfo = ({ foldername, size, result }: Props) => {
   return (
     <Div bg="white" align="center" className="w-full rounded-b-xl pb-2 px-2">
       <QuizDoneInfoCard
-        icon={BookOpen}
+        icon={folderOpen}
         title="완료한 단어장"
-        data={bookname}
+        data={foldername}
         titleColor="yellow"
         dataColor="gray"
       />
 
       <Div align="center" className="grid grid-cols-2 w-full mt-2">
         <QuizDoneInfoCard
-          icon={BookOpen}
+          icon={folderOpen}
           title="푼 문제 수"
           data={`${size} 개`}
           titleColor="green"
           dataColor="gray"
         />
         <QuizDoneInfoCard
-          icon={BookOpen}
+          icon={folderOpen}
           title="최대 콤보"
           data={`${result} 개`}
           titleColor="blue"

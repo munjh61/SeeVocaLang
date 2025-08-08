@@ -1,18 +1,18 @@
-import { QuizDoneBookInfo } from "../../organisms/quizDone/QuizDoneBookInfo";
 import { QuizDoneStatCard } from "../../organisms/quizDone/QuizDoneStat";
 import { QuizDoneButtons } from "../../organisms/quizDone/QuizDoneButtons";
 import { Div } from "../../atoms/div/Div";
 import { RainyBalls } from "../../atoms/deco/RainyBall";
+import { QuizDonefolderInfo } from "../../organisms/quizDone/QuizDoneBookInfo";
 
 type QuizDoneTemplateProps = {
-  bookname: string;
+  foldername: string;
   size: number;
   result: number;
   day: number;
 };
 
 export const QuizDoneTemplate = ({
-  bookname,
+  foldername,
   size,
   result,
   day,
@@ -31,7 +31,11 @@ export const QuizDoneTemplate = ({
 
       <Div align={"center"} className="gap-0">
         <QuizDoneStatCard day={day} />
-        <QuizDoneBookInfo bookname={bookname} size={size} result={result} />
+        <QuizDonefolderInfo
+          foldername={foldername}
+          size={size}
+          result={result}
+        />
         <QuizDoneButtons className="mt-10" />
       </Div>
     </Div>

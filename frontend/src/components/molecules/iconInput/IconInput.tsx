@@ -49,8 +49,8 @@ export const IconInput = ({
 };
 
 // 이런 식으로 쓰면 됨
-// import book from "../asset/nav_book.svg?react";
-// import { IconInput } from "../components/layout/book/IconInput";
+// import folder from "../asset/nav_folder.svg?react";
+// import { IconInput } from "../components/layout/folder/IconInput";
 
 // function TestPageMoon() {
 //   const handleSearch = (value: string) => {
@@ -59,7 +59,7 @@ export const IconInput = ({
 //   return (
 //     <div>
 //       <IconInput
-//         iconVariant={{ icon: book }}
+//         iconVariant={{ icon: folder }}
 //         inputValue={handleSearch}
 //       ></IconInput>
 //     </div>

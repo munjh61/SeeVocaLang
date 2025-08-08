@@ -4,7 +4,7 @@ import { Input } from "../../atoms/input/Input";
 import { Text } from "../../atoms/text/Text";
 import { useState } from "react";
 
-type VocaFormModalProps = {
+type FolderFormModalProps = {
   isOpen: boolean;
   onClose: () => void;
   folderId: number | null;
@@ -17,7 +17,7 @@ type VocaFormModalProps = {
   onSubmit: () => void;
 };
 
-export const VocaFormModal = ({
+export const FolderFormModal = ({
   isOpen,
   onClose,
   folderId,
@@ -28,7 +28,7 @@ export const VocaFormModal = ({
   onChangeSubtitle,
   onDelete,
   onSubmit,
-}: VocaFormModalProps) => {
+}: FolderFormModalProps) => {
   const [check, setCheck] = useState(true);
 
   const handleSubmit = () => {

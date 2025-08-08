@@ -8,6 +8,8 @@ import hangul from "hangul-js";
 import { IconButton } from "../../molecules/iconButton/IconButton";
 import { useNavigate } from "react-router-dom";
 import { Searchbar } from "../../molecules/searchbar/Searchbar";
+import { Div } from "../../atoms/div/Div";
+import { deleteWord } from "../../../api/WordAPI";
 
 type VocaDetailTemplateProps = {
   folderId: number;
@@ -27,8 +29,11 @@ export const VocaDetailTemplate = ({
   const [vocaList, setVocaList] = useState<VocaCardProps[]>(vocaCardDatas);
 
   const searchFunction = (v: string) => setSearchKey(v);
-  const deleteFunction = (wordId: number) => {
-    setVocaList(prev => prev.filter(card => card.wordId !== wordId));
+  const deleteFunction = async (wordId: number) => {
+    if (wordId != null) {
+      await deleteWord(wordId);
+      setVocaList(prev => prev.filter(card => card.wordId !== wordId));
+    }
   };
 
   const filteredList = vocaList.filter(voca => {
@@ -39,8 +44,8 @@ export const VocaDetailTemplate = ({
   });
 
   return (
-    <div className="flex flex-col px-5 w-full gap-4">
-      <div className="flex flex-row gap-4 p-4 bg-gray-100">
+    <Div align={"center"} className="w-full h-full p-2">
+      <div className="flex flex-row gap-2 p-4 bg-gray-100 rounded-md w-full">
         <IconButton
           ButtonVariant={{
             bgColor: "purple",
@@ -64,7 +69,7 @@ export const VocaDetailTemplate = ({
           퀴즈 풀기
         </IconButton>
       </div>
-      <div className="flex flex-col gap-4 bg-[#F3F4FF] p-4 h-full">
+      <Div bg={"sky"} className="flex flex-col gap-4 p-4 grow">
         <div className="flex flex-row gap-2">
           <ToggleButton
             selected={blurEn}
@@ -87,11 +92,11 @@ export const VocaDetailTemplate = ({
               blurEn={blurEn}
               blurKo={blurKo}
               onDelete={() => deleteFunction(card.wordId!)}
-              books={card.books}
+              folders={card.folders}
             />
           ))}
         </div>
-      </div>
-    </div>
+      </Div>
+    </Div>
   );
 };

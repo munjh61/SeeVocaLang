@@ -1,21 +1,21 @@
 import { useNavigate } from "react-router-dom";
-import type { VocaBookProps } from "./VocaBook";
+import type { FolderProps } from "./Folder";
 import { Modal } from "../../atoms/modal/modal";
 import { IconButton } from "../../molecules/iconButton/IconButton";
 import { Text } from "../../atoms/text/Text";
 import { Div } from "../../atoms/div/Div";
 
-type QuizBookSelectModalProps = {
+type QuizSelectModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  vocaList: VocaBookProps[];
+  vocaList: FolderProps[];
 };
 
-export const QuizBookSelectModal = ({
+export const QuizFolderSelectModal = ({
   isOpen,
   onClose,
   vocaList,
-}: QuizBookSelectModalProps) => {
+}: QuizSelectModalProps) => {
   const navigate = useNavigate();
 
   return (
@@ -23,20 +23,20 @@ export const QuizBookSelectModal = ({
       <div className="flex flex-col gap-6">
         <Text>퀴즈를 풀 단어장을 선택하세요</Text>
         <Div align={"center"}>
-          {vocaList.map(book => (
+          {vocaList.map(folder => (
             <IconButton
-              key={book.folderId}
+              key={folder.folderId}
               ButtonVariant={{
                 bgColor: "blue",
                 textColor: "white",
               }}
               buttonValue={() => {
                 onClose(); // 모달 닫기
-                navigate(`/quiz/${book.folderId}`); // 페이지 이동
+                navigate(`/quiz/${folder.folderId}`); // 페이지 이동
               }}
               className="w-full"
             >
-              {book.name}
+              {folder.name}
             </IconButton>
           ))}
         </Div>

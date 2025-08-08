@@ -3,7 +3,6 @@ import MainPage from "../pages/MainPage.tsx";
 import TestPageMoon from "../pages/TestPageMoon.tsx";
 import TestPageKwon from "../pages/TestPageKwon.tsx";
 import TestPageDoh from "../pages/TestPageDoh.tsx";
-import BookPage from "../pages/BookPage.tsx";
 import GamePage from "../pages/GamePage.tsx";
 import FriendPage from "../pages/FriendPage.tsx";
 import MyPage from "../pages/MyPage.tsx";
@@ -14,6 +13,7 @@ import QuizPage from "../pages/QuizPage.tsx";
 import QuizDonePage from "../pages/QuizDonePage.tsx";
 import { PrivateRoute } from "../components/common/PrivateRoute.tsx";
 import { OnBoardingPage } from "../pages/OnBoardingPage.tsx";
+import FolderPage from "../pages/FolderPage.tsx";
 
 export const Router = () => {
   return (
@@ -30,8 +30,8 @@ export const Router = () => {
           <Route path="/moon" element={<TestPageMoon />} />
           <Route path="/kwon" element={<TestPageKwon />} />
           <Route path="/doh" element={<TestPageDoh />} />
-          <Route path="/book" element={<BookPage />} />
-          <Route path="/book/:folderId" element={<VocaDetailPage />} />
+          <Route path="/folder" element={<FolderPage />} />
+          <Route path="/folder/:folderId" element={<VocaDetailPage />} />
           <Route path="/quiz/:folderId" element={<QuizPage />} />
           <Route path="/done" element={<QuizDonePage />} />
           <Route path="/game" element={<GamePage />} />

@@ -59,8 +59,8 @@ export const IconButton = ({
 };
 
 // 이렇게 쓰면 됨
-// import book from "../asset/nav_book.svg?react";
-// import { IconButton } from "../components/layout/book/IconButton";
+// import folder from "../asset/nav_folder.svg?react";
+// import { IconButton } from "../components/layout/folder/IconButton";
 
 // function TestPageMoon() {
 //   const handleSearch = (value: string) => {
@@ -78,7 +78,7 @@ export const IconButton = ({
 //       data="하이"
 //       // buttonValue={v => console.log(v)}
 //       buttonValue={handleSearch}
-//       IconVariant={{ icon: book, color: "white" }}
+//       IconVariant={{ icon: folder, color: "white" }}
 //     >
 //       학습하기
 //     </IconButton>

@@ -1,6 +1,6 @@
 import sampleimg from "../../../asset/png/apple.png";
 
-const VocaBookSampleDatas = [
+const FolderSampleDatas = [
   {
     folderId: 1,
     name: "토익 필수 단어",
@@ -73,4 +73,4 @@ const VocaBookSampleDatas = [
   },
 ];
 
-export default VocaBookSampleDatas;
+export default FolderSampleDatas;
