@@ -83,4 +83,12 @@ public class UserEntity {
         this.isDeleted = true;
     }
 
+    public void incrementTotalDays() {
+        this.totalDays++;
+    }
+
+    public void updateStreakDays(int streakDays) {
+        this.streakDays = streakDays;
+    }
+
 }
