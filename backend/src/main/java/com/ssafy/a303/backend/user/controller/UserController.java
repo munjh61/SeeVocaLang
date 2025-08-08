@@ -132,4 +132,11 @@ public class UserController {
                 .build());
     }
 
+    @GetMapping("/api/v1/users/statistics")
+    public ResponseEntity<BaseResponseDto<GetStatisticsResponseDto>> getStatistics(
+            @AuthenticationPrincipal CustomUserDetails user
+    ) {
+
+    }
+
 }
