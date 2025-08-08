@@ -6,7 +6,8 @@ type ProgressBarProps = {
 };
 
 export const ProgressBar = ({ current, total, height }: ProgressBarProps) => {
-  const percentage = Math.min(100, Math.max(0, (current / total) * 100));
+  const percentage =
+    total > 0 ? Math.min(100, Math.max(0, (current / total) * 100)) : 0;
 
   return (
     <div className="flex items-center gap-1 w-full">
@@ -26,7 +27,7 @@ export const ProgressBar = ({ current, total, height }: ProgressBarProps) => {
           )}
         </div>
       </div>
-      <div className="text-xs text-gray-600 text-right font-bold">
+      <div className="text-xs text-gray-600 text-right font-bold min-w-[2.5rem] text-end">
         {Math.round(percentage)}%
       </div>
     </div>

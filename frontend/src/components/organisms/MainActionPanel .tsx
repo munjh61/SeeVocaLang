@@ -19,7 +19,10 @@ export const MainActionPanel = () => {
     const fetchData = async () => {
       try {
         const result = await todayStudyStatus();
-        setStudyStatus(result);
+        setStudyStatus({
+          lastSolvedNumber: result.lastSolvedNumber,
+          totalProblemCount: 20,
+        });
       } catch (error) {
         console.error("❌ 오늘의 학습현황 가져오기 실패:", error);
       }
@@ -27,7 +30,6 @@ export const MainActionPanel = () => {
 
     fetchData();
   }, []);
-
   return (
     <section className="flex flex-col flex-1/2 gap-2">
       <InfoCardLarge
