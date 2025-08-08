@@ -10,12 +10,12 @@ import { useNavigate } from "react-router-dom";
 import { Searchbar } from "../../molecules/searchbar/Searchbar";
 
 type VocaDetailTemplateProps = {
-  bookId: number;
+  folderId: number;
   vocaCardDatas?: VocaCardProps[];
 };
 
 export const VocaDetailTemplate = ({
-  bookId,
+  folderId,
   vocaCardDatas = [],
 }: VocaDetailTemplateProps) => {
   const navigate = useNavigate();
@@ -58,7 +58,7 @@ export const VocaDetailTemplate = ({
             bgColor: "purple",
             textColor: "white",
           }}
-          path={`/quiz/${bookId}`}
+          path={`/quiz/${folderId}`}
           className="w-30"
         >
           퀴즈 풀기
