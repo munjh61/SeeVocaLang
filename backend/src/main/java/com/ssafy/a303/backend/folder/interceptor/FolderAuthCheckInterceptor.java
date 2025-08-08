@@ -2,6 +2,7 @@ package com.ssafy.a303.backend.folder.interceptor;
 
 import com.ssafy.a303.backend.common.exception.CommonErrorCode;
 import com.ssafy.a303.backend.common.security.CustomUserDetails;
+import com.ssafy.a303.backend.folder.entity.FolderEntity;
 import com.ssafy.a303.backend.folder.exception.FolderNotAuthorization;
 import com.ssafy.a303.backend.folder.service.FolderService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,7 +13,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.HandlerMapping;
 
+import javax.swing.text.html.Option;
 import java.util.Map;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -33,9 +36,9 @@ public class FolderAuthCheckInterceptor implements HandlerInterceptor {
                 .getAuthentication()
                 .getPrincipal();
 
-        boolean exist = folderService.existsByFolderIdAndUserId(folderId, userDetails.getUserId());
+        FolderEntity folder = folderService.getFolderById(folderId);
 
-        if (!exist)
+        if (userDetails.getUserId() != folder.getUser().getUserId() || folder.isDefault())
             throw new FolderNotAuthorization(CommonErrorCode.FORBIDDEN_REQUEST);
 
         return true;
