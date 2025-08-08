@@ -56,7 +56,7 @@ public class PhotoService {
 
         String word = commandDto.nameEn();
         RedisWordImage image = redisWordImageHelper.getImage(commandDto.imageKey());
-        String imageUrl = imageUploader.upload(userId, word, image.getContent(), image.getContentType());
+        String imageUrl = imageUploader.upsert(userId, word, image.getContent(), image.getContentType());
         UserEntity userEntity = userService.getUser(userId)
                 .orElseThrow(() -> new UserNotFoundException(CommonErrorCode.RESOURCE_NOT_FOUND));
 
@@ -74,7 +74,7 @@ public class PhotoService {
         Long wordId = commandDto.wordId();
         RedisWordImage image = redisWordImageHelper.getImage(commandDto.imageKey());
         String word = image.getNameEn();
-        String imageUrl = imageUploader.update(userId, word, image.getContent(), image.getContentType());
+        String imageUrl = imageUploader.upsert(userId, word, image.getContent(), image.getContentType());
         wordService.updateWord(wordId, userId, imageUrl);
         redisWordImageHelper.deleteImage(userId, word);
     }

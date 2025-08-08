@@ -14,14 +14,9 @@ public class ImageUploader {
 
     private final S3Helper helper;
 
-    public String upload(Long userId, String word, byte[] fileBytes, String contentType) {
+    public String upsert(Long userId, String word, byte[] fileBytes, String contentType) {
         String key = String.format("%s/%s/%d/%s", rootDirectory, S3Directory.IMAGE.getPath(), userId, word);
         return helper.upload(key, fileBytes, contentType);
-    }
-
-    public String update(Long userId, String word, byte[] file, String contentType) {
-        String key = String.format("%s/%s/%d/%s", rootDirectory, S3Directory.IMAGE.getPath(), userId, word);
-        return helper.update(key, file, contentType);
     }
 
     public void delete(Long userId, String word) {

@@ -125,7 +125,7 @@ public class UserService {
         if (profileImg == null || profileImg.isEmpty()) return;
 
         try {
-            String imageUrl = imageUploader.update(
+            String imageUrl = imageUploader.upsert(
                     userId,
                     "profile",
                     profileImg.getBytes(),
