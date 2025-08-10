@@ -7,6 +7,7 @@ import folder from "../../../asset/nav_folder.svg?react";
 import starF from "../../../asset/star-fill.svg?react";
 import starE from "../../../asset/star_empty.svg?react";
 import noImage from "../../../asset/png/noimage.png";
+import { useState } from "react";
 
 export type FolderProps = {
   folderId: number;
@@ -16,10 +17,10 @@ export type FolderProps = {
   favorite: boolean;
   onLearnClick?: (id: number) => void;
   onEditClick?: (id: number) => void;
-  onToggleFavorite?: (id: number) => void;
+  onToggleFavorite?: (id: number, favorite: boolean) => void;
 };
 
-export const FolderCard = ({
+export const Folder = ({
   folderId,
   thumbnailUrl,
   name,
@@ -29,21 +30,27 @@ export const FolderCard = ({
   onEditClick,
   onToggleFavorite,
 }: FolderProps) => {
+  const [isFav, setIsFav] = useState(favorite);
+  // console.log(folderId, thumbnailUrl, name, description, favorite);
   return (
     <div
       className="rounded-md shadow-md w-full p-3 inline-flex flex-col gap-2 bg-white select-none"
       onDragStart={e => e.preventDefault()}
     >
-      <div className="relative">
+      <div className="relative grow">
         <Icon
-          icon={favorite ? starF : starE}
+          icon={isFav ? starF : starE}
           color={"yellow"}
           className="absolute top-0 right-0 cursor-pointer"
-          onClick={() => onToggleFavorite?.(folderId)}
+          onClick={async () => {
+            console.log("현재 즐겨찾기", isFav);
+            await onToggleFavorite?.(folderId, isFav);
+            setIsFav(prev => !prev);
+          }}
         />
         <ImageBox
           src={thumbnailUrl ? thumbnailUrl : noImage}
-          className="w-full h-full"
+          className="grow"
         />
       </div>
 

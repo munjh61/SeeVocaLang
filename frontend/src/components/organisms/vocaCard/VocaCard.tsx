@@ -9,7 +9,7 @@ import { TTSButton } from "../../molecules/ttsButton/TTSButton";
 
 export type VocaCardProps = {
   wordId?: number;
-  imgUrl?: string;
+  imageUrl?: string;
   nameEn: string;
   nameKo: string;
   onDelete?: () => void;
@@ -20,7 +20,7 @@ export type VocaCardProps = {
 
 export const VocaCard = ({
   // wordId,
-  imgUrl,
+  imageUrl,
   nameEn,
   nameKo,
   blurKo,
@@ -63,21 +63,21 @@ export const VocaCard = ({
                   <VocaLoc
                     bg={"red"}
                     folderId={folders[0].id}
-                    foldername={folders[0].name}
+                    name={folders[0].name}
                   />
                 )}
                 {folders[1] && (
                   <VocaLoc
                     bg={"yellow"}
                     folderId={folders[1].id}
-                    foldername={folders[1].name}
+                    name={folders[1].name}
                   />
                 )}
                 {folders[2] && (
                   <VocaLoc
                     bg={"green"}
                     folderId={folders[2].id}
-                    foldername={folders[2].name}
+                    name={folders[2].name}
                   />
                 )}
                 {folders.length > 3 && <VocaLoc bg={"blue"}>더보기</VocaLoc>}
@@ -85,7 +85,7 @@ export const VocaCard = ({
             )}
           </div>
           <ImageBox
-            src={imgUrl ? imgUrl : noImage}
+            src={imageUrl ? imageUrl : noImage}
             className="h-50"
             imgClassName="object-cover"
           />

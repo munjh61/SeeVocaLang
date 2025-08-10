@@ -9,6 +9,7 @@ const foldersURL = `${BASE_URL}/api/v1/folders`;
 export const getfolders = async (userId: number) => {
   try {
     const response = await authApi.get(`${foldersURL}/${userId}`);
+    console.log(response.data.content);
     const folders: FolderProps[] = response.data.content.map(
       (b: FolderProps) => ({
         folderId: b.folderId,
@@ -72,7 +73,6 @@ export const updatefolder = async (
       { name, description },
       { headers: { "Content-Type": "application/json" } }
     );
-    console.log(response.data.content);
     return response.data;
   } catch (error) {
     console.error("❌ 폴더 수정 요청 실패:", error);
@@ -83,7 +83,7 @@ export const updatefolder = async (
 // 단어장 즐겨찾기
 export const addFavorite = async (folderId: number) => {
   try {
-    const res = await authApi.post(`${foldersURL}/${folderId}/favorite`);
+    const res = await authApi.post(`${foldersURL}/${folderId}/favorites`);
     console.log(res.data);
   } catch (error) {
     console.error("❌ 폴더 즐겨찾기 추가 요청 실패:", error);
@@ -92,7 +92,7 @@ export const addFavorite = async (folderId: number) => {
 };
 export const deleteFavorite = async (folderId: number) => {
   try {
-    const res = await authApi.delete(`${foldersURL}/${folderId}/favorite`);
+    const res = await authApi.delete(`${foldersURL}/${folderId}/favorites`);
     console.log(res.data);
   } catch (error) {
     console.error("❌ 폴더 즐겨찾기 삭제 요청 실패:", error);
@@ -104,9 +104,8 @@ export const deleteFavorite = async (folderId: number) => {
 export const getWords = async (folderId: number) => {
   try {
     const res = await authApi.get(`${foldersURL}/${folderId}/words`);
-    console.log(res.data.content);
     const words: VocaCardProps[] = res.data.content.map((w: VocaCardProps) => ({
-      imgUrl: w.imgUrl,
+      imageUrl: w.imageUrl,
       nameEn: w.nameEn,
       nameKo: w.nameKo,
       folders: w.folders,

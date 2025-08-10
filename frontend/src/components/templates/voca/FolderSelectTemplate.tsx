@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { VocafolderSecondHeader } from "../../organisms/folder/VocaSecondheader";
-import { FolderCard, type FolderProps } from "../../organisms/folder/Folder";
+import { VocafolderSecondHeader } from "../../organisms/folder/FolderSecondheader";
+import { Folder, type FolderProps } from "../../organisms/folder/Folder";
 import hangul from "hangul-js";
 import { IconButton } from "../../molecules/iconButton/IconButton";
 import { useNavigate } from "react-router-dom";
@@ -99,7 +99,6 @@ export const FolderSelectTemplate = ({
       closeModal();
     } catch (e) {
       console.error(e);
-      // TODO: 토스트로 "생성 실패" 같은 에러 UI 표시
     }
   };
   const deleteFunction = async () => {
@@ -113,18 +112,12 @@ export const FolderSelectTemplate = ({
   const searchFunction = (v: string) => setSearchKey(v);
 
   // 즐겨찾기 토글
-  const toggleFavorite = async (folderId: number) => {
-    setVocaList(prev =>
-      prev.map(item => {
-        if (item.folderId === folderId) {
-          if (item.favorite) {
-            deleteFavorite(folderId);
-          } else addFavorite(folderId);
-          return { ...item, favorite: !item.favorite };
-        }
-        return item;
-      })
-    );
+  const toggleFavorite = async (folderId: number, favorite: boolean) => {
+    if (favorite) {
+      deleteFavorite(folderId);
+    } else {
+      addFavorite(folderId);
+    }
   };
 
   // 검색/필터링
@@ -202,7 +195,7 @@ export const FolderSelectTemplate = ({
                           lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4"
         >
           {filteredList.map(data => (
-            <FolderCard
+            <Folder
               key={data.folderId}
               {...data}
               // onLearnClick={handleLearnClick}

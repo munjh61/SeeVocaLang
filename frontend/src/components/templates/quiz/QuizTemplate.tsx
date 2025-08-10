@@ -6,17 +6,20 @@ import { Quiz } from "../../organisms/quiz/Quiz";
 import { SegmentControl } from "../../molecules/segmentControl/SegmentControl";
 import { QuizHeader } from "../../organisms/quiz/QuizHeader";
 import { Div } from "../../atoms/div/Div";
+// import { getQuizStatus, getTodayQuiz } from "../../../api/TodayQuizAPI";
 
 type QuizTemplateProps = {
   name: string;
   description: string;
   vocaCardDatas: VocaCardProps[];
+  isTodayMission: boolean;
 };
 
 export const QuizTemplate = ({
   vocaCardDatas,
   name,
   description,
+  // isTodayMission,
 }: QuizTemplateProps) => {
   const nav = useNavigate();
   const questionCount = vocaCardDatas.length;
@@ -25,6 +28,10 @@ export const QuizTemplate = ({
   const [quizOrder, setQuizOrder] = useState<VocaCardProps[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [result, setResult] = useState(0);
+
+  // 오늘의 학습
+  // getTodayQuiz();
+  // getQuizStatus();
 
   // 초기 퀴즈 순서 준비
   useEffect(() => {
@@ -39,7 +46,7 @@ export const QuizTemplate = ({
       // if (currentIndex >= 1)
       nav("/done", {
         state: {
-          foldername: name,
+          name: name,
           size: questionCount,
           result: result,
         },
@@ -81,7 +88,7 @@ export const QuizTemplate = ({
           />
         </div>
         <Quiz
-          answerImg={current.imgUrl ?? ""}
+          answerImg={current.imageUrl ?? ""}
           answerEn={current.nameEn}
           answerKo={current.nameKo}
           quizDatas={quizDatas}

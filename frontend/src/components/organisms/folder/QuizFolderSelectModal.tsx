@@ -16,7 +16,7 @@ export const QuizFolderSelectModal = ({
   onClose,
   vocaList,
 }: QuizSelectModalProps) => {
-  const navigate = useNavigate();
+  const nav = useNavigate();
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -32,7 +32,12 @@ export const QuizFolderSelectModal = ({
               }}
               buttonValue={() => {
                 onClose(); // 모달 닫기
-                navigate(`/quiz/${folder.folderId}`); // 페이지 이동
+                nav(`/quiz/${folder.folderId}`, {
+                  state: {
+                    name: folder.name,
+                    description: folder.description,
+                  },
+                }); // 페이지 이동
               }}
               className="w-full"
             >

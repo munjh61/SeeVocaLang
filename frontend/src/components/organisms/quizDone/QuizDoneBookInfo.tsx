@@ -2,19 +2,23 @@ import { Div } from "../../atoms/div/Div";
 import folderOpen from "../../../asset/folder.svg?react";
 import { QuizDoneInfoCard } from "../../molecules/quizDone/QuizDoneInfoCard";
 
-type Props = {
-  foldername: string;
+type QuizDonefolderInfoProps = {
+  name: string;
   size: number;
   result: number;
 };
 
-export const QuizDonefolderInfo = ({ foldername, size, result }: Props) => {
+export const QuizDonefolderInfo = ({
+  name,
+  size,
+  result,
+}: QuizDonefolderInfoProps) => {
   return (
     <Div bg="white" align="center" className="w-full rounded-b-xl pb-2 px-2">
       <QuizDoneInfoCard
         icon={folderOpen}
         title="완료한 단어장"
-        data={foldername}
+        data={name}
         titleColor="yellow"
         dataColor="gray"
       />

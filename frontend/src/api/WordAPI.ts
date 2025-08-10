@@ -9,7 +9,7 @@ export const getAllWords = async () => {
   try {
     const res = await authApi.get(WordURL);
     const words: VocaCardProps[] = res.data.content.map((w: VocaCardProps) => ({
-      imgUrl: w.imgUrl,
+      imageUrl: w.imageUrl,
       nameEn: w.nameEn,
       nameKo: w.nameKo,
       folders: w.folders,
