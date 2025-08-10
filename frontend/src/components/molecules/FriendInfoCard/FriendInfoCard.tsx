@@ -22,7 +22,7 @@ export const FriendInfoCard = ({ id, profileUrl, name, status: initialStatus }: 
         return (
           <AddFriendButton data= {id} className="w-full" onRequestComplete={() => setStatus("REQUEST")}/>
         );
-      case "PENDING":
+      case "APPROVED":
         return (
           <DeleteFriendButton data= {id} className="w-full" friendName={name} onRequestComplete={() => setStatus("NONE")}/>
         );
@@ -30,7 +30,7 @@ export const FriendInfoCard = ({ id, profileUrl, name, status: initialStatus }: 
         return (
           <RequestFriendButton className="w-full" />
         );
-      case "APPROVED":
+      case "PENDING":
         return (
           <div className="flex  gap-2">
             <Button
