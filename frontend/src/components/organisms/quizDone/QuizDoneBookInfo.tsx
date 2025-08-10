@@ -2,13 +2,17 @@ import { Div } from "../../atoms/div/Div";
 import folderOpen from "../../../asset/folder.svg?react";
 import { QuizDoneInfoCard } from "../../molecules/quizDone/QuizDoneInfoCard";
 
-type Props = {
+type QuizDonefolderInfoProps = {
   foldername: string;
   size: number;
   result: number;
 };
 
-export const QuizDonefolderInfo = ({ foldername, size, result }: Props) => {
+export const QuizDonefolderInfo = ({
+  foldername,
+  size,
+  result,
+}: QuizDonefolderInfoProps) => {
   return (
     <Div bg="white" align="center" className="w-full rounded-b-xl pb-2 px-2">
       <QuizDoneInfoCard

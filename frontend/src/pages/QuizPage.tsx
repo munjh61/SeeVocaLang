@@ -1,21 +1,52 @@
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { Navigation } from "../components/organisms/nav/Navigation";
 import { QuizTemplate } from "../components/templates/quiz/QuizTemplate";
-import VocaCardSample from "../components/templates/voca/SampleVocaCard";
-import FolderSampleDatas from "../components/templates/voca/SampleFolder";
+import { useEffect, useState } from "react";
+import type { VocaCardProps } from "../components/organisms/vocaCard/VocaCard";
+import { getWords } from "../api/FolderAPI";
+import { LoadingPage } from "../components/templates/loadingTemplate/LoadingTemplate";
 
 function QuizPage() {
   const { folderId } = useParams<{ folderId: string }>();
-  const folderData = FolderSampleDatas.filter(
-    data => data.folderId === Number(folderId)
-  )[0];
+
+  const [vocas, setVocas] = useState<VocaCardProps[]>([]);
+  const [error, setError] = useState<string | null>(null);
+
+  // location.state가 없을 수도 있으니 기본값
+  const location = useLocation();
+  const { foldername = "", description = "" } =
+    (location.state as { foldername?: string; description?: string }) ?? {};
+
+  useEffect(() => {
+    let mounted = true;
+    if (!folderId) return;
+
+    (async () => {
+      try {
+        const data = await getWords(Number(folderId));
+        if (mounted) setVocas(Array.isArray(data) ? data : []);
+      } catch (e) {
+        if (!mounted) return;
+        const msg = e instanceof Error ? e.message : "불러오기 실패";
+        setError(msg);
+      }
+    })();
+
+    return () => {
+      mounted = false;
+    };
+  }, [folderId]);
+
+  if (error) return <div>에러: {error}</div>;
+  if (!vocas) return <LoadingPage />;
+
   return (
     <div className="flex flex-col h-screen">
       <div className="flex grow overflow-y-auto">
         <QuizTemplate
-          name={folderData.name}
-          description={folderData.description}
-          vocaCardDatas={VocaCardSample}
+          foldername={foldername}
+          description={description}
+          vocaCardDatas={vocas}
         />
       </div>
       <Navigation loc="folder" />

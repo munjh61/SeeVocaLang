@@ -104,9 +104,8 @@ export const deleteFavorite = async (folderId: number) => {
 export const getWords = async (folderId: number) => {
   try {
     const res = await authApi.get(`${foldersURL}/${folderId}/words`);
-    console.log(res.data.content);
     const words: VocaCardProps[] = res.data.content.map((w: VocaCardProps) => ({
-      imgUrl: w.imgUrl,
+      imageUrl: w.imageUrl,
       nameEn: w.nameEn,
       nameKo: w.nameKo,
       folders: w.folders,

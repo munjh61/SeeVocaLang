@@ -5,11 +5,14 @@ import type { FolderProps } from "../components/organisms/folder/Folder";
 import { useAuthStore } from "../stores/AuthStore";
 import { LoadingPage } from "../components/templates/loadingTemplate/LoadingTemplate";
 import { FolderSelectTemplate } from "../components/templates/voca/FolderSelectTemplate";
+import { getAllWords } from "../api/WordAPI";
 
 function FolderPage() {
   const [folders, setFolders] = useState<FolderProps[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const userId = useAuthStore.getState().user?.userId ?? 1; // TODO: 로그인 정보에서 가져오기
+
+  getAllWords();
 
   useEffect(() => {
     let mounted = true;

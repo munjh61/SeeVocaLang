@@ -2,14 +2,14 @@ import { Div } from "../../atoms/div/Div";
 import { Text } from "../../atoms/text/Text";
 
 type QuizHeaderProps = {
-  name: string;
+  foldername: string;
   description: string;
   index: number;
   total: number;
 };
 
 export const QuizHeader = ({
-  name,
+  foldername,
   description,
   index,
   total,
@@ -27,7 +27,7 @@ export const QuizHeader = ({
           align={"center"}
           className="w-48"
           onlyOneLine={"yes"}
-          children={name}
+          children={foldername}
         />
       </Div>
       <Div className="p-2 grow">
