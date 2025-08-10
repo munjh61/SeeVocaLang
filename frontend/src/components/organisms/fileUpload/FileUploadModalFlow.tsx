@@ -42,6 +42,7 @@ export const FileUploadModalFlow = ({ isOpen, onClose }: Props) => {
   const goToStep = (s: Step) => setStep(s);
 
   // 파일 분석만 수행 (저장/교체는 UploadStep2에서)
+  // 파일 분석만 수행 (저장/교체는 UploadStep2에서)
   const handleAnalyze = async () => {
     if (!file || isAnalyzing) return;
     setIsAnalyzing(true);
@@ -49,9 +50,12 @@ export const FileUploadModalFlow = ({ isOpen, onClose }: Props) => {
       const result = await analyzeImage(file);
       console.log("analysis result: ", result);
       setAnalysisResult(result);
-    } catch (error: any) {
-      console.error("❌ 분석 실패:", error?.response?.data?.message ?? error);
-      alert("분석에 실패했어요. 다시 시도해 주세요.");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("분석 실패:", error.message);
+      } else {
+        console.error("분석 실패: 알 수 없는 오류", error);
+      }
     } finally {
       setIsAnalyzing(false);
     }
