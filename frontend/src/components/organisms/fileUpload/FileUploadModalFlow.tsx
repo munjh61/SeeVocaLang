@@ -1,21 +1,22 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Modal } from "../../atoms/modal/modal.tsx";
 import { UploadStep1 } from "./UploadStep1.tsx";
 import { UploadStep2 } from "./UploadStep2.tsx";
-import { UploadStep3 } from "./UploadStep3.tsx";
 import { analyzeImage } from "../../../api/PhotoUpload.ts";
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
 };
+
 type AnalysisResult = {
   name_en: string;
   name_ko: string;
   image_key: string;
-  is_already_exist: boolean;
+  word_id: number;
 };
-type Step = 1 | 2 | 3;
+
+type Step = 1 | 2;
 
 export const FileUploadModalFlow = ({ isOpen, onClose }: Props) => {
   const [step, setStep] = useState<Step>(1);
@@ -25,44 +26,46 @@ export const FileUploadModalFlow = ({ isOpen, onClose }: Props) => {
     null
   );
 
-  useEffect(() => {
-    if (!isOpen) {
-      resetFlow();
-    }
-  }, [isOpen]);
-
-  const resetFlow = () => {
-    setStep(1);
-    setFile(null);
-    setAnalysisResult(null);
+  // ✅ 단일 리셋 함수 (모달 닫힘/다시 선택에 공용)
+  const resetAll = useCallback(() => {
     setIsAnalyzing(false);
-  };
+    setAnalysisResult(null);
+    setFile(null);
+    setStep(1);
+  }, []);
+
+  // 모달 닫히면 모든 상태 초기화
+  useEffect(() => {
+    if (!isOpen) resetAll();
+  }, [isOpen, resetAll]);
 
   const goToStep = (s: Step) => setStep(s);
 
+  // 파일 분석만 수행 (저장/교체는 UploadStep2에서)
   const handleAnalyze = async () => {
-    if (!file) return;
+    if (!file || isAnalyzing) return;
     setIsAnalyzing(true);
-
     try {
-      const result = await analyzeImage(file); // ← 이제 이건 AnalysisResult 타입
+      const result = await analyzeImage(file);
+      console.log("analysis result: ", result);
       setAnalysisResult(result);
-      goToStep(3);
-    } catch (error) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-expect-error
-      console.error("❌ 분석 실패:", error.response?.data?.message);
+    } catch (error: any) {
+      console.error("❌ 분석 실패:", error?.response?.data?.message ?? error);
       alert("분석에 실패했어요. 다시 시도해 주세요.");
     } finally {
       setIsAnalyzing(false);
     }
   };
 
+  const busy = isAnalyzing;
+
   const renderStep = () => {
     switch (step) {
       case 1:
         return (
           <UploadStep1
+            // 파일 인풋 완전 초기화용 재마운트 키
+            key={`step1-${file ? "has" : "none"}`}
             onNext={selectedFile => {
               setFile(selectedFile);
               goToStep(2);
@@ -74,20 +77,11 @@ export const FileUploadModalFlow = ({ isOpen, onClose }: Props) => {
           file && (
             <UploadStep2
               file={file}
-              onBack={() => goToStep(1)}
+              onBack={resetAll} // ✅ “다시 선택”도 같은 리셋 함수 사용
               onAnalyze={handleAnalyze}
-              isAnalyzing={isAnalyzing}
-            />
-          )
-        );
-      case 3:
-        return (
-          file &&
-          analysisResult && (
-            <UploadStep3
-              file={file}
+              isAnalyzing={busy}
               result={analysisResult}
-              onClose={onClose}
+              onDone={() => onClose()} // 닫히면 useEffect 통해 resetAll 호출됨
             />
           )
         );
@@ -96,7 +90,6 @@ export const FileUploadModalFlow = ({ isOpen, onClose }: Props) => {
     }
   };
 
-  // ✅ 이 부분이 컴포넌트의 JSX 리턴
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       {renderStep()}

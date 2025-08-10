@@ -4,7 +4,7 @@ type AnalysisResult = {
   name_en: string;
   name_ko: string;
   image_key: string;
-  is_already_exist: boolean;
+  word_id: number;
 };
 
 export const analyzeImage = async (file: File): Promise<AnalysisResult> => {

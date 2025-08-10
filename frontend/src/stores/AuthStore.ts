@@ -48,7 +48,6 @@ export const useAuthStore = create<AuthState>()(
         set({ accessToken: token });
       },
 
-      // stores/AuthStore.ts
       refreshAccessToken: async () => {
         try {
           const response = await axios.post(
@@ -60,7 +59,6 @@ export const useAuthStore = create<AuthState>()(
           const newToken = response.data?.content?.accessToken;
           if (!newToken) throw new Error("새 토큰 없음");
 
-          // 🔹 새 토큰 발행 시점 로그
           console.log("🔄 새 Access Token 발급:", newToken);
 
           get().setAccessToken(newToken);
