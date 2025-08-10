@@ -14,8 +14,15 @@ function QuizPage() {
 
   // location.state가 없을 수도 있으니 기본값
   const location = useLocation();
-  const { name = "", description = "" } =
-    (location.state as { name?: string; description?: string }) ?? {};
+  const {
+    name = "",
+    description = "",
+    isTodayMission = false,
+  } = (location.state as {
+    name?: string;
+    description?: string;
+    isTodayMission?: boolean;
+  }) ?? {};
 
   useEffect(() => {
     let mounted = true;
@@ -47,6 +54,7 @@ function QuizPage() {
           name={name}
           description={description}
           vocaCardDatas={vocas}
+          isTodayMission={isTodayMission}
         />
       </div>
       <Navigation loc="folder" />

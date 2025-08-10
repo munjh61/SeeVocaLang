@@ -35,7 +35,7 @@ export const Folder = ({
       className="rounded-md shadow-md w-full p-3 inline-flex flex-col gap-2 bg-white select-none"
       onDragStart={e => e.preventDefault()}
     >
-      <div className="relative">
+      <div className="relative grow">
         <Icon
           icon={favorite ? starF : starE}
           color={"yellow"}
@@ -44,7 +44,7 @@ export const Folder = ({
         />
         <ImageBox
           src={thumbnailUrl ? thumbnailUrl : noImage}
-          className="w-full h-full"
+          className="grow"
         />
       </div>
 
