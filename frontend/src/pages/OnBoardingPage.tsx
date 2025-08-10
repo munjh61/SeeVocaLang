@@ -63,6 +63,13 @@ export const OnBoardingPage = () => {
             alt="카카오 로그인"
             className="w-10 h-10 cursor-pointer"
             onClick={() => {
+              // 1. 성공 시 돌아올 경로 (프론트 주소)
+              const successRedirect = window.location.origin + "/main";
+
+              // 2. 쿠키에 redirect_uri로 저장
+              document.cookie = `redirect_uri=${encodeURIComponent(successRedirect)}; path=/; SameSite=Lax`;
+
+              // 3. 소셜 로그인 시작 URL로 이동
               window.location.href = `${baseurl}/oauth2/authorization/kakao`;
             }}
           />
