@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { VocafolderSecondHeader } from "../../organisms/folder/VocaSecondheader";
+import { VocafolderSecondHeader } from "../../organisms/folder/FolderSecondheader";
 import { Folder, type FolderProps } from "../../organisms/folder/Folder";
 import hangul from "hangul-js";
 import { IconButton } from "../../molecules/iconButton/IconButton";
@@ -112,18 +112,12 @@ export const FolderSelectTemplate = ({
   const searchFunction = (v: string) => setSearchKey(v);
 
   // 즐겨찾기 토글
-  const toggleFavorite = async (folderId: number) => {
-    setVocaList(prev =>
-      prev.map(item => {
-        if (item.folderId === folderId) {
-          if (item.favorite) {
-            deleteFavorite(folderId);
-          } else addFavorite(folderId);
-          return { ...item, favorite: !item.favorite };
-        }
-        return item;
-      })
-    );
+  const toggleFavorite = async (folderId: number, favorite: boolean) => {
+    if (favorite) {
+      deleteFavorite(folderId);
+    } else {
+      addFavorite(folderId);
+    }
   };
 
   // 검색/필터링

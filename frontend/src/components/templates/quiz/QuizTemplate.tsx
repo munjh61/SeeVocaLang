@@ -6,7 +6,7 @@ import { Quiz } from "../../organisms/quiz/Quiz";
 import { SegmentControl } from "../../molecules/segmentControl/SegmentControl";
 import { QuizHeader } from "../../organisms/quiz/QuizHeader";
 import { Div } from "../../atoms/div/Div";
-import { getTodayQuiz } from "../../../api/TodayQuizAPI";
+// import { getQuizStatus, getTodayQuiz } from "../../../api/TodayQuizAPI";
 
 type QuizTemplateProps = {
   name: string;
@@ -19,7 +19,7 @@ export const QuizTemplate = ({
   vocaCardDatas,
   name,
   description,
-  isTodayMission,
+  // isTodayMission,
 }: QuizTemplateProps) => {
   const nav = useNavigate();
   const questionCount = vocaCardDatas.length;
@@ -30,7 +30,8 @@ export const QuizTemplate = ({
   const [result, setResult] = useState(0);
 
   // 오늘의 학습
-  getTodayQuiz();
+  // getTodayQuiz();
+  // getQuizStatus();
 
   // 초기 퀴즈 순서 준비
   useEffect(() => {
