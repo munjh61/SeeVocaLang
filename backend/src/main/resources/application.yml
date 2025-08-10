@@ -114,3 +114,12 @@ server:
 
   ai:
     url: ENC(0FnCnLQ3VVYBWJWsF5Q3MM87EuqNtAe0D8mO0N1Dl9qtnhvx1NOeXg==)
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: always
