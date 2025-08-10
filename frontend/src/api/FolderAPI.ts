@@ -1,4 +1,5 @@
-import type { VocafolderProps } from "../components/organisms/folder/Folder.tsx";
+import type { FolderProps } from "../components/organisms/folder/Folder.tsx";
+import type { VocaCardProps } from "../components/organisms/vocaCard/VocaCard.tsx";
 import { BASE_URL } from "../types/Regex.ts";
 import { authApi } from "../utils/axios.ts";
 
@@ -8,8 +9,8 @@ const foldersURL = `${BASE_URL}/api/v1/folders`;
 export const getfolders = async (userId: number) => {
   try {
     const response = await authApi.get(`${foldersURL}/${userId}`);
-    const folders: VocafolderProps[] = response.data.content.map(
-      (b: VocafolderProps) => ({
+    const folders: FolderProps[] = response.data.content.map(
+      (b: FolderProps) => ({
         folderId: b.folderId,
         name: b.name,
         description: b.description ?? "",
@@ -95,6 +96,24 @@ export const deleteFavorite = async (folderId: number) => {
     console.log(res.data);
   } catch (error) {
     console.error("❌ 폴더 즐겨찾기 삭제 요청 실패:", error);
+    throw error;
+  }
+};
+
+// 특정 단어장 수록 단어 가져오기
+export const getWords = async (folderId: number) => {
+  try {
+    const res = await authApi.get(`${foldersURL}/${folderId}/words`);
+    console.log(res.data.content);
+    const words: VocaCardProps[] = res.data.content.map((w: VocaCardProps) => ({
+      imgUrl: w.imgUrl,
+      nameEn: w.nameEn,
+      nameKo: w.nameKo,
+      folders: w.folders,
+    }));
+    return words;
+  } catch (error) {
+    console.error(error);
     throw error;
   }
 };

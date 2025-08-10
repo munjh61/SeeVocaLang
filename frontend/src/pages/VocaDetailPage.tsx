@@ -4,7 +4,7 @@ import { VocaDetailTemplate } from "../components/templates/voca/VocaDetailTempl
 import VocaCardSample from "../components/templates/voca/SampleVocaCard";
 import { useEffect, useState } from "react";
 import type { VocaCardProps } from "../components/organisms/vocaCard/VocaCard";
-import { getWords } from "../api/WordAPI";
+import { getWords } from "../api/FolderAPI";
 import { useAuthStore } from "../stores/AuthStore";
 import { LoadingPage } from "../components/templates/loadingTemplate/LoadingTemplate";
 
@@ -14,16 +14,22 @@ function VocaDetailPage() {
   const [error, setError] = useState<string | null>(null);
   const userId = useAuthStore.getState().user?.userId ?? 1;
 
+  for (let i = 0; i < 6; i++) {
+    console.log(`${i}번째 단어장`);
+    getWords(i);
+  }
+
   useEffect(() => {
     let mounted = true;
     (async () => {
       try {
-        const vocas = await getWords();
+        const vocas = await getWords(Number(folderId));
         if (mounted) setVocas(vocas);
-        vocas.map(v => console.log(v.folders));
       } catch (e) {
-        if (mounted && e instanceof Error)
+        if (mounted && e instanceof Error) {
+          console.error(e);
           setError((e.message = "불러오기 실패"));
+        }
       }
     })();
 
