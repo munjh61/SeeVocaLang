@@ -63,7 +63,7 @@ public class FolderQueryRepositoryImpl extends QuerydslRepositorySupport impleme
     }
 
     @Override
-    public List<ReadWordResponseDto> deleteAllWordsByFolderId(long folderId) {
+    public List<ReadWordResponseDto> getWordsByFolderId(long folderId) {
         QFolderWordEntity folderWord = QFolderWordEntity.folderWordEntity;
         QWordEntity word = new QWordEntity("resultWord");
 
@@ -86,7 +86,7 @@ public class FolderQueryRepositoryImpl extends QuerydslRepositorySupport impleme
 
     @Override
     @Transactional
-    public boolean deleteAllWordsByFolderId(long folderId, List<Long> wordIds) {
+    public boolean deleteWordsByFolderId(long folderId, List<Long> wordIds) {
         QFolderWordEntity folderWord = QFolderWordEntity.folderWordEntity;
 
         BooleanBuilder builder = new BooleanBuilder();

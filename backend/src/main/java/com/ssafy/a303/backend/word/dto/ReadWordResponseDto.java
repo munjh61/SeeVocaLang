@@ -19,4 +19,12 @@ public class ReadWordResponseDto {
     private String nameKo;
     private String nameEn;
     private List<ReadFoldersSimpleResponseDto> folders;
+
+    public ReadWordResponseDto(long wordId, String imageUrl, String audioUrl, String nameKo, String nameEn) {
+        this.wordId = wordId;
+        this.imageUrl = imageUrl;
+        this.audioUrl = audioUrl;
+        this.nameKo = nameKo;
+        this.nameEn = nameEn;
+    }
 }
