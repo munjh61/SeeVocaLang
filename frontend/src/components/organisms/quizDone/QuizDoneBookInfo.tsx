@@ -3,13 +3,13 @@ import folderOpen from "../../../asset/folder.svg?react";
 import { QuizDoneInfoCard } from "../../molecules/quizDone/QuizDoneInfoCard";
 
 type QuizDonefolderInfoProps = {
-  foldername: string;
+  name: string;
   size: number;
   result: number;
 };
 
 export const QuizDonefolderInfo = ({
-  foldername,
+  name,
   size,
   result,
 }: QuizDonefolderInfoProps) => {
@@ -18,7 +18,7 @@ export const QuizDonefolderInfo = ({
       <QuizDoneInfoCard
         icon={folderOpen}
         title="완료한 단어장"
-        data={foldername}
+        data={name}
         titleColor="yellow"
         dataColor="gray"
       />

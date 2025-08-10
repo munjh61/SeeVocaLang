@@ -14,8 +14,8 @@ function QuizPage() {
 
   // location.state가 없을 수도 있으니 기본값
   const location = useLocation();
-  const { foldername = "", description = "" } =
-    (location.state as { foldername?: string; description?: string }) ?? {};
+  const { name = "", description = "" } =
+    (location.state as { name?: string; description?: string }) ?? {};
 
   useEffect(() => {
     let mounted = true;
@@ -44,7 +44,7 @@ function QuizPage() {
     <div className="flex flex-col h-screen">
       <div className="flex grow overflow-y-auto">
         <QuizTemplate
-          foldername={foldername}
+          name={name}
           description={description}
           vocaCardDatas={vocas}
         />

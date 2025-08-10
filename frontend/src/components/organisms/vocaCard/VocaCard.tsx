@@ -63,21 +63,21 @@ export const VocaCard = ({
                   <VocaLoc
                     bg={"red"}
                     folderId={folders[0].id}
-                    foldername={folders[0].name}
+                    name={folders[0].name}
                   />
                 )}
                 {folders[1] && (
                   <VocaLoc
                     bg={"yellow"}
                     folderId={folders[1].id}
-                    foldername={folders[1].name}
+                    name={folders[1].name}
                   />
                 )}
                 {folders[2] && (
                   <VocaLoc
                     bg={"green"}
                     folderId={folders[2].id}
-                    foldername={folders[2].name}
+                    name={folders[2].name}
                   />
                 )}
                 {folders.length > 3 && <VocaLoc bg={"blue"}>더보기</VocaLoc>}

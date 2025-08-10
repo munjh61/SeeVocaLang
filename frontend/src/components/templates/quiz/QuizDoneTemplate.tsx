@@ -5,14 +5,14 @@ import { RainyBalls } from "../../atoms/deco/RainyBall";
 import { QuizDonefolderInfo } from "../../organisms/quizDone/QuizDoneBookInfo";
 
 type QuizDoneTemplateProps = {
-  foldername: string;
+  name: string;
   size: number;
   result: number;
   day: number;
 };
 
 export const QuizDoneTemplate = ({
-  foldername,
+  name,
   size,
   result,
   day,
@@ -31,11 +31,7 @@ export const QuizDoneTemplate = ({
 
       <Div align={"center"} className="gap-0">
         <QuizDoneStatCard day={day} />
-        <QuizDonefolderInfo
-          foldername={foldername}
-          size={size}
-          result={result}
-        />
+        <QuizDonefolderInfo name={name} size={size} result={result} />
         <QuizDoneButtons className="mt-10" />
       </Div>
     </Div>

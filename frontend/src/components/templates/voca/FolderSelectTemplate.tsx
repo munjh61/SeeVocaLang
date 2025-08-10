@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { VocafolderSecondHeader } from "../../organisms/folder/VocaSecondheader";
-import { FolderCard, type FolderProps } from "../../organisms/folder/Folder";
+import { Folder, type FolderProps } from "../../organisms/folder/Folder";
 import hangul from "hangul-js";
 import { IconButton } from "../../molecules/iconButton/IconButton";
 import { useNavigate } from "react-router-dom";
@@ -99,7 +99,6 @@ export const FolderSelectTemplate = ({
       closeModal();
     } catch (e) {
       console.error(e);
-      // TODO: 토스트로 "생성 실패" 같은 에러 UI 표시
     }
   };
   const deleteFunction = async () => {
@@ -202,7 +201,7 @@ export const FolderSelectTemplate = ({
                           lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4"
         >
           {filteredList.map(data => (
-            <FolderCard
+            <Folder
               key={data.folderId}
               {...data}
               // onLearnClick={handleLearnClick}

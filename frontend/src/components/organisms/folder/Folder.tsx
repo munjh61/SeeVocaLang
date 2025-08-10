@@ -19,7 +19,7 @@ export type FolderProps = {
   onToggleFavorite?: (id: number) => void;
 };
 
-export const FolderCard = ({
+export const Folder = ({
   folderId,
   thumbnailUrl,
   name,
@@ -29,6 +29,7 @@ export const FolderCard = ({
   onEditClick,
   onToggleFavorite,
 }: FolderProps) => {
+  // console.log(folderId, thumbnailUrl, name, description, favorite);
   return (
     <div
       className="rounded-md shadow-md w-full p-3 inline-flex flex-col gap-2 bg-white select-none"

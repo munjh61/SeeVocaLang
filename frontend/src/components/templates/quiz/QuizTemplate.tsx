@@ -8,14 +8,14 @@ import { QuizHeader } from "../../organisms/quiz/QuizHeader";
 import { Div } from "../../atoms/div/Div";
 
 type QuizTemplateProps = {
-  foldername: string;
+  name: string;
   description: string;
   vocaCardDatas: VocaCardProps[];
 };
 
 export const QuizTemplate = ({
   vocaCardDatas,
-  foldername,
+  name,
   description,
 }: QuizTemplateProps) => {
   const nav = useNavigate();
@@ -39,7 +39,7 @@ export const QuizTemplate = ({
       // if (currentIndex >= 1)
       nav("/done", {
         state: {
-          foldername: foldername,
+          name: name,
           size: questionCount,
           result: result,
         },
@@ -62,7 +62,7 @@ export const QuizTemplate = ({
   return (
     <div className="flex flex-col grow p-2 gap-2">
       <QuizHeader
-        foldername={foldername}
+        name={name}
         description={description}
         index={currentIndex + 1}
         total={quizDatas.length + 1}

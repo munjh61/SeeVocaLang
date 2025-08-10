@@ -5,11 +5,11 @@ import type { buttonVariants } from "../../atoms/button/ButtonVariants";
 type VocaLoc = {
   bg?: VariantProps<typeof buttonVariants>["bgColor"];
   folderId?: number;
-  foldername?: string;
+  name?: string;
   children?: string;
 };
 
-export const VocaLoc = ({ bg, folderId, foldername, children }: VocaLoc) => {
+export const VocaLoc = ({ bg, folderId, name, children }: VocaLoc) => {
   return (
     <IconButton
       ButtonVariant={{ bgColor: bg, textColor: "white" }}
@@ -17,7 +17,7 @@ export const VocaLoc = ({ bg, folderId, foldername, children }: VocaLoc) => {
       path={`/folder/${folderId}`}
     >
       <span className="w-full whitespace-nowrap overflow-hidden text-ellipsis font-light text-xs">
-        {foldername}
+        {name}
         {children}
       </span>
     </IconButton>

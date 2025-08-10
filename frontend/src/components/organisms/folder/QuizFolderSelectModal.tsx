@@ -34,7 +34,7 @@ export const QuizFolderSelectModal = ({
                 onClose(); // 모달 닫기
                 nav(`/quiz/${folder.folderId}`, {
                   state: {
-                    foldername: folder.name,
+                    name: folder.name,
                     description: folder.description,
                   },
                 }); // 페이지 이동
