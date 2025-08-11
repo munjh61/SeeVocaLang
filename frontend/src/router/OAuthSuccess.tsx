@@ -39,7 +39,7 @@ export default function OAuthSuccess() {
         const accessToken = reissue.data?.content?.accessToken;
         if (!accessToken) throw new Error("NO_ACCESS_TOKEN");
 
-        // 2) (선택) 유저 정보 조회
+        // 2) 유저 정보 조회 (선택)
         let user = null;
         try {
           const me = await authApi.get(`${BASE_URL}/api/v1/users/info`, {
@@ -63,16 +63,22 @@ export default function OAuthSuccess() {
           setAccessToken(accessToken);
         }
 
-        // 4) 최종 목적지 쿠키(final_redirect) 읽어서 이동
+        // 4) 최종 목적지 쿠키(final_redirect) 읽기
         const target = decodeURIComponent(
           getCookie("final_redirect") || "%2Fmain"
         );
 
-        // 5) 쿠키 정리
+        // 5) 쿠키 삭제
         deleteCookie("final_redirect");
 
-        // 6) 페이지 이동
-        navigate(target, { replace: true });
+        // 6) 이동 처리
+        if (target.startsWith("http://") || target.startsWith("https://")) {
+          // 풀 URL이면 외부 이동 (SPA 라우터가 아니라 브라우저 네비게이션)
+          window.location.href = target;
+        } else {
+          // 경로만 있으면 react-router-dom 내부 라우팅
+          navigate(target, { replace: true });
+        }
       } catch (err) {
         console.error("❌ OAuth 콜백 처리 실패:", err);
         deleteCookie("final_redirect");
