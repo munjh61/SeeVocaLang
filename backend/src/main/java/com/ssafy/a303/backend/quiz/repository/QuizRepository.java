@@ -14,8 +14,7 @@ public interface QuizRepository extends JpaRepository<QuizEntity, Long> {
             LocalDateTime end
     );
 
-    List<QuizEntity> findAllByProblemNumberGreaterThanEqualAndCreatedAtBetween(
-            int problemNumber,
+    List<QuizEntity> findAllByCreatedAtBetweenOrderByProblemNumberAsc(
             LocalDateTime start,
             LocalDateTime end
     );
