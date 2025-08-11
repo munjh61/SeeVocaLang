@@ -14,6 +14,7 @@ import QuizDonePage from "../pages/QuizDonePage.tsx";
 import { PrivateRoute } from "../components/common/PrivateRoute.tsx";
 import { OnBoardingPage } from "../pages/OnBoardingPage.tsx";
 import FolderPage from "../pages/FolderPage.tsx";
+import OAuthSuccess from "./OAuthSuccess.tsx";
 
 export const Router = () => {
   return (
@@ -23,6 +24,7 @@ export const Router = () => {
         <Route path={"/"} element={<OnBoardingPage />} />
         <Route path="/signup" element={<SignupFlow />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/oauth2/success" element={<OAuthSuccess />} />
 
         {/*  프라이빗 라우트 그룹 */}
         <Route element={<PrivateRoute />}>
