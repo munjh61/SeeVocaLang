@@ -63,7 +63,8 @@ public class FriendQueryRepositoryImpl extends QuerydslRepositorySupport impleme
 
         return from(friendTable)
                 .select(Projections.constructor(ReadUsersWithStatusResponseDto.class,
-                        userTable.userId,
+                        friendTable.user.userId,
+                        friendTable.friend.userId,
                         userTable.profileImage,
                         userTable.nickname,
                         status
