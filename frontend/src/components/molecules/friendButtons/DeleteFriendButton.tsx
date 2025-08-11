@@ -4,6 +4,7 @@ import { Icon } from "../../atoms/icon/Icon";
 import { Text } from "../../atoms/text/Text";
 import DeleteFriendIcon from "../../../asset/friend_del.svg?react";
 import { FriendDeleteConfirmModal } from "../../molecules/friendModal/FriendDeleteModal";
+import { deleteFriend } from "../../../api/FriendPageApi";
 
 type DeleteFriendButtonProps = {
   className: string;
@@ -24,8 +25,12 @@ export const DeleteFriendButton = ({
   const handleDeleteRequest = async () => {
     try {
       setLoading(true);
-      // await axios.post("/api/friends/request", { friendId: data }); // 💡 백엔드 API 주소 맞게 수정
-      setIsModalOpen(true); // ✅ 요청 성공 시 완료 모달 열기
+      const success = await deleteFriend(data); // ✅ API 호출
+           if (success) {
+             setIsModalOpen(true); // 요청 성공 시 모달 열기
+           } else {
+             alert("친구 요청에 실패했어요.");
+           }
     } catch (error) {
       console.error("친구 삭제 실패:", error);
       alert("친구 삭제에 실패했어요.");

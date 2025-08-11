@@ -1,22 +1,40 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "../../atoms/button/Button";
 import { AddFriendButton } from "../friendButtons/AddFriendButton";
 import { DeleteFriendButton } from "../friendButtons/DeleteFriendButton";
 import { RequestFriendButton } from "../friendButtons/RequestFriendButton";
+import { acceptFriend } from "../../../api/FriendPageApi";
+import { getUserInfo, type UserInfo } from "../../../api/userInfo";
 
 
-type FriendStatus = "NONE" | "PENDING" | "APPROVED"| "REQUEST";
+
 type FriendInfoProps = {
   id: number;
   profileUrl?: string;
   name: string;
-  status: FriendStatus;
+  status: string;
 
 };
 
 export const FriendInfoCard = ({ id, profileUrl, name, status: initialStatus }: FriendInfoProps) => {
-  const [status, setStatus] = useState<FriendStatus>(initialStatus);
+
+  const [status, setStatus] = useState<string>(initialStatus);
+//   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+//     useEffect(() => {
+//     const fetchUserInfo = async () => {
+//       try {
+//         const data = await getUserInfo(); // ✅ 실제 API 호출
+//         setUserInfo(data); // data에는 nickname, email, profileImage 등이 들어있음
+//       } catch (error) {
+//         console.error("유저 정보 불러오기 실패:", error);
+//       }
+//     };
+//     fetchUserInfo();
+// }, []);
+
+
   const renderButton = () => {
+    
     switch (status) {
       case "NONE":
         return (
@@ -46,6 +64,7 @@ export const FriendInfoCard = ({ id, profileUrl, name, status: initialStatus }: 
             size="md"
             textColor="white"
             className="gap-1 px-3 py-1.5"
+            onClick={() => acceptFriend(id)}
           >
             거절
           </Button>

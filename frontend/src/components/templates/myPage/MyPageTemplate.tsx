@@ -15,15 +15,27 @@ import Calendar from "../../../asset/calicon.svg?react"
 import { useEffect, useState } from "react"
 import { ProfileModal } from "../profileModal/ProfileModal"
 import { getUserInfo, type UserInfo } from "../../../api/userInfo"
+import { getCalendar, getStatics, type StatisticsResponse } from "../../../api/MyPageApi"
 
 
 export const MyPageTemplate = ()=>{
-   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
+ const [statistics, setStatistics] = useState<StatisticsResponse | null>(null);
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+  const [days, setDays] = useState<string[]>([]);
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth() + 1; // JS는 0부터 시작하니까 +1
 
+  useEffect(() => {
+    const fetchCalendar = async () => {
+      const result = await getCalendar(year, month);
+      setDays(result);
+    };
+    fetchCalendar();
+  }, []);
 useEffect(() => {
   const fetchUserInfo = async () => {
     try {
@@ -36,6 +48,20 @@ useEffect(() => {
 
   fetchUserInfo();
 }, []);
+useEffect(() => {
+    const fetchStatistics = async () => {
+      try {
+        const data = await getStatics();
+        if (data) {
+          setStatistics(data); // API 구조에 맞춰서 content만 저장
+        }
+      } catch (error) {
+        console.error("통계 불러오기 실패:", error);
+      }
+    };
+
+    fetchStatistics();
+  }, []);
 
     return (
 <div className="p-6 bg-gray-100 min-h-screen">
@@ -85,6 +111,7 @@ useEffect(() => {
     <Text size={"base"} color="white" weight={"medium"}>프로필 편집</Text>
   </div>
     </Button>
+    <Button bgColor={"red"} textColor={"white"} size={"md"}>회원탈퇴 </Button>
   </div>
   <ProfileModal isOpen={isModalOpen} onClose={closeModal} userInfo={userInfo} />
 </div>
@@ -95,7 +122,7 @@ useEffect(() => {
         <div className="bg-white rounded-xl shadow">
           <MyPageHeader
             title="학습 캘린더"
-            subtitle="2024년 12월"
+            subtitle="퀴즈 완료 기록"
             bgColor="from-green-400 to-green-600"
             rightElement={
           <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
@@ -104,7 +131,7 @@ useEffect(() => {
             }
           />
           <div className="p-4">
-            <CalendarCard/>
+            <CalendarCard days={days}/>
           </div>
         </div>
 
@@ -134,10 +161,10 @@ useEffect(() => {
             }
           />
           <div className="flex flex-col gap-4 p-4">
-            <EduCard icon={<Icon icon={ThunderIcon} color={"white"}/>} mainTitle="7일" subTitle="연속 학습일수" bgColor={"red"}/>
-            <EduCard icon={<Icon icon={BookIcon} color={"white"}/>} mainTitle="87일" subTitle="누적 학습일수" bgColor={"blue"}/>
-            <EduCard icon={<Icon icon={CalendarIcon} color={"white"}/>} mainTitle="12일" subTitle="이번달 학습일수" bgColor={"green"}/>            
-            <MyScoreCard wordCount="156" percent="89%" text1="학습한 단어" text2="정답률" bgColor={"white"}/>
+            <EduCard icon={<Icon icon={ThunderIcon} color={"white"}/>} mainTitle={`${statistics?.content?.streakDaysCount ?? 0}일`}subTitle="연속 학습일수" bgColor={"red"}/>
+            <EduCard icon={<Icon icon={BookIcon} color={"white"}/>} mainTitle={`${statistics?.content?.totalDaysCount ?? 0}일`} subTitle="누적 학습일수" bgColor={"blue"}/>
+            <EduCard icon={<Icon icon={CalendarIcon} color={"white"}/>} mainTitle={`${statistics?.content?.monthDaysCount ?? 0}일`} subTitle="이번달 학습일수" bgColor={"green"}/>            
+            <MyScoreCard wordCount={`${statistics?.content?.totalWordsCount ?? 0}`} percent={`${statistics?.content?.totalFoldersCount ?? 0}`} text1="총 단어 수" text2=" 총 단어장 수" bgColor={"white"}/>
           </div>
         </div>
       </div>

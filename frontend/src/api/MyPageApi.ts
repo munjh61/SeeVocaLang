@@ -2,6 +2,19 @@ import { authApi } from "../utils/axios";
 
 const   MYPAGE_URL = `/api/v1/users`;
 
+interface StatisticsContent {
+  totalDaysCount: number;
+  streakDaysCount: number;
+  monthDaysCount: number;
+  totalWordsCount: number;
+  totalFoldersCount: number;
+}
+
+export interface StatisticsResponse {
+  message: string;
+  content: StatisticsContent;
+}
+
 //회원탈퇴
 export const deleteAccount =async():Promise<boolean> =>{
     try{
@@ -83,11 +96,44 @@ export const updateProfile = async (
       formData.append("profile", profileFile);
     }
 
-    const response = await authApi.patch("/api/v1/users", formData);
+    const response = await authApi.patch(`${MYPAGE_URL}`, formData);
 
     return response.status === 200;
   } catch (error) {
     console.error("프로필 업데이트 실패:", error);
     return false;
+  }
+};
+
+//달력
+export const getCalendar= async(year:number, month:number):Promise<string[]>=>{
+   try {
+    const response = await authApi.get(`${MYPAGE_URL}/studyhistory`, {
+      params: {
+        year,
+        month,
+      },
+    });
+    console.log( "달력:", response.data.content.days)
+    if (response.status === 200 && response.data?.content?.days) {
+      return response.data.content.days; // 날짜 배열 반환
+    } else {
+      return [];
+    }
+  } catch (error) {
+    console.error("getCalendar 호출 실패:", error);
+    return [];
+  }
+};
+
+//학습통계
+export const getStatics = async (): Promise<StatisticsResponse | null> => {
+  try {
+    const response = await authApi.get<StatisticsResponse>(`${MYPAGE_URL}/statistics`);
+    console.log(response.data.content)
+    return response.data;
+  } catch (error) {
+    console.error("📌 통계 불러오기 실패:", error);
+    return null;
   }
 };

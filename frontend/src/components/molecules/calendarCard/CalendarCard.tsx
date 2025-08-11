@@ -3,15 +3,44 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "../../../style/calendar.css";
 
-export const CalendarCard = () => {
-  const [date, setDate] = useState<Date | null>(new Date());
+interface CalendarCardProps {
+  days: string[]; // API에서 받은 날짜 문자열 배열 ("YYYY-MM-DD")
+}
 
+export const CalendarCard = ({ days }: CalendarCardProps) => {
+  console.log("Received days:", days); 
+  const [date, setDate] = useState<Date | null>(new Date());
+  
+ const daysSet = new Set(days);
+
+const formatDate = (date: Date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+
+const tileClassName = ({ date: tileDate, view }: { date: Date; view: string }) => {
+  if (view === "month") {
+    const dateStr = formatDate(tileDate);
+    let classNames = "";
+    if (daysSet.has(dateStr)) {
+      classNames += "highlight ";
+    }
+    if (date && formatDate(date) === dateStr) {
+      classNames += "selected";
+    }
+    return classNames.trim();
+  }
+  return "";
+};
   return (
     <div className={`w-full`}>
       <Calendar
         onChange={value => setDate(value as Date)}
         value={date}
         locale="en-US"
+        tileClassName={tileClassName}
       />
     </div>
   );

@@ -29,7 +29,7 @@
 
     /* 선택된 날짜 스타일 */
     .react-calendar__tile--active {
-        @apply !bg-green-500 text-white rounded-md;
+        @apply !bg-green-500 text-black rounded-md;
     }
 
     /* 이달이 아닌 이전/다음 달의 날짜 (옅게 표시) */
@@ -52,4 +52,6 @@
     .react-calendar__navigation__label:hover{
         @apply !bg-gray-100 !text-green-500 rounded-md;
     }
+
+
 }
