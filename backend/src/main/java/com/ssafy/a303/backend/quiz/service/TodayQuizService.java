@@ -36,14 +36,9 @@ public class TodayQuizService {
         return new GetTodayQuizStatusResultDto(lastSolvedNumber, totalProblemCount);
     }
 
-    public List<GetTodayQuizItem> getTodayQuizItemList(Long userId, LocalDateTime currentTime) {
+    public List<GetTodayQuizItem> getTodayQuizItemList(LocalDateTime currentTime) {
         LocalDateTime endTime = currentTime.plusDays(1).minusNanos(1);
-        int lastSolvedNumber = quizOrderService.getLastResolvedQuiz(userId, currentTime, endTime);
-        int quizTotalCount = quizService.getTodayTotalQuizCount(currentTime, endTime);
-        if (lastSolvedNumber == quizTotalCount)
-            throw new QuizAlreadyCompleteRuntimeException();
-
-        List<QuizEntity> quizList = quizService.getTodayQuizList(lastSolvedNumber + 1, currentTime, endTime);
+        List<QuizEntity> quizList = quizService.getTodayQuizList(currentTime, endTime);
         return quizList.stream()
                 .map(GetTodayQuizItem::of)
                 .collect(Collectors.toList());
