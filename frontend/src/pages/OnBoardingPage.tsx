@@ -66,7 +66,7 @@ export const OnBoardingPage = () => {
             onClick={() => {
               const finalRedirect =
                 "http://ec2-13-125-250-93.ap-northeast-2.compute.amazonaws.com/main";
-              const callback = "/oauth2/success";
+              const callback = window.location.origin + "/oauth2/success";
               document.cookie = `redirect_uri=${encodeURIComponent(callback)}; path=/`;
 
               // 프론트 콜백에서 읽을 쿠키: 최종 목적지
@@ -83,7 +83,7 @@ export const OnBoardingPage = () => {
             onClick={() => {
               const finalRedirect =
                 "http://ec2-13-125-250-93.ap-northeast-2.compute.amazonaws.com/main";
-              const callback = "/oauth2/success";
+              const callback = window.location.origin + "/oauth2/success";
               document.cookie = `redirect_uri=${encodeURIComponent(callback)}; path=/`;
 
               document.cookie = `final_redirect=${encodeURIComponent(finalRedirect)}; path=/; SameSite=Lax`;
@@ -99,7 +99,7 @@ export const OnBoardingPage = () => {
             onClick={() => {
               const finalRedirect =
                 "http://ec2-13-125-250-93.ap-northeast-2.compute.amazonaws.com/main";
-              const callback = "/oauth2/success";
+              const callback = window.location.origin + "/oauth2/success";
               document.cookie = `redirect_uri=${encodeURIComponent(callback)}; path=/`;
 
               document.cookie = `final_redirect=${encodeURIComponent(finalRedirect)}; path=/; SameSite=Lax`;
