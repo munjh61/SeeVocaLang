@@ -71,7 +71,8 @@ public class FriendQueryRepositoryImpl extends QuerydslRepositorySupport impleme
                         status
                 ))
                 .rightJoin(userTable)
-                .on(friendTable.friend.userId.eq(userTable.userId))
+                .on(friendTable.friend.userId.eq(userTable.userId)
+                        .or(friendTable.user.userId.eq(userTable.userId)))
                 .where(userTable.userId.ne(userId))
                 .fetch();
     }

@@ -79,6 +79,7 @@ public class FolderQueryRepositoryImpl extends QuerydslRepositorySupport impleme
                 .join(folderWord).on(folderWord.word.wordId.eq(word.wordId))
                 .where(
                         folderWord.folder.folderId.eq(folderId)
+                                .and(word.isDeleted.eq(false))
                 )
                 .orderBy(word.wordId.desc())
                 .fetch();
