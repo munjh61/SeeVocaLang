@@ -4,10 +4,12 @@ import com.ssafy.a303.backend.common.dto.BaseResponseDto;
 import com.ssafy.a303.backend.common.security.CustomUserDetails;
 import com.ssafy.a303.backend.email.dto.EmailMessages;
 import com.ssafy.a303.backend.email.dto.EmailSendRequestDto;
+import com.ssafy.a303.backend.studyhistory.dto.GetStudyDaysCommandDto;
 import com.ssafy.a303.backend.user.dto.*;
 import com.ssafy.a303.backend.user.entity.UserEntity;
 import com.ssafy.a303.backend.user.exception.UserErrorCode;
 import com.ssafy.a303.backend.user.exception.UserNotFoundException;
+import com.ssafy.a303.backend.user.mapper.UserMapper;
 import com.ssafy.a303.backend.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Slf4j
 @RestController
@@ -130,6 +135,19 @@ public class UserController {
                 .message(isValid ? "비밀번호가 일치합니다" : "현재 비밀번호가 일치하지 않습니다")
                 .content(PasswordValidationResponseDto.builder().isValid(isValid).build())
                 .build());
+    }
+
+    @GetMapping("/api/v1/users/statistics")
+    public ResponseEntity<BaseResponseDto<GetStatisticsResponseDto>> getStatistics(
+            @AuthenticationPrincipal CustomUserDetails user
+    ) {
+        Long userId = user.getUserId();
+        LocalDateTime startTime = LocalDate.now().atStartOfDay();
+        LocalDateTime endTime = startTime.plusDays(1).minusNanos(1);
+        GetStatisticsCommandDto commandDto = new GetStatisticsCommandDto(userId, startTime, endTime);
+        GetStatisticsResultDto resultDto = userService.getStatistics(commandDto);
+        GetStatisticsResponseDto responseDto = UserMapper.INSTANCE.toResponseDto(resultDto);
+        return ResponseEntity.ok(new BaseResponseDto<>("학습 통계를 성공적으로 불러왔습니다.", responseDto));
     }
 
 }

@@ -1,12 +1,13 @@
 package com.ssafy.a303.backend.user.repository;
 
 import com.ssafy.a303.backend.user.entity.UserEntity;
+import com.ssafy.a303.backend.user.repository.query.UserQueryRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<UserEntity, Long> {
+public interface UserRepository extends JpaRepository<UserEntity, Long>, UserQueryRepository {
 
     // 로그인 시 ID로 유저 조회
     Optional<UserEntity> findByLoginIdAndIsDeletedFalse(String loginId);
