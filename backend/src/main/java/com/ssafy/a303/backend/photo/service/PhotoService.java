@@ -9,6 +9,7 @@ import com.ssafy.a303.backend.folder.entity.FolderEntity;
 import com.ssafy.a303.backend.folder.service.FolderService;
 import com.ssafy.a303.backend.folderword.service.FolderWordService;
 import com.ssafy.a303.backend.photo.dto.*;
+import com.ssafy.a303.backend.photo.mapper.PhotoMapper;
 import com.ssafy.a303.backend.photo.utils.AIServerClient;
 import com.ssafy.a303.backend.user.entity.UserEntity;
 import com.ssafy.a303.backend.user.exception.UserNotFoundException;
@@ -49,7 +50,7 @@ public class PhotoService {
     }
 
     @Transactional
-    public void createWord(CreateWordPhotoCommandDto commandDto) {
+    public CreateWordResultDto createWord(CreateWordPhotoCommandDto commandDto) {
         Long userId = commandDto.userId();
         if (wordService.getWordExistence(commandDto.nameEn(), userId))
             throw new WordAlreadExistException(CommonErrorCode.RESOURCE_ALREADY_EXIST);
@@ -66,6 +67,7 @@ public class PhotoService {
         folderWordService.saveWordInFolder(wordEntity, folderEntity);
 
         redisWordImageHelper.deleteImage(userId, word);
+        return PhotoMapper.INSTANCE.toResultDto(wordEntity);
     }
 
     @Transactional

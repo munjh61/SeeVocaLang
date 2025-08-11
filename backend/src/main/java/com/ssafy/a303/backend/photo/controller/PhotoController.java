@@ -6,7 +6,6 @@ import com.ssafy.a303.backend.photo.dto.*;
 import com.ssafy.a303.backend.photo.mapper.PhotoMapper;
 import com.ssafy.a303.backend.photo.service.PhotoService;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -37,15 +36,14 @@ public class PhotoController {
     }
 
     @PostMapping("/api/v1/photos/words")
-    public BaseResponseDto<Void> createWord(
+    public ResponseEntity<BaseResponseDto<CreateWordResponseDto>> createWord(
             @RequestBody CreateWordRequestDto requestDto,
             @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) {
         Long userId = customUserDetails.getUserId();
-        photoService.createWord(PhotoMapper.INSTANCE.toCommandDto(userId, requestDto));
-        return BaseResponseDto.<Void>builder()
-                .message(SAVE_WORD_SUCCESS_MESSAGE)
-                .build();
+        CreateWordResultDto resultDto = photoService.createWord(PhotoMapper.INSTANCE.toCommandDto(userId, requestDto));
+        CreateWordResponseDto responseDto = PhotoMapper.INSTANCE.toResponseDto(resultDto);
+        return ResponseEntity.ok(new BaseResponseDto<>(SAVE_WORD_SUCCESS_MESSAGE, responseDto));
     }
 
     @PutMapping("/api/v1/photos/words/{wordId}")
