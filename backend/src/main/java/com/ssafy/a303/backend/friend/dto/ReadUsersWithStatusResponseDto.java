@@ -16,6 +16,6 @@ public class ReadUsersWithStatusResponseDto {
     @JsonProperty("profile_url")
     private String profileImage;
     private String nickname;
-    @JsonProperty("friend_status ")
+    @JsonProperty("friend_status")
     private String friendStatus;
 }
