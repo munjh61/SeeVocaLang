@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.util.WebUtils;
 
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
@@ -41,6 +42,14 @@ public class OAuth2FailureHandler implements AuthenticationFailureHandler {
         String redirectUri = Optional.ofNullable(WebUtils.getCookie(request, REDIRECT_URI_COOKIE_NAME))
                 .map(Cookie::getValue)
                 .orElse(DEFAULT_REDIRECT_URI);
+
+        // URL 디코딩 처리
+        try {
+            redirectUri = URLDecoder.decode(redirectUri, StandardCharsets.UTF_8);
+            log.info("URL 디코딩 완료: {}", redirectUri);
+        } catch (Exception e) {
+            log.warn("URL 디코딩 실패, 원본 URL 사용: {}", redirectUri, e);
+        }
 
         // 실패 메시지 보내주기
         String encodedMessage = URLEncoder.encode("oauth_failed", StandardCharsets.UTF_8);

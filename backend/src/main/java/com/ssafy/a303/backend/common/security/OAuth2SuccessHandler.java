@@ -17,6 +17,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.util.WebUtils;
 
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Optional;
 import java.util.UUID;
@@ -67,6 +69,14 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         String redirectUri = Optional.ofNullable(WebUtils.getCookie(request, REDIRECT_URI_COOKIE_NAME))
                 .map(Cookie::getValue)
                 .orElse(DEFAULT_REDIRECT_URI);
+
+        // URL 디코딩 처리
+        try {
+            redirectUri = URLDecoder.decode(redirectUri, StandardCharsets.UTF_8);
+            log.info("URL 디코딩 완료: {}", redirectUri);
+        } catch (Exception e) {
+            log.warn("URL 디코딩 실패, 원본 URL 사용: {}", redirectUri, e);
+        }
 
         response.sendRedirect(redirectUri);
         log.info("OAuth2 로그인 성공: userId={}, jti={}, redirect={}", userId, jti, redirectUri);
