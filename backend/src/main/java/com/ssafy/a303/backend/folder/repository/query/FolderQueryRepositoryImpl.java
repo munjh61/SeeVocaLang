@@ -2,14 +2,15 @@ package com.ssafy.a303.backend.folder.repository.query;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.JPQLQuery;
 import com.ssafy.a303.backend.folder.dto.ReadFoldersResponseDto;
 import com.ssafy.a303.backend.folder.entity.QFolderEntity;
 import com.ssafy.a303.backend.folderword.entity.QFolderWordEntity;
+import com.ssafy.a303.backend.photo.dto.GetFoldersContainingWordsItemDto;
 import com.ssafy.a303.backend.word.dto.ReadWordResponseDto;
 import com.ssafy.a303.backend.word.entity.QWordEntity;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -98,4 +99,30 @@ public class FolderQueryRepositoryImpl extends QuerydslRepositorySupport impleme
 
         return true;
     }
+
+    @Override
+    public List<GetFoldersContainingWordsItemDto> getFoldersContainingWordsList(Long userId, Long wordId) {
+        QFolderEntity f = QFolderEntity.folderEntity;
+        QFolderWordEntity fw = QFolderWordEntity.folderWordEntity;
+
+        return from(f)
+                .leftJoin(fw)
+                    .on(fw.folder.eq(f).and(fw.word.wordId.eq(wordId)))
+                .where(
+                    f.user.userId.eq(userId),
+                    f.isDeleted.isFalse()
+                )
+                .orderBy(f.folderId.asc())
+                .select(Projections.constructor(
+                    GetFoldersContainingWordsItemDto.class,
+                    f.folderId,
+                    f.name,
+                    new CaseBuilder()
+                        .when(fw.id.isNotNull())
+                        .then(true)
+                        .otherwise(false)
+                ))
+                .fetch();
+    }
+
 }

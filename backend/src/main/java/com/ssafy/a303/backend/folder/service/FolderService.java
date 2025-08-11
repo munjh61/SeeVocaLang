@@ -8,6 +8,7 @@ import com.ssafy.a303.backend.folder.entity.FolderEntity;
 import com.ssafy.a303.backend.folder.exception.FolderNotFoundException;
 import com.ssafy.a303.backend.folder.mapper.FolderMapper;
 import com.ssafy.a303.backend.folder.repository.FolderRepository;
+import com.ssafy.a303.backend.photo.dto.GetFoldersContainingWordsItemDto;
 import com.ssafy.a303.backend.user.entity.UserEntity;
 import com.ssafy.a303.backend.user.exception.UserNotFoundException;
 import com.ssafy.a303.backend.user.service.UserService;
@@ -95,7 +96,7 @@ public class FolderService {
     }
 
     public FolderEntity getFolderById(long folderId) {
-        return folderRepository.findById(folderId)
+        return folderRepository.findByFolderIdAndIsDeletedFalse(folderId)
                 .orElseThrow(() -> new FolderNotFoundException(CommonErrorCode.RESOURCE_NOT_FOUND));
     }
 
@@ -116,5 +117,9 @@ public class FolderService {
         return BaseResponseDto.<Void>builder()
                 .message("성공적으로 즐겨 찾기를 수정했습니다.")
                 .build();
+    }
+
+    public List<GetFoldersContainingWordsItemDto> getFoldersContainingWordsList(Long userId, Long wordId) {
+        return folderRepository.getFoldersContainingWordsList(userId, wordId);
     }
 }

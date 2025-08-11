@@ -2,6 +2,7 @@ package com.ssafy.a303.backend.folderword.service;
 
 import com.ssafy.a303.backend.folder.entity.FolderEntity;
 import com.ssafy.a303.backend.folderword.entity.FolderWordEntity;
+import com.ssafy.a303.backend.folderword.exception.WordAlreadyExistInFolderRuntimeException;
 import com.ssafy.a303.backend.folderword.repository.FolderWordRepository;
 import com.ssafy.a303.backend.word.entity.WordEntity;
 import jakarta.transaction.Transactional;
@@ -16,6 +17,10 @@ public class FolderWordService {
 
     @Transactional
     public void saveWordInFolder(WordEntity wordEntity, FolderEntity folderEntity) {
+        boolean isWordAlreadyExistInFolder = folderWordRepository.existsByWordWordIdAndFolderFolderId(wordEntity.getWordId(), folderEntity.getFolderId());
+        if (isWordAlreadyExistInFolder)
+            throw new WordAlreadyExistInFolderRuntimeException();
+
         FolderWordEntity folderWordEntity = FolderWordEntity.builder()
                 .word(wordEntity)
                 .folder(folderEntity)

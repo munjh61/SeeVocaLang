@@ -8,10 +8,8 @@ import com.ssafy.a303.backend.common.utility.s3.ImageUploader;
 import com.ssafy.a303.backend.folder.entity.FolderEntity;
 import com.ssafy.a303.backend.folder.service.FolderService;
 import com.ssafy.a303.backend.folderword.service.FolderWordService;
-import com.ssafy.a303.backend.photo.dto.CreateWordPhotoCommandDto;
-import com.ssafy.a303.backend.photo.dto.ReadObjectDetectionCommandDto;
-import com.ssafy.a303.backend.photo.dto.ReadObjectDetectionResultDto;
-import com.ssafy.a303.backend.photo.dto.UpdatePhotoWordCommandDto;
+import com.ssafy.a303.backend.photo.dto.*;
+import com.ssafy.a303.backend.photo.mapper.PhotoMapper;
 import com.ssafy.a303.backend.photo.utils.AIServerClient;
 import com.ssafy.a303.backend.user.entity.UserEntity;
 import com.ssafy.a303.backend.user.exception.UserNotFoundException;
@@ -19,10 +17,13 @@ import com.ssafy.a303.backend.user.service.UserService;
 import com.ssafy.a303.backend.word.dto.CreateWordCommandDto;
 import com.ssafy.a303.backend.word.entity.WordEntity;
 import com.ssafy.a303.backend.word.exception.WordAlreadExistException;
+import com.ssafy.a303.backend.word.exception.WordNotFoundException;
 import com.ssafy.a303.backend.word.service.WordService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -41,6 +42,7 @@ public class PhotoService {
         Long userId = command.userId();
         // TODO: replaceAll 메서드는 Fast-api return 문자열 값의 오류로, ai서버 재배포 후 삭제될 예정입니다.
         String nameEn = aiServerClient.readObjectResult(command.imageFile()).replaceAll("^\"+|\"+$", "");
+        if (nameEn.equals("glass")) nameEn = "glasses";
         String nameKo = SVLWord.translateToKorean(nameEn, "인식 불가");
         String imageKey = redisWordImageHelper.upsertImage(command.imageFile(),  userId, nameEn);
         Long wordId = wordService.getWordId(userId, nameEn);
@@ -49,7 +51,7 @@ public class PhotoService {
     }
 
     @Transactional
-    public void createWord(CreateWordPhotoCommandDto commandDto) {
+    public CreateWordResultDto createWord(CreateWordPhotoCommandDto commandDto) {
         Long userId = commandDto.userId();
         if (wordService.getWordExistence(commandDto.nameEn(), userId))
             throw new WordAlreadExistException(CommonErrorCode.RESOURCE_ALREADY_EXIST);
@@ -66,6 +68,7 @@ public class PhotoService {
         folderWordService.saveWordInFolder(wordEntity, folderEntity);
 
         redisWordImageHelper.deleteImage(userId, word);
+        return PhotoMapper.INSTANCE.toResultDto(wordEntity);
     }
 
     @Transactional
@@ -75,8 +78,21 @@ public class PhotoService {
         RedisWordImage image = redisWordImageHelper.getImage(commandDto.imageKey());
         String word = image.getNameEn();
         String imageUrl = imageUploader.upsert(userId, word, image.getContent(), image.getContentType());
+
         wordService.updateWord(wordId, userId, imageUrl);
-        redisWordImageHelper.deleteImage(userId, word);
+        for (Long folderId: commandDto.folders()) {
+            FolderEntity folderEntity = folderService.getFolderById(folderId);
+            WordEntity wordEntity = wordService.getWordByWordId(wordId);
+            folderWordService.saveWordInFolder(wordEntity, folderEntity);
+            redisWordImageHelper.deleteImage(userId, word);
+        }
+    }
+
+    public List<GetFoldersContainingWordsItemDto> getFoldersContainingWordsList(Long userId, Long wordId) {
+        if (!wordService.getWordExistence(wordId, userId))
+            throw new WordNotFoundException(CommonErrorCode.RESOURCE_NOT_FOUND);
+
+        return folderService.getFoldersContainingWordsList(userId, wordId);
     }
 
 }
