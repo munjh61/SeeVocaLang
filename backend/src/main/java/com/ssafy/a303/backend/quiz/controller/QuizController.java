@@ -36,11 +36,9 @@ public class QuizController {
     }
 
     @GetMapping("/api/v1/quiz/words")
-    public ResponseEntity<BaseResponseDto<GetTodayQuizResponseDto>> getTodayQuizItemList(
-            @AuthenticationPrincipal CustomUserDetails user
-    ) {
+    public ResponseEntity<BaseResponseDto<GetTodayQuizResponseDto>> getTodayQuizItemList() {
         LocalDateTime currentTime = LocalDate.now().atStartOfDay();
-        List<GetTodayQuizItem> itemList = todayQuizService.getTodayQuizItemList(user.getUserId(), currentTime);
+        List<GetTodayQuizItem> itemList = todayQuizService.getTodayQuizItemList(currentTime);
         GetTodayQuizResponseDto responseDto = new GetTodayQuizResponseDto(itemList);
         return ResponseEntity.ok(new BaseResponseDto<>(GET_QUIZ_LIST_STATUS_MESSAGE, responseDto));
     }
