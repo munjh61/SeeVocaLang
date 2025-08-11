@@ -81,7 +81,6 @@ public class SecurityConfig {
                         .userService(customOAuth2UserService))
                 .successHandler(oAuth2SuccessHandler)
                 .failureHandler(oAuth2FailureHandler)
-                .defaultSuccessUrl("/oauth2/success", true)
         );
 
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
