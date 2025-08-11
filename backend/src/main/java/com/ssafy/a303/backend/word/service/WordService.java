@@ -12,15 +12,11 @@ import com.ssafy.a303.backend.word.exception.WordNotFoundException;
 import com.ssafy.a303.backend.word.mapper.WordMapper;
 import com.ssafy.a303.backend.word.repository.WordRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.smartcardio.CardException;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -49,8 +45,12 @@ public class WordService {
                 .build();
     }
 
+    public boolean getWordExistence(Long wordId, Long userId) {
+        return wordRepository.existsByWordIdAndUserUserIdAndIsDeletedFalse(wordId, userId);
+    }
+
     public boolean getWordExistence(String name, Long userId) {
-        return wordRepository.existsByNameEnAndUserUserId(name, userId);
+        return wordRepository.existsByNameEnAndUserUserIdAndIsDeletedFalse(name, userId);
     }
 
     public Long getWordId(Long userId, String nameEn) {
