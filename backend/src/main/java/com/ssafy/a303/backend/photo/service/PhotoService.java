@@ -8,10 +8,7 @@ import com.ssafy.a303.backend.common.utility.s3.ImageUploader;
 import com.ssafy.a303.backend.folder.entity.FolderEntity;
 import com.ssafy.a303.backend.folder.service.FolderService;
 import com.ssafy.a303.backend.folderword.service.FolderWordService;
-import com.ssafy.a303.backend.photo.dto.CreateWordPhotoCommandDto;
-import com.ssafy.a303.backend.photo.dto.ReadObjectDetectionCommandDto;
-import com.ssafy.a303.backend.photo.dto.ReadObjectDetectionResultDto;
-import com.ssafy.a303.backend.photo.dto.UpdatePhotoWordCommandDto;
+import com.ssafy.a303.backend.photo.dto.*;
 import com.ssafy.a303.backend.photo.utils.AIServerClient;
 import com.ssafy.a303.backend.user.entity.UserEntity;
 import com.ssafy.a303.backend.user.exception.UserNotFoundException;
@@ -19,10 +16,13 @@ import com.ssafy.a303.backend.user.service.UserService;
 import com.ssafy.a303.backend.word.dto.CreateWordCommandDto;
 import com.ssafy.a303.backend.word.entity.WordEntity;
 import com.ssafy.a303.backend.word.exception.WordAlreadExistException;
+import com.ssafy.a303.backend.word.exception.WordNotFoundException;
 import com.ssafy.a303.backend.word.service.WordService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -77,6 +77,13 @@ public class PhotoService {
         String imageUrl = imageUploader.upsert(userId, word, image.getContent(), image.getContentType());
         wordService.updateWord(wordId, userId, imageUrl);
         redisWordImageHelper.deleteImage(userId, word);
+    }
+
+    public List<GetFoldersContainingWordsItemDto> getFoldersContainingWordsList(Long userId, Long wordId) {
+        if (!wordService.getWordExistence(wordId, userId))
+            throw new WordNotFoundException(CommonErrorCode.RESOURCE_NOT_FOUND);
+
+        return folderService.getFoldersContainingWordsList(userId, wordId);
     }
 
 }
