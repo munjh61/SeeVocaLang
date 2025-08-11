@@ -2,61 +2,49 @@ import { FriendInfoCard } from "../../molecules/FriendInfoCard/FriendInfoCard";
 import { Text } from "../../atoms/text/Text";
 import { useEffect, useState } from "react";
 import { friendList, type Friend } from "../../../api/FriendPageApi";
-import { getUserInfo, type UserInfo } from "../../../api/userInfo";
+
+type FriendRequestContentProps = {
+  userId?: number; // 현재 로그인한 내 ID
+};
 
 
-
-export const FriendRequestContent = () => {
+export const FriendRequestContent = ({ userId }: FriendRequestContentProps) => {
   const [friends, setFriends] = useState<Friend[]>([]);
-  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
-  useEffect(() => {
-  const fetchUserInfo = async () => {
-    try {
-      const data = await getUserInfo(); // ✅ 실제 API 호출
-      setUserInfo(data); // data에는 nickname, email, profileImage 등이 들어있음
-    } catch (error) {
-      console.error("유저 정보 불러오기 실패:", error);
-    }
-  };
-
-  fetchUserInfo();
-}, []);
 
   useEffect(() => {
-  const fetchFriends = async () => {
-    try {
-      const friends = await friendList(); // 전체 친구 목록 불러오기
+    const fetchData = async () => {
+      const data = await friendList();
 
-      if (Array.isArray(friends)) {
-        // status가 "PENDING"인 친구만 필터링
-        const pendingFriends = friends.filter(friend => friend.friend_status === "PENDING" && friend.receiver_id === userInfo?.userId);
-        setFriends(pendingFriends);
-      } else {
-        setFriends([]);
-        console.warn("friendList가 배열을 반환하지 않았습니다.");
-      }
-    } catch (error) {
-      console.error("친구 목록 불러오기 실패:", error);
-      setFriends([]);
-    }
-  };
+      // ✅ pending && receiverId === 내 userId만 필터링
+      const filtered = data.filter(
+        (f) => f.friend_status === "PENDING" && f.receiver_id === userId
+      );
 
-  fetchFriends();
-}, []);  
+      setFriends(filtered);
+    };
+
+    fetchData();
+  }, [userId]);
+
+  if (friends.length === 0) {
+    return <Text>받은 친구 요청이 없습니다.</Text>;
+  }
 
   return (
-    <div className="flex flex-col px-4 py-2 bg-gradient-to-b from-[#F7F5FE] to-[#F3FAF3] h-[calc(100vh-160px)] overflow-y-auto">
+     <div className="flex flex-col px-4 py-2 bg-gradient-to-b from-[#F7F5FE] to-[#F3FAF3] h-[calc(100vh-160px)] overflow-y-auto gap-3">
       <Text color="black" size={"lg"} weight={"bold"}>친구요청</Text>
       <Text color="gray" size={"xs"}>{friends.length}개의 요청</Text>
+      <div className="space-y-4">
       {friends.map((friend) => (
         <FriendInfoCard
-          key={friend.user_id}  // key 추가 필수
+          key={friend.user_id}
           id={friend.user_id}
           name={friend.nickname}
           profileUrl={friend.profile_url}
-          status="PENDING"
+          status={friend.friend_status}
         />
       ))}
+      </div>
     </div>
   );
 };

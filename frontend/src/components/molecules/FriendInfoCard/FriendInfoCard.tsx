@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import {useState } from "react";
 import { Button } from "../../atoms/button/Button";
 import { AddFriendButton } from "../friendButtons/AddFriendButton";
 import { DeleteFriendButton } from "../friendButtons/DeleteFriendButton";
 import { RequestFriendButton } from "../friendButtons/RequestFriendButton";
 import { acceptFriend } from "../../../api/FriendPageApi";
-import { getUserInfo, type UserInfo } from "../../../api/userInfo";
+
 
 
 
@@ -13,25 +13,24 @@ type FriendInfoProps = {
   profileUrl?: string;
   name: string;
   status: string;
-
+  userid?:number;
 };
 
-export const FriendInfoCard = ({ id, profileUrl, name, status: initialStatus }: FriendInfoProps) => {
+export const FriendInfoCard = ({ id, profileUrl, name, status: initialStatus}: FriendInfoProps) => {
 
   const [status, setStatus] = useState<string>(initialStatus);
-//   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
-//     useEffect(() => {
-//     const fetchUserInfo = async () => {
-//       try {
-//         const data = await getUserInfo(); // ✅ 실제 API 호출
-//         setUserInfo(data); // data에는 nickname, email, profileImage 등이 들어있음
-//       } catch (error) {
-//         console.error("유저 정보 불러오기 실패:", error);
-//       }
-//     };
-//     fetchUserInfo();
-// }, []);
-
+  const handleAccept = async () => {
+  try {
+    const success = await acceptFriend(id);
+    if (success) {
+      alert("친구 수락이 완료되었습니다.");
+      // setStatus("APPROVED"); // 상태 변경
+    }
+  } catch (error) {
+    console.error("친구 수락 실패:", error);
+    alert("친구 수락에 실패했어요.");
+  }
+};
 
   const renderButton = () => {
     
@@ -55,7 +54,8 @@ export const FriendInfoCard = ({ id, profileUrl, name, status: initialStatus }: 
             bgColor="green"
             size="md"
             textColor="white"
-            className="gap-1 px-3 py-1.5"      
+            className="gap-1 px-3 py-1.5"   
+            onClick={handleAccept}   
           >
             수락
           </Button>
@@ -64,7 +64,6 @@ export const FriendInfoCard = ({ id, profileUrl, name, status: initialStatus }: 
             size="md"
             textColor="white"
             className="gap-1 px-3 py-1.5"
-            onClick={() => acceptFriend(id)}
           >
             거절
           </Button>

@@ -5,9 +5,10 @@ import { friendList, type Friend } from "../../../api/FriendPageApi";
 
 type FriendSearchContentProps = {
   searchValue: string;
+  userId?: number;
 };
 
-export const FriendSearchContent = ({ searchValue }: FriendSearchContentProps) => {
+export const FriendSearchContent = ({ searchValue, userId }: FriendSearchContentProps) => {
   const [friends, setFriends] = useState<Friend[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -64,16 +65,29 @@ export const FriendSearchContent = ({ searchValue }: FriendSearchContentProps) =
             </Text>
             <Text color="gray" size="xs">다른 닉네임을 입력해보세요</Text>
           </div>
-        ) : (
-          filteredFriends.map((friend) => (  
-            <FriendInfoCard
-              key={friend.user_id}
-              id={friend.user_id}
-              name={friend.nickname}
-              profileUrl={friend.profile_url}
-              status={friend.friend_status}
-            />
-          ))
+        ) :(
+          filteredFriends.map((friend) => {
+            let statusToPass = friend.friend_status;
+
+            if (friend.friend_status === "PENDING" && userId) {
+              if (friend.receiver_id === userId) {
+                statusToPass = "PENDING"; // 내가 받은 요청
+              } else if (friend.sender_id === userId) {
+                statusToPass = "REQUEST"; // 내가 보낸 요청
+              }
+            }
+
+            return (
+              <FriendInfoCard
+                key={friend.user_id}
+                id={friend.user_id}
+                name={friend.nickname}
+                profileUrl={friend.profile_url}
+                status={statusToPass}
+                userid={userId}
+              />
+            );
+          })
         )}
       </div>
     </div>
