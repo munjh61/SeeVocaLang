@@ -32,7 +32,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private final SocialLoginService socialLoginService;
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = super.loadUser(userRequest);
 
