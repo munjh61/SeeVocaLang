@@ -1,5 +1,6 @@
 package com.ssafy.a303.backend.studyhistory.controller;
 
+import com.ssafy.a303.backend.common.dto.BaseResponseDto;
 import com.ssafy.a303.backend.common.security.CustomUserDetails;
 import com.ssafy.a303.backend.studyhistory.dto.GetStudyDaysCommandDto;
 import com.ssafy.a303.backend.studyhistory.dto.GetStudyDaysResposneDto;
@@ -17,10 +18,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StudyHistoryController {
 
+    private static final String GET_STUDY_HISTORY_SUCCESS_MSG = "학습 통계를 성공적으로 불러왔습니다.";
+
     private final StudyHistoryService studyHistoryService;
 
     @GetMapping("/api/v1/users/studyhistory")
-    public ResponseEntity<GetStudyDaysResposneDto> getStudyDays(
+    public ResponseEntity<BaseResponseDto<GetStudyDaysResposneDto>> getStudyDays(
             @AuthenticationPrincipal CustomUserDetails user,
             @RequestParam int year,
             @RequestParam int month
@@ -32,6 +35,6 @@ public class StudyHistoryController {
                 .map(date -> date.toLocalDate().toString())
                 .toList();
 
-        return ResponseEntity.ok(new GetStudyDaysResposneDto(days));
+        return ResponseEntity.ok(new BaseResponseDto<>(GET_STUDY_HISTORY_SUCCESS_MSG, new GetStudyDaysResposneDto(days)));
     }
 }
