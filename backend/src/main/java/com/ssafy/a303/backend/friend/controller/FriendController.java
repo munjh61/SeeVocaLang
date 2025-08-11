@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class FriendController {
     private final FriendService friendService;
 
-    @GetMapping("/api/v1/friends/all")
+    @GetMapping("/api/v2/friends")
     public ResponseEntity<PageResponseDto<ReadUsersWithStatusResponseDto>> getUsersWithStatus(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
         PageResponseDto<ReadUsersWithStatusResponseDto> pageResponseDto = friendService
                 .getUsersWithStatus(customUserDetails.getUserId());
