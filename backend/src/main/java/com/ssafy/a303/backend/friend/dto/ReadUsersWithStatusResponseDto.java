@@ -11,8 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class ReadUsersWithStatusResponseDto {
-    @JsonProperty("user_id")
-    private long userId;
+    @JsonProperty("sender_id")
+    private long senderId;
+    @JsonProperty("receiver_id")
+    private long receiverId;
     @JsonProperty("profile_url")
     private String profileImage;
     private String nickname;
