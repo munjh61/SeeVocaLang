@@ -6,6 +6,7 @@ import { Icon } from "../atoms/icon/Icon";
 import { InfoCardProgressBar } from "./InfoCardProgressBar";
 import { todayStudyStatus } from "../../api/TodayStudyStatusApi";
 import { userStatistics } from "../../api/UserStatisticsApi.ts";
+import { useNavigate } from "react-router-dom";
 
 type StudyStatus = { lastSolvedNumber: number; totalProblemCount: number };
 type UserStats = {
@@ -21,6 +22,7 @@ export const MainActionPanel = () => {
   const [studyStatus, setStudyStatus] = useState<StudyStatus | null>(null);
   const [userStats, setUserStats] = useState<UserStats | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const nav = useNavigate();
 
   useEffect(() => {
     let alive = true;
@@ -87,6 +89,13 @@ export const MainActionPanel = () => {
         buttonText="학습 시작하기"
         emoji="⚡️"
         className="flex-1 basis-1/4"
+        onClick={() => {
+          nav("/quiz/0", {
+            state: {
+              isTodayMission: true,
+            },
+          });
+        }}
       />
 
       {/* 진행바: 로딩이면 스켈레톤, 아니면 실제 값 */}

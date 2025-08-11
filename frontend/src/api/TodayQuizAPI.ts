@@ -20,12 +20,14 @@ export const getTodayQuiz = async () => {
   try {
     const res = await authApi.get(`${quizURL}/words`);
     console.log("오늘의 학습 단어", res.data);
-    const words: VocaCardProps[] = res.data.content.map((w: VocaCardProps) => ({
-      imageUrl: w.imageUrl,
-      nameEn: w.nameEn,
-      nameKo: w.nameKo,
-      folders: w.folders,
-    }));
+    const words: VocaCardProps[] = res.data.content.words.map(
+      (w: VocaCardProps) => ({
+        wordId: w.wordId,
+        imageUrl: w.imageUrl,
+        nameEn: w.nameEn,
+        nameKo: w.nameKo,
+      })
+    );
     return words;
   } catch (error) {
     if (error instanceof Error)
@@ -42,9 +44,9 @@ export const updateQuizStatus = async (quizNumber: number) => {
         headers: { "Content-Type": "application/json" },
       }
     );
-    console.log("오늘의 학습 진행도 요청", res.data.content);
+    console.log("오늘의 학습 진행도 저장", res.data.content);
   } catch (error) {
     if (error instanceof Error)
-      console.error("❌ 오늘의 학습 진행도 요청 실패:", error.message);
+      console.error("❌ 오늘의 학습 진행도 저장 실패:", error.message);
   }
 };

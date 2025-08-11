@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import type { VocaCardProps } from "../components/organisms/vocaCard/VocaCard";
 import { getWords } from "../api/FolderAPI";
 import { LoadingPage } from "../components/templates/loadingTemplate/LoadingTemplate";
+import { getTodayQuiz } from "../api/TodayQuizAPI";
 
 function QuizPage() {
   const nav = useNavigate();
@@ -30,8 +31,13 @@ function QuizPage() {
 
     (async () => {
       try {
-        const data = await getWords(Number(folderId));
-        if (mounted) setVocas(Array.isArray(data) ? data : []);
+        if (isTodayMission) {
+          const data = await getTodayQuiz();
+          if (mounted) setVocas(Array.isArray(data) ? data : []);
+        } else {
+          const data = await getWords(Number(folderId));
+          if (mounted) setVocas(Array.isArray(data) ? data : []);
+        }
       } catch (e) {
         if (!mounted) return;
         const msg = e instanceof Error ? e.message : "불러오기 실패";
@@ -42,7 +48,7 @@ function QuizPage() {
     return () => {
       mounted = false;
     };
-  }, [folderId]);
+  }, [folderId, isTodayMission]);
 
   if (error) {
     alert("오류가 발생했습니다.");

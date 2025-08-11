@@ -6,7 +6,6 @@ import { Quiz } from "../../organisms/quiz/Quiz";
 import { SegmentControl } from "../../molecules/segmentControl/SegmentControl";
 import { QuizHeader } from "../../organisms/quiz/QuizHeader";
 import { Div } from "../../atoms/div/Div";
-// import { getQuizStatus, getTodayQuiz } from "../../../api/TodayQuizAPI";
 
 type QuizTemplateProps = {
   name: string;
@@ -29,18 +28,15 @@ export const QuizTemplate = ({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [result, setResult] = useState(0);
 
-  // 오늘의 학습
-  // getTodayQuiz();
-  // getQuizStatus();
-
   // 초기 퀴즈 순서 준비
   useEffect(() => {
     if (isTodayMission) {
       setQuizOrder(vocaCardDatas.slice(0, questionCount));
+    } else {
+      setQuizOrder(shuffle(vocaCardDatas).slice(0, questionCount));
     }
-    setQuizOrder(shuffle(vocaCardDatas).slice(0, questionCount));
     setCurrentIndex(0);
-  }, [vocaCardDatas]);
+  }, [vocaCardDatas, isTodayMission, questionCount]);
 
   // 현재 문제가 없거나 퀴즈 완료 시 처리
   useEffect(() => {
