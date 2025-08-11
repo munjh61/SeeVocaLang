@@ -62,7 +62,17 @@ export const OnBoardingPage = () => {
             src={KaKaoIcon}
             alt="카카오 로그인"
             className="w-10 h-10 cursor-pointer"
+            // OnBoardingPage.tsx (핵심만)
             onClick={() => {
+              const finalRedirect =
+                "http://ec2-13-125-250-93.ap-northeast-2.compute.amazonaws.com/main";
+              const callback = "/oauth2/success";
+              document.cookie = `redirect_uri=${encodeURIComponent(callback)}; path=/`;
+
+              // 프론트 콜백에서 읽을 쿠키: 최종 목적지
+              document.cookie = `final_redirect=${encodeURIComponent(finalRedirect)}; path=/; SameSite=Lax`;
+
+              // 소셜 로그인 시작
               window.location.href = `${baseurl}/oauth2/authorization/kakao`;
             }}
           />
@@ -71,6 +81,14 @@ export const OnBoardingPage = () => {
             alt="네이버 로그인"
             className="w-10 h-10 cursor-pointer"
             onClick={() => {
+              const finalRedirect =
+                "http://ec2-13-125-250-93.ap-northeast-2.compute.amazonaws.com/main";
+              const callback = "/oauth2/success";
+              document.cookie = `redirect_uri=${encodeURIComponent(callback)}; path=/`;
+
+              document.cookie = `final_redirect=${encodeURIComponent(finalRedirect)}; path=/; SameSite=Lax`;
+
+              // 소셜 로그인 시작
               window.location.href = `${baseurl}/oauth2/authorization/naver`;
             }}
           />
@@ -79,6 +97,14 @@ export const OnBoardingPage = () => {
             alt="구글 로그인"
             className="w-10 h-10 cursor-pointer"
             onClick={() => {
+              const finalRedirect =
+                "http://ec2-13-125-250-93.ap-northeast-2.compute.amazonaws.com/main";
+              const callback = "/oauth2/success";
+              document.cookie = `redirect_uri=${encodeURIComponent(callback)}; path=/`;
+
+              document.cookie = `final_redirect=${encodeURIComponent(finalRedirect)}; path=/; SameSite=Lax`;
+
+              // 소셜 로그인 시작
               window.location.href = `${baseurl}/oauth2/authorization/google`;
             }}
           />
