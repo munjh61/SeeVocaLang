@@ -6,6 +6,7 @@ import { Quiz } from "../../organisms/quiz/Quiz";
 import { SegmentControl } from "../../molecules/segmentControl/SegmentControl";
 import { QuizHeader } from "../../organisms/quiz/QuizHeader";
 import { Div } from "../../atoms/div/Div";
+import { updateQuizStatus } from "../../../api/TodayQuizAPI";
 
 type QuizTemplateProps = {
   name: string;
@@ -24,12 +25,11 @@ export const QuizTemplate = ({
 }: QuizTemplateProps) => {
   const nav = useNavigate();
   const questionCount = vocaCardDatas.length;
-
   const [lang, setLang] = useState<"en" | "ko">("en");
   const [quizOrder, setQuizOrder] = useState<VocaCardProps[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [result, setResult] = useState(0);
-  const [combo, setCombo] = useState(0);
+  const [, setCombo] = useState(0);
 
   // 초기 퀴즈 순서 준비
   useEffect(() => {
@@ -39,7 +39,7 @@ export const QuizTemplate = ({
       setQuizOrder(shuffle(vocaCardDatas).slice(0, questionCount));
     }
     setCurrentIndex(startIndex ?? 0);
-  }, [vocaCardDatas, isTodayMission, questionCount]);
+  }, [vocaCardDatas, isTodayMission, questionCount, startIndex]);
 
   // 현재 문제가 없거나 퀴즈 완료 시 처리
   useEffect(() => {
@@ -53,7 +53,7 @@ export const QuizTemplate = ({
           result: result,
         },
       });
-  }, [quizOrder, currentIndex, nav]);
+  }, [currentIndex, questionCount, name, result, nav]);
 
   const current = quizOrder[currentIndex];
 
@@ -68,26 +68,31 @@ export const QuizTemplate = ({
 
   const goToNext = (isCorrect: boolean) => {
     if (isCorrect) {
-      setCombo(prev => prev + 1);
-      setResult(Math.max(result, combo));
-    } else {
-      setCombo(1);
-    }
-
-    if (isCorrect) {
+      // 콤보 수
+      let nextCombo = 0;
+      setCombo(prev => {
+        nextCombo = prev + 1;
+        setResult(prevMax => Math.max(prevMax, nextCombo));
+        return nextCombo;
+      });
+      // 오늘의 학습 진행도 저장
       if (isTodayMission) {
-        // updateTodayMission;
+        updateQuizStatus(nextCombo);
       }
+      // 다음
       setCurrentIndex(prev => prev + 1);
+    } else {
+      setCombo(0);
     }
   };
+
   return (
     <div className="flex flex-col grow p-2 gap-2">
       <QuizHeader
         name={name}
         description={description}
         index={currentIndex + 1}
-        total={quizDatas.length + 1}
+        total={questionCount}
       />
       <Div bg={"sky"} className="flex flex-col grow rounded-md p-2">
         <div className="flex justify-end">
@@ -121,7 +126,11 @@ function getQuizOptions(
   all: VocaCardProps[],
   answer: VocaCardProps
 ): { en: string; ko: string }[] {
-  const wrongChoices = shuffle(all.filter(v => v.nameEn !== answer.nameEn))
+  const unique = all
+    .filter(Boolean)
+    .filter((v, i, arr) => arr.findIndex(x => x.nameEn === v.nameEn) === i);
+
+  const wrongChoices = shuffle(unique.filter(v => v.nameEn !== answer.nameEn))
     .slice(0, 7)
     .map(v => ({ en: v.nameEn, ko: v.nameKo }));
 

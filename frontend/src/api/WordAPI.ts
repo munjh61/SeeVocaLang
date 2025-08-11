@@ -27,7 +27,7 @@ export const deleteWord = async (wordId: number) => {
     const res = await authApi.delete(`${WordURL}/${wordId}`, {
       headers: { "Content-Type": "application/json" },
     });
-    console.log(res.data.response);
+    console.log(res.data.message);
   } catch (error) {
     console.error("❌ 단어 삭제 요청 실패:", error);
     throw error;

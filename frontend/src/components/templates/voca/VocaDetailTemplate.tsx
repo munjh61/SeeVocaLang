@@ -13,11 +13,16 @@ import { deleteWord } from "../../../api/WordAPI";
 
 type VocaDetailTemplateProps = {
   folderId: number;
+  name: string;
+  description: string;
+  isTodayMission: boolean;
   vocaCardDatas?: VocaCardProps[];
 };
 
 export const VocaDetailTemplate = ({
   folderId,
+  name,
+  description,
   vocaCardDatas = [],
 }: VocaDetailTemplateProps) => {
   const navigate = useNavigate();
@@ -37,7 +42,7 @@ export const VocaDetailTemplate = ({
     }
   };
 
-  const filteredList = vocaList.filter(voca => {
+  const filteredVocaList = vocaList.filter(voca => {
     return (
       voca.nameEn.includes(searchKey) ||
       hangul.search(voca.nameKo, searchKey) > -1
@@ -65,6 +70,7 @@ export const VocaDetailTemplate = ({
             textColor: "white",
           }}
           path={`/quiz/${folderId}`}
+          state={{ name, description }}
           className="w-30"
         >
           퀴즈 풀기
@@ -86,7 +92,7 @@ export const VocaDetailTemplate = ({
           </ToggleButton>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
-          {filteredList.map(card => (
+          {filteredVocaList.map(card => (
             <VocaCard
               key={card.wordId}
               {...card}

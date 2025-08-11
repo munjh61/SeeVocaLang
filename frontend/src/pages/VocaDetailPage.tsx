@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Navigation } from "../components/organisms/nav/Navigation";
 import { VocaDetailTemplate } from "../components/templates/voca/VocaDetailTemplate";
 // import VocaCardSample from "../components/templates/voca/SampleVocaCard";
@@ -8,12 +8,27 @@ import { getWords } from "../api/FolderAPI";
 import { LoadingPage } from "../components/templates/loadingTemplate/LoadingTemplate";
 
 function VocaDetailPage() {
+  const nav = useNavigate();
+  const location = useLocation();
   const { folderId } = useParams<{ folderId: string }>();
   const [vocas, setVocas] = useState<VocaCardProps[] | null>();
   const [error, setError] = useState<string | null>(null);
 
+  const {
+    name = "오늘의 단어장",
+    description = "오늘도 화이팅",
+    isTodayMission = false,
+  } = (location.state as {
+    name?: string;
+    description?: string;
+    isTodayMission?: boolean;
+  }) ?? {};
+
   useEffect(() => {
     let mounted = true;
+    if (!isTodayMission && name == "오늘의 단어장") {
+      nav("/folder");
+    }
     (async () => {
       try {
         const vocas = await getWords(Number(folderId));
@@ -37,7 +52,13 @@ function VocaDetailPage() {
   return (
     <div className="flex flex-col h-screen">
       <div className="flex grow overflow-y-auto">
-        <VocaDetailTemplate folderId={Number(folderId)} vocaCardDatas={vocas} />
+        <VocaDetailTemplate
+          folderId={Number(folderId)}
+          vocaCardDatas={vocas}
+          name={name}
+          description={description}
+          isTodayMission={isTodayMission}
+        />
       </div>
       <Navigation loc="folder" />
     </div>

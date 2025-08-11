@@ -19,7 +19,7 @@ export const getQuizStatus = async () => {
 export const getTodayQuiz = async () => {
   try {
     const res = await authApi.get(`${quizURL}/words`);
-    console.log("오늘의 학습 단어", res.data);
+    // console.log("오늘의 학습 단어", res.data);
     const words: VocaCardProps[] = res.data.content.words.map(
       (w: VocaCardProps) => ({
         wordId: w.wordId,

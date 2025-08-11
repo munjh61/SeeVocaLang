@@ -30,7 +30,9 @@ function QuizPage() {
   useEffect(() => {
     let mounted = true;
     if (!folderId) return;
-
+    if (!isTodayMission && name == "오늘의 단어장") {
+      nav("/folder");
+    }
     (async () => {
       try {
         if (isTodayMission) {

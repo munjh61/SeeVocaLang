@@ -73,6 +73,7 @@ export const Folder = ({
             ButtonVariant={{ bgColor: "blue", textColor: "white" }}
             buttonValue={v => onLearnClick?.(Number(v))}
             path={`/folder/${folderId}`}
+            state={{ name, description }}
           >
             학습하기
           </IconButton>
