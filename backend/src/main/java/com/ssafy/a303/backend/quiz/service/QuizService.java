@@ -24,7 +24,7 @@ public class QuizService {
         return quizRepository.countByCreatedAtGreaterThanEqualAndCreatedAtLessThan(currentTime, endTime);
     }
 
-    public List<QuizEntity> getTodayQuizList(int problemNumber, LocalDateTime startTime, LocalDateTime endTime) {
-        return quizRepository.findAllByProblemNumberGreaterThanEqualAndCreatedAtBetween(problemNumber, startTime, endTime);
+    public List<QuizEntity> getTodayQuizList(LocalDateTime startTime, LocalDateTime endTime) {
+        return quizRepository.findAllByCreatedAtBetweenOrderByProblemNumberAsc(startTime, endTime);
     }
 }
