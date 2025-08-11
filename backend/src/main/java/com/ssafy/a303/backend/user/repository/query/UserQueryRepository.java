@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 public interface UserQueryRepository {
 
-    public UserMonthlyStatsDto findUserMonthlyStats(
+    UserMonthlyStatsDto findUserMonthlyStats(
             Long userId,
             LocalDateTime start,
             LocalDateTime end
