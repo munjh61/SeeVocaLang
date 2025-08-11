@@ -12,7 +12,7 @@ import crocodile from "../../../asset/png/crocodile.webp";
 const VocaCardSample: VocaCardProps[] = [
   {
     wordId: 1,
-    imgUrl: apple,
+    imageUrl: apple,
     nameEn: "apple",
     nameKo: "사과",
     folders: [
@@ -22,7 +22,7 @@ const VocaCardSample: VocaCardProps[] = [
   },
   {
     wordId: 2,
-    imgUrl: bear,
+    imageUrl: bear,
     nameEn: "bear",
     nameKo: "곰",
     folders: [
@@ -33,43 +33,43 @@ const VocaCardSample: VocaCardProps[] = [
   },
   {
     wordId: 3,
-    imgUrl: duck,
+    imageUrl: duck,
     nameEn: "duck",
     nameKo: "오리",
   },
   {
     wordId: 4,
-    imgUrl: fish,
+    imageUrl: fish,
     nameEn: "fish",
     nameKo: "물고기",
   },
   {
     wordId: 5,
-    imgUrl: fox,
+    imageUrl: fox,
     nameEn: "fox",
     nameKo: "여우",
   },
   {
     wordId: 6,
-    imgUrl: hippo,
+    imageUrl: hippo,
     nameEn: "hippo",
     nameKo: "하마",
   },
   {
     wordId: 7,
-    imgUrl: owl,
+    imageUrl: owl,
     nameEn: "owl",
     nameKo: "부엉이",
   },
   {
     wordId: 8,
-    imgUrl: squirrel,
+    imageUrl: squirrel,
     nameEn: "squirrel",
     nameKo: "다람쥐",
   },
   {
     wordId: 9,
-    imgUrl: crocodile,
+    imageUrl: crocodile,
     nameEn: "Tralalero Tralala",
     nameKo: "트랄랄레로 트랄랄라",
   },
