@@ -23,6 +23,11 @@ import java.util.List;
 public class WordService {
     private final WordRepository wordRepository;
 
+    public WordEntity getWordByWordId(Long wordId) {
+        return wordRepository.findById(wordId)
+                .orElseThrow(() -> new WordNotFoundException(CommonErrorCode.RESOURCE_NOT_FOUND));
+    }
+
     @Transactional(readOnly = true)
     public PageResponseDto<ReadWordResponseDto> getWords(ReadWordCommandDto readWordCommandDto) {
         List<ReadWordResponseDto> words = wordRepository.getWords(readWordCommandDto.getUserId());
@@ -55,7 +60,7 @@ public class WordService {
 
     public Long getWordId(Long userId, String nameEn) {
         return wordRepository
-                .findByUserUserIdAndNameEn(userId, nameEn)
+                .findByUserUserIdAndNameEnAndIsDeletedFalse(userId, nameEn)
                 .map(WordEntity::getWordId)
                 .orElse(null);
     }
@@ -84,7 +89,7 @@ public class WordService {
 
     @Transactional(readOnly = true)
     public CardGameResponseDto getCardGameWords(Long userId){
-        List<WordEntity> words = wordRepository.findByUserUserId(userId);
+        List<WordEntity> words = wordRepository.findByUserUserIdAndIsDeletedFalse(userId);
 
         if(words.size() < 4) {
             throw new CardGameException(CardGameErrorCode.NOT_ENOUGH_WORDS);

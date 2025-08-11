@@ -16,9 +16,9 @@ public interface WordRepository extends JpaRepository<WordEntity, Long>, WordQue
 
     boolean existsByWordIdAndUserUserIdAndIsDeletedFalse(long wordId, long userId);
 
-    Optional<WordEntity> findByUserUserIdAndNameEn(long userId, String nameEn);
+    Optional<WordEntity> findByUserUserIdAndNameEnAndIsDeletedFalse(long userId, String nameEn);
 
-    List<WordEntity> findByUserUserId(Long userId);
+    List<WordEntity> findByUserUserIdAndIsDeletedFalse(Long userId);
 
     long user(UserEntity user);
 }
