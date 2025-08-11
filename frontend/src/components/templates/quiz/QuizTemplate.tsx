@@ -12,6 +12,7 @@ type QuizTemplateProps = {
   description: string;
   vocaCardDatas: VocaCardProps[];
   isTodayMission: boolean;
+  startIndex: number;
 };
 
 export const QuizTemplate = ({
@@ -19,6 +20,7 @@ export const QuizTemplate = ({
   name,
   description,
   isTodayMission,
+  startIndex,
 }: QuizTemplateProps) => {
   const nav = useNavigate();
   const questionCount = vocaCardDatas.length;
@@ -27,6 +29,7 @@ export const QuizTemplate = ({
   const [quizOrder, setQuizOrder] = useState<VocaCardProps[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [result, setResult] = useState(0);
+  const [combo, setCombo] = useState(0);
 
   // 초기 퀴즈 순서 준비
   useEffect(() => {
@@ -35,7 +38,7 @@ export const QuizTemplate = ({
     } else {
       setQuizOrder(shuffle(vocaCardDatas).slice(0, questionCount));
     }
-    setCurrentIndex(0);
+    setCurrentIndex(startIndex ?? 0);
   }, [vocaCardDatas, isTodayMission, questionCount]);
 
   // 현재 문제가 없거나 퀴즈 완료 시 처리
@@ -63,11 +66,20 @@ export const QuizTemplate = ({
   // 조건부 렌더링은 아래에서 처리
   if (!current || quizDatas.length === 0) return null;
 
-  const goToNext = () => {
-    if (isTodayMission) {
-      // updateTodayMission;
+  const goToNext = (isCorrect: boolean) => {
+    if (isCorrect) {
+      setCombo(prev => prev + 1);
+      setResult(Math.max(result, combo));
+    } else {
+      setCombo(1);
     }
-    setCurrentIndex(prev => prev + 1);
+
+    if (isCorrect) {
+      if (isTodayMission) {
+        // updateTodayMission;
+      }
+      setCurrentIndex(prev => prev + 1);
+    }
   };
   return (
     <div className="flex flex-col grow p-2 gap-2">
@@ -97,7 +109,6 @@ export const QuizTemplate = ({
           quizDatas={quizDatas}
           lang={lang}
           onClick={goToNext}
-          result={v => setResult(v)}
           classname="grow"
         />
       </Div>

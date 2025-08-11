@@ -93,6 +93,7 @@ export const MainActionPanel = () => {
           nav("/quiz/0", {
             state: {
               isTodayMission: true,
+              startIndex: studyStatus?.lastSolvedNumber ?? 0,
             },
           });
         }}

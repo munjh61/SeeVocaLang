@@ -19,10 +19,12 @@ function QuizPage() {
     name = "오늘의 학습",
     description = "오늘도 화이팅",
     isTodayMission = false,
+    startIndex = 0,
   } = (location.state as {
     name?: string;
     description?: string;
     isTodayMission?: boolean;
+    startIndex?: number;
   }) ?? {};
 
   useEffect(() => {
@@ -65,6 +67,7 @@ function QuizPage() {
           description={description}
           vocaCardDatas={vocas}
           isTodayMission={isTodayMission}
+          startIndex={startIndex}
         />
       </div>
       <Navigation loc="folder" />
