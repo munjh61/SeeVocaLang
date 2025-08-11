@@ -102,6 +102,11 @@ jwt:
   access-minutes: 3m
   refresh-days: 14d
 
+auth:
+  redirect:
+    success: ENC(pTmVhoFl1LGuQRV4u4FpCQXqlclfL/ny9zF2/2VqQahqwP1eNgybLnX+5isP9ZQ86thyuVtZTmamPWGQl/sVai6WaXDT2L7L)
+    failure: ENC(pTmVhoFl1LGuQRV4u4FpCQXqlclfL/ny9zF2/2VqQahqwP1eNgybLnX+5isP9ZQ86thyuVtZTmamPWGQl/sVai6WaXDT2L7L)
+
 logging:
   level:
     org.springframework.security.oauth2: DEBUG
@@ -114,3 +119,12 @@ server:
 
   ai:
     url: ENC(0FnCnLQ3VVYBWJWsF5Q3MM87EuqNtAe0D8mO0N1Dl9qtnhvx1NOeXg==)
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: always

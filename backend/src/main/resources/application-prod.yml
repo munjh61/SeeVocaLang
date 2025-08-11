@@ -67,6 +67,11 @@ jwt:
   access-minutes: 3m
   refresh-days: 14d
 
+auth:
+  redirect:
+    success: ENC(pTmVhoFl1LGuQRV4u4FpCQXqlclfL/ny9zF2/2VqQahqwP1eNgybLnX+5isP9ZQ86thyuVtZTmamPWGQl/sVai6WaXDT2L7L)
+    failure: ENC(pTmVhoFl1LGuQRV4u4FpCQXqlclfL/ny9zF2/2VqQahqwP1eNgybLnX+5isP9ZQ86thyuVtZTmamPWGQl/sVai6WaXDT2L7L)
+
 logging:
   level:
     org.springframework.security.oauth2: DEBUG
