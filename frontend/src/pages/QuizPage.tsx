@@ -1,4 +1,4 @@
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Navigation } from "../components/organisms/nav/Navigation";
 import { QuizTemplate } from "../components/templates/quiz/QuizTemplate";
 import { useEffect, useState } from "react";
@@ -7,16 +7,16 @@ import { getWords } from "../api/FolderAPI";
 import { LoadingPage } from "../components/templates/loadingTemplate/LoadingTemplate";
 
 function QuizPage() {
+  const nav = useNavigate();
   const { folderId } = useParams<{ folderId: string }>();
-
   const [vocas, setVocas] = useState<VocaCardProps[]>([]);
   const [error, setError] = useState<string | null>(null);
 
-  // location.state가 없을 수도 있으니 기본값
   const location = useLocation();
+  // location.state가 없을 수도 있으니 기본값
   const {
-    name = "",
-    description = "",
+    name = "오늘의 학습",
+    description = "오늘도 화이팅",
     isTodayMission = false,
   } = (location.state as {
     name?: string;
@@ -44,7 +44,11 @@ function QuizPage() {
     };
   }, [folderId]);
 
-  if (error) return <div>에러: {error}</div>;
+  if (error) {
+    alert("오류가 발생했습니다.");
+    nav(-1);
+  }
+
   if (!vocas) return <LoadingPage />;
 
   return (

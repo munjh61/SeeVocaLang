@@ -30,7 +30,8 @@ export const VocaDetailTemplate = ({
 
   const searchFunction = (v: string) => setSearchKey(v);
   const deleteFunction = async (wordId: number) => {
-    if (wordId != null) {
+    console.log("삭제할 wordId:", wordId);
+    if (wordId) {
       await deleteWord(wordId);
       setVocaList(prev => prev.filter(card => card.wordId !== wordId));
     }
@@ -69,7 +70,7 @@ export const VocaDetailTemplate = ({
           퀴즈 풀기
         </IconButton>
       </div>
-      <Div bg={"sky"} className="flex flex-col gap-4 p-4 grow">
+      <Div bg={"sky"} className="flex flex-col gap-4 p-4 grow w-full">
         <div className="flex flex-row gap-2">
           <ToggleButton
             selected={blurEn}

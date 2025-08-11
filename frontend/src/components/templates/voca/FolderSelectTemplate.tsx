@@ -16,9 +16,6 @@ import {
 } from "../../../api/FolderAPI";
 import { Div } from "../../atoms/div/Div";
 
-/** 🔑 props는 '배열' 자체로 받는다. (중요!)
- *  getfolders가 VocafolderProps[] 를 반환한다는 가정 하에 동일하게 맞춤
- */
 type FolderSelectTemplateProps = {
   vocafolderDatas: FolderProps[]; // ← 배열 타입 (선택 아님)
 };
@@ -35,10 +32,9 @@ export const FolderSelectTemplate = ({
   const [searchKey, setSearchKey] = useState("");
   const navigate = useNavigate();
 
-  /** 🧠 내부 상태: prop으로 받은 목록을 로컬 편집하기 위해 별도 상태로 보관 */
   const [vocaList, setVocaList] = useState<FolderProps[]>(vocafolderDatas);
 
-  /** 📌 prop 변경 시 내부 상태 동기화 (API 재호출 등으로 상위에서 배열이 바뀔 수 있음) */
+  /** prop 변경 시 내부 상태 동기화 (API 재호출 등으로 상위에서 배열이 바뀔 수 있음) */
   useEffect(() => {
     setVocaList(vocafolderDatas);
   }, [vocafolderDatas]);

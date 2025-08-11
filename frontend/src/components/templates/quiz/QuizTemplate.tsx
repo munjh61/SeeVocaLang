@@ -19,7 +19,7 @@ export const QuizTemplate = ({
   vocaCardDatas,
   name,
   description,
-  // isTodayMission,
+  isTodayMission,
 }: QuizTemplateProps) => {
   const nav = useNavigate();
   const questionCount = vocaCardDatas.length;
@@ -35,6 +35,9 @@ export const QuizTemplate = ({
 
   // 초기 퀴즈 순서 준비
   useEffect(() => {
+    if (isTodayMission) {
+      setQuizOrder(vocaCardDatas.slice(0, questionCount));
+    }
     setQuizOrder(shuffle(vocaCardDatas).slice(0, questionCount));
     setCurrentIndex(0);
   }, [vocaCardDatas]);
@@ -64,8 +67,12 @@ export const QuizTemplate = ({
   // 조건부 렌더링은 아래에서 처리
   if (!current || quizDatas.length === 0) return null;
 
-  const goToNext = () => setCurrentIndex(prev => prev + 1);
-
+  const goToNext = () => {
+    if (isTodayMission) {
+      // updateTodayMission;
+    }
+    setCurrentIndex(prev => prev + 1);
+  };
   return (
     <div className="flex flex-col grow p-2 gap-2">
       <QuizHeader

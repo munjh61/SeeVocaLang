@@ -31,7 +31,6 @@ export const Folder = ({
   onToggleFavorite,
 }: FolderProps) => {
   const [isFav, setIsFav] = useState(favorite);
-  // console.log(folderId, thumbnailUrl, name, description, favorite);
   return (
     <div
       className="rounded-md shadow-md w-full p-3 inline-flex flex-col gap-2 bg-white select-none"
