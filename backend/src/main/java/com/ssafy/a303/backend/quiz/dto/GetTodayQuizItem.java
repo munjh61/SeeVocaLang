@@ -7,7 +7,7 @@ public record GetTodayQuizItem(
     String imageUrl,
     String nameEn,
     String nameKo,
-    String audioUrl
+    int problemNumber
 ) {
     public static GetTodayQuizItem of(QuizEntity quiz) {
         var w = quiz.getWord();
@@ -16,7 +16,7 @@ public record GetTodayQuizItem(
                 w.getImageUrl(),
                 w.getNameEn(),
                 w.getNameKo(),
-                w.getAudioUrl()
+                quiz.getProblemNumber()
         );
     }
 }
