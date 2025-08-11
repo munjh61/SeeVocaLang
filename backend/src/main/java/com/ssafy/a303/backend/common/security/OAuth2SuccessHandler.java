@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -29,7 +30,9 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
     private final JwtProperties jwtProperties;
     private final CookieUtil cookieUtil;
 
-    private static final String DEFAULT_REDIRECT_URI = "http://ec2-13-125-250-93.ap-northeast-2.compute.amazonaws.com";
+    @Value("${auth.redirect.success}")
+    private String DEFAULT_REDIRECT_URI;
+
     private static final String REDIRECT_URI_COOKIE_NAME = "redirect_uri";
 
     // 인증 성공 했엉 그러면 이제

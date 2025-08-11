@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
@@ -24,7 +25,8 @@ import java.util.stream.Collectors;
 public class OAuth2FailureHandler implements AuthenticationFailureHandler {
 
     private static final String REDIRECT_URI_COOKIE_NAME = "redirect_uri";
-    private static final String DEFAULT_REDIRECT_URI = "http://ec2-13-125-250-93.ap-northeast-2.compute.amazonaws.com";
+    @Value("${auth.redirect.failure}")
+    private static String DEFAULT_REDIRECT_URI;
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
