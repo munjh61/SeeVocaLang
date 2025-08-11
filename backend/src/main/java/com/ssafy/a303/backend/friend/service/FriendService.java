@@ -3,6 +3,7 @@ package com.ssafy.a303.backend.friend.service;
 import com.ssafy.a303.backend.common.dto.BaseResponseDto;
 import com.ssafy.a303.backend.common.dto.PageResponseDto;
 import com.ssafy.a303.backend.friend.dto.ReadFriendResponseDto;
+import com.ssafy.a303.backend.friend.dto.ReadUsersWithStatusResponseDto;
 import com.ssafy.a303.backend.friend.entity.FriendEntity;
 import com.ssafy.a303.backend.friend.entity.FriendStatus;
 import com.ssafy.a303.backend.friend.exception.AlreadyReceivedRequest;
@@ -27,6 +28,15 @@ import java.util.stream.Collectors;
 public class FriendService {
     private final FriendRepository friendRepository;
     private final UserService userService;
+
+    @Transactional(readOnly = true)
+    public PageResponseDto<ReadUsersWithStatusResponseDto> getUsersWithStatus(long userId){
+        List<ReadUsersWithStatusResponseDto> users = friendRepository.getUsersWithStatus(userId);
+        return PageResponseDto.<ReadUsersWithStatusResponseDto>builder()
+                .content(users)
+                .message("성공적으로 유저 목록을 불러왔습니다.")
+                .build();
+    }
 
     @Transactional(readOnly = true)
     public PageResponseDto<ReadFriendResponseDto> getPendingFriends(long userId, FriendStatus friendStatus) {

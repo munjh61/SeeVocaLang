@@ -10,10 +10,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ReadFriendResponseDto {
+public class ReadUsersWithStatusResponseDto {
     @JsonProperty("user_id")
     private long userId;
     @JsonProperty("profile_url")
     private String profileImage;
     private String nickname;
+    @JsonProperty("is_friend")
+    private String friendStatus;
 }
