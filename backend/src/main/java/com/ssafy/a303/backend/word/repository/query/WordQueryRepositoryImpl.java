@@ -39,7 +39,7 @@ public class WordQueryRepositoryImpl extends QuerydslRepositorySupport implement
                         )
                         .join(folderWord.word, word)
                         .join(folderWord.folder, folder)
-                        .where(word.user.userId.eq(userId))
+                        .where(word.user.userId.eq(userId).and(word.isDeleted.eq(false)))
                         .fetch();
 
         Map<Long, ReadWordResponseDto> resultMap = new LinkedHashMap<>();

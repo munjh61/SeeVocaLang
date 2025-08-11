@@ -15,6 +15,8 @@ public class ReadUsersWithStatusResponseDto {
     private long senderId;
     @JsonProperty("receiver_id")
     private long receiverId;
+    @JsonProperty("user_id")
+    private long userId;
     @JsonProperty("profile_url")
     private String profileImage;
     private String nickname;
