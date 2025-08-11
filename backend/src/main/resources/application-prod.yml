@@ -53,6 +53,11 @@ spring:
           starttls:
             enable: true
 
+  servlet:
+    multipart:
+      max-file-size: 15MB
+      max-request-size: 15MB
+
 email:
   verification:
     ttl: 5m
@@ -67,11 +72,6 @@ logging:
     org.springframework.security.oauth2: DEBUG
     org.springframework.security: DEBUG
     com.ssafy.a303.backend: DEBUG
-
-  servlet:
-    multipart:
-      max-file-size: 15MB
-      max-request-size: 15MB
 
 server:
   tomcat:
