@@ -42,6 +42,7 @@ public class PhotoService {
         Long userId = command.userId();
         // TODO: replaceAll 메서드는 Fast-api return 문자열 값의 오류로, ai서버 재배포 후 삭제될 예정입니다.
         String nameEn = aiServerClient.readObjectResult(command.imageFile()).replaceAll("^\"+|\"+$", "");
+        if (nameEn.equals("glass")) nameEn = "glasses";
         String nameKo = SVLWord.translateToKorean(nameEn, "인식 불가");
         String imageKey = redisWordImageHelper.upsertImage(command.imageFile(),  userId, nameEn);
         Long wordId = wordService.getWordId(userId, nameEn);
@@ -77,8 +78,14 @@ public class PhotoService {
         RedisWordImage image = redisWordImageHelper.getImage(commandDto.imageKey());
         String word = image.getNameEn();
         String imageUrl = imageUploader.upsert(userId, word, image.getContent(), image.getContentType());
+
         wordService.updateWord(wordId, userId, imageUrl);
-        redisWordImageHelper.deleteImage(userId, word);
+        for (Long folderId: commandDto.folders()) {
+            FolderEntity folderEntity = folderService.getFolderById(folderId);
+            WordEntity wordEntity = wordService.getWordByWordId(wordId);
+            folderWordService.saveWordInFolder(wordEntity, folderEntity);
+            redisWordImageHelper.deleteImage(userId, word);
+        }
     }
 
     public List<GetFoldersContainingWordsItemDto> getFoldersContainingWordsList(Long userId, Long wordId) {

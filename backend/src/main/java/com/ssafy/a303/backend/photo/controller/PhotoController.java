@@ -53,7 +53,9 @@ public class PhotoController {
             @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) {
         Long userId = customUserDetails.getUserId();
-        photoService.updateWord(new UpdatePhotoWordCommandDto(userId, wordId, requestDto.imageKey()));
+        List<Long> folders = requestDto.folders();
+        UpdatePhotoWordCommandDto commandDto = new UpdatePhotoWordCommandDto(userId, wordId, requestDto.imageKey(), folders);
+        photoService.updateWord(commandDto);
         return BaseResponseDto.<Void>builder()
                 .message(UPDATE_WORD_SUCCESS_MESSAGE)
                 .build();

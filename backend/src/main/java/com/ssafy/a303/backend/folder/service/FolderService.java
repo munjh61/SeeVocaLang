@@ -96,7 +96,7 @@ public class FolderService {
     }
 
     public FolderEntity getFolderById(long folderId) {
-        return folderRepository.findById(folderId)
+        return folderRepository.findByFolderIdAndIsDeletedFalse(folderId)
                 .orElseThrow(() -> new FolderNotFoundException(CommonErrorCode.RESOURCE_NOT_FOUND));
     }
 
