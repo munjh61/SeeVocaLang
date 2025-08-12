@@ -1,5 +1,7 @@
 package com.ssafy.a303.backend.sociallogin.service;
 
+import com.ssafy.a303.backend.folder.dto.CreateFolderCommandDto;
+import com.ssafy.a303.backend.folder.service.FolderService;
 import com.ssafy.a303.backend.sociallogin.entity.Provider;
 import com.ssafy.a303.backend.sociallogin.entity.SocialLoginEntity;
 import com.ssafy.a303.backend.sociallogin.exception.SocialLoginErrorCode;
@@ -26,7 +28,7 @@ public class SocialLoginService {
 
     private final SocialLoginRepository socialLoginRepository;
     private final UserRepository userRepository;
-    private final AuthService authService;
+    private final FolderService folderService;
 
     // 소셜 로그인 정보로 유저 조회
     public Optional<UserEntity> findUserBySocialLogin(Provider provider, String socialUid){
@@ -50,10 +52,21 @@ public class SocialLoginService {
         registerSocialLogin(user, provider, socialUid);
 
         // 4. 기본 단어장 생성 (AuthService의 메서드 재사용)
-        authService.createDefaultFolder(user.getUserId());
+        createDefaultFolder(user.getUserId());
 
         log.info("신규 유저 가입 완료: userId={}, nickname={}, provider={}", user.getUserId(), user.getNickname(), provider);
         return user;
+    }
+
+
+    public void createDefaultFolder(Long userId) {
+        CreateFolderCommandDto defaultFolder = CreateFolderCommandDto.builder()
+                .userId(userId)
+                .name("기본 단어장")
+                .description("기본 단어장입니다")
+                .build();
+
+        folderService.createFolder(defaultFolder);
     }
 
     private String generateUniqueNickname(String baseNickname) {
