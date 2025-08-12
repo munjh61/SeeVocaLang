@@ -81,7 +81,7 @@ export const FileUploadModalFlow = ({ isOpen, onClose }: Props) => {
           file && (
             <UploadStep2
               file={file}
-              onBack={resetAll} // ✅ “다시 선택”도 같은 리셋 함수 사용
+              onBack={resetAll}
               onAnalyze={handleAnalyze}
               isAnalyzing={busy}
               result={analysisResult}
@@ -96,7 +96,9 @@ export const FileUploadModalFlow = ({ isOpen, onClose }: Props) => {
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      {renderStep()}
+      <div className="max-h-[85vh] md:max-h-[75vh] xl:max-h-[70vh] overflow-y-auto pr-1">
+        {renderStep()}
+      </div>{" "}
     </Modal>
   );
 };
