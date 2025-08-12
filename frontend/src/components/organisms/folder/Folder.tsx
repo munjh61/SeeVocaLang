@@ -31,7 +31,6 @@ export const Folder = ({
   onToggleFavorite,
 }: FolderProps) => {
   const [isFav, setIsFav] = useState(favorite);
-  // console.log(folderId, thumbnailUrl, name, description, favorite);
   return (
     <div
       className="rounded-md shadow-md w-full p-3 inline-flex flex-col gap-2 bg-white select-none"
@@ -74,6 +73,7 @@ export const Folder = ({
             ButtonVariant={{ bgColor: "blue", textColor: "white" }}
             buttonValue={v => onLearnClick?.(Number(v))}
             path={`/folder/${folderId}`}
+            state={{ name, description }}
           >
             학습하기
           </IconButton>

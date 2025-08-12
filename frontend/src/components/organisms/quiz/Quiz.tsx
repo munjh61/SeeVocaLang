@@ -10,8 +10,7 @@ export type QuizProps = {
   answerKo: string;
   answerEn: string;
   answerImg: string;
-  onClick: () => void;
-  result: (maxCombo: number) => void;
+  onClick: (combo: boolean) => void;
   classname?: string;
 };
 
@@ -22,14 +21,11 @@ export const Quiz = ({
   answerEn,
   answerKo,
   onClick,
-  result,
   classname,
 }: QuizProps) => {
   const [toggleC, setToggleC] = useState(false);
   const [toggleW, setToggleW] = useState(false);
   const [timer, setTimer] = useState(true);
-  const [, setCombo] = useState(0);
-  const [, setMaxCombo] = useState(0);
   const feedbackClass =
     "w-64 h-64 z-10 absolute top-1/3 left-1/2 -translate-x-1/2 animate-fade";
 
@@ -37,30 +33,24 @@ export const Quiz = ({
     if (timer) {
       setTimer(false);
       if (v) {
+        // 동그라미 표시 함수
         setToggleW(false);
         setToggleC(true);
-        setCombo(prev => {
-          const newCombo = prev + 1;
-          setMaxCombo(prevMax => {
-            const newMax = Math.max(prevMax, newCombo);
-            result(newMax); // 여기서 부모에게 전달
-            return newMax;
-          });
-          return newCombo;
-        });
-
+        // 동그라미 표시 종료 함수
         setTimeout(() => {
           setToggleC(false);
           setTimer(true);
-          onClick?.();
+          onClick?.(true);
         }, 1500);
       } else {
+        // 가위 표시 함수
         setToggleC(false);
         setToggleW(true);
-        setCombo(0);
+        // 가위 표시 종료 함수
         setTimeout(() => {
           setToggleW(false);
           setTimer(true);
+          onClick?.(false);
         }, 1500);
       }
     }

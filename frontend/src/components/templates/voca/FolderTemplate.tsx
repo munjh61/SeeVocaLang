@@ -15,17 +15,20 @@ import {
   updatefolder,
 } from "../../../api/FolderAPI";
 import { Div } from "../../atoms/div/Div";
+import {
+  VocaCard,
+  type VocaCardProps,
+} from "../../organisms/vocaCard/VocaCard";
 
-/** 🔑 props는 '배열' 자체로 받는다. (중요!)
- *  getfolders가 VocafolderProps[] 를 반환한다는 가정 하에 동일하게 맞춤
- */
-type FolderSelectTemplateProps = {
-  vocafolderDatas: FolderProps[]; // ← 배열 타입 (선택 아님)
+type FolderTemplateProps = {
+  folderDatas: FolderProps[]; // ← 배열 타입 (선택 아님)
+  vocaDatas: VocaCardProps[];
 };
 
-export const FolderSelectTemplate = ({
-  vocafolderDatas,
-}: FolderSelectTemplateProps) => {
+export const FolderTemplate = ({
+  folderDatas,
+  vocaDatas,
+}: FolderTemplateProps) => {
   const [modalType, setModalType] = useState<"create" | "update" | null>(null);
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [title, setTitle] = useState("");
@@ -35,13 +38,13 @@ export const FolderSelectTemplate = ({
   const [searchKey, setSearchKey] = useState("");
   const navigate = useNavigate();
 
-  /** 🧠 내부 상태: prop으로 받은 목록을 로컬 편집하기 위해 별도 상태로 보관 */
-  const [vocaList, setVocaList] = useState<FolderProps[]>(vocafolderDatas);
+  const [folderList, setfolderList] = useState<FolderProps[]>(folderDatas);
+  const [vocaList, setVocaList] = useState<VocaCardProps[]>(vocaDatas);
 
-  /** 📌 prop 변경 시 내부 상태 동기화 (API 재호출 등으로 상위에서 배열이 바뀔 수 있음) */
+  /** prop 변경 시 내부 상태 동기화 (API 재호출 등으로 상위에서 배열이 바뀔 수 있음) */
   useEffect(() => {
-    setVocaList(vocafolderDatas);
-  }, [vocafolderDatas]);
+    setfolderList(folderDatas);
+  }, [folderDatas]);
 
   // 모달 공통 핸들러
   const closeModal = () => {
@@ -52,7 +55,7 @@ export const FolderSelectTemplate = ({
   };
 
   const openEditModal = (folderId: number) => {
-    const selected = vocaList.find(item => item.folderId === folderId);
+    const selected = folderList.find(item => item.folderId === folderId);
     if (!selected) return;
     setTitle(selected.name);
     setSubtitle(selected.description);
@@ -81,12 +84,12 @@ export const FolderSelectTemplate = ({
           thumbnailUrl: created.thumbnailUrl ?? null,
         };
         // 3) 목록에 반영(낙관적 업데이트)
-        setVocaList(prev => [...prev, newItem]);
+        setfolderList(prev => [...prev, newItem]);
       } else if (modalType === "update" && selectedId !== null) {
         // 1) 서버에 수정 요청
         await updatefolder(selectedId, title, subtitle);
         // 2) 목록에 반영(낙관적 업데이트)
-        setVocaList(prev =>
+        setfolderList(prev =>
           prev.map(item =>
             item.folderId === selectedId
               ? { ...item, name: title, description: subtitle }
@@ -104,7 +107,14 @@ export const FolderSelectTemplate = ({
   const deleteFunction = async () => {
     if (selectedId !== null) {
       await deletefolder(selectedId);
-      setVocaList(prev => prev.filter(item => item.folderId !== selectedId));
+      setfolderList(prev => prev.filter(item => item.folderId !== selectedId));
+      setVocaList(prev =>
+        prev.filter(card =>
+          card.folders?.map(f => {
+            return f.id !== selectedId;
+          })
+        )
+      );
       closeModal();
     }
   };
@@ -121,9 +131,15 @@ export const FolderSelectTemplate = ({
   };
 
   // 검색/필터링
-  const filteredList = vocaList.filter(voca => {
+  const filteredFolderList = folderList.filter(voca => {
     const isMatched = hangul.search(voca.name, searchKey) > -1;
     return isFavoriteOnly ? voca.favorite && isMatched : isMatched;
+  });
+  const filteredVocaList = vocaList.filter(voca => {
+    return (
+      voca.nameEn.includes(searchKey) ||
+      hangul.search(voca.nameKo, searchKey) > -1
+    );
   });
 
   // 퀴즈 이동 모달
@@ -149,7 +165,7 @@ export const FolderSelectTemplate = ({
       <QuizFolderSelectModal
         isOpen={quizModalOpen}
         onClose={() => setQuizModalOpen(false)}
-        vocaList={vocaList}
+        folderList={folderList}
       />
 
       {/* 상단 툴바 */}
@@ -188,22 +204,37 @@ export const FolderSelectTemplate = ({
           onClickCreate={openCreateModal}
           onClickFavorite={() => setIsFavoriteOnly(prev => !prev)}
         />
-
-        {/* 카드 목록 */}
-        <div
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3
+        {/* 단어 카드 목록*/}
+        {!isToggle && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
+            {filteredVocaList.map(card => (
+              <VocaCard
+                key={card.wordId}
+                nameEn={card.nameEn}
+                nameKo={card.nameKo}
+                imageUrl={card.imageUrl}
+                folders={card.folders}
+              />
+            ))}
+          </div>
+        )}
+        {/* 단어장 카드 목록 */}
+        {isToggle && (
+          <div
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3
                           lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4"
-        >
-          {filteredList.map(data => (
-            <Folder
-              key={data.folderId}
-              {...data}
-              // onLearnClick={handleLearnClick}
-              onEditClick={openEditModal}
-              onToggleFavorite={toggleFavorite}
-            />
-          ))}
-        </div>
+          >
+            {filteredFolderList.map(data => (
+              <Folder
+                key={data.folderId}
+                {...data}
+                // onLearnClick={handleLearnClick}
+                onEditClick={openEditModal}
+                onToggleFavorite={toggleFavorite}
+              />
+            ))}
+          </div>
+        )}
       </Div>
     </Div>
   );

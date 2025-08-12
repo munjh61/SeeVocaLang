@@ -9,7 +9,6 @@ const foldersURL = `${BASE_URL}/api/v1/folders`;
 export const getfolders = async (userId: number) => {
   try {
     const response = await authApi.get(`${foldersURL}/${userId}`);
-    console.log(response.data.content);
     const folders: FolderProps[] = response.data.content.map(
       (b: FolderProps) => ({
         folderId: b.folderId,
@@ -105,6 +104,7 @@ export const getWords = async (folderId: number) => {
   try {
     const res = await authApi.get(`${foldersURL}/${folderId}/words`);
     const words: VocaCardProps[] = res.data.content.map((w: VocaCardProps) => ({
+      wordId: w.wordId,
       imageUrl: w.imageUrl,
       nameEn: w.nameEn,
       nameKo: w.nameKo,

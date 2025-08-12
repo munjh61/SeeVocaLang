@@ -13,11 +13,16 @@ import { deleteWord } from "../../../api/WordAPI";
 
 type VocaDetailTemplateProps = {
   folderId: number;
+  name: string;
+  description: string;
+  isTodayMission: boolean;
   vocaCardDatas?: VocaCardProps[];
 };
 
 export const VocaDetailTemplate = ({
   folderId,
+  name,
+  description,
   vocaCardDatas = [],
 }: VocaDetailTemplateProps) => {
   const navigate = useNavigate();
@@ -30,13 +35,14 @@ export const VocaDetailTemplate = ({
 
   const searchFunction = (v: string) => setSearchKey(v);
   const deleteFunction = async (wordId: number) => {
-    if (wordId != null) {
+    console.log("삭제할 wordId:", wordId);
+    if (wordId) {
       await deleteWord(wordId);
       setVocaList(prev => prev.filter(card => card.wordId !== wordId));
     }
   };
 
-  const filteredList = vocaList.filter(voca => {
+  const filteredVocaList = vocaList.filter(voca => {
     return (
       voca.nameEn.includes(searchKey) ||
       hangul.search(voca.nameKo, searchKey) > -1
@@ -64,12 +70,13 @@ export const VocaDetailTemplate = ({
             textColor: "white",
           }}
           path={`/quiz/${folderId}`}
+          state={{ name, description }}
           className="w-30"
         >
           퀴즈 풀기
         </IconButton>
       </div>
-      <Div bg={"sky"} className="flex flex-col gap-4 p-4 grow">
+      <Div bg={"sky"} className="flex flex-col gap-4 p-4 grow w-full">
         <div className="flex flex-row gap-2">
           <ToggleButton
             selected={blurEn}
@@ -85,7 +92,7 @@ export const VocaDetailTemplate = ({
           </ToggleButton>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
-          {filteredList.map(card => (
+          {filteredVocaList.map(card => (
             <VocaCard
               key={card.wordId}
               {...card}

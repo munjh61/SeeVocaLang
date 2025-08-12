@@ -8,13 +8,13 @@ import { Div } from "../../atoms/div/Div";
 type QuizSelectModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  vocaList: FolderProps[];
+  folderList: FolderProps[];
 };
 
 export const QuizFolderSelectModal = ({
   isOpen,
   onClose,
-  vocaList,
+  folderList,
 }: QuizSelectModalProps) => {
   const nav = useNavigate();
 
@@ -23,7 +23,7 @@ export const QuizFolderSelectModal = ({
       <div className="flex flex-col gap-6">
         <Text>퀴즈를 풀 단어장을 선택하세요</Text>
         <Div align={"center"}>
-          {vocaList.map(folder => (
+          {folderList.map(folder => (
             <IconButton
               key={folder.folderId}
               ButtonVariant={{

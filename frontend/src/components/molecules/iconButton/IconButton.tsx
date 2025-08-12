@@ -14,6 +14,7 @@ type IconButtonProps = {
   children?: React.ReactNode;
   data?: number | string;
   path?: string;
+  state?: any;
   buttonValue?: (value?: number | string) => void;
 };
 
@@ -25,6 +26,7 @@ export const IconButton = ({
   children,
   data,
   path,
+  state,
   buttonValue,
 }: IconButtonProps) => {
   const bg = ButtonVariant?.bgColor;
@@ -38,7 +40,7 @@ export const IconButton = ({
       if (data !== undefined) buttonValue(data);
       else buttonValue();
     }
-    if (path) navigate(path); // 경로 이동
+    if (path) navigate(path, { state }); // 경로 이동
   };
   return (
     <div className={`overflow-hidden ${className}`}>

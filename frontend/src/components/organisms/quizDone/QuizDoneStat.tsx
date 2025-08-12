@@ -30,7 +30,14 @@ export const QuizDoneStatCard = ({ day }: QuizDoneStatProps) => {
           {compliment(day)}
         </Text>
       </Div>
-      <Div align={"center"} className="grid grid-cols-2 w-full">
+      <Div align={"center"} className="grid grid-cols-3 w-full">
+        <QuizDoneInfoCard
+          icon={flower}
+          title="총 학습일"
+          titleColor="red"
+          data={`${day}일째`}
+          dataColor="gray"
+        />
         <QuizDoneInfoCard
           icon={flower}
           title="연속 학습"
