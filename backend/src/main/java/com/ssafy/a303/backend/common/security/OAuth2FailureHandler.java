@@ -43,6 +43,14 @@ public class OAuth2FailureHandler implements AuthenticationFailureHandler {
                 .map(Cookie::getValue)
                 .orElse(DEFAULT_REDIRECT_URI);
 
+        // redirect uri 안 넘어왔을 경우 안전 처리
+        if(redirectUri == null || redirectUri.isBlank()) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.setContentType("application/json;charset=UTF-8");
+            response.getWriter().write("{\"error\":\"oauth_failed\",\"message\":\"Missing redirect URI\"}");
+            return;
+        }
+
         // URL 디코딩 처리
         try {
             redirectUri = URLDecoder.decode(redirectUri, StandardCharsets.UTF_8);
