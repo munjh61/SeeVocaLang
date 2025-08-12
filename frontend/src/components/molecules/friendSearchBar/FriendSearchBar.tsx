@@ -11,7 +11,7 @@ type FriendSearchBarProps = {
 export const FriendSearchBar = ({
   value,
   onChange,
-  placeholder = "이름으로 검색하기...",
+  placeholder = "닉네임으로 검색하기...",
 }: FriendSearchBarProps) => {
   return (
     <div className="flex items-center gap-2 w-full bg-gray-100 px-4 py-2 rounded-full">

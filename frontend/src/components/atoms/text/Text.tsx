@@ -7,7 +7,7 @@ type TextVariantProps = VariantProps<typeof textVariants>;
 
 type TextProps = {
   className?: string;
-  children?: string;
+  children?: React.ReactNode;
 } & TextVariantProps &
   React.HTMLAttributes<HTMLDivElement>;
 

@@ -41,7 +41,7 @@ export const buttonVariants = cva(
         word: "px-30 py-30 text-3xl",
         onboard: "w-80 h-12 text-lg",
         signup: "rounded-md w-100 h-12 text-lg",
-        long: "px-50 py-1 text-xl",
+        long: "px-6 sm:px-10 md:px-20 lg:px-32 xl:px-50 py-1 text-base sm:text-lg md:text-xl",
       },
       textColor: {
         white: "text-white",

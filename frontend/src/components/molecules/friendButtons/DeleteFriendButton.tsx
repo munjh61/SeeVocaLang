@@ -4,6 +4,7 @@ import { Icon } from "../../atoms/icon/Icon";
 import { Text } from "../../atoms/text/Text";
 import DeleteFriendIcon from "../../../asset/friend_del.svg?react";
 import { FriendDeleteConfirmModal } from "../../molecules/friendModal/FriendDeleteModal";
+import { deleteFriend } from "../../../api/FriendPageApi";
 
 type DeleteFriendButtonProps = {
   className: string;
@@ -21,11 +22,17 @@ export const DeleteFriendButton = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleDeleteRequest = async () => {
+  const handleDelete = async () => {
     try {
       setLoading(true);
-      // await axios.post("/api/friends/request", { friendId: data }); // 💡 백엔드 API 주소 맞게 수정
-      setIsModalOpen(true); // ✅ 요청 성공 시 완료 모달 열기
+      const success = await deleteFriend(data); // ✅ API 호출
+           if (success) {
+            onRequestComplete();
+             setIsModalOpen(false); // 요청 성공 시 모달 열기
+            alert(`${friendName}님이 친구 목록에서 삭제되었습니다.`);
+      } else {
+        alert("친구 삭제에 실패했어요.");
+      }
     } catch (error) {
       console.error("친구 삭제 실패:", error);
       alert("친구 삭제에 실패했어요.");
@@ -35,16 +42,6 @@ export const DeleteFriendButton = ({
   };
 
   
-  
-  
-  
-  const handleDelete = () => {
-    console.log("삭제할 친구 ID:", data);
-    // 여기에 실제 삭제 로직을 추가하세요.
-    setIsModalOpen(false);
-     onRequestComplete();
-  };
-
   const handleCancel = () => {
     setIsModalOpen(false);
   };
@@ -56,7 +53,7 @@ export const DeleteFriendButton = ({
         textColor="white"
         size="md"
         className={`gap-1 px-3 py-1.5 ${className}`}
-        onClick={handleDeleteRequest} // ✅ 모달 열기
+        onClick={() => setIsModalOpen(true)} // ✅ 모달 열기
         disabled={loading}
       >
         <div className="flex items-center gap-2">

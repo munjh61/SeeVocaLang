@@ -1,24 +1,36 @@
-//import { FriendInfoCard } from "../../molecules/FriendInfoCard/FriendInfoCard";
-
+import { FriendInfoCard } from "../../molecules/FriendInfoCard/FriendInfoCard";
 import { Text } from "../../atoms/text/Text";
-export const FriendRequestContent = () => {
-//   const requests = DUMMY_FRIENDS.filter(friend => 
-//     friend.status === "response" || friend.status === "requested"
-//   );
+import type { Friend } from "../../../api/FriendPageApi";
+
+
+type FriendRequestContentProps = {
+  userId?: number; // 내 ID
+  friends: Friend[]; // 부모가 관리하는 친구 목록
+  onAcceptFriend: (id: number) => void; // 수락 시 부모에 알림
+  onDeleteFriend: (id: number) => void; // 거절 시 부모에 알림
+};
+
+export const FriendRequestContent = ({ userId, friends, onAcceptFriend, onDeleteFriend }: FriendRequestContentProps) => {
+  // 내게 온 친구 요청만 필터링
+  const requestList = friends.filter(f => f.friend_status === "PENDING" && f.receiver_id === userId);
 
   return (
     <div className="flex flex-col px-4 py-2 bg-gradient-to-b from-[#F7F5FE] to-[#F3FAF3] h-[calc(100vh-160px)] overflow-y-auto">
-
-      {/* {requests.map((friend) => (
-        <FriendInfoCard
-          key={friend.id}
-          name={friend.name}
-          profileUrl={friend.profileUrl}
-          status={friend.status}
-        />
-      ))} */}
-      <Text color="black" size={"lg"} weight={"bold"}>친구요청</Text>
-      <Text color="gray" size={"xs"}>3개의 요청</Text>
+      <Text color="black" size="lg" weight="bold">친구요청</Text>
+      <Text color="gray" size="xs">{requestList.length}개의 요청</Text>
+      <div className="space-y-4">
+        {requestList.map(friend => (
+          <FriendInfoCard
+            key={friend.user_id}
+            id={friend.user_id}
+            name={friend.nickname}
+            profileUrl={friend.profile_url}
+            status={friend.friend_status}
+            onAcceptFriend={onAcceptFriend}
+            onDeleteFriend={onDeleteFriend}
+          />
+        ))}
+      </div>
     </div>
   );
 };
