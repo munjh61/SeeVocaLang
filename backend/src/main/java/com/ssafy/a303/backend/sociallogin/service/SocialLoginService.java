@@ -10,9 +10,11 @@ import com.ssafy.a303.backend.user.entity.UserEntity;
 import com.ssafy.a303.backend.user.exception.UserErrorCode;
 import com.ssafy.a303.backend.user.exception.UserNicknameAlreadyExistsException;
 import com.ssafy.a303.backend.user.repository.UserRepository;
+import com.ssafy.a303.backend.user.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -24,6 +26,7 @@ public class SocialLoginService {
 
     private final SocialLoginRepository socialLoginRepository;
     private final UserRepository userRepository;
+    private final AuthService authService;
 
     // 소셜 로그인 정보로 유저 조회
     public Optional<UserEntity> findUserBySocialLogin(Provider provider, String socialUid){
@@ -33,6 +36,7 @@ public class SocialLoginService {
     }
 
     // 소셜 유저 등록
+    @Transactional
     public UserEntity registerNewSocialUser(OAuth2UserInfo userInfo, Provider provider, String socialUid) {
         // 1. 닉네임 중복 처리
         String baseNickname = userInfo.getNickname();
@@ -44,6 +48,9 @@ public class SocialLoginService {
 
         // 3. 소셜 로그인 정보 등록
         registerSocialLogin(user, provider, socialUid);
+
+        // 4. 기본 단어장 생성 (AuthService의 메서드 재사용)
+        authService.createDefaultFolder(user.getUserId());
 
         log.info("신규 유저 가입 완료: userId={}, nickname={}, provider={}", user.getUserId(), user.getNickname(), provider);
         return user;
