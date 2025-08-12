@@ -18,7 +18,6 @@ export const QuizDoneInfo = ({ name, size, result }: QuizDoneInfoProps) => {
         titleColor="purple"
         dataColor="gray"
       />
-
       <Div align="center" className="grid grid-cols-2 w-full mt-2">
         <QuizDoneInfoCard
           icon={folderOpen}

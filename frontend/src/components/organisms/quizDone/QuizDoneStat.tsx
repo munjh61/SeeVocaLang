@@ -41,13 +41,14 @@ export const QuizDoneStatCard = ({
         <Text size="xxl" weight="extrabold" color="danger" className="mb-3">
           🌟
         </Text>
-        <Div className="flex flex-row w-full justify-center align-middle">
+        <Div className="flex flex-row w-full justify-center items-center px-10 pb-2">
           <ImageBox
             src={user?.profileImage ?? undefined}
             shape="circle"
-            className="ratio-1/1"
+            className="aspect-square w-[20%]"
+            imgClassName="object-cover"
           />
-          <Div align={"center"} className="w-full">
+          <Div align={"center"} className="grow">
             <Text
               size={"xxxl"}
               weight={"extrabold"}
