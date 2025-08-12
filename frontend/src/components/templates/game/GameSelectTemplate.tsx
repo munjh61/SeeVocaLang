@@ -42,7 +42,6 @@ export const GameSelectTemplate = ({ onClick }: GameSelectTemplateProps) => {
   ];
   return (
     <Div align={"center"} bg={"sky"} className="grow p-2">
-      <h1>게임을 선택하세요</h1>
       <ImageBox src={dummy} className="grow" />
       <Div align={"center"} className="w-full gap-2">
         {/* 선택 부분 */}
