@@ -36,6 +36,7 @@ export const MyPageTemplate = ()=>{
     };
     fetchCalendar();
   }, []);
+  
 useEffect(() => {
   const fetchUserInfo = async () => {
     try {
@@ -84,7 +85,7 @@ useEffect(() => {
               <Button
                 bgColor={"gray"}
                 rounded={"full"}
-                className={"relative w-20 h-20"}
+                className={"relative w-20 h-20 ml-4"}  
               >
                 {userInfo?.profileImage ? (
                   <img
@@ -100,13 +101,13 @@ useEffect(() => {
               </Button>
               <div className="flex flex-col gap-1">
                 <Text size="xl" weight="extrabold" color="black">
-                  {userInfo?.nickname ?? "닉네임 없음"}
+                  {userInfo?.nickname || "닉네임 없음"}
                 </Text>
                 <Text size="sm" weight="normal" color="gray">
                   생년월일: 1996.09.19
                 </Text>
                 <Text size="sm" weight="normal" color="gray">
-                  {userInfo?.email ?? "이메일 없음"}
+                  {userInfo?.email || "이메일 정보 없음"}
                 </Text>
               </div>
             </div>

@@ -8,7 +8,7 @@ interface CalendarCardProps {
 }
 
 export const CalendarCard = ({ days }: CalendarCardProps) => {
-  console.log("Received days:", days); 
+ 
   const [date, setDate] = useState<Date | null>(new Date());
   
  const daysSet = new Set(days);
@@ -23,14 +23,9 @@ const formatDate = (date: Date) => {
 const tileClassName = ({ date: tileDate, view }: { date: Date; view: string }) => {
   if (view === "month") {
     const dateStr = formatDate(tileDate);
-    let classNames = "";
     if (daysSet.has(dateStr)) {
-      classNames += "highlight ";
+      return "highlight";
     }
-    if (date && formatDate(date) === dateStr) {
-      classNames += "selected";
-    }
-    return classNames.trim();
   }
   return "";
 };

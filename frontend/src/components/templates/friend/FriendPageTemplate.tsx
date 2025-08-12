@@ -34,9 +34,7 @@ export const FriendPageTemplate = () => {
     fetchUserInfo();
      fetchFriends()
 }, []);
-  const filteredFriends = friends.filter(friend =>
-    friend.nickname.toLowerCase().includes(searchValue.toLowerCase())
-  );
+  
     return (
     <div className="p-4">
       <FriendHeader
@@ -53,14 +51,15 @@ export const FriendPageTemplate = () => {
           <FriendSearchContent searchValue={searchValue} userId={userInfo?.userId} />
         )}
         {selectedTab === "friend" && (
-          <MyFriendsContent friends={filteredFriends} onDeleteFriend={(id) => {
+          <MyFriendsContent friends={friends} searchValue={searchValue} onDeleteFriend={(id) => {
             setFriends(prev => prev.filter(f => f.user_id !== id));
           }} />
         )}
         {selectedTab === "request" && (
           <FriendRequestContent
             userId={userInfo?.userId}
-            friends={filteredFriends}
+            friends={friends}
+            searchValue={searchValue} 
             onAcceptFriend={(id) => {
               setFriends(prev =>
                 prev.map(f => f.user_id === id ? { ...f, friend_status: "APPROVED" } : f)
