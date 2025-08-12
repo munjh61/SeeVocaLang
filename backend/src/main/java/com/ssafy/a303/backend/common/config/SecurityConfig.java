@@ -1,10 +1,12 @@
 package com.ssafy.a303.backend.common.config;
 
 import com.ssafy.a303.backend.common.security.jwt.JwtFilter;
+import com.ssafy.a303.backend.common.security.jwt.JwtProperties;
 import com.ssafy.a303.backend.common.security.OAuth2FailureHandler;
 import com.ssafy.a303.backend.common.security.OAuth2SuccessHandler;
 import com.ssafy.a303.backend.sociallogin.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,7 +24,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
+@EnableConfigurationProperties(JwtProperties.class)
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -34,11 +37,6 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 
     @Bean

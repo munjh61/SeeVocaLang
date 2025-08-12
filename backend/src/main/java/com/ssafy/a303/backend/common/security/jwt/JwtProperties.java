@@ -2,12 +2,10 @@ package com.ssafy.a303.backend.common.security.jwt;
 
 import lombok.Getter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 
 import java.time.Duration;
 
 @Getter
-@Configuration
 @ConfigurationProperties(prefix = "jwt")
 public class JwtProperties
 {
