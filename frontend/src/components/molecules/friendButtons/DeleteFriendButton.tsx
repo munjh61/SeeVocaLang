@@ -27,17 +27,17 @@ export const DeleteFriendButton = ({
       setLoading(true);
       const success = await deleteFriend(data); // ✅ API 호출
            if (success) {
-             setIsModalOpen(true); // 요청 성공 시 모달 열기
-             onRequestComplete();
-            } else {
-             alert("친구 삭제에 실패했어요.");
-           }
+            onRequestComplete();
+             setIsModalOpen(false); // 요청 성공 시 모달 열기
+            alert(`${friendName}님이 친구 목록에서 삭제되었습니다.`);
+      } else {
+        alert("친구 삭제에 실패했어요.");
+      }
     } catch (error) {
       console.error("친구 삭제 실패:", error);
       alert("친구 삭제에 실패했어요.");
     } finally {
       setLoading(false);
-      setIsModalOpen(false);
     }
   };
 
@@ -53,7 +53,7 @@ export const DeleteFriendButton = ({
         textColor="white"
         size="md"
         className={`gap-1 px-3 py-1.5 ${className}`}
-        onClick={handleDelete} // ✅ 모달 열기
+        onClick={() => setIsModalOpen(true)} // ✅ 모달 열기
         disabled={loading}
       >
         <div className="flex items-center gap-2">

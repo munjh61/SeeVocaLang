@@ -16,9 +16,10 @@ type ProfileModalProps = {
   isOpen: boolean;
   onClose: () => void;
   userInfo?: UserInfo | null;
+   onUpdateUserInfo: (updatedInfo: UserInfo) => void;
 };
 
-export const ProfileModal = ({ isOpen, onClose, userInfo}: ProfileModalProps) => {
+export const ProfileModal = ({ isOpen, onClose, userInfo,onUpdateUserInfo}: ProfileModalProps) => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [imageURL, setImageURL] = useState<string | null>(null);
   const [nickname, setNickname] = useState("");
@@ -44,6 +45,21 @@ export const ProfileModal = ({ isOpen, onClose, userInfo}: ProfileModalProps) =>
   }
 
 }, [userInfo]);
+useEffect(() => {
+    if (isOpen) {
+      setIsVerified(false);
+      setIsPasswordChanged(false);
+      setNewPassword("");
+      setConfirmPassword("");
+      setCurrentPassword("");
+      setEmailCode("");
+      setEmailStep(userInfo?.email ? "completed" : "idle");
+      setNickname(userInfo?.nickname ?? "");
+      setEmail(userInfo?.email ?? "");
+      setImageURL(userInfo?.profileImage ?? null);
+      setProfileFile(null);
+    }
+  }, [isOpen, userInfo]);
  
   const handleVerifyPassword = async() => {
     const success = await checkPassword(currentPassword)
@@ -75,6 +91,14 @@ const changeProfile = async () => {
   const success = await updateProfile(currentPassword, newPassword, nickname, profileFile);
   if (success) {
     alert("✅ 프로필 수정이 완료되었습니다.");
+    if (userInfo) {
+      onUpdateUserInfo({
+        ...userInfo,
+        nickname,
+        profileImage: imageURL ?? userInfo.profileImage,
+        email,  // 이메일도 관리한다면 포함
+      });
+    }
     onClose();
   } else {
     alert("❌ 프로필 수정에 실패했습니다. 다시 시도해주세요.");

@@ -35,7 +35,7 @@ export const acceptFriend= async(userId: number):Promise<boolean>=>{
 export const deleteFriend =async(userId:number):Promise<boolean>=>{
     try{
         const response =await authApi.delete(`${FRIEND_URL}/${userId}`)
-        return response.status===200;
+        return response.status===204;
     }catch{
         return false;
     }

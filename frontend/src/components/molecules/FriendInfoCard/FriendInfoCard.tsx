@@ -14,9 +14,11 @@ type FriendInfoProps = {
   name: string;
   status: string;
   userid?:number;
+  onDeleteFriend?: (id: number) => void;
+  onAcceptFriend?: (id: number) => void; 
 };
 
-export const FriendInfoCard = ({ id, profileUrl, name, status: initialStatus}: FriendInfoProps) => {
+export const FriendInfoCard = ({ id, profileUrl, name, status: initialStatus,onDeleteFriend,onAcceptFriend}: FriendInfoProps) => {
 
   const [status, setStatus] = useState<string>(initialStatus);
   const handleAccept = async () => {
@@ -24,7 +26,8 @@ export const FriendInfoCard = ({ id, profileUrl, name, status: initialStatus}: F
     const success = await acceptFriend(id);
     if (success) {
       alert("친구 수락이 완료되었습니다.");
-      // setStatus("APPROVED"); // 상태 변경
+      setStatus("APPROVED"); 
+      onAcceptFriend?.(id);
     }
   } catch (error) {
     console.error("친구 수락 실패:", error);
@@ -41,7 +44,10 @@ export const FriendInfoCard = ({ id, profileUrl, name, status: initialStatus}: F
         );
       case "APPROVED":
         return (
-          <DeleteFriendButton data= {id} className="w-full" friendName={name} onRequestComplete={() => setStatus("NONE")}/>
+          <DeleteFriendButton data= {id} className="w-full" friendName={name}  onRequestComplete={() => {
+        setStatus("NONE");
+        onDeleteFriend?.(id); // ✅ 부모 목록에서도 제거
+      }}/>
         );
         case "REQUEST":
         return (
@@ -64,6 +70,7 @@ export const FriendInfoCard = ({ id, profileUrl, name, status: initialStatus}: F
             size="md"
             textColor="white"
             className="gap-1 px-3 py-1.5"
+            onClick={() => onDeleteFriend?.(id)} 
           >
             거절
           </Button>
