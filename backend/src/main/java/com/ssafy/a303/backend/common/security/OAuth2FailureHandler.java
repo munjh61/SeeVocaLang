@@ -27,7 +27,7 @@ public class OAuth2FailureHandler implements AuthenticationFailureHandler {
 
     private static final String REDIRECT_URI_COOKIE_NAME = "redirect_uri";
     @Value("${auth.redirect.failure}")
-    private static String DEFAULT_REDIRECT_URI;
+    private String DEFAULT_REDIRECT_URI;
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
