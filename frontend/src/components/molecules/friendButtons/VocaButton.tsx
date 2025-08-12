@@ -1,7 +1,7 @@
 import { Button } from "../../atoms/button/Button";
 import { Icon } from "../../atoms/icon/Icon";
 import { Text } from "../../atoms/text/Text";
-import BookIcon from "../../../asset/book.svg?react";
+import BookIcon from "../../../asset/folder.svg?react";
 type VocaButtonProps = {
     className?:string;
     data?:number;
