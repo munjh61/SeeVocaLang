@@ -32,6 +32,6 @@ export const RainGameTemplate = () => {
     nav(-1);
   }
 
-  if (!vocas) return <LoadingPage />;
+  if (vocas.length === 0) return <LoadingPage />;
   return <RainGame vocas={vocas} />;
 };
