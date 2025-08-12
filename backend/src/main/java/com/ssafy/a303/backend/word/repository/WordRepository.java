@@ -10,6 +10,8 @@ import java.util.Optional;
 
 public interface WordRepository extends JpaRepository<WordEntity, Long>, WordQueryRepository {
 
+    Optional<WordEntity> findByNameEnAndUserUserIdAndIsDeletedFalse(String nameEn, Long userId);
+
     Optional<WordEntity> findByUserUserIdAndWordId(long userId, long wordId);
 
     boolean existsByNameEnAndUserUserIdAndIsDeletedFalse(String name, long userId);

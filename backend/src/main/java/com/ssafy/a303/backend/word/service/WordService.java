@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -58,11 +59,8 @@ public class WordService {
         return wordRepository.existsByNameEnAndUserUserIdAndIsDeletedFalse(name, userId);
     }
 
-    public Long getWordId(Long userId, String nameEn) {
-        return wordRepository
-                .findByUserUserIdAndNameEnAndIsDeletedFalse(userId, nameEn)
-                .map(WordEntity::getWordId)
-                .orElse(null);
+    public Optional<WordEntity> getWordByNameEn(String name, Long userId) {
+        return wordRepository.findByNameEnAndUserUserIdAndIsDeletedFalse(name, userId);
     }
 
     public WordEntity createWord(CreateWordCommandDto comandDto) {

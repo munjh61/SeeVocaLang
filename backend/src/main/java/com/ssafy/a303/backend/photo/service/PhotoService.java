@@ -24,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -45,9 +46,12 @@ public class PhotoService {
         if (nameEn.equals("glass")) nameEn = "glasses";
         String nameKo = SVLWord.translateToKorean(nameEn, "인식 불가");
         String imageKey = redisWordImageHelper.upsertImage(command.imageFile(),  userId, nameEn);
-        Long wordId = wordService.getWordId(userId, nameEn);
+        Optional<WordEntity> word = wordService.getWordByNameEn(nameEn, userId);
+        ReadObjectDetectionWordItem wordItem = word
+                .map(w -> new ReadObjectDetectionWordItem(w.getWordId(), w.getImageUrl()))
+                .orElse(null);
 
-        return new ReadObjectDetectionResultDto(nameEn, nameKo, imageKey, wordId);
+        return new ReadObjectDetectionResultDto(nameEn, nameKo, imageKey, wordItem);
     }
 
     @Transactional

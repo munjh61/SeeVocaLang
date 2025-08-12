@@ -6,5 +6,5 @@ public record ReadObjectDetectionResponseDto(
     @JsonProperty("name_en") String nameEn,
     @JsonProperty("name_ko") String nameKo,
     @JsonProperty("image_key") String redisImageKey,
-    @JsonProperty("word_id") Long wordId
+    ReadObjectDetectionWordItem word
 ) {}
