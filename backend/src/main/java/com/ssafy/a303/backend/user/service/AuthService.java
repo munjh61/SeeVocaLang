@@ -76,7 +76,7 @@ public class AuthService {
                 .build();
     }
 
-    private void createDefaultFolder(Long userId) {
+    public void createDefaultFolder(Long userId) {
         CreateFolderCommandDto defaultFolder = CreateFolderCommandDto.builder()
                 .userId(userId)
                 .name("기본 단어장")
