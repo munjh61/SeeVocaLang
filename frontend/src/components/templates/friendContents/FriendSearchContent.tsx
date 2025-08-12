@@ -1,31 +1,17 @@
-import { useEffect, useState } from "react";
 import { FriendInfoCard } from "../../molecules/FriendInfoCard/FriendInfoCard";
 import { Text } from "../../atoms/text/Text";
-import { friendList, type Friend } from "../../../api/FriendPageApi";
+import { type Friend } from "../../../api/FriendPageApi";
 
 type FriendSearchContentProps = {
   searchValue: string;
   userId?: number;
+  friends: Friend[]; 
+   onAddFriend: (id: number) => void;  
+  onAcceptFriend: (id: number) => void;
+  onDeleteFriend: (id: number) => void;
 };
 
-export const FriendSearchContent = ({ searchValue, userId }: FriendSearchContentProps) => {
-  const [friends, setFriends] = useState<Friend[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchFriends = async () => {
-      try {
-        const data = await friendList();
-        if (Array.isArray(data)) setFriends(data);
-        else setFriends([]);
-      } catch {
-        setFriends([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchFriends();
-  }, []);
+export const FriendSearchContent = ({ searchValue, userId,friends,onAddFriend,onAcceptFriend, onDeleteFriend}: FriendSearchContentProps) => {
 
   const hasSearch = searchValue.trim().length > 0;
 
@@ -36,10 +22,7 @@ export const FriendSearchContent = ({ searchValue, userId }: FriendSearchContent
       )
     : [];
 
-  if (loading) {
-    return <div>로딩 중...</div>;
-  }
-
+  
   return (
     <div className="flex flex-col px-4 py-2 bg-gradient-to-b from-[#F7F5FE] to-[#F3FAF3] h-[calc(100vh-160px)] overflow-y-auto">
       <div className="mb-4">
@@ -70,12 +53,16 @@ export const FriendSearchContent = ({ searchValue, userId }: FriendSearchContent
             let statusToPass = friend.friend_status;
 
             if (friend.friend_status === "PENDING" && userId) {
-              if (friend.receiver_id === userId) {
-                statusToPass = "PENDING"; // 내가 받은 요청
-              } else if (friend.sender_id === userId) {
-                statusToPass = "REQUEST"; // 내가 보낸 요청
+               if (friend.receiver_id === userId) {
+                   statusToPass = "PENDING"; // 내가 받은 요청
+                      } else if (friend.sender_id === userId) {
+                   statusToPass = "REQUEST"; // 내가 보낸 요청
               }
-            }
+                    } else if (friend.friend_status === "APPROVED") {
+  statusToPass = "APPROVED"; // 친구 상태
+                        } else {
+                              statusToPass = "NONE"; // 기본값
+                      }
 
             return (
               <FriendInfoCard
@@ -85,6 +72,9 @@ export const FriendSearchContent = ({ searchValue, userId }: FriendSearchContent
                 profileUrl={friend.profile_url}
                 status={statusToPass}
                 userid={userId}
+                onAddFriend={() => onAddFriend(friend.user_id)}
+                onAcceptFriend={() => onAcceptFriend(friend.user_id)}
+                onDeleteFriend={() => onDeleteFriend(friend.user_id)}
               />
             );
           })

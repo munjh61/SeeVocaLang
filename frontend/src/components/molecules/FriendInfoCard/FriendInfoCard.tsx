@@ -1,4 +1,4 @@
-import {useState } from "react";
+import {useEffect, useState } from "react";
 import { Button } from "../../atoms/button/Button";
 import { AddFriendButton } from "../friendButtons/AddFriendButton";
 import { DeleteFriendButton } from "../friendButtons/DeleteFriendButton";
@@ -14,13 +14,18 @@ type FriendInfoProps = {
   name: string;
   status: string;
   userid?:number;
+  onAddFriend?: (id: number) => void; 
   onDeleteFriend?: (id: number) => void;
   onAcceptFriend?: (id: number) => void; 
 };
 
-export const FriendInfoCard = ({ id, profileUrl, name, status: initialStatus,onDeleteFriend,onAcceptFriend}: FriendInfoProps) => {
+export const FriendInfoCard = ({ id, profileUrl, name, status: initialStatus,onAddFriend,onDeleteFriend,onAcceptFriend}: FriendInfoProps) => {
 
   const [status, setStatus] = useState<string>(initialStatus);
+   useEffect(() => {
+    setStatus(initialStatus);
+  }, [initialStatus]);
+
   const handleAccept = async () => {
   try {
     const success = await acceptFriend(id);
@@ -40,7 +45,7 @@ export const FriendInfoCard = ({ id, profileUrl, name, status: initialStatus,onD
     switch (status) {
       case "NONE":
         return (
-          <AddFriendButton data= {id} className="w-full" onRequestComplete={() => setStatus("REQUEST")}/>
+          <AddFriendButton data= {id} className="w-full" onRequestComplete={() =>{ setStatus("REQUEST"); onAddFriend?.(id);   }             }/>
         );
       case "APPROVED":
         return (
