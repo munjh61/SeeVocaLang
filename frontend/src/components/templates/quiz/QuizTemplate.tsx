@@ -6,7 +6,7 @@ import { Quiz } from "../../organisms/quiz/Quiz";
 import { SegmentControl } from "../../molecules/segmentControl/SegmentControl";
 import { QuizHeader } from "../../organisms/quiz/QuizHeader";
 import { Div } from "../../atoms/div/Div";
-import { updateQuizStatus } from "../../../api/TodayQuizAPI";
+import { completeTodayQuiz, updateQuizStatus } from "../../../api/TodayQuizAPI";
 
 type QuizTemplateProps = {
   name: string;
@@ -44,16 +44,19 @@ export const QuizTemplate = ({
   // 현재 문제가 없거나 퀴즈 완료 시 처리
   useEffect(() => {
     if (questionCount === 0) return;
-    if (currentIndex >= questionCount)
-      // if (currentIndex >= 1)
-      nav("/done", {
-        state: {
-          name: name,
-          size: questionCount,
-          result: result,
-        },
-      });
-  }, [currentIndex, questionCount, name, result, nav]);
+    if (currentIndex >= questionCount) {
+      (async () => {
+        if (isTodayMission) await completeTodayQuiz();
+        nav("/done", {
+          state: {
+            name: name,
+            size: questionCount,
+            result: result,
+          },
+        });
+      })();
+    }
+  }, [currentIndex, questionCount, name, result, nav, isTodayMission]);
 
   const current = quizOrder[currentIndex];
 

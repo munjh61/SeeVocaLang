@@ -205,32 +205,36 @@ export const FolderTemplate = ({
           onClickFavorite={() => setIsFavoriteOnly(prev => !prev)}
         />
         {/* 단어 카드 목록*/}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
-          {filteredVocaList.map(card => (
-            <VocaCard
-              key={card.wordId}
-              nameEn={card.nameEn}
-              nameKo={card.nameKo}
-              imageUrl={card.imageUrl}
-              folders={card.folders}
-            />
-          ))}
-        </div>
+        {!isToggle && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
+            {filteredVocaList.map(card => (
+              <VocaCard
+                key={card.wordId}
+                nameEn={card.nameEn}
+                nameKo={card.nameKo}
+                imageUrl={card.imageUrl}
+                folders={card.folders}
+              />
+            ))}
+          </div>
+        )}
         {/* 단어장 카드 목록 */}
-        <div
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3
+        {isToggle && (
+          <div
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3
                           lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4"
-        >
-          {filteredFolderList.map(data => (
-            <Folder
-              key={data.folderId}
-              {...data}
-              // onLearnClick={handleLearnClick}
-              onEditClick={openEditModal}
-              onToggleFavorite={toggleFavorite}
-            />
-          ))}
-        </div>
+          >
+            {filteredFolderList.map(data => (
+              <Folder
+                key={data.folderId}
+                {...data}
+                // onLearnClick={handleLearnClick}
+                onEditClick={openEditModal}
+                onToggleFavorite={toggleFavorite}
+              />
+            ))}
+          </div>
+        )}
       </Div>
     </Div>
   );
