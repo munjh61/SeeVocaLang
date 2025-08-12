@@ -62,22 +62,27 @@ export default function OAuthSuccess() {
         } else {
           setAccessToken(accessToken);
         }
-
         // 4) 최종 목적지 쿠키(final_redirect) 읽기
-        const target = decodeURIComponent(
-          getCookie("final_redirect") || "%2Fmain"
-        );
+        const raw = getCookie("final_redirect") || "%2Fmain";
+        const target = decodeURIComponent(raw).trim();
 
-        // 5) 쿠키 삭제
+        // (보안) 스킴 가드: javascript:, data: 등 차단
+        if (/^(javascript|data|vbscript):/i.test(target)) {
+          throw new Error("INVALID_REDIRECT_SCHEME");
+        }
+
+        // 5) 쿠키 삭제 (둘 다 제거)
         deleteCookie("final_redirect");
+        deleteCookie("redirect_uri");
 
-        // 6) 이동 처리
-        if (target.startsWith("http://") || target.startsWith("https://")) {
-          // 풀 URL이면 외부 이동 (SPA 라우터가 아니라 브라우저 네비게이션)
-          window.location.href = target;
+        // 6) 이동 처리 (정규화 + 안전 이동)
+        const isAbsoluteUrl = /^https?:\/\//i.test(target);
+        const normalizedPath = target.startsWith("/") ? target : `/${target}`;
+
+        if (isAbsoluteUrl) {
+          window.location.replace(target); // ✅ 외부: 현재 경로 싹 교체
         } else {
-          // 경로만 있으면 react-router-dom 내부 라우팅
-          navigate(target, { replace: true });
+          navigate(normalizedPath, { replace: true }); // ✅ 내부: SPA 라우팅
         }
       } catch (err) {
         console.error("❌ OAuth 콜백 처리 실패:", err);
