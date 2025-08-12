@@ -1,14 +1,6 @@
+// 사진 분석 결과 Api
 import { authApi } from "../utils/axios.ts";
-
-export type AnalysisResult = {
-  name_en: string;
-  name_ko: string;
-  image_key: string;
-  word: {
-    word_id: number;
-    image_url: string;
-  };
-};
+import type { AnalysisResult } from "../types/FileUploadType.ts";
 
 export const analyzeImage = async (file: File): Promise<AnalysisResult> => {
   const formData = new FormData();

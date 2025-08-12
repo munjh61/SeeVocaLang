@@ -3,11 +3,13 @@ import { authApi } from "../utils/axios.ts";
 
 export const WordImageUploadApi = async (
   word_id: number,
+  folders: number[],
   image_key: string
 ): Promise<string> => {
   try {
     const res = await authApi.put(`/api/v1/photos/words/${word_id}`, {
       image_key,
+      folders,
     });
 
     if (res.status === 200 || res.status === 201) {

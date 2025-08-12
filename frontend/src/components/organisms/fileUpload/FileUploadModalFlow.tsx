@@ -3,17 +3,11 @@ import { Modal } from "../../atoms/modal/modal.tsx";
 import { UploadStep1 } from "./UploadStep1.tsx";
 import { UploadStep2 } from "./UploadStep2.tsx";
 import { analyzeImage } from "../../../api/PhotoUpload.ts";
+import type { AnalysisResult } from "../../../types/FileUploadType.ts";
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-};
-
-type AnalysisResult = {
-  name_en: string;
-  name_ko: string;
-  image_key: string;
-  word_id: number;
 };
 
 type Step = 1 | 2;
@@ -41,7 +35,6 @@ export const FileUploadModalFlow = ({ isOpen, onClose }: Props) => {
 
   const goToStep = (s: Step) => setStep(s);
 
-  // 파일 분석만 수행 (저장/교체는 UploadStep2에서)
   // 파일 분석만 수행 (저장/교체는 UploadStep2에서)
   const handleAnalyze = async () => {
     if (!file || isAnalyzing) return;
