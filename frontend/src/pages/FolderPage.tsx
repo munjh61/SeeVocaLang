@@ -37,7 +37,7 @@ function FolderPage() {
   }, [userId]);
 
   if (error) return <div>에러: {error}</div>;
-  if (!folders) return <LoadingPage />;
+  if (!folders || !vocas) return <LoadingPage />;
 
   return (
     <div className="flex flex-col h-screen">
