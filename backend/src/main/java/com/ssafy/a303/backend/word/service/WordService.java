@@ -59,7 +59,7 @@ public class WordService {
         return wordRepository.existsByNameEnAndUserUserIdAndIsDeletedFalse(name, userId);
     }
 
-    public Optional<WordEntity> getWordByName(String name, Long userId) {
+    public Optional<WordEntity> getWordByNameEn(String name, Long userId) {
         return wordRepository.findByNameEnAndUserUserIdAndIsDeletedFalse(name, userId);
     }
 

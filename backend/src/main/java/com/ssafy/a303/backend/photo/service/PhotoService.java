@@ -46,7 +46,7 @@ public class PhotoService {
         if (nameEn.equals("glass")) nameEn = "glasses";
         String nameKo = SVLWord.translateToKorean(nameEn, "인식 불가");
         String imageKey = redisWordImageHelper.upsertImage(command.imageFile(),  userId, nameEn);
-        Optional<WordEntity> word = wordService.getWordByName(nameEn, userId);
+        Optional<WordEntity> word = wordService.getWordByNameEn(nameEn, userId);
         ReadObjectDetectionWordItem wordItem = word
                 .map(w -> new ReadObjectDetectionWordItem(w.getWordId(), w.getImageUrl()))
                 .orElse(null);
