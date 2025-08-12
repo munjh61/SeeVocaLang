@@ -4,5 +4,5 @@ public record ReadObjectDetectionResultDto(
     String nameEn,
     String nameKo,
     String redisImageKey,
-    Long wordId
+    ReadObjectDetectionWordItem word
 ) {}
