@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Button } from "../../atoms/button/Button";
 import { Div } from "../../atoms/div/Div";
 import { Text } from "../../atoms/text/Text";
+import { ImageBox } from "../../molecules/imagebox/Imagebox";
+import dummy from "../../../asset/png/dummyPic.png";
 
 type GameSelectTemplateProps = {
   onClick: (v: number) => void;
@@ -30,8 +32,7 @@ export const GameSelectTemplate = ({ onClick }: GameSelectTemplateProps) => {
     {
       gameNumber: 2,
       gameTitle: "소나기",
-      gameDescription:
-        "하늘에서 떨어지는 단어를 땅에 떨어지기 전에 막아보아요.",
+      gameDescription: "단어가 땅에 떨어지기 전에 막아보아요.",
     },
     {
       gameNumber: 3,
@@ -40,24 +41,39 @@ export const GameSelectTemplate = ({ onClick }: GameSelectTemplateProps) => {
     },
   ];
   return (
-    <Div align={"center"} className="grow">
+    <Div align={"center"} bg={"sky"} className="grow p-2">
       <h1>게임을 선택하세요</h1>
-      <Div className="flex flex-row w-full grow">
+      <ImageBox src={dummy} className="grow" />
+      <Div align={"center"} className="w-full gap-2">
         {/* 선택 부분 */}
-        <Div align={"center"}>
+        <Div className="flex flex-row w-full gap-4">
           {games.map(g => (
-            <Button onClick={() => moveFunction(g.gameNumber)}>
-              {g.gameTitle}
+            <Button
+              bgColor={"blue"}
+              className="w-full"
+              onClick={() => moveFunction(g.gameNumber)}
+            >
+              <Text
+                font={"outline"}
+                color="white"
+                className="p-10"
+                size={"xxxl"}
+              >
+                {g.gameTitle}
+              </Text>
             </Button>
           ))}
         </Div>
         {/* 설명 부분 */}
-        <Div>
-          {games.map(g => (
-            <Div>
-              <Text>{g.gameDescription}</Text>
-            </Div>
-          ))}
+        <Div
+          bg={"green"}
+          align={"center"}
+          className="w-full p-4 justify-center"
+          rounded={"lg"}
+        >
+          <Text color="white" font={"outline"} size={"xxxl"} className="w-full">
+            {games[ready - 1].gameDescription}
+          </Text>
         </Div>
       </Div>
     </Div>
