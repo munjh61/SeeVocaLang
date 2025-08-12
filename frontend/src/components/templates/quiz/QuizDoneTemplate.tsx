@@ -2,20 +2,22 @@ import { QuizDoneStatCard } from "../../organisms/quizDone/QuizDoneStat";
 import { QuizDoneButtons } from "../../organisms/quizDone/QuizDoneButtons";
 import { Div } from "../../atoms/div/Div";
 import { RainyBalls } from "../../atoms/deco/RainyBall";
-import { QuizDonefolderInfo } from "../../organisms/quizDone/QuizDoneBookInfo";
+import { QuizDoneInfo } from "../../organisms/quizDone/QuizDoneInfo";
 
 type QuizDoneTemplateProps = {
   name: string;
   size: number;
   result: number;
-  day: number;
+  streakDay: number;
+  totalDay: number;
 };
 
 export const QuizDoneTemplate = ({
   name,
   size,
   result,
-  day,
+  streakDay,
+  totalDay,
 }: QuizDoneTemplateProps) => {
   return (
     <Div
@@ -30,8 +32,8 @@ export const QuizDoneTemplate = ({
       <RainyBalls />
 
       <Div align={"center"} className="gap-0">
-        <QuizDoneStatCard day={day} />
-        <QuizDonefolderInfo name={name} size={size} result={result} />
+        <QuizDoneStatCard streakDay={streakDay} totalDay={totalDay} />
+        <QuizDoneInfo name={name} size={size} result={result} />
         <QuizDoneButtons className="mt-10" />
       </Div>
     </Div>

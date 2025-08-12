@@ -25,7 +25,7 @@ export const ImageBox = ({
   return (
     <div
       className={cn(
-        "flex items-center justify-center", // 이미지를 가운데로
+        "flex items-center justify-center overflow-hidden", // 이미지를 가운데로
         imageboxVariants({ shape }),
         !hasImage && "bg-gray-100 w-32 h-32", // 없을 때
         "bg-gray-200",

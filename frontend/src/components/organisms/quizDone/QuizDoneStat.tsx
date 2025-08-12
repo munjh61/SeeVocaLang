@@ -3,16 +3,37 @@ import { Text } from "../../atoms/text/Text";
 import flower from "../../../asset/flower.svg?react";
 import calendar from "../../../asset/calendar.svg?react";
 import { QuizDoneInfoCard } from "../../molecules/quizDone/QuizDoneInfoCard";
+import { getUserInfo, type UserInfo } from "../../../api/userInfo";
+import { useEffect, useState } from "react";
+import { ImageBox } from "../../molecules/imagebox/Imagebox";
 
 type QuizDoneStatProps = {
-  day: number;
+  streakDay: number;
+  totalDay: number;
 };
 
-export const QuizDoneStatCard = ({ day }: QuizDoneStatProps) => {
+export const QuizDoneStatCard = ({
+  streakDay,
+  totalDay,
+}: QuizDoneStatProps) => {
   const today = new Date();
   const dateStr = `${today.getFullYear()}년 ${today.getMonth() + 1}월 ${today.getDate()}일`;
   const days = ["일", "월", "화", "수", "목", "금", "토"];
   const dayOfWeek = days[today.getDay()];
+
+  const [user, setUserInfo] = useState<UserInfo>();
+  useEffect(() => {
+    (async () => {
+      const res = await getUserInfo();
+      setUserInfo({
+        userId: res.userId,
+        loginId: res.loginId,
+        profileImage: res.profileImage,
+        nickname: res.nickname,
+        email: res.email,
+      });
+    })();
+  }, []);
 
   return (
     <Div bg="white" align={"center"} className="rounded-t-xl p-4 w-full">
@@ -20,35 +41,52 @@ export const QuizDoneStatCard = ({ day }: QuizDoneStatProps) => {
         <Text size="xxl" weight="extrabold" color="danger" className="mb-3">
           🌟
         </Text>
-        <Text
-          size="xxl"
-          weight="extrabold"
-          color="green"
-          font={"outline"}
-          className="mb-2"
-        >
-          {compliment(day)}
-        </Text>
+        <Div className="flex flex-row w-full justify-center align-middle">
+          <ImageBox
+            src={user?.profileImage ?? undefined}
+            shape="circle"
+            className="ratio-1/1"
+          />
+          <Div align={"center"} className="w-full">
+            <Text
+              size={"xxxl"}
+              weight={"extrabold"}
+              color="green"
+              font={"outline"}
+            >
+              {user?.nickname}
+            </Text>
+            <Text
+              size="xxl"
+              weight="extrabold"
+              color="green"
+              font={"outline"}
+              className="mb-2"
+            >
+              {compliment(streakDay)}
+            </Text>
+          </Div>
+        </Div>
       </Div>
       <Div align={"center"} className="grid grid-cols-3 w-full">
         <QuizDoneInfoCard
           icon={flower}
           title="총 학습일"
           titleColor="red"
-          data={`${day}일째`}
+          data={`${totalDay}일째`}
           dataColor="gray"
         />
         <QuizDoneInfoCard
           icon={flower}
           title="연속 학습"
-          titleColor="red"
-          data={`${day}일째`}
+          titleColor="yellow"
+          data={`${streakDay}일째`}
           dataColor="gray"
         />
         <QuizDoneInfoCard
           icon={calendar}
           title="완료일"
-          titleColor="orange"
+          titleColor="blue"
           data={`${dateStr} (${dayOfWeek})`}
           dataColor="gray"
         />
@@ -57,7 +95,7 @@ export const QuizDoneStatCard = ({ day }: QuizDoneStatProps) => {
   );
 };
 
-function compliment(day: number): string {
+function compliment(streakDay: number): string {
   const defaultMessages = [
     "오늘도 빠지지 않고 학습했어요!🙌",
     "작은 노력이 큰 변화를 만들어요 💪",
@@ -67,7 +105,7 @@ function compliment(day: number): string {
   ];
 
   let msg: string;
-  switch (day) {
+  switch (streakDay) {
     case 1:
       msg = "오늘 첫 시작을 했어요! 멋진 출발이에요 🚀";
       break;

@@ -8,7 +8,8 @@ import { LoadingPage } from "../components/templates/loadingTemplate/LoadingTemp
 function QuizDonePage() {
   const location = useLocation();
   const { name, size, result } = location.state || {};
-  const [day, setDay] = useState(1);
+  const [streakDay, setStreakDay] = useState(1);
+  const [totalDay, setTotalDay] = useState(1);
   const [error, setError] = useState<string | null>(null);
   const nav = useNavigate();
 
@@ -17,7 +18,8 @@ function QuizDonePage() {
     (async () => {
       try {
         const res = await getQuizStatus();
-        setDay(res?.streakDaysCount ?? 1);
+        setStreakDay(res?.streakDaysCount ?? 1);
+        setTotalDay(res?.totalDaysCount ?? 1);
       } catch (e) {
         if (!mounted) return;
         const msg = e instanceof Error ? e.message : "불러오기 실패";
@@ -34,13 +36,22 @@ function QuizDonePage() {
     alert("오류가 발생했습니다.");
     nav(-1);
   }
+  const isInvalid = (v: unknown) => v == null || Number.isNaN(v);
 
-  if (!day) return <LoadingPage />;
+  if (isInvalid(streakDay) || isInvalid(totalDay)) {
+    return <LoadingPage />;
+  }
 
   return (
     <div className="flex flex-col h-screen">
       <div className="flex grow overflow-y-auto">
-        <QuizDoneTemplate name={name} size={size} result={result} day={day} />
+        <QuizDoneTemplate
+          name={name}
+          size={size}
+          result={result}
+          streakDay={streakDay}
+          totalDay={totalDay}
+        />
       </div>
       <Navigation loc="folder" />
     </div>
