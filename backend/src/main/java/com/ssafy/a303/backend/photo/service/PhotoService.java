@@ -22,7 +22,7 @@ import com.ssafy.a303.backend.word.service.WordService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,7 +45,7 @@ public class PhotoService {
         String nameEn = aiServerClient.readObjectResult(command.imageFile()).replaceAll("^\"+|\"+$", "");
         if (nameEn.equals("glass")) nameEn = "glasses";
         String nameKo = SVLWord.translateToKorean(nameEn, "인식 불가");
-        String imageKey = redisWordImageHelper.upsertImage(command.imageFile(),  userId, nameEn);
+        String imageKey = redisWordImageHelper.upsertImage(command.imageFile(), userId, nameEn);
         Optional<WordEntity> word = wordService.getWordByNameEn(nameEn, userId);
         ReadObjectDetectionWordItem wordItem = word
                 .map(w -> new ReadObjectDetectionWordItem(w.getWordId(), w.getImageUrl()))
@@ -63,17 +63,27 @@ public class PhotoService {
         String word = commandDto.nameEn();
         RedisWordImage image = redisWordImageHelper.getImage(commandDto.imageKey());
         String imageUrl = imageUploader.upsert(userId, word, image.getContent(), image.getContentType());
-        UserEntity userEntity = userService.getUser(userId)
+        UserEntity user = userService.getUser(userId)
                 .orElseThrow(() -> new UserNotFoundException(CommonErrorCode.RESOURCE_NOT_FOUND));
 
-        CreateWordCommandDto createWordCommandDto = new CreateWordCommandDto(commandDto.nameEn(), commandDto.nameKo(), imageUrl, userEntity);
-        WordEntity wordEntity = wordService.createWord(createWordCommandDto);
-        FolderEntity folderEntity = folderService.getFolderById(commandDto.folderId());
+        CreateWordCommandDto wordCommandDto = new CreateWordCommandDto(word, commandDto.nameKo(), imageUrl, user);
+        WordEntity wordEntity = wordService.createWord(wordCommandDto);
 
-        folderWordService.saveWordInFolder(wordEntity, folderEntity);
+        List<CreateWordFolderItemDto> folders = new ArrayList<>();
+        for (Long folderId: commandDto.folders()) {
+            FolderEntity folderEntity = folderService.getFolderById(folderId);
+            folders.add(new CreateWordFolderItemDto(folderId, folderEntity.getName()));
+            folderWordService.saveWordInFolder(wordEntity, folderEntity);
+        }
 
         redisWordImageHelper.deleteImage(userId, word);
-        return PhotoMapper.INSTANCE.toResultDto(wordEntity);
+        return CreateWordResultDto.builder()
+                .wordId(wordEntity.getWordId())
+                .nameEn(wordEntity.getNameEn())
+                .nameKo(wordEntity.getNameKo())
+                .imageUrl(imageUrl)
+                .folders(folders)
+                .build();
     }
 
     @Transactional
