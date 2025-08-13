@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import { authApi } from "../utils/axios.ts";
+import { authApi } from "../../utils/axios.ts";
 
 export const WordImageUploadApi = async (
   word_id: number,

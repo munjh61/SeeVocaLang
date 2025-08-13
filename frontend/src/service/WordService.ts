@@ -1,5 +1,5 @@
 import type { AxiosError } from "axios";
-import { WordImageUploadApi } from "../api/WordImageUploadApi.ts";
+import { WordImageUploadApi } from "../api/upload/WordImageUploadApi.ts";
 
 export async function replaceImage(
   wordId: number,

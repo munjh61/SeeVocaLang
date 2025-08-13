@@ -3,7 +3,6 @@ import { Button } from "../components/atoms/button/Button.tsx";
 import { useNavigate } from "react-router-dom";
 import KaKaoIcon from "../asset/png/kakologo.png";
 import NaverIcon from "../asset/png/naverIcon.png";
-import GoogleIcon from "../asset/googleIcon.svg";
 import { Logo } from "../components/atoms/Logo.tsx";
 import { BASE_URL } from "../types/Regex.ts";
 
@@ -105,29 +104,29 @@ export const OnBoardingPage = () => {
               window.location.href = `${baseurl}/oauth2/authorization/naver`;
             }}
           />
-          <img
-            src={GoogleIcon}
-            alt="구글 로그인"
-            className="w-10 h-10 cursor-pointer"
-            onClick={() => {
-              // 로그인 후 돌아올 페이지 (풀 URL)
-              const finalRedirect =
-                "http://ec2-13-125-250-93.ap-northeast-2.compute.amazonaws.com/main";
+          {/*<img*/}
+          {/*  src={GoogleIcon}*/}
+          {/*  alt="구글 로그인"*/}
+          {/*  className="w-10 h-10 cursor-pointer"*/}
+          {/*  onClick={() => {*/}
+          {/*    // 로그인 후 돌아올 페이지 (풀 URL)*/}
+          {/*    const finalRedirect =*/}
+          {/*      "http://ec2-13-125-250-93.ap-northeast-2.compute.amazonaws.com/main";*/}
 
-              // OAuth 서버가 인증 완료 후 호출할 프론트 콜백 경로
-              const callback = window.location.origin + "/oauth2/success";
+          {/*    // OAuth 서버가 인증 완료 후 호출할 프론트 콜백 경로*/}
+          {/*    const callback = window.location.origin + "/oauth2/success";*/}
 
-              // 백엔드에 전달할 redirect_uri
-              document.cookie = `redirect_uri=${encodeURIComponent(callback)}; path=/`;
+          {/*    // 백엔드에 전달할 redirect_uri*/}
+          {/*    document.cookie = `redirect_uri=${encodeURIComponent(callback)}; path=/`;*/}
 
-              // 프론트에서 사용할 최종 리다이렉트 경로
-              // 풀 URL도 허용 → OAuthSuccess에서 처리 분기
-              document.cookie = `final_redirect=${encodeURIComponent(finalRedirect)}; path=/; SameSite=Lax`;
+          {/*    // 프론트에서 사용할 최종 리다이렉트 경로*/}
+          {/*    // 풀 URL도 허용 → OAuthSuccess에서 처리 분기*/}
+          {/*    document.cookie = `final_redirect=${encodeURIComponent(finalRedirect)}; path=/; SameSite=Lax`;*/}
 
-              // 소셜 로그인 시작
-              window.location.href = `${baseurl}/oauth2/authorization/google`;
-            }}
-          />
+          {/*    // 소셜 로그인 시작*/}
+          {/*    window.location.href = `${baseurl}/oauth2/authorization/google`;*/}
+          {/*  }}*/}
+          {/*/>*/}
         </div>
       </section>
     </div>

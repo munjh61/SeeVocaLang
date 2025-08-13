@@ -1,4 +1,4 @@
-import { authApi } from "../utils/axios.ts";
+import { authApi } from "../../utils/axios.ts";
 
 export type WordFolder = {
   folderId: number;

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { checkIdDuplicate } from "../../../api/SignupApi.ts";
+import { checkIdDuplicate } from "../../../api/user/SignupApi.ts";
 import { Input } from "../../atoms/input/Input.tsx";
 import { Text } from "../../atoms/text/Text.tsx";
 import { Button } from "../../atoms/button/Button.tsx";

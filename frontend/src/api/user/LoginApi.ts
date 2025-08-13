@@ -1,6 +1,6 @@
 import axios from "axios";
-import { BASE_URL } from "../types/Regex.ts";
-import { useAuthStore } from "../stores/AuthStore.ts";
+import { BASE_URL } from "../../types/Regex.ts";
+import { useAuthStore } from "../../stores/AuthStore.ts";
 
 const LOGIN_URL = `${BASE_URL}/api/v1/auth/signin`;
 

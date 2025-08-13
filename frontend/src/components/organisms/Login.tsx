@@ -6,7 +6,7 @@ import { Input } from "../atoms/input/Input.tsx";
 import { Checkbox } from "../atoms/Checkbox.tsx";
 import { Button } from "../atoms/button/Button.tsx";
 import { useNavigate } from "react-router-dom";
-import { signin } from "../../api/LoginApi.ts";
+import { signin } from "../../api/user/LoginApi.ts";
 import { getUserInfo } from "../../api/userInfo.ts";
 import { useAuthStore } from "../../stores/AuthStore.ts";
 

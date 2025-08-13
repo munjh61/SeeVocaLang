@@ -4,7 +4,7 @@ import { SignupStep1 } from "./SignupStep1.tsx";
 import { SignupStep2 } from "./SignupStep2.tsx";
 import { SignupStep3 } from "./SignupStep3.tsx";
 import { SignupStep4 } from "./SignupStep4.tsx";
-import { registerUser } from "../../../api/SignupApi.ts";
+import { registerUser } from "../../../api/user/SignupApi.ts";
 import { useNavigate } from "react-router-dom";
 
 type Step = 1 | 2 | 3 | 4;

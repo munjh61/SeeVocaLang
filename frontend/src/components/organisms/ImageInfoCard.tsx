@@ -2,7 +2,7 @@
 import React from "react";
 import { Text } from "../atoms/text/Text";
 import { Badge } from "./AnalyzeResultCards.tsx";
-import type { AnalysisResult } from "../../api/PhotoUpload.ts";
+import type { AnalysisResult } from "../../types/FileUploadType.ts";
 
 type ImageInfoCardProps = {
   /** 미리보기 이미지 URL (필수) */

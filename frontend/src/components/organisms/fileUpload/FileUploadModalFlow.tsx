@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { Modal } from "../../atoms/modal/modal.tsx";
 import { UploadStep1 } from "./UploadStep1.tsx";
 import { UploadStep2 } from "./UploadStep2.tsx";
-import { analyzeImage } from "../../../api/PhotoUpload.ts";
+import { analyzeImage } from "../../../api/upload/AnalyzeImage.ts";
 import type { AnalysisResult } from "../../../types/FileUploadType.ts";
 
 type Props = {

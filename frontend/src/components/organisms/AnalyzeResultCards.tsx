@@ -96,7 +96,9 @@ export const DuplicateCard = ({
           <Button
             size="sm"
             bgColor="yellow"
-            onClick={onReplace}
+            onClick={() => {
+              onReplace();
+            }}
             disabled={disabled}
             textColor={"white"}
           >

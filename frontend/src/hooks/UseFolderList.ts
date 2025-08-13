@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import type { AxiosError } from "axios";
-import { getWordFolders, type WordFolder } from "../api/GetWordFolders.ts";
-import { getExistingWordFolders } from "../api/GetExistingWordFolders.ts";
+import {
+  getExistingWordFolders,
+  getWordFolders,
+  type WordFolder,
+} from "../api/upload/GetWordFolders.ts";
 
 export function useFolderListByWordId(enabled: boolean, wordId: number | null) {
   const [folders, setFolders] = useState<WordFolder[]>([]); // is_word_exist: false
