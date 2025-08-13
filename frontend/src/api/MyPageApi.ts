@@ -130,7 +130,7 @@ export const getCalendar= async(year:number, month:number):Promise<string[]>=>{
 export const getStatics = async (): Promise<StatisticsResponse | null> => {
   try {
     const response = await authApi.get<StatisticsResponse>(`${MYPAGE_URL}/statistics`);
-    console.log(response.data.content)
+    console.log("통계",response.data.content)
     return response.data;
   } catch (error) {
     console.error("📌 통계 불러오기 실패:", error);

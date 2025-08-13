@@ -1,9 +1,10 @@
-import {useState } from "react";
+import {useEffect, useState } from "react";
 import { Button } from "../../atoms/button/Button";
 import { AddFriendButton } from "../friendButtons/AddFriendButton";
 import { DeleteFriendButton } from "../friendButtons/DeleteFriendButton";
 import { RequestFriendButton } from "../friendButtons/RequestFriendButton";
-import { acceptFriend } from "../../../api/FriendPageApi";
+import { acceptFriend, deleteFriend } from "../../../api/FriendPageApi";
+import { VocaButton } from "../friendButtons/VocaButton";
 
 
 
@@ -14,13 +15,18 @@ type FriendInfoProps = {
   name: string;
   status: string;
   userid?:number;
+  onAddFriend?: (id: number) => void; 
   onDeleteFriend?: (id: number) => void;
   onAcceptFriend?: (id: number) => void; 
 };
 
-export const FriendInfoCard = ({ id, profileUrl, name, status: initialStatus,onDeleteFriend,onAcceptFriend}: FriendInfoProps) => {
+export const FriendInfoCard = ({ id, profileUrl, name, status: initialStatus,onAddFriend,onDeleteFriend,onAcceptFriend}: FriendInfoProps) => {
 
   const [status, setStatus] = useState<string>(initialStatus);
+   useEffect(() => {
+    setStatus(initialStatus);
+  }, [initialStatus]);
+
   const handleAccept = async () => {
   try {
     const success = await acceptFriend(id);
@@ -40,14 +46,22 @@ export const FriendInfoCard = ({ id, profileUrl, name, status: initialStatus,onD
     switch (status) {
       case "NONE":
         return (
-          <AddFriendButton data= {id} className="w-full" onRequestComplete={() => setStatus("REQUEST")}/>
+          <AddFriendButton data= {id} className="w-full" onRequestComplete={() =>{ setStatus("REQUEST"); onAddFriend?.(id);   }             }/>
         );
       case "APPROVED":
         return (
-          <DeleteFriendButton data= {id} className="w-full" friendName={name}  onRequestComplete={() => {
-        setStatus("NONE");
-        onDeleteFriend?.(id); // ✅ 부모 목록에서도 제거
-      }}/>
+          <div className="flex flex-col gap-2 w-full">
+      <VocaButton data={id} className="w-full" />
+      <DeleteFriendButton
+        data={id}
+        className="w-full"
+        friendName={name}
+        onRequestComplete={() => {
+          setStatus("NONE");
+          onDeleteFriend?.(id);
+        }}
+      />
+      </div>
         );
         case "REQUEST":
         return (
@@ -70,7 +84,16 @@ export const FriendInfoCard = ({ id, profileUrl, name, status: initialStatus,onD
             size="md"
             textColor="white"
             className="gap-1 px-3 py-1.5"
-            onClick={() => onDeleteFriend?.(id)} 
+           onClick={async () => {
+          const success = await deleteFriend(id); // ✅ API 호출
+          if (success) {
+            alert("친구 요청을 거절했습니다.");
+            setStatus("NONE");
+            onDeleteFriend?.(id); // 부모 컴포넌트에서도 제거
+          } else {
+            alert("친구 요청 거절에 실패했습니다.");
+          }
+        }}
           >
             거절
           </Button>

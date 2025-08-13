@@ -52,7 +52,7 @@ export const DeleteFriendButton = ({
         bgColor="red"
         textColor="white"
         size="md"
-        className={`gap-1 px-3 py-1.5 ${className}`}
+        className={`gap-1 px-3 py-1.5 ${className} !w-auto`}
         onClick={() => setIsModalOpen(true)} // ✅ 모달 열기
         disabled={loading}
       >

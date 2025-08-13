@@ -36,6 +36,7 @@ export const MyPageTemplate = ()=>{
     };
     fetchCalendar();
   }, []);
+  
 useEffect(() => {
   const fetchUserInfo = async () => {
     try {
@@ -84,7 +85,7 @@ useEffect(() => {
               <Button
                 bgColor={"gray"}
                 rounded={"full"}
-                className={"relative w-20 h-20"}
+                className={"relative w-20 h-20 ml-4"}  
               >
                 {userInfo?.profileImage ? (
                   <img
@@ -100,57 +101,57 @@ useEffect(() => {
               </Button>
               <div className="flex flex-col gap-1">
                 <Text size="xl" weight="extrabold" color="black">
-                  {userInfo?.nickname ?? "닉네임 없음"}
+                  {userInfo?.nickname || "닉네임 없음"}
                 </Text>
                 <Text size="sm" weight="normal" color="gray">
                   생년월일: 1996.09.19
                 </Text>
                 <Text size="sm" weight="normal" color="gray">
-                  {userInfo?.email ?? "이메일 없음"}
+                  {userInfo?.email || "이메일 정보 없음"}
                 </Text>
               </div>
             </div>
 
-            <div className="flex justify-center items-center gap-4">
-              <Button
-                bgColor={"profileButton"}
-                textColor={"white"}
-                size={"long"}
-                onClick={openModal}
-                className="opacity-70 hover:opacity-100 transition-opacity"
-              >
-                <div className="flex items-center whitespace-nowrap gap-2">
-                  <Icon icon={EditIcon} color={"white"} />
-                  <Text size={"base"} color="white" weight={"medium"}>
-                    프로필 편집
-                  </Text>
-                </div>
-              </Button>
-            </div>
-          </div>
+         <div className="flex flex-wrap justify-end gap-4 p-4">
+  <Button
+    bgColor={"profileButton"}
+    textColor={"white"}
+    size={"long"}
+    onClick={openModal}
+    className="opacity-70 hover:opacity-100 transition-opacity"
+  >
+    <div className="flex items-center whitespace-nowrap gap-2">
+      <Icon icon={EditIcon} color={"white"} />
+      <Text size={"base"} color="white" weight={"medium"}>
+        프로필 편집
+      </Text>
+    </div>
+  </Button>
 
-          {/* 회원탈퇴 버튼 - 우측 하단 맨끝 절대 위치 */}
-          <Button
-            bgColor={"red"}
-            textColor={"white"}
-            size={"md"}
-            aria-label="회원탈퇴 버튼"
-            className="opacity-70 hover:opacity-100 transition-opacity absolute bottom-4 right-4"
-            onClick={async () => {
-              if (window.confirm("정말 회원탈퇴 하시겠습니까? 이 작업은 되돌릴 수 없습니다.")) {
-              const success = await deleteAccount();
-              if (success) {
-                alert("회원탈퇴가 완료되었습니다.");
-                window.location.href = "/"; // 홈으로 리다이렉트
-              } else {
-               alert("회원탈퇴에 실패했습니다. 다시 시도해주세요.");
-              }
-            }
-          }}
-          >
-            회원탈퇴
-          </Button>
-
+  <Button
+    bgColor={"red"}
+    textColor={"white"}
+    size={"md"}
+    aria-label="회원탈퇴 버튼"
+    className="opacity-70 hover:opacity-100 transition-opacity"
+    onClick={async () => {
+      if (
+        window.confirm("정말 회원탈퇴 하시겠습니까? 이 작업은 되돌릴 수 없습니다.")
+      ) {
+        const success = await deleteAccount();
+        if (success) {
+          alert("회원탈퇴가 완료되었습니다.");
+          window.location.href = "/"; // 홈으로 리다이렉트
+        } else {
+          alert("회원탈퇴에 실패했습니다. 다시 시도해주세요.");
+        }
+      }
+    }}
+  >
+    회원탈퇴
+  </Button>
+</div>
+</div>
           <ProfileModal
             isOpen={isModalOpen}
             onClose={closeModal}

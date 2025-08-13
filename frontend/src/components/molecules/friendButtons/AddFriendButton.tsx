@@ -46,7 +46,7 @@ export const AddFriendButton = ({ className,onRequestComplete,data}: AddFriendBu
       bgColor={"blue"}
       textColor={"white"}
       size={"md"}
-      className={`gap-1 px-3 py-1.5 ${className}`}
+      className={`gap-1 px-3 py-1.5 ${className}!w-auto`}
       onClick={handleFriendRequest}
       disabled={loading}
     >

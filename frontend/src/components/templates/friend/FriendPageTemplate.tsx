@@ -3,25 +3,16 @@ import { FriendHeader } from "../../organisms/friendHeader/FriendHeader";
 import { MyFriendsContent } from "../friendContents/MyFriendsContent";
 import { FriendRequestContent } from "../friendContents/FriendRequestContent";
 import { FriendSearchContent } from "../friendContents/FriendSearchContent";
-import { getUserInfo, type UserInfo } from "../../../api/userInfo";
 import { friendList, type Friend } from "../../../api/FriendPageApi";
-
+import { useAuthStore } from "../../../stores/AuthStore";
 
 type TabKey = "search" | "friend" | "request";
 export const FriendPageTemplate = () => {
-    const [searchValue, setSearchValue] = useState("");
-    const [selectedTab, setSelectedTab] = useState<TabKey>("search")
-    const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
-    const [friends, setFriends] = useState<Friend[]>([]);
-    useEffect(() => {
-    const fetchUserInfo = async () => {
-      try {
-        const data = await getUserInfo(); // ✅ 실제 API 호출
-        setUserInfo(data); // data에는 nickname, email, profileImage 등이 들어있음
-      } catch (error) {
-        console.error("유저 정보 불러오기 실패:", error);
-      }
-    };
+  const [searchValue, setSearchValue] = useState("");
+  const [selectedTab, setSelectedTab] = useState<TabKey>("search");
+  const [friends, setFriends] = useState<Friend[]>([]);
+ const userId = useAuthStore.getState().user?.userId;
+  useEffect(() => {
     const fetchFriends = async () => {
       try {
         const data = await friendList();
@@ -31,44 +22,74 @@ export const FriendPageTemplate = () => {
         setFriends([]);
       }
     };
-    fetchUserInfo();
-     fetchFriends()
-}, []);
-  const filteredFriends = friends.filter(friend =>
-    friend.nickname.toLowerCase().includes(searchValue.toLowerCase())
-  );
-    return (
+    fetchFriends();
+  }, []);
+
+  // --- 상태 변경 핸들러 (모두 여기서)
+  const handleAddFriend = (id: number) => {
+    // 요청 보낸 상태로 로컬에서 즉시 반영 (optimistic)
+    setFriends((prev) =>
+      prev.map((f) =>
+        f.user_id === id ? { ...f, friend_status: "PENDING", sender_id: userId ?? f.sender_id } : f
+      )
+    );
+  };
+
+  const handleAcceptFriend = async() => {
+     try {
+    // (삭제 API는 FriendInfoCard 내에서 호출하고 있으므로 여기선 목록 갱신만)
+    const updatedFriends = await friendList();
+    setFriends(updatedFriends);
+  } catch (error) {
+    console.error("친구 목록 갱신 실패", error);
+  }
+  };
+
+  const handleDeleteFriend = async() => {
+    // 요청 거절이나 친구 삭제 시 목록에서 제거 (원하면 상태만 NONE으로 바꾸도록 수정 가능)
+      try {const updatedFriends = await friendList();
+    setFriends(updatedFriends);
+  } catch (error) {
+    console.error("친구 목록 갱신 실패", error);
+  }
+  };
+
+  return (
     <div className="p-4">
       <FriendHeader
         searchValue={searchValue}
-        onSearchChange={e => setSearchValue(e.target.value)}
+        onSearchChange={(e) => setSearchValue(e.target.value)}
         selectedTab={selectedTab}
         setSelectedTab={setSelectedTab}
-        friends={friends}  // 친구목록 전달
-        userId={userInfo?.userId} // userId 전달 (필요)
+        friends={friends}
+        userId={userId}
       />
 
       <div className="mt-4">
         {selectedTab === "search" && (
-          <FriendSearchContent searchValue={searchValue} userId={userInfo?.userId} />
+          <FriendSearchContent
+            searchValue={searchValue}
+            userId={userId}
+            friends={friends}
+            onAddFriend={handleAddFriend}
+            onAcceptFriend={handleAcceptFriend}
+            onDeleteFriend={handleDeleteFriend}
+          />
         )}
         {selectedTab === "friend" && (
-          <MyFriendsContent friends={filteredFriends} onDeleteFriend={(id) => {
-            setFriends(prev => prev.filter(f => f.user_id !== id));
-          }} />
+          <MyFriendsContent
+            friends={friends}
+            searchValue={searchValue}
+            onDeleteFriend={handleDeleteFriend}
+          />
         )}
         {selectedTab === "request" && (
           <FriendRequestContent
-            userId={userInfo?.userId}
-            friends={filteredFriends}
-            onAcceptFriend={(id) => {
-              setFriends(prev =>
-                prev.map(f => f.user_id === id ? { ...f, friend_status: "APPROVED" } : f)
-              );
-            }}
-            onDeleteFriend={(id) => {
-              setFriends(prev => prev.filter(f => f.user_id !== id));
-            }}
+            userId={userId}
+            friends={friends}
+            searchValue={searchValue}
+            onAcceptFriend={handleAcceptFriend}
+            onDeleteFriend={handleDeleteFriend}
           />
         )}
       </div>
