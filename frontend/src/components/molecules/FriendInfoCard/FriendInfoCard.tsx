@@ -4,6 +4,7 @@ import { AddFriendButton } from "../friendButtons/AddFriendButton";
 import { DeleteFriendButton } from "../friendButtons/DeleteFriendButton";
 import { RequestFriendButton } from "../friendButtons/RequestFriendButton";
 import { acceptFriend, deleteFriend } from "../../../api/FriendPageApi";
+import { VocaButton } from "../friendButtons/VocaButton";
 
 
 
@@ -49,11 +50,18 @@ export const FriendInfoCard = ({ id, profileUrl, name, status: initialStatus,onA
         );
       case "APPROVED":
         return (
-          
-          <DeleteFriendButton data= {id} className="w-full" friendName={name}  onRequestComplete={() => {
-        setStatus("NONE");
-        onDeleteFriend?.(id); // ✅ 부모 목록에서도 제거
-      }}/>
+          <div className="flex flex-col gap-2 w-full">
+      <VocaButton data={id} className="w-full" />
+      <DeleteFriendButton
+        data={id}
+        className="w-full"
+        friendName={name}
+        onRequestComplete={() => {
+          setStatus("NONE");
+          onDeleteFriend?.(id);
+        }}
+      />
+      </div>
         );
         case "REQUEST":
         return (
