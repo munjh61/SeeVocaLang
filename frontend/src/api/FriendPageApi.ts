@@ -46,7 +46,7 @@ export const friendList = async (): Promise<Friend[]> => {
   try {
     const response = await authApi.get("api/v2/friends");
 
-    console.log("API 응답 users:", response.data.content);
+  
 
     if (response.status === 200) {
       // 여기에 API 응답 구조에 맞게 접근하세요

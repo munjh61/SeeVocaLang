@@ -114,7 +114,6 @@ export const getCalendar= async(year:number, month:number):Promise<string[]>=>{
         month,
       },
     });
-    console.log( "달력:", response.data.content.days)
     if (response.status === 200 && response.data?.content?.days) {
       return response.data.content.days; // 날짜 배열 반환
     } else {

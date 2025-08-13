@@ -11,7 +11,7 @@ export const FriendPageTemplate = () => {
   const [searchValue, setSearchValue] = useState("");
   const [selectedTab, setSelectedTab] = useState<TabKey>("search");
   const [friends, setFriends] = useState<Friend[]>([]);
- const userId = useAuthStore.getState().user?.userId;
+  const userId = useAuthStore.getState().user?.userId;
   useEffect(() => {
     const fetchFriends = async () => {
       try {
@@ -24,10 +24,7 @@ export const FriendPageTemplate = () => {
     };
     fetchFriends();
   }, []);
-
-  // --- 상태 변경 핸들러 (모두 여기서)
   const handleAddFriend = (id: number) => {
-    // 요청 보낸 상태로 로컬에서 즉시 반영 (optimistic)
     setFriends((prev) =>
       prev.map((f) =>
         f.user_id === id ? { ...f, friend_status: "PENDING", sender_id: userId ?? f.sender_id } : f
@@ -37,7 +34,6 @@ export const FriendPageTemplate = () => {
 
   const handleAcceptFriend = async() => {
      try {
-    // (삭제 API는 FriendInfoCard 내에서 호출하고 있으므로 여기선 목록 갱신만)
     const updatedFriends = await friendList();
     setFriends(updatedFriends);
   } catch (error) {
@@ -46,8 +42,7 @@ export const FriendPageTemplate = () => {
   };
 
   const handleDeleteFriend = async() => {
-    // 요청 거절이나 친구 삭제 시 목록에서 제거 (원하면 상태만 NONE으로 바꾸도록 수정 가능)
-      try {const updatedFriends = await friendList();
+  try {const updatedFriends = await friendList();
     setFriends(updatedFriends);
   } catch (error) {
     console.error("친구 목록 갱신 실패", error);
