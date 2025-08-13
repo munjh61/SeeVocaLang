@@ -18,6 +18,9 @@ public class FolderEntity {
 
     private String name;
 
+    @Column(nullable = false)
+    private int wordCount = 0;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
@@ -32,13 +35,13 @@ public class FolderEntity {
 
     private boolean isDeleted = false;
 
-    public void delete(){
+    public void delete() {
         isDeleted = true;
     }
 
-    public void update(String description, String name){
-        this.description =  description;
-        this.name =  name;
+    public void update(String description, String name) {
+        this.description = description;
+        this.name = name;
     }
 
     @Builder
@@ -46,5 +49,9 @@ public class FolderEntity {
         this.name = name;
         this.user = user;
         this.description = description;
+    }
+
+    public void increment(int num) {
+        this.wordCount += num;
     }
 }
