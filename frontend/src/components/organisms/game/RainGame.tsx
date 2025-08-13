@@ -5,9 +5,11 @@ import type { VocaCardProps } from "../vocaCard/VocaCard";
 import { LoadingPage } from "../../templates/loadingTemplate/LoadingTemplate";
 import { HpBar } from "../../molecules/game/HpBar";
 import { GameText } from "../../molecules/game/GameText";
-import city from "../../../asset/png/city.jpg";
 import { Missile } from "../../molecules/game/Missile";
 import boom from "../../../asset/png/boom.png";
+import cityDark from "../../../asset/png/cityDark.png";
+import cityDay from "../../../asset/png/cityDay.png";
+import sky from "../../../asset/png/sky.png";
 
 type RainGameProps = {
   vocas: VocaCardProps[];
@@ -22,16 +24,24 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
   const INITIAL_SPEED = 2; // px/frame
   const SPEED_UP = 1.1; // 정답 시 속도 ×1.1
 
-  // ✨ 미사일 기본 비율(가로:세로) — 이전 고정치(130x100) 기준
+  // 미사일 가로:세로 비 (이전 130x100 → h/w)
   const MISSILE_ASPECT = 100 / 130; // ≈ 0.769
 
-  // ✨ 머리만 보이게: 미사일 너비의 일정 비율만 보여주기
-  const HEAD_PEEK_RATIO = 0.1; // 미사일 너비의 10%
-  const HEAD_PEEK_MIN = 8; // 최소 머리 노출 px
-  const HEAD_PEEK_MAX = 24; // 최대 머리 노출 px
+  const MISSILE_W_RATIO = 0.42; // 컨테이너 너비의 42%
+  const MISSILE_H_FRAC = 0.62; // 컨테이너 높이의 62% 이내
+  const MISSILE_W_MIN = 360; // 최소 360px
+  const MISSILE_W_MAX = 960; // 최대 960px (원하면 더 키워도 됨)
+
+  // 머리만 보이게(너비의 일부만)
+  const HEAD_PEEK_RATIO = 0.12; // 너비의 12%
+  const HEAD_PEEK_MIN = 16;
+  const HEAD_PEEK_MAX = 64;
 
   // 폭발(boom) 연출
-  const BOOM_DURATION = 350; // ms (잠깐만 보이게)
+  const BOOM_DURATION = 350; // ms
+  const BOOM_W_RATIO = 0.3; // 컨테이너 너비 30%
+  const BOOM_MIN = 160; // 최소 160px
+  const BOOM_MAX_H_FACTOR = 0.6; // 세로의 60%를 상한
 
   /** -------------------------
    *  한 라운드에 사용할 문제 풀(pool)
@@ -52,31 +62,33 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
   const current = roundData[idx];
 
   /** -------------------------
-   *  컨테이너 & 크기 상태(✨ 반응형)
+   *  컨테이너 & 크기 상태(반응형)
    * ------------------------- */
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // ✨ 미사일/폭발을 컨테이너 비율로 계산
-  const [missileSize, setMissileSize] = useState({ w: 520, h: 400 }); // 초기값(예전 고정치)
-  const [boomSize, setBoomSize] = useState({ w: 160, h: 160 }); // 정사각 추천
+  // 미사일/폭발 동적 크기 (초깃값)
+  const [missileSize, setMissileSize] = useState({
+    w: 360,
+    h: Math.round(360 * MISSILE_ASPECT),
+  });
+  const [boomSize, setBoomSize] = useState({ w: 200, h: 200 });
 
-  // ✨ 머리만 보이게 위한 px 계산 함수
+  // 머리만 보이게 위한 px 계산
   const headPeekPx = useCallback(
     (w: number) =>
       Math.min(Math.max(w * HEAD_PEEK_RATIO, HEAD_PEEK_MIN), HEAD_PEEK_MAX),
     []
   );
 
-  // ✨ 시작 X좌표(머리만 보이도록 음수에서 시작)
+  // 시작 X좌표(머리만 보이도록 음수에서 시작)
   const startXFor = useCallback(
-    (missileW: number) => -missileW + headPeekPx(missileW),
+    (w: number) => -w + headPeekPx(w),
     [headPeekPx]
   );
 
   /** -------------------------
    *  가로 이동(X축) & 속도
    * ------------------------- */
-  // 초기 x는 초기 missileSize 기준으로 세팅
   const [x, setX] = useState(startXFor(missileSize.w));
   const xRef = useRef(startXFor(missileSize.w));
   const speedRef = useRef(INITIAL_SPEED);
@@ -109,46 +121,90 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
   }, [current, pool]);
 
   /** -------------------------
-   *  컨테이너 기준 크기 계산 (✨ 핵심)
-   *  - 미사일: 컨테이너 너비의 ~11% (클램프)
-   *  - 폭발:  컨테이너 너비의 ~18% (클램프)
+   *  크기 계산 (컨테이너 기준) + 안정화
+   *  - 라운드 전환 등 미세 진동에 흔들리지 않도록 스레숄드 & RAF
    * ------------------------- */
+  const lastWRef = useRef(0);
+  const lastHRef = useRef(0);
+  const computeRafIdRef = useRef<number | null>(null);
+
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
 
-    const compute = () => {
+    const computeNow = () => {
       const cw = el.clientWidth;
       const ch = el.clientHeight;
+      if (!cw || !ch) return;
 
-      // ✨ 미사일 너비: 컨테이너 너비의 33%, [80, 220]로 클램프
-      const missileW = Math.round(Math.min(Math.max(cw * 0.33, 80), 220));
+      // 미세 변동 무시 (6px 이내면 스킵)
+      if (
+        Math.abs(cw - lastWRef.current) < 6 &&
+        Math.abs(ch - lastHRef.current) < 6
+      )
+        return;
+      lastWRef.current = cw;
+      lastHRef.current = ch;
+
+      // ▶ 미사일 너비: 너비/높이 한계를 모두 고려해서 "가장 큰 값"
+      const wByWidth = cw * MISSILE_W_RATIO; // 너비 기준
+      const hLimit = ch * MISSILE_H_FRAC; // 높이 상한
+      const wByHeight = hLimit / MISSILE_ASPECT; // 높이 상한을 만족하는 최대 너비
+      let missileW = Math.min(wByWidth, wByHeight); // 두 제약 중 작은 쪽 사용
+
+      // 클램프 + 컨테이너 90% 초과 금지
+      missileW = Math.round(
+        Math.min(
+          Math.max(missileW, MISSILE_W_MIN),
+          Math.min(MISSILE_W_MAX, cw * 0.9)
+        )
+      );
       const missileH = Math.round(missileW * MISSILE_ASPECT);
       setMissileSize({ w: missileW, h: missileH });
 
-      // ✨ 폭발은 정사각: 컨테이너 너비 18%, [120, ch*0.4]
-      const boomSide = Math.round(Math.min(Math.max(cw * 0.18, 120), ch * 0.4));
+      // ▶ 폭발(정사각): 너비 비율 vs 높이 상한(세로 60%) 중 작은 쪽
+      const boomByW = cw * BOOM_W_RATIO;
+      const boomByH = ch * BOOM_MAX_H_FACTOR;
+      const boomSide = Math.round(
+        Math.min(Math.max(boomByW, BOOM_MIN), boomByH)
+      );
       setBoomSize({ w: boomSide, h: boomSide });
     };
 
-    compute();
-    const ro = new ResizeObserver(compute);
+    const scheduleCompute = () => {
+      if (computeRafIdRef.current)
+        cancelAnimationFrame(computeRafIdRef.current);
+      computeRafIdRef.current = requestAnimationFrame(computeNow);
+    };
+
+    // 최초 1회 + 관찰 시작
+    scheduleCompute();
+    const ro = new ResizeObserver(scheduleCompute);
     ro.observe(el);
-    return () => ro.disconnect();
-  }, [MISSILE_ASPECT]);
+
+    return () => {
+      ro.disconnect();
+      if (computeRafIdRef.current)
+        cancelAnimationFrame(computeRafIdRef.current);
+    };
+  }, [
+    MISSILE_ASPECT,
+    MISSILE_W_RATIO,
+    MISSILE_H_FRAC,
+    BOOM_W_RATIO,
+    BOOM_MAX_H_FACTOR,
+  ]);
 
   /** -------------------------
    *  라운드/문제 관리
    * ------------------------- */
   useEffect(() => {
     if (!running) return;
-    if (lives > 0 && idx >= roundData.length) {
-      startNewRound();
-    }
+    if (lives > 0 && idx >= roundData.length) startNewRound();
   }, [idx, roundData.length, lives, running]);
 
   const resetToStartX = useCallback(() => {
-    const sx = startXFor(missileSize.w); // ✨ 현재 미사일 너비 기준
+    const sx = startXFor(missileSize.w);
     xRef.current = sx;
     setX(sx);
   }, [missileSize.w, startXFor]);
@@ -157,8 +213,8 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
     setRound(r => r + 1);
     setRoundData(shuffle(pool)); // 재셔플
     setIdx(0);
-    resetToStartX(); // ✨ 새 라운드도 머리부터
-    // speedRef.current = INITIAL_SPEED; // 라운드마다 초기화하려면 해제
+    resetToStartX(); // 새 라운드도 머리부터
+    // speedRef.current = INITIAL_SPEED; // 원하면 라운드마다 속도 초기화
   };
 
   /** -------------------------
@@ -194,7 +250,6 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
 
   /** -------------------------
    *  가로 이동 루프 (requestAnimationFrame)
-   *  - 충돌 판정도 ✨ missileSize.w 기반
    * ------------------------- */
   useEffect(() => {
     if (!running || !current) return;
@@ -213,13 +268,13 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
 
       const next = xRef.current + speedRef.current;
 
-      // ✨ 오른쪽 벽 도착 (동적 미사일 너비 고려)
+      // 오른쪽 벽 도착 (동적 미사일 너비 고려)
       if (next + missileSize.w >= w) {
-        showBoom(); // 💥 폭발 잠깐 표시
+        showBoom(); // 폭발 잠깐 표시
         setLives(l => l - 1); // 목숨 감소
         setIdx(i => i + 1); // 다음 문제
         resetToStartX(); // 다음도 머리부터
-        return; // 이번 프레임 종료
+        return;
       }
 
       xRef.current = next;
@@ -247,7 +302,6 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
       setIdx(i => i + 1);
       resetToStartX();
 
-      // 중복 RAF 방지
       if (rafRef.current) {
         cancelAnimationFrame(rafRef.current);
         rafRef.current = null;
@@ -279,9 +333,20 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
       {/* 움직이는 영역 (배경 포함) */}
       <div
         ref={containerRef}
-        className="relative grow rounded-md overflow-hidden h-[60vh] min-h-[420px] bg-center bg-cover"
-        style={{ backgroundImage: `url(${city})` }}
+        className="relative grow rounded-md overflow-hidden h-[60vh] min-h-[420px] flex"
       >
+        <div
+          className="grow bg-center bg-cover"
+          style={{ backgroundImage: `url(${cityDark})` }}
+        />
+        <div
+          className="grow bg-center bg-cover"
+          style={{ backgroundImage: `url(${sky})` }}
+        />
+        <div
+          className="grow bg-center bg-cover"
+          style={{ backgroundImage: `url(${cityDay})` }}
+        />
         {/* 미사일 (세로 중앙 고정 + 가로 이동) */}
         {current && (
           <div
@@ -289,22 +354,22 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
             className="absolute top-1/2 -translate-y-1/2 transition-none"
             style={{ left: x }}
           >
-            {/* 자산이 왼쪽을 향하면 머리부터 보이게 하려면 래퍼에 scale-x-[-1] */}
+            {/* 에셋이 왼쪽을 향하면 머리부터 보이게 하려면 래퍼에 scale-x-[-1] */}
             <Missile
               imageUrl={current.imageUrl}
               nameEn={current.nameEn}
-              width={missileSize.w} // ✨ 동적 너비
-              height={missileSize.h} // ✨ 동적 높이 (비율 유지)
+              width={missileSize.w}
+              height={missileSize.h}
             />
           </div>
         )}
 
-        {/* 💥 폭발 이미지: 오른쪽 가장자리에서 잠깐 표시 (정사각) */}
+        {/* 폭발 이미지: 오른쪽 가장자리에서 잠깐 표시 (정사각) */}
         {boomVisible && (
           <img
             src={boom}
             alt="boom"
-            className="absolute top-1/2 -translate-y-1/2 right-2 pointer-events-none select-none"
+            className="absolute bottom-0 -translate-y-1/2 right-[10%] pointer-events-none select-none"
             style={{ width: boomSize.w, height: boomSize.h }}
             draggable={false}
           />
