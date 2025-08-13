@@ -56,6 +56,7 @@ public class FolderQueryRepositoryImpl extends QuerydslRepositorySupport impleme
                         folderEntity.name,
                         projections,
                         folderEntity.description,
+                        folderEntity.wordCount,
                         folderEntity.isFavorite
                 ))
                 .where(condition)
