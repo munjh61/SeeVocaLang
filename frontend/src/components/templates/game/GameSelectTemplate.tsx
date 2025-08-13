@@ -5,6 +5,8 @@ import { Text } from "../../atoms/text/Text";
 import { ImageBox } from "../../molecules/imagebox/Imagebox";
 import dummy from "../../../asset/png/dummyPic.png";
 import rainGameThumbnail from "../../../asset/png/rainGameThumbnail.png";
+import gameMap from "../../../asset/png/gameMap.png";
+import treasureChest from "../../../asset/png/treasureChest.png";
 
 type GameSelectTemplateProps = {
   onClick: (v: number) => void;
@@ -46,39 +48,52 @@ export const GameSelectTemplate = ({ onClick }: GameSelectTemplateProps) => {
     },
   ];
   return (
-    <Div align={"center"} className="grow p-2">
+    <Div
+      align={"center"}
+      className="grow p-2 bg-center bg-cover"
+      style={{ backgroundImage: `url(${gameMap})` }}
+    >
       <ImageBox
         src={games[ready - 1].gameThumbnail}
         className="grow rounded-2xl"
       />
       <Div align={"center"} className="w-full gap-2">
         {/* 선택 부분 */}
-        <Div className="flex flex-row w-full gap-4">
+        <Div className="w-[60%] flex flex-row justify-around">
           {games.map(g => (
-            <Button
-              bgColor={"blue"}
-              className="w-full"
-              onClick={() => moveFunction(g.gameNumber)}
+            <div
+              style={{ backgroundImage: `url(${treasureChest})` }}
+              className="w-[16%] bg-center bg-cover aspect-4/5 flex items-center"
             >
-              <Text
-                font={"outline"}
-                color="white"
-                className="p-10"
-                size={"xxxl"}
+              <Button
+                className="grow"
+                onClick={() => moveFunction(g.gameNumber)}
               >
-                {g.gameTitle}
-              </Text>
-            </Button>
+                <Text
+                  font={"outline"}
+                  color="white"
+                  className="p-10 whitespace-nowrap"
+                  size={"xxxl"}
+                >
+                  {g.gameTitle}
+                </Text>
+              </Button>
+            </div>
           ))}
         </Div>
         {/* 설명 부분 */}
         <Div
           bg={"yellow"}
           align={"center"}
-          className="w-full p-4 justify-center"
+          className="w-fit p-4 justify-center"
           rounded={"lg"}
         >
-          <Text color="white" font={"outline"} size={"xxxl"} className="w-full">
+          <Text
+            color="white"
+            font={"outline"}
+            size={"xxxl"}
+            className="w-full text-center"
+          >
             {games[ready - 1].gameDescription}
           </Text>
         </Div>
