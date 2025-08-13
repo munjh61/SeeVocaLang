@@ -69,6 +69,7 @@ public class PhotoService {
         CreateWordCommandDto createWordCommandDto = new CreateWordCommandDto(commandDto.nameEn(), commandDto.nameKo(), imageUrl, userEntity);
         WordEntity wordEntity = wordService.createWord(createWordCommandDto);
         FolderEntity folderEntity = folderService.getFolderById(commandDto.folderId());
+
         folderWordService.saveWordInFolder(wordEntity, folderEntity);
 
         redisWordImageHelper.deleteImage(userId, word);

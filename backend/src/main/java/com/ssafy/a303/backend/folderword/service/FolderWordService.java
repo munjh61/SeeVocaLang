@@ -21,6 +21,8 @@ public class FolderWordService {
         if (isWordAlreadyExistInFolder)
             throw new WordAlreadyExistInFolderRuntimeException();
 
+        wordEntity.increment(1);
+        folderEntity.increment(1);
         FolderWordEntity folderWordEntity = FolderWordEntity.builder()
                 .word(wordEntity)
                 .folder(folderEntity)

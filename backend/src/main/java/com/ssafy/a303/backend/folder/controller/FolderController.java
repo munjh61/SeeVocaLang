@@ -70,13 +70,12 @@ public class FolderController {
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/api/v1/folders/{folderId}/words")
-    public ResponseEntity<BaseResponseDto<Void>> deleteFolderWords(@PathVariable long folderId,
-                                                                   @RequestBody DeleteFolderWordsRequestDto deleteFolderWordsRequestDto) {
+    @DeleteMapping("/api/v1/folders/{folderId}/words/{wordId}")
+    public ResponseEntity<BaseResponseDto<Void>> deleteFolderWords(@PathVariable long folderId, @PathVariable long wordId) {
         BaseResponseDto<Void> response = folderService.deleteFolderWords(DeleteFolderWordsCommandDto
                 .builder()
                 .folderId(folderId)
-                .wordIds(deleteFolderWordsRequestDto.getWordIds())
+                .wordId(wordId)
                 .build());
 
         return ResponseEntity.ok(response);

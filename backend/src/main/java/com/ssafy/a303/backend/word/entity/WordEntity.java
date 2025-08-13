@@ -30,6 +30,13 @@ public class WordEntity {
 
     private boolean isDeleted = false;
 
+    @Column(nullable = false)
+    private int folderCount = 0;
+
+    public void increment(int num){
+        this.folderCount += num;
+    }
+
     public void delete() {
         isDeleted = true;
     }

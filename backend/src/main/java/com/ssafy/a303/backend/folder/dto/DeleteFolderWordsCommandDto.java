@@ -12,6 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class DeleteFolderWordsCommandDto {
-    private List<Long> wordIds;
+    private long wordId;
     private long folderId;
 }

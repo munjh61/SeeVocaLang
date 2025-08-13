@@ -11,7 +11,7 @@ public interface FolderQueryRepository {
 
     List<ReadWordResponseDto> getWordsByFolderId(long folderId);
 
-    boolean deleteWordsByFolderId(long folderId, List<Long> wordIds);
+    boolean deleteWordsByFolderId(long folderId, long wordId);
 
     List<GetFoldersContainingWordsItemDto> getFoldersContainingWordsList(Long userId, Long wordId);
 }

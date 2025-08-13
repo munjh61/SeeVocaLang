@@ -11,5 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class DeleteWordCommandDto {
     private long wordId;
+    private long folderId;
     private long userId;
 }
