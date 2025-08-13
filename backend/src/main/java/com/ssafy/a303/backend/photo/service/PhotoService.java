@@ -72,18 +72,12 @@ public class PhotoService {
         List<CreateWordFolderItemDto> folders = new ArrayList<>();
         for (Long folderId: commandDto.folders()) {
             FolderEntity folderEntity = folderService.getFolderById(folderId);
-            folders.add(new CreateWordFolderItemDto(folderId, folderEntity.getName()));
+            folders.add(PhotoMapper.INSTANCE.toCreateWordFolderItemDto(folderEntity));
             folderWordService.saveWordInFolder(wordEntity, folderEntity);
         }
 
         redisWordImageHelper.deleteImage(userId, word);
-        return CreateWordResultDto.builder()
-                .wordId(wordEntity.getWordId())
-                .nameEn(wordEntity.getNameEn())
-                .nameKo(wordEntity.getNameKo())
-                .imageUrl(imageUrl)
-                .folders(folders)
-                .build();
+        return PhotoMapper.INSTANCE.toCreateWordResultDto(wordEntity, folders);
     }
 
     @Transactional
