@@ -21,7 +21,7 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
    *  상수 (게임 밸런스/연출)
    * ------------------------- */
   const MAX_LIVES = 5;
-  const INITIAL_SPEED = 10; // px/frame
+  const INITIAL_SPEED = 3; // px/frame
   const SPEED_UP = 1.1; // 정답 시 속도 ×1.1
 
   // 미사일 가로:세로 비 (이전 130x100 → h/w)
@@ -335,18 +335,6 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
         ref={containerRef}
         className="relative grow rounded-md overflow-hidden flex"
       >
-        <div
-          className="grow bg-center bg-cover"
-          style={{ backgroundImage: `url(${cityDark})` }}
-        />
-        <div
-          className="grow bg-center bg-cover"
-          style={{ backgroundImage: `url(${sky})` }}
-        />
-        <div
-          className="grow bg-center bg-cover"
-          style={{ backgroundImage: `url(${cityDay})` }}
-        />
         {/* 미사일 (세로 중앙 고정 + 가로 이동) */}
         {current && (
           <div
@@ -363,20 +351,34 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
             />
           </div>
         )}
-
-        {/* 폭발 이미지: 오른쪽 가장자리에서 잠깐 표시 (정사각) */}
-        {boomVisible && (
-          <img
-            src={boom}
-            alt="boom"
-            className="absolute bottom-0 right-0 -translate-y-1/2 pointer-events-none select-none"
-            style={{
-              width: boomSize.w * (MAX_LIVES - lives),
-              height: boomSize.h,
-            }}
-            draggable={false}
+        <div className="w-full grid grid-cols-3">
+          <div
+            className="bg-center bg-cover"
+            style={{ backgroundImage: `url(${cityDark})` }}
           />
-        )}
+          <div
+            className="bg-center bg-cover"
+            style={{ backgroundImage: `url(${sky})` }}
+          />
+          <div
+            className="bg-center bg-cover relative"
+            style={{ backgroundImage: `url(${cityDay})` }}
+          >
+            {/* 폭발 이미지: 오른쪽 가장자리에서 잠깐 표시 (정사각) */}
+            {boomVisible && (
+              <img
+                src={boom}
+                alt="boom"
+                className="absolute bottom-0 left-1/2 -translate-x-1/2 pointer-events-none select-none"
+                style={{
+                  width: boomSize.w * (MAX_LIVES - lives),
+                  height: boomSize.h,
+                }}
+                draggable={false}
+              />
+            )}
+          </div>
+        </div>
       </div>
 
       {/* 보기 버튼 (8개) */}

@@ -121,7 +121,7 @@ export const FolderTemplate = ({
   };
 
   const deleteWordFunction = async (wordId: number) => {
-    console.log("삭제할 wordId:", wordId);
+    // console.log("삭제할 wordId:", wordId);
     if (wordId) {
       await deleteWordAtAllFolder(wordId);
       setVocaList(prev => prev.filter(card => card.wordId !== wordId));
