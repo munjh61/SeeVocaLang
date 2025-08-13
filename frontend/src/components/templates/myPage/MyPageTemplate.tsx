@@ -27,7 +27,7 @@ export const MyPageTemplate = ()=>{
   const [days, setDays] = useState<string[]>([]);
   const today = new Date();
   const year = today.getFullYear();
-  const month = today.getMonth() + 1; // JS는 0부터 시작하니까 +1
+  const month = today.getMonth() + 1; 
 
   useEffect(() => {
     const fetchCalendar = async () => {
@@ -40,8 +40,8 @@ export const MyPageTemplate = ()=>{
 useEffect(() => {
   const fetchUserInfo = async () => {
     try {
-      const data = await getUserInfo(); // ✅ 실제 API 호출
-      setUserInfo(data); // data에는 nickname, email, profileImage 등이 들어있음
+      const data = await getUserInfo(); 
+      setUserInfo(data); 
     } catch (error) {
       console.error("유저 정보 불러오기 실패:", error);
     }
@@ -103,8 +103,8 @@ useEffect(() => {
                 <Text size="xl" weight="extrabold" color="black">
                   {userInfo?.nickname || "닉네임 없음"}
                 </Text>
-                <Text size="sm" weight="normal" color="gray">
-                  생년월일: 1996.09.19
+                <Text size="sm" weight="normal" color="gray">    
+                  생년월일: 1996.09.19                            {/* 여기   userInfo?.birthday*/ }          
                 </Text>
                 <Text size="sm" weight="normal" color="gray">
                   {userInfo?.email || "이메일 정보 없음"}

@@ -25,7 +25,7 @@ export const FriendHeader = ({
   return (
     <div className="space-y-4">
       <Text
-      size="sm"
+      size="xl"
       weight="bold"
       color="black"
       align="center"
