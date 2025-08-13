@@ -104,7 +104,7 @@ useEffect(() => {
                   {userInfo?.nickname || "닉네임 없음"}
                 </Text>
                 <Text size="sm" weight="normal" color="gray">    
-                  {userInfo?.birthday || "생일 정보 없음"}                                  
+                  {userInfo?.birthday || "생일 정보없음"}                                  
                 </Text>
                 <Text size="sm" weight="normal" color="gray">
                   {userInfo?.email || "이메일 정보 없음"}
@@ -118,7 +118,7 @@ useEffect(() => {
     textColor={"white"}
     size={"long"}
     onClick={openModal}
-    className="opacity-70 hover:opacity-100 transition-opacity"
+   
   >
     <div className="flex items-center whitespace-nowrap gap-2">
       <Icon icon={EditIcon} color={"white"} />

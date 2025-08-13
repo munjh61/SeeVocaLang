@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Navigation } from "../components/organisms/nav/Navigation.tsx";
 import { GameSelectTemplate } from "../components/templates/game/GameSelectTemplate.tsx";
-import HangmanTemplate from "../components/templates/game/HangmanTemplate.tsx";
+import { HangmanTemplate } from "../components/templates/game/HangmanTemplate.tsx";
 import { RainGameTemplate } from "../components/templates/game/RainGameTemplate.tsx";
 import { CardGameTemplate } from "../components/templates/game/CardGameTemplate.tsx";
 

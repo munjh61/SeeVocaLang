@@ -32,7 +32,7 @@ const HangmanDrawing = ({ wrongGuesses }: HangmanDrawingProps) => {
   );
 };
 
-export default function HangmanTemplate() {
+export  function HangmanTemplate() {
   const word = "HELLO";
   const [guesses, setGuesses] = useState<string[]>([]);
   const wrongGuesses = guesses.filter(letter => !word.includes(letter)).length;
