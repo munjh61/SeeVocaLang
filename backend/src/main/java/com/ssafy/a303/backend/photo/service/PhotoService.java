@@ -76,6 +76,17 @@ public class PhotoService {
     }
 
     @Transactional
+    public void updateWordImage(UpdateWordImageCommandDto commandDto) {
+        Long userId = commandDto.userId();
+        Long wordId = commandDto.wordId();
+        WordEntity word = wordService.getWordByWordId(wordId);
+        String imageKey = commandDto.imageKey();
+        RedisWordImage image = redisWordImageHelper.getImage(imageKey);
+        String imageUrl = imageUploader.upsert(userId, word.getNameEn(), image.getContent(), image.getContentType());
+        wordService.updateWord(wordId, userId, imageUrl);
+    }
+
+    @Transactional
     public void updateWord(UpdatePhotoWordCommandDto commandDto) {
         Long userId = commandDto.userId();
         Long wordId = commandDto.wordId();
