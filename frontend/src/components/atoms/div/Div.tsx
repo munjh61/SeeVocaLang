@@ -9,33 +9,33 @@ type DivProps = {
   className?: string;
   children?: React.ReactNode;
 } & DivVariantProps &
-  React.ButtonHTMLAttributes<HTMLDivElement>;
+  React.HTMLAttributes<HTMLDivElement>;
 
-export const Div = ({
-  bg,
-  rounded,
-  color,
-  border,
-  className,
-  children,
-  align,
-  ...props
-}: DivProps) => {
-  return (
-    <div
-      className={cn(
-        DivVariants({
-          border,
-          bg,
-          rounded,
-          color,
-          align,
-        }),
-        className
-      )}
-      {...props}
-    >
-      {children}
-    </div>
-  );
-};
+// forwardRef로 감싸야 ref 전달 가능하게된당...
+export const Div = React.forwardRef<HTMLDivElement, DivProps>(
+  (
+    { bg, rounded, color, border, className, children, align, ...props },
+    ref
+  ) => {
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          DivVariants({
+            border,
+            bg,
+            rounded,
+            color,
+            align,
+          }),
+          className
+        )}
+        {...props}
+      >
+        {children}
+      </div>
+    );
+  }
+);
+
+Div.displayName = "Div";

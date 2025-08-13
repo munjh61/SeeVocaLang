@@ -68,7 +68,7 @@ export const Quiz = ({
       </div>
 
       {/* 보기 버튼 영역 */}
-      <div className="grid grid-cols-4 grid-rows-2 gap-1 w-full px-20">
+      <div className="grid grid-cols-4 grid-rows-2 gap-1 w-full">
         {quizDatas.map(data => (
           <QuizButton
             key={data.en}

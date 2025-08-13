@@ -9,9 +9,17 @@ type QuizButton = {
   lang: "en" | "ko" | "both";
   answer: boolean;
   onClick: (v: boolean) => void;
+  cooltime?: number;
 };
 
-export const QuizButton = ({ en, ko, lang, answer, onClick }: QuizButton) => {
+export const QuizButton = ({
+  en,
+  ko,
+  lang,
+  answer,
+  onClick,
+  cooltime = 1500,
+}: QuizButton) => {
   const [selected, setSelected] = useState(false);
   const selectColor = answer ? "green" : "red";
   const speak = (text: string) => {
@@ -27,7 +35,7 @@ export const QuizButton = ({ en, ko, lang, answer, onClick }: QuizButton) => {
     setSelected(true);
     setTimeout(() => {
       setSelected(false);
-    }, 1500);
+    }, cooltime);
     onClick(answer);
   };
   return (

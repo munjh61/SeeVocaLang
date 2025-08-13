@@ -32,7 +32,7 @@ export const GameSelectTemplate = ({ onClick }: GameSelectTemplateProps) => {
     {
       gameNumber: 2,
       gameTitle: "소나기",
-      gameDescription: "단어가 땅에 떨어지기 전에 막아보아요.",
+      gameDescription: "폭탄이 도착하기 전에 막아주세요",
     },
     {
       gameNumber: 3,
@@ -42,7 +42,6 @@ export const GameSelectTemplate = ({ onClick }: GameSelectTemplateProps) => {
   ];
   return (
     <Div align={"center"} bg={"sky"} className="grow p-2">
-      <h1>게임을 선택하세요</h1>
       <ImageBox src={dummy} className="grow" />
       <Div align={"center"} className="w-full gap-2">
         {/* 선택 부분 */}

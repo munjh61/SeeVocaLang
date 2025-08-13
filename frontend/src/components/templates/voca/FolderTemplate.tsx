@@ -196,7 +196,7 @@ export const FolderTemplate = ({
       {/* 본문 */}
       <Div
         bg={"sky"}
-        className="flex flex-col grow gap-4 p-4 w-full h-full rounded-md"
+        className="flex flex-col grow gap-4 p-4 w-full rounded-md"
       >
         <VocafolderSecondHeader
           isToggle={isToggle}
