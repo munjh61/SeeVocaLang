@@ -13,6 +13,8 @@ import com.ssafy.a303.backend.user.entity.UserEntity;
 import com.ssafy.a303.backend.user.exception.UserNotFoundException;
 import com.ssafy.a303.backend.user.service.UserService;
 import com.ssafy.a303.backend.word.dto.ReadWordResponseDto;
+import com.ssafy.a303.backend.word.entity.WordEntity;
+import com.ssafy.a303.backend.word.service.WordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,22 +25,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FolderService {
     private final FolderRepository folderRepository;
+    private final WordService wordService;
     private final UserService userService;
 
     @Transactional(readOnly = true)
     public PageResponseDto<ReadFoldersResponseDto> getFolders(ReadFoldersCommandDto readFoldersCommandDto) {
         List<ReadFoldersResponseDto> folders = folderRepository.findAllByUserId(readFoldersCommandDto.getUserId(), false);
 
-        boolean hasNext = folders.size() > readFoldersCommandDto.getSize();
-
-        if (hasNext) {
-            folders = folders.subList(0, readFoldersCommandDto.getSize());
-        }
-
         return PageResponseDto.<ReadFoldersResponseDto>builder()
                 .message("성공적으로 단어장을 불러왔습니다.")
                 .content(folders)
-                .hasNext(hasNext)
                 .build();
     }
 
@@ -59,6 +55,12 @@ public class FolderService {
         FolderEntity folder = folderRepository.findById(deleteFolderCommandDto.getFolderId())
                 .orElseThrow(() -> new FolderNotFoundException(CommonErrorCode.RESOURCE_NOT_FOUND));
 
+        List<WordEntity> words = wordService.getWordListByFolderId(deleteFolderCommandDto.getFolderId());
+        for (WordEntity word : words) {
+            word.increment(-1);
+            if (word.getFolderCount() == 0)
+                word.delete();
+        }
         folder.delete();
 
         return BaseResponseDto.<Void>builder()
@@ -79,7 +81,7 @@ public class FolderService {
     @Transactional(readOnly = true)
     public PageResponseDto<ReadWordResponseDto> getWordsByFolderId(ReadFolderWordCommandDto readFolderWordCommandDto) {
         List<ReadWordResponseDto> words = folderRepository.getWordsByFolderId(readFolderWordCommandDto.getFolderId());
-        
+
         return PageResponseDto.<ReadWordResponseDto>builder()
                 .message("성공적으로 단어장을 불러왔습니다.")
                 .content(words)
@@ -88,7 +90,14 @@ public class FolderService {
 
     public BaseResponseDto<Void> deleteFolderWords(DeleteFolderWordsCommandDto deleteFolderWordsCommandDto) {
         folderRepository.deleteWordsByFolderId(deleteFolderWordsCommandDto.getFolderId(),
-                deleteFolderWordsCommandDto.getWordIds());
+                deleteFolderWordsCommandDto.getWordId());
+
+        WordEntity word = wordService
+                .getWordByWordId(deleteFolderWordsCommandDto.getWordId());
+
+        word.increment(-1);
+        if(word.getFolderCount() == 0)
+            word.delete();
 
         return BaseResponseDto.<Void>builder()
                 .message("성공적으로 단어들을 단어장에서 삭제했습니다.")

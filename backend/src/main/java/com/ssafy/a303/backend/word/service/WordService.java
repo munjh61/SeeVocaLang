@@ -82,6 +82,7 @@ public class WordService {
             throw new WordNotAccessibleRuntimeException(CommonErrorCode.FORBIDDEN_REQUEST);
 
         word.updateImageUrl(imageUrl);
+        word.increment(1);
         wordRepository.save(word);
     }
 
@@ -102,5 +103,9 @@ public class WordService {
                 .toList();
 
         return new CardGameResponseDto(dtoList);
+    }
+
+    public List<WordEntity> getWordListByFolderId(Long folderId) {
+        return wordRepository.getWordsByFolderId(folderId);
     }
 }

@@ -88,12 +88,12 @@ public class FolderQueryRepositoryImpl extends QuerydslRepositorySupport impleme
 
     @Override
     @Transactional
-    public boolean deleteWordsByFolderId(long folderId, List<Long> wordIds) {
+    public boolean deleteWordsByFolderId(long folderId, long wordId) {
         QFolderWordEntity folderWord = QFolderWordEntity.folderWordEntity;
 
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(folderWord.folder.folderId.eq(folderId))
-                .and(folderWord.word.wordId.in(wordIds));
+                .and(folderWord.word.wordId.eq(wordId));
 
         delete(folderWord).where(builder).execute();
 

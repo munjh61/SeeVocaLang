@@ -6,6 +6,7 @@ import com.ssafy.a303.backend.folder.entity.QFolderEntity;
 import com.ssafy.a303.backend.folderword.entity.QFolderWordEntity;
 import com.ssafy.a303.backend.word.dto.ReadWordResponseDto;
 import com.ssafy.a303.backend.word.entity.QWordEntity;
+import com.ssafy.a303.backend.word.entity.WordEntity;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
@@ -65,5 +66,18 @@ public class WordQueryRepositoryImpl extends QuerydslRepositorySupport implement
         }
 
         return new ArrayList<>(resultMap.values());
+    }
+
+    @Override
+    public List<WordEntity> getWordsByFolderId(Long folderId) {
+        QFolderWordEntity folderWord = QFolderWordEntity.folderWordEntity;
+        QWordEntity word = QWordEntity.wordEntity;
+
+        return from(word)
+                .select(word)
+                .join(folderWord.word, word)
+                .where(folderWord.folder.folderId.eq(folderId).and(word.isDeleted.eq(false)))
+                .fetch();
+
     }
 }

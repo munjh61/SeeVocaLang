@@ -14,5 +14,6 @@ public class ReadFoldersResponseDto {
     private String name;
     private String thumbnailUrl;
     private String description;
+    private int wordCount;
     private boolean favorite;
 }
