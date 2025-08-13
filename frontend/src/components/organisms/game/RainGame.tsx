@@ -2,147 +2,188 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { shuffle } from "lodash-es";
 import { QuizButton } from "../../molecules/quizButton/QuizButton";
 import type { VocaCardProps } from "../vocaCard/VocaCard";
+import { LoadingPage } from "../../templates/loadingTemplate/LoadingTemplate";
+import { HpBar } from "../../molecules/game/hpBar";
+import { GameText } from "../../molecules/game/GameText";
+import city from "../../../asset/png/city.jpg";
+import { Missile } from "../../molecules/game/Missile";
 
 type RainGameProps = {
   vocas: VocaCardProps[];
-  totalCount?: number; // 몇 문제까지 낼지 (기본 10)
-  fallSpeed?: number; // px/frame 정도 (기본 3)
+  totalCount?: number; // 한 라운드에 낼 문제 수 (기본 10)
 };
 
-export const RainGame = ({
-  vocas,
-  totalCount = 10,
-  fallSpeed = 3,
-}: RainGameProps) => {
+export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
   /** -------------------------
-   *  상수 & 상태
+   *  상수
    * ------------------------- */
-  const MAX_LIVES = 4;
-  const IMG_H = 200; // 실제 이미지 렌더 높이와 맞춰주세요 (아래 <img>의 h-[200px])
+  const MAX_LIVES = 5;
+  const IMG_W = 650;
+  const IMG_H = 500; // Missile 렌더 높이와 맞춰야 함
+  const INITIAL_SPEED = 2; // px/frame
+  const SPEED_UP = 1.1; // 정답 시 속도 ×1.1
+  const HEAD_PEEK = 12; // 처음에 보일 머리 부분 폭(px)
+  const START_X = -IMG_W + HEAD_PEEK;
 
-  // 퀴즈 데이터 셔플 + 개수 제한
-  const gameData = useMemo(
+  /** -------------------------
+   *  한 라운드에 사용할 문제 풀(pool)
+   * ------------------------- */
+  const pool = useMemo(
     () => shuffle(vocas).slice(0, Math.min(totalCount, vocas.length)),
     [vocas, totalCount]
   );
 
-  const [idx, setIdx] = useState(0);
-  const [y, setY] = useState(0); // 화면에 보여줄 현재 Y 좌표
+  /** -------------------------
+   *  라운드/진행 상태
+   * ------------------------- */
+  const [roundData, setRoundData] = useState<VocaCardProps[]>(() =>
+    shuffle(pool)
+  );
+  const [round, setRound] = useState(1); // 라운드 표시용
+  const [idx, setIdx] = useState(0); // 현재 문제 인덱스
+
+  /** -------------------------
+   *  가로 이동 (X축)
+   * ------------------------- */
+  // ✨ 초기값을 START_X로: 머리만 보인 상태에서 스타트
+  const [x, setX] = useState(START_X);
+  const xRef = useRef(START_X); // RAF에서 사용할 참조
+  const speedRef = useRef(INITIAL_SPEED); // 현재 속도(px/frame)
+
+  /** -------------------------
+   *  게임 상태
+   * ------------------------- */
   const [lives, setLives] = useState(MAX_LIVES);
   const [score, setScore] = useState(0);
   const [running, setRunning] = useState(true);
+  const endedRef = useRef(false); // StrictMode 중복 alert 방지
 
   /** -------------------------
-   *  refs (애니메이션/중복 방지)
+   *  기타 참조
    * ------------------------- */
   const containerRef = useRef<HTMLDivElement>(null);
   const rafRef = useRef<number | null>(null);
-  const yRef = useRef(0); // RAF 루프에서 사용할 실제 Y
-  const endedRef = useRef(false); // 종료 alert 중복 방지
 
-  const current = gameData[idx];
+  /** -------------------------
+   *  현재 문제
+   * ------------------------- */
+  const current = roundData[idx];
 
   /** -------------------------
    *  보기(8지선다) 구성
-   *  - nameEn 중복 제거 → 오답 7개 + 정답 1개 → 셔플
    * ------------------------- */
   const options = useMemo(() => {
     if (!current) return [];
-    // nameEn 기준 중복 제거
-    const uniq = Array.from(new Map(gameData.map(v => [v.nameEn, v])).values());
+    // nameEn 기준 중복 제거 (동일 단어 중복 방지)
+    const uniq = Array.from(new Map(pool.map(v => [v.nameEn, v])).values());
     const wrong = shuffle(uniq.filter(v => v.nameEn !== current.nameEn))
       .slice(0, 7)
       .map(v => ({ en: v.nameEn, ko: v.nameKo }));
     return shuffle([{ en: current.nameEn, ko: current.nameKo }, ...wrong]);
-  }, [current, gameData]);
+  }, [current, pool]);
+
+  /** -------------------------
+   *  라운드 관리
+   *  - 문제를 다 소진했고(lives>0) 게임이 아직 running이면 다음 라운드 시작
+   * ------------------------- */
+  useEffect(() => {
+    if (!running) return;
+    if (lives > 0 && idx >= roundData.length) {
+      startNewRound();
+    }
+  }, [idx, roundData.length, lives, running]);
+
+  const resetToStartX = () => {
+    xRef.current = START_X;
+    setX(START_X);
+  };
+
+  const startNewRound = () => {
+    setRound(r => r + 1);
+    setRoundData(shuffle(pool)); // 🔁 재셔플
+    setIdx(0);
+    resetToStartX();
+    // speedRef.current = INITIAL_SPEED; // 라운드마다 속도 초기화하고 싶으면 주석 해제
+  };
 
   /** -------------------------
    *  게임 종료 체크
    * ------------------------- */
   useEffect(() => {
     if (!running) return;
-    if (lives <= 0 || idx >= gameData.length) {
+    if (lives <= 0) {
       setRunning(false);
       if (!endedRef.current) {
         endedRef.current = true; // StrictMode 중복 방지
-        alert(`끝! 맞춘 개수: ${score}/${gameData.length}`);
+        alert(`끝! 총 정답: ${score}개 (라운드 ${round} 진행 중 종료)`);
       }
     }
-  }, [lives, idx, gameData.length, running, score]);
+  }, [lives, running, score, round]);
 
   /** -------------------------
-   *  떨어지는 루프 (requestAnimationFrame)
-   *  - 충돌 여부를 먼저 계산하고, 충돌 시 그 프레임에서 상태를 "한 번만" 갱신
-   *  - setState 콜백 안에서 다른 setState/부수효과 절대 금지
+   *  가로 이동 루프
    * ------------------------- */
   useEffect(() => {
     if (!running || !current) return;
 
-    // 이전 RAF가 남아 있으면 취소
+    // 기존 RAF 정리
     if (rafRef.current) {
       cancelAnimationFrame(rafRef.current);
       rafRef.current = null;
     }
 
     const step = () => {
-      const h = containerRef.current?.clientHeight ?? 0;
-
-      // 레이아웃이 아직 0이면 다음 프레임에 재시도
-      if (h <= 0) {
+      const w = containerRef.current?.clientWidth ?? 0;
+      if (w <= 0) {
         rafRef.current = requestAnimationFrame(step);
         return;
       }
 
-      const next = yRef.current + fallSpeed;
+      const next = xRef.current + speedRef.current; // ▶ X축으로 전진
 
-      // 충돌 판정: 다음 위치 + 이미지 높이 >= 컨테이너 높이
-      if (next + IMG_H >= h) {
-        // 한 프레임에 정확히 1회만 처리
-        setLives(l => l - 1);
-        // 다음 문제로 전환 (idx + 1)
-        setIdx(i => i + 1);
-        // 위치 초기화 (ref + state)
-        yRef.current = 0;
-        setY(0);
-        // 이 프레임에서는 새 RAF 예약하지 않음 → 다음 문제에서 새 effect가 시작
-        return;
+      // 오른쪽 벽에 닿았는지 판정 (미사일 너비 고려)
+      if (next + IMG_W >= w) {
+        setLives(l => l - 1); // 목숨 감소
+        setIdx(i => i + 1); // 다음 문제
+        resetToStartX();
+        return; // 이 프레임 종료 → 다음 effect에서 새 문제 루프 시작
       }
 
-      // 계속 떨어뜨리기
-      yRef.current = next;
-      setY(next);
+      xRef.current = next;
+      setX(next);
       rafRef.current = requestAnimationFrame(step);
     };
 
-    // 시작
     rafRef.current = requestAnimationFrame(step);
 
-    // 클린업
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       rafRef.current = null;
     };
-  }, [idx, running, current, fallSpeed]);
+  }, [idx, running, current]);
 
   /** -------------------------
    *  보기 클릭
+   *  - 정답: 점수 +1, 속도 ×1.1, 다음 문제, 위치 리셋
    * ------------------------- */
   const handleClick = (isAnswer: boolean) => {
     if (!running || !current) return;
+
     if (isAnswer) {
       setScore(s => s + 1);
-      // 다음 문제로 전환
-      setIdx(i => i + 1);
-      // 위치 초기화 (ref + state)
-      yRef.current = 0;
-      setY(0);
-      // 혹시 남아있을 수 있는 RAF 취소 (안전장치)
+      speedRef.current = speedRef.current * SPEED_UP;
+
+      setIdx(i => i + 1); // 다음 문제 전환
+      resetToStartX();
+
+      // 안전하게 기존 RAF 취소 (중복 방지)
       if (rafRef.current) {
         cancelAnimationFrame(rafRef.current);
         rafRef.current = null;
       }
     } else {
-      // 오답 패널티를 주고 싶다면 여기에서 setLives(l => l - 1) 등 추가 가능
+      // 오답 패널티를 주려면 아래 추가
+      // setLives(l => l - 1);
     }
   };
 
@@ -150,11 +191,7 @@ export const RainGame = ({
    *  로딩/데이터 없음 처리
    * ------------------------- */
   if (!current && running) {
-    return (
-      <div className="w-full h-full flex items-center justify-center">
-        문제를 불러오는 중...
-      </div>
-    );
+    return <LoadingPage />;
   }
 
   /** -------------------------
@@ -163,34 +200,29 @@ export const RainGame = ({
   return (
     <div className="flex flex-col gap-4 w-full h-full p-4">
       {/* 상단 정보바 */}
-      <div className="flex items-center justify-between">
-        <div>점수: {score}</div>
-        <div>
-          목숨: {"❤".repeat(Math.max(0, lives))}
-          {"🤍".repeat(Math.max(0, MAX_LIVES - lives))}
-        </div>
-        <div>
-          {Math.min(idx + 1, gameData.length)} / {gameData.length}
-        </div>
+      <div className="flex items-center gap-4">
+        <GameText label="SCORE" data={score} />
+        <HpBar hp={Math.max(0, lives)} maxHp={MAX_LIVES} />
+        <GameText label="ROUND" data={round} />
+        <GameText label="SPEED" data={speedRef.current.toFixed(2)} />
       </div>
-
-      {/* 떨어지는 영역 */}
+      {/* 움직이는 영역 (배경 포함) */}
       <div
         ref={containerRef}
-        className="relative grow rounded-md bg-sky-100 overflow-hidden h-[60vh] min-h-[420px]"
+        className="relative grow rounded-md overflow-hidden h-[60vh] min-h-[420px] bg-center bg-cover"
+        style={{ backgroundImage: `url(${city})` }}
       >
-        {/* 떨어지는 이미지 */}
         {current && (
           <div
-            key={`${idx}-${current.nameEn}`}
-            className="absolute left-1/2 -translate-x-1/2 transition-none"
-            style={{ top: y }}
+            key={`${round}-${idx}-${current.nameEn}`}
+            className="absolute top-3/5 -translate-y-1/2 transition-none"
+            style={{ left: x }} // ← 가로 이동 (머리부터 살짝 보임)
           >
-            <img
-              src={current.imageUrl}
-              alt={current.nameEn}
-              className="w-[260px] h-[200px] object-cover rounded-md shadow-lg select-none"
-              draggable={false}
+            <Missile
+              imageUrl={current.imageUrl}
+              nameEn={current.nameEn}
+              width={IMG_W}
+              height={IMG_H}
             />
           </div>
         )}
@@ -206,7 +238,7 @@ export const RainGame = ({
             lang="en"
             answer={opt.en === current?.nameEn}
             onClick={handleClick}
-            cooltime={0} // 즉시 반응
+            cooltime={0}
           />
         ))}
       </div>

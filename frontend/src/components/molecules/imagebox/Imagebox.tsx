@@ -9,6 +9,7 @@ type ImageBoxProps = {
   imageValue?: (v: string) => void;
   className?: string;
   imgClassName?: string;
+  defaultBg?: "bg-gray-200" | "bg-transparent";
 };
 
 export const ImageBox = ({
@@ -19,6 +20,7 @@ export const ImageBox = ({
   imageValue,
   className,
   imgClassName,
+  defaultBg = "bg-gray-200",
 }: ImageBoxProps) => {
   const hasImage = Boolean(src);
 
@@ -27,10 +29,11 @@ export const ImageBox = ({
       className={cn(
         "flex items-center justify-center overflow-hidden", // 이미지를 가운데로
         imageboxVariants({ shape }),
+        defaultBg,
         !hasImage && "bg-gray-100 w-32 h-32", // 없을 때
-        "bg-gray-200",
         className
       )}
+      draggable={false}
     >
       {hasImage && (
         <img
@@ -42,6 +45,7 @@ export const ImageBox = ({
             imgClassName
           )}
           onClick={data ? () => imageValue?.(data) : undefined}
+          draggable={false}
         />
       )}
     </div>

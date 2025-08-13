@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import type { VocaCardProps } from "../../organisms/vocaCard/VocaCard";
 import { useNavigate } from "react-router-dom";
-import { getAllWords } from "../../../api/WordAPI";
 import { LoadingPage } from "../loadingTemplate/LoadingTemplate";
 import { RainGame } from "../../organisms/game/RainGame";
+import { getTodayQuiz } from "../../../api/TodayQuizAPI";
 
 export const RainGameTemplate = () => {
   const nav = useNavigate();
@@ -13,7 +13,7 @@ export const RainGameTemplate = () => {
     let mounted = true;
     (async () => {
       try {
-        const data = await getAllWords();
+        const data = await getTodayQuiz();
         if (mounted) setVocas(Array.isArray(data) ? data : []);
       } catch (e) {
         if (!mounted) return;

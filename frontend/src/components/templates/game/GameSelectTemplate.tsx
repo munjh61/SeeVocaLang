@@ -32,7 +32,7 @@ export const GameSelectTemplate = ({ onClick }: GameSelectTemplateProps) => {
     {
       gameNumber: 2,
       gameTitle: "소나기",
-      gameDescription: "단어가 땅에 떨어지기 전에 막아보아요.",
+      gameDescription: "폭탄이 도착하기 전에 막아주세요",
     },
     {
       gameNumber: 3,
