@@ -1,5 +1,8 @@
+// services/WordService.ts
 import type { AxiosError } from "axios";
 import { WordImageUploadApi } from "../api/upload/WordImageUploadApi.ts";
+import { saveWordsApi } from "../api/upload/SaveWordsApi.ts";
+import type { SaveWordsResponse } from "../api/upload/SaveWordsApi.ts";
 
 export async function replaceImage(
   wordId: number,
@@ -17,14 +20,19 @@ export async function replaceImage(
   }
 }
 
-// export async function saveWord(body: SaveRecognizedWordRequest) {
-//   try {
-//     const msg = await SaveRecognizedWordApi(body);
-//     return msg ?? "단어가 저장되었습니다.";
-//   } catch (e) {
-//     const err = e as AxiosError<{ message?: string }>;
-//     throw new Error(
-//       err.response?.data?.message || err.message || "단어 저장 실패"
-//     );
-//   }
-// }
+export async function saveWords(
+  name_en: string,
+  name_ko: string,
+  image_key: string,
+  folders: number[]
+): Promise<SaveWordsResponse> {
+  try {
+    const res = await saveWordsApi(name_en, name_ko, image_key, folders);
+    return res; // { message, content: { word_id, name_en, ... , folders: [...] } }
+  } catch (e) {
+    const err = e as AxiosError<{ message?: string }>;
+    throw new Error(
+      err.response?.data?.message || err.message || "단어 저장 실패"
+    );
+  }
+}

@@ -1,4 +1,7 @@
 import { authApi } from "../../utils/axios.ts";
+import { useAuthStore } from "../../stores/AuthStore.ts";
+import type { FolderProps } from "../../components/organisms/folder/Folder.tsx";
+import { getfolders } from "../FolderAPI.ts";
 
 export type WordFolder = {
   folderId: number;
@@ -93,4 +96,10 @@ export const getExistingWordFolders = async (
     }
     return [];
   }
+};
+
+export const getAllFolderIds = async (): Promise<number[]> => {
+  const userId = useAuthStore.getState().user?.userId ?? 1;
+  const folders: FolderProps[] = await getfolders(userId);
+  return folders.map(f => f.folderId);
 };
