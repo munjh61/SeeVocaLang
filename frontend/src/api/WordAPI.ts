@@ -21,8 +21,8 @@ export const getAllWords = async () => {
   }
 };
 
-// 특정 단어 삭제
-export const deleteWord = async (wordId: number) => {
+// 모든 단어장에서 특정 단어 삭제
+export const deleteWordAtAllFolder = async (wordId: number) => {
   try {
     const res = await authApi.delete(`${WordURL}/${wordId}`, {
       headers: { "Content-Type": "application/json" },

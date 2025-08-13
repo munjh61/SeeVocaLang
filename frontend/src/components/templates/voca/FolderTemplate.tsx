@@ -19,6 +19,7 @@ import {
   VocaCard,
   type VocaCardProps,
 } from "../../organisms/vocaCard/VocaCard";
+import { deleteWordAtAllFolder } from "../../../api/WordAPI";
 
 type FolderTemplateProps = {
   folderDatas: FolderProps[]; // ← 배열 타입 (선택 아님)
@@ -104,7 +105,7 @@ export const FolderTemplate = ({
       console.error(e);
     }
   };
-  const deleteFunction = async () => {
+  const deleteFolderFunction = async () => {
     if (selectedId !== null) {
       await deletefolder(selectedId);
       setfolderList(prev => prev.filter(item => item.folderId !== selectedId));
@@ -116,6 +117,14 @@ export const FolderTemplate = ({
         )
       );
       closeModal();
+    }
+  };
+
+  const deleteWordFunction = async (wordId: number) => {
+    console.log("삭제할 wordId:", wordId);
+    if (wordId) {
+      await deleteWordAtAllFolder(wordId);
+      setVocaList(prev => prev.filter(card => card.wordId !== wordId));
     }
   };
 
@@ -157,7 +166,7 @@ export const FolderTemplate = ({
         subtitle={subtitle}
         onChangeTitle={setTitle}
         onChangeSubtitle={setSubtitle}
-        onDelete={deleteFunction}
+        onDelete={deleteFolderFunction}
         onSubmit={handleSubmit}
       />
 
@@ -207,15 +216,21 @@ export const FolderTemplate = ({
         {/* 단어 카드 목록*/}
         {!isToggle && (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
-            {filteredVocaList.map(card => (
-              <VocaCard
-                key={card.wordId}
-                nameEn={card.nameEn}
-                nameKo={card.nameKo}
-                imageUrl={card.imageUrl}
-                folders={card.folders}
-              />
-            ))}
+            {filteredVocaList
+              .filter(card => Number.isFinite(Number(card.wordId))) // 숫자로 해석 가능한 것만
+              .map(card => {
+                const id = Number(card.wordId);
+                return (
+                  <VocaCard
+                    key={id}
+                    nameEn={card.nameEn}
+                    nameKo={card.nameKo}
+                    imageUrl={card.imageUrl}
+                    folders={card.folders}
+                    onDelete={() => deleteWordFunction(id)}
+                  />
+                );
+              })}
           </div>
         )}
         {/* 단어장 카드 목록 */}

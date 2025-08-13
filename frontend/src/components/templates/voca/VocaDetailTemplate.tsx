@@ -9,7 +9,7 @@ import { IconButton } from "../../molecules/iconButton/IconButton";
 import { useNavigate } from "react-router-dom";
 import { Searchbar } from "../../molecules/searchbar/Searchbar";
 import { Div } from "../../atoms/div/Div";
-import { deleteWord } from "../../../api/WordAPI";
+import { deleteWordAtThisFolder } from "../../../api/FolderAPI";
 
 type VocaDetailTemplateProps = {
   folderId: number;
@@ -35,9 +35,8 @@ export const VocaDetailTemplate = ({
 
   const searchFunction = (v: string) => setSearchKey(v);
   const deleteFunction = async (wordId: number) => {
-    console.log("삭제할 wordId:", wordId);
     if (wordId) {
-      await deleteWord(wordId);
+      await deleteWordAtThisFolder(wordId, folderId);
       setVocaList(prev => prev.filter(card => card.wordId !== wordId));
     }
   };

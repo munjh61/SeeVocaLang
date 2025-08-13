@@ -116,3 +116,22 @@ export const getWords = async (folderId: number) => {
     throw error;
   }
 };
+
+// 특정 단어장에서 특정 단어 삭제
+export const deleteWordAtThisFolder = async (
+  wordId: number,
+  folderId: number
+) => {
+  try {
+    const res = await authApi.delete(
+      `${foldersURL}/${folderId}/words/${wordId}`,
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    console.log(res.data.message);
+  } catch (error) {
+    console.error("❌ 단어 삭제 요청 실패:", error);
+    throw error;
+  }
+};
