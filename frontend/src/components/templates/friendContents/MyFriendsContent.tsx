@@ -18,7 +18,7 @@ const approvedFriendsCount = friends.filter(f => f.friend_status === "APPROVED")
     f.nickname.toLowerCase().includes((searchValue ?? "").toLowerCase())
 );
   return (
-    <div className="flex flex-col px-4 py-2 bg-gradient-to-b from-[#F7F5FE] to-[#F3FAF3] h-[calc(100vh-160px)] overflow-y-auto">
+    <div className="flex flex-col px-4 py-2  bg-gray-100 h-[calc(100vh-160px)] overflow-y-auto">
        <div className="mb-4">
       <Text color="black" size="lg" weight="bold">
         내 친구목록
@@ -29,7 +29,7 @@ const approvedFriendsCount = friends.filter(f => f.friend_status === "APPROVED")
       </div>
       {filteredFriends.length === 0 ? (
         <div className="text-center mt-8">
-          <Text color="gray" size="sm">
+          <Text color="gray" size="xl">
             친구를 만들어 친구의 단어장을 구경해보세요
           </Text>
         </div>

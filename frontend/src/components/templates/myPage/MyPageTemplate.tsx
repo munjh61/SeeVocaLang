@@ -104,7 +104,7 @@ useEffect(() => {
                   {userInfo?.nickname || "닉네임 없음"}
                 </Text>
                 <Text size="sm" weight="normal" color="gray">    
-                  생년월일: 1996.09.19                            {/* 여기   userInfo?.birthday*/ }          
+                  {userInfo?.birthday || "생일 정보 없음"}                                  
                 </Text>
                 <Text size="sm" weight="normal" color="gray">
                   {userInfo?.email || "이메일 정보 없음"}

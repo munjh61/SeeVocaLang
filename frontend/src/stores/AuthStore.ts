@@ -10,6 +10,7 @@ export type AuthUser = {
   nickname: string;
   email: string | null;
   profileImage: string | null;
+  birthday: string;
 };
 
 type AuthState = {
