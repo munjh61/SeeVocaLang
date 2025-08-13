@@ -3,10 +3,11 @@ import { shuffle } from "lodash-es";
 import { QuizButton } from "../../molecules/quizButton/QuizButton";
 import type { VocaCardProps } from "../vocaCard/VocaCard";
 import { LoadingPage } from "../../templates/loadingTemplate/LoadingTemplate";
-import { HpBar } from "../../molecules/game/hpBar";
+import { HpBar } from "../../molecules/game/HpBar";
 import { GameText } from "../../molecules/game/GameText";
 import city from "../../../asset/png/city.jpg";
 import { Missile } from "../../molecules/game/Missile";
+import boom from "../../../asset/png/boom.png"; // ✨ 폭발 이미지
 
 type RainGameProps = {
   vocas: VocaCardProps[];
@@ -18,12 +19,17 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
    *  상수
    * ------------------------- */
   const MAX_LIVES = 5;
-  const IMG_W = 650;
-  const IMG_H = 500; // Missile 렌더 높이와 맞춰야 함
+  const IMG_W = 520;
+  const IMG_H = 400; // Missile 렌더 높이와 맞춰야 함
   const INITIAL_SPEED = 2; // px/frame
   const SPEED_UP = 1.1; // 정답 시 속도 ×1.1
+
   const HEAD_PEEK = 12; // 처음에 보일 머리 부분 폭(px)
   const START_X = -IMG_W + HEAD_PEEK;
+
+  const BOOM_W = 160;
+  const BOOM_H = 160;
+  const BOOM_DURATION = 350; // ms
 
   /** -------------------------
    *  한 라운드에 사용할 문제 풀(pool)
@@ -39,16 +45,15 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
   const [roundData, setRoundData] = useState<VocaCardProps[]>(() =>
     shuffle(pool)
   );
-  const [round, setRound] = useState(1); // 라운드 표시용
-  const [idx, setIdx] = useState(0); // 현재 문제 인덱스
+  const [round, setRound] = useState(1);
+  const [idx, setIdx] = useState(0);
 
   /** -------------------------
    *  가로 이동 (X축)
    * ------------------------- */
-  // ✨ 초기값을 START_X로: 머리만 보인 상태에서 스타트
   const [x, setX] = useState(START_X);
-  const xRef = useRef(START_X); // RAF에서 사용할 참조
-  const speedRef = useRef(INITIAL_SPEED); // 현재 속도(px/frame)
+  const xRef = useRef(START_X);
+  const speedRef = useRef(INITIAL_SPEED);
 
   /** -------------------------
    *  게임 상태
@@ -56,7 +61,7 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
   const [lives, setLives] = useState(MAX_LIVES);
   const [score, setScore] = useState(0);
   const [running, setRunning] = useState(true);
-  const endedRef = useRef(false); // StrictMode 중복 alert 방지
+  const endedRef = useRef(false);
 
   /** -------------------------
    *  기타 참조
@@ -64,9 +69,9 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const rafRef = useRef<number | null>(null);
 
-  /** -------------------------
-   *  현재 문제
-   * ------------------------- */
+  const [boomVisible, setBoomVisible] = useState(false);
+  const boomTimerRef = useRef<number | null>(null);
+
   const current = roundData[idx];
 
   /** -------------------------
@@ -74,7 +79,6 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
    * ------------------------- */
   const options = useMemo(() => {
     if (!current) return [];
-    // nameEn 기준 중복 제거 (동일 단어 중복 방지)
     const uniq = Array.from(new Map(pool.map(v => [v.nameEn, v])).values());
     const wrong = shuffle(uniq.filter(v => v.nameEn !== current.nameEn))
       .slice(0, 7)
@@ -84,7 +88,6 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
 
   /** -------------------------
    *  라운드 관리
-   *  - 문제를 다 소진했고(lives>0) 게임이 아직 running이면 다음 라운드 시작
    * ------------------------- */
   useEffect(() => {
     if (!running) return;
@@ -100,10 +103,10 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
 
   const startNewRound = () => {
     setRound(r => r + 1);
-    setRoundData(shuffle(pool)); // 🔁 재셔플
+    setRoundData(shuffle(pool));
     setIdx(0);
     resetToStartX();
-    // speedRef.current = INITIAL_SPEED; // 라운드마다 속도 초기화하고 싶으면 주석 해제
+    // speedRef.current = INITIAL_SPEED; // 선택
   };
 
   /** -------------------------
@@ -114,11 +117,32 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
     if (lives <= 0) {
       setRunning(false);
       if (!endedRef.current) {
-        endedRef.current = true; // StrictMode 중복 방지
+        endedRef.current = true;
         alert(`끝! 총 정답: ${score}개 (라운드 ${round} 진행 중 종료)`);
       }
     }
   }, [lives, running, score, round]);
+
+  /** -------------------------
+   *  폭발 표시 헬퍼
+   * ------------------------- */
+  const showBoom = () => {
+    setBoomVisible(true);
+    if (boomTimerRef.current) {
+      window.clearTimeout(boomTimerRef.current);
+    }
+    boomTimerRef.current = window.setTimeout(() => {
+      setBoomVisible(false);
+      boomTimerRef.current = null;
+    }, BOOM_DURATION);
+  };
+
+  // 언마운트 시 타이머 정리
+  useEffect(() => {
+    return () => {
+      if (boomTimerRef.current) window.clearTimeout(boomTimerRef.current);
+    };
+  }, []);
 
   /** -------------------------
    *  가로 이동 루프
@@ -126,7 +150,6 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
   useEffect(() => {
     if (!running || !current) return;
 
-    // 기존 RAF 정리
     if (rafRef.current) {
       cancelAnimationFrame(rafRef.current);
       rafRef.current = null;
@@ -139,14 +162,15 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
         return;
       }
 
-      const next = xRef.current + speedRef.current; // ▶ X축으로 전진
+      const next = xRef.current + speedRef.current;
 
-      // 오른쪽 벽에 닿았는지 판정 (미사일 너비 고려)
+      // 오른쪽 벽 도착
       if (next + IMG_W >= w) {
+        showBoom(); // ✨ 폭발 표시
         setLives(l => l - 1); // 목숨 감소
         setIdx(i => i + 1); // 다음 문제
-        resetToStartX();
-        return; // 이 프레임 종료 → 다음 effect에서 새 문제 루프 시작
+        resetToStartX(); // 다음 문제도 머리부터
+        return;
       }
 
       xRef.current = next;
@@ -164,7 +188,6 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
 
   /** -------------------------
    *  보기 클릭
-   *  - 정답: 점수 +1, 속도 ×1.1, 다음 문제, 위치 리셋
    * ------------------------- */
   const handleClick = (isAnswer: boolean) => {
     if (!running || !current) return;
@@ -172,17 +195,15 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
     if (isAnswer) {
       setScore(s => s + 1);
       speedRef.current = speedRef.current * SPEED_UP;
-
-      setIdx(i => i + 1); // 다음 문제 전환
+      setIdx(i => i + 1);
       resetToStartX();
 
-      // 안전하게 기존 RAF 취소 (중복 방지)
       if (rafRef.current) {
         cancelAnimationFrame(rafRef.current);
         rafRef.current = null;
       }
     } else {
-      // 오답 패널티를 주려면 아래 추가
+      // 오답 패널티를 주려면 아래 사용
       // setLives(l => l - 1);
     }
   };
@@ -206,17 +227,19 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
         <GameText label="ROUND" data={round} />
         <GameText label="SPEED" data={speedRef.current.toFixed(2)} />
       </div>
-      {/* 움직이는 영역 (배경 포함) */}
+
+      {/* 움직이는 영역 */}
       <div
         ref={containerRef}
         className="relative grow rounded-md overflow-hidden h-[60vh] min-h-[420px] bg-center bg-cover"
         style={{ backgroundImage: `url(${city})` }}
       >
+        {/* 미사일 */}
         {current && (
           <div
             key={`${round}-${idx}-${current.nameEn}`}
             className="absolute top-3/5 -translate-y-1/2 transition-none"
-            style={{ left: x }} // ← 가로 이동 (머리부터 살짝 보임)
+            style={{ left: x }}
           >
             <Missile
               imageUrl={current.imageUrl}
@@ -225,6 +248,16 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
               height={IMG_H}
             />
           </div>
+        )}
+
+        {boomVisible && (
+          <img
+            src={boom}
+            alt="boom"
+            className="absolute bottom-0 -translate-y-1/2 right-2 pointer-events-none select-none"
+            style={{ width: BOOM_W, height: BOOM_H }}
+            draggable={false}
+          />
         )}
       </div>
 

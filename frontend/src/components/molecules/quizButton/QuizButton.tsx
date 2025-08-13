@@ -41,11 +41,10 @@ export const QuizButton = ({
   return (
     <Button
       onClick={handleOnclick}
-      size={"long"}
       textColor={selected ? selectColor : "gray"}
       bgColor={"green"}
       border={"white"}
-      className="px-10 py-3 relative w-full h-full shadow-2xl"
+      className="px-5 py-3 relative shadow-2xl"
     >
       <img
         src={cardDeco}
