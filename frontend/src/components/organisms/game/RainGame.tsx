@@ -21,7 +21,7 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
    *  상수 (게임 밸런스/연출)
    * ------------------------- */
   const MAX_LIVES = 5;
-  const INITIAL_SPEED = 2; // px/frame
+  const INITIAL_SPEED = 10; // px/frame
   const SPEED_UP = 1.1; // 정답 시 속도 ×1.1
 
   // 미사일 가로:세로 비 (이전 130x100 → h/w)
@@ -321,7 +321,7 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
    *  UI
    * ------------------------- */
   return (
-    <div className="flex flex-col gap-4 w-full h-full p-4">
+    <div className="flex flex-col gap-4 w-full grow p-4">
       {/* 상단 정보바 */}
       <div className="flex items-center gap-4">
         <GameText label="SCORE" data={score} />
@@ -333,7 +333,7 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
       {/* 움직이는 영역 (배경 포함) */}
       <div
         ref={containerRef}
-        className="relative grow rounded-md overflow-hidden h-[60vh] min-h-[420px] flex"
+        className="relative grow rounded-md overflow-hidden flex"
       >
         <div
           className="grow bg-center bg-cover"
@@ -369,8 +369,11 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
           <img
             src={boom}
             alt="boom"
-            className="absolute bottom-0 -translate-y-1/2 right-[10%] pointer-events-none select-none"
-            style={{ width: boomSize.w, height: boomSize.h }}
+            className="absolute bottom-0 right-0 -translate-y-1/2 pointer-events-none select-none"
+            style={{
+              width: boomSize.w * (MAX_LIVES - lives),
+              height: boomSize.h,
+            }}
             draggable={false}
           />
         )}

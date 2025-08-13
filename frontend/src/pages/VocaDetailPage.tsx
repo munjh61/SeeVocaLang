@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import type { VocaCardProps } from "../components/organisms/vocaCard/VocaCard";
 import { getWords } from "../api/FolderAPI";
 import { LoadingPage } from "../components/templates/loadingTemplate/LoadingTemplate";
+import { getTodayQuiz } from "../api/TodayQuizAPI";
 
 function VocaDetailPage() {
   const nav = useNavigate();
@@ -31,8 +32,13 @@ function VocaDetailPage() {
     }
     (async () => {
       try {
-        const vocas = await getWords(Number(folderId));
-        if (mounted) setVocas(vocas);
+        if (isTodayMission) {
+          const vocas = await getTodayQuiz();
+          if (mounted) setVocas(vocas);
+        } else {
+          const vocas = await getWords(Number(folderId));
+          if (mounted) setVocas(vocas);
+        }
       } catch (e) {
         if (mounted && e instanceof Error) {
           console.error(e);

@@ -79,6 +79,13 @@ export const MainActionPanel = () => {
         buttonText="단어 보기"
         emoji="📚"
         className="flex-1 basis-1/4"
+        onClick={() => {
+          nav("/folder/0", {
+            state: {
+              isTodayMission: true,
+            },
+          });
+        }}
       />
 
       <InfoCardLarge
