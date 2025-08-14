@@ -66,11 +66,6 @@ export default function OAuthSuccess() {
         const raw = getCookie("final_redirect") || "%2Fmain";
         const target = decodeURIComponent(raw).trim();
 
-        // (보안) 스킴 가드: javascript:, data: 등 차단
-        if (/^(javascript|data|vbscript):/i.test(target)) {
-          throw new Error("INVALID_REDIRECT_SCHEME");
-        }
-
         // 5) 쿠키 삭제 (둘 다 제거)
         deleteCookie("final_redirect");
         deleteCookie("redirect_uri");
