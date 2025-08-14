@@ -52,64 +52,66 @@ export const SignupStep4 = ({
 
   return (
     <div className="flex flex-col gap-4">
-      <Text
-        size="xl"
-        color="black"
-        weight="extrabold"
-        className="text-center mb-10"
-      >
-        닉네임 설정
-      </Text>
-
-      <Input
-        placeholder="닉네임을 입력해주세요"
-        value={nickname}
-        onChange={handleInputChange}
-        border={error ? "red" : "lightgray"}
-        text="gray"
-        scale="signup"
-        className="m-0 px-3"
-      />
-
-      <Button
-        size="signup"
-        onClick={handleCheckNickname}
-        disabled={checking || nickname.length < 2}
-        rounded={"lg"}
-        className="bg-gray-200 text-gray-800"
-      >
-        {checking ? "확인 중..." : "중복 확인"}
-      </Button>
-
-      {error && (
-        <Text color="red" size="xs">
-          {error}
+      <div className="flex flex-col bg-white/70 rounded-2xl p-10 pt-5  justify-center gap-5 px-6">
+        <Text
+          size="xl"
+          color="black"
+          weight="extrabold"
+          className="text-center mb-10"
+        >
+          닉네임 설정
         </Text>
-      )}
-      {isValid && !error && (
-        <Text color="green" size="xs" className={"px-2"}>
-          ✅ 사용 가능한 닉네임입니다
-        </Text>
-      )}
 
-      <Button
-        size="signup"
-        onClick={onComplete}
-        disabled={!isValid}
-        rounded={"lg"}
-        className="bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-50"
-      >
-        회원가입 완료
-      </Button>
-      <Button
-        size="signup"
-        border="blue"
-        rounded={"lg"}
-        onClick={onBack}
-        textColor="blue"
-      >
-        돌아가기
-      </Button>
+        <Input
+          placeholder="닉네임을 입력해주세요"
+          value={nickname}
+          onChange={handleInputChange}
+          border={error ? "red" : "lightgray"}
+          text="gray"
+          scale="signup"
+          className="m-0 px-3"
+        />
+
+        <Button
+          size="signup"
+          onClick={handleCheckNickname}
+          disabled={checking || nickname.length < 2}
+          rounded={"lg"}
+          className="bg-gray-200 text-gray-800"
+        >
+          {checking ? "확인 중..." : "중복 확인"}
+        </Button>
+
+        {error && (
+          <Text color="red" size="xs">
+            {error}
+          </Text>
+        )}
+        {isValid && !error && (
+          <Text color="green" size="xs" className={"px-2"}>
+            ✅ 사용 가능한 닉네임입니다
+          </Text>
+        )}
+
+        <Button
+          size="signup"
+          onClick={onComplete}
+          disabled={!isValid}
+          rounded={"lg"}
+          className="bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-50"
+        >
+          회원가입 완료
+        </Button>
+        <Button
+          size="signup"
+          border="blue"
+          rounded={"lg"}
+          onClick={onBack}
+          textColor="blue"
+        >
+          돌아가기
+        </Button>
+      </div>
     </div>
   );
 };

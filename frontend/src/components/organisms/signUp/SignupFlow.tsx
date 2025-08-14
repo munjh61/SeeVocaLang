@@ -6,6 +6,7 @@ import { SignupStep3 } from "./SignupStep3.tsx";
 import { SignupStep4 } from "./SignupStep4.tsx";
 import { registerUser } from "../../../api/user/SignupApi.ts";
 import { useNavigate } from "react-router-dom";
+import BackgroundLayer from "../onboarding/BackgroundLayer.tsx";
 
 type Step = 1 | 2 | 3 | 4;
 
@@ -150,8 +151,10 @@ export const SignupFlow = () => {
   };
 
   return (
-    <div className="w-full h-screen flex items-center justify-center p-10 bg-[#F3F4FF] gap-6">
-      {renderStep()}
-    </div>
+    <BackgroundLayer>
+      <div className="w-full h-screen flex items-center justify-center p-10 gap-6">
+        {renderStep()}
+      </div>
+    </BackgroundLayer>
   );
 };

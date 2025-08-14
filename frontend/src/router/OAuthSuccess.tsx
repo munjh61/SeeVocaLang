@@ -58,6 +58,7 @@ export default function OAuthSuccess() {
             nickname: user.nickname,
             email: user.email ?? null,
             profileImage: user.profileImage ?? null,
+            birthday: user.birthday ?? "1970-01-01",
           });
         } else {
           setAccessToken(accessToken);

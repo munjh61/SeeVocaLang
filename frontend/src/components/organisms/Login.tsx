@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Logo } from "../atoms/Logo.tsx";
 import { Text } from "../atoms/text/Text.tsx";
 import { Label } from "../atoms/Label.tsx";
 import { Input } from "../atoms/input/Input.tsx";
@@ -9,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { signin } from "../../api/user/LoginApi.ts";
 import { getUserInfo } from "../../api/userInfo.ts";
 import { useAuthStore } from "../../stores/AuthStore.ts";
+import LogoImg from "../../asset/png/pirate.png";
 
 export const Login = () => {
   const [id, setId] = useState("");
@@ -44,6 +44,7 @@ export const Login = () => {
         nickname: userInfo.nickname ?? nickname,
         email: userInfo.email ?? null,
         profileImage: profileImage ?? null,
+        birthday: userInfo.birthday ?? null,
       });
 
       console.log("로그인 유저 정보 : ", useAuthStore.getState().user);
@@ -66,9 +67,9 @@ export const Login = () => {
     <div className="flex h-screen items-center justify-center">
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col items-center justify-center gap-5 px-6"
+        className="flex flex-col bg-white/70 rounded-2xl p-10 pt-5 items-center justify-center gap-5 px-6"
       >
-        <Logo />
+        <img src={LogoImg} className="w-25 h-25" alt={"로고"} />
         <Text size="xl" weight="extrabold" color="black">
           로그인
         </Text>

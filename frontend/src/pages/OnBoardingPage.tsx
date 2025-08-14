@@ -1,140 +1,56 @@
-import { Text } from "../components/atoms/text/Text.tsx";
-import { Button } from "../components/atoms/button/Button.tsx";
 import { useNavigate } from "react-router-dom";
-import KaKaoIcon from "../asset/png/kakologo.png";
-import NaverIcon from "../asset/png/naverIcon.png";
-import { Logo } from "../components/atoms/Logo.tsx";
-import { BASE_URL } from "../types/Regex.ts";
+import BackgroundLayer from "../components/organisms/onboarding/BackgroundLayer.tsx";
+import HeroCard from "../components/organisms/onboarding/HeroCard.tsx";
+import IntroCard from "../components/organisms/onboarding/IntroCard.tsx";
+import Reveal from "../components/organisms/Reveal.tsx";
 import Bino from "../asset/png/pirate_binoculars.png";
 
-const baseurl = BASE_URL;
-export const OnBoardingPage = () => {
+export function OnBoardingPage() {
   const navigate = useNavigate();
+
   return (
-    <div className="flex flex-col w-full h-full items-center justify-center p-10 bg-[#F3F4FF] gap-6 relative">
-      <div className="flex flex-col items-center justify-center gap-5">
-        <Logo />
-        <Text className="text-blue-500 text-4xl font-extrabold">
-          씨보랭(SVL)
-        </Text>
-      </div>
-      <img
-        src={Bino}
-        alt="망원경 해적"
-        className="absolute right-0 bottom-0 w-[18%] block" // 가로만 고정, 세로는 자동(비율 유지)
-        draggable={false}
-      />
-      <div className="flex flex-col items-center justify-center gap-0.5">
-        <Text color="muted" size="sm">
-          스마트한 방법으로 영단어를 마스터하세요
-        </Text>
-        <Text size="sm" className="text-blue-500">
-          AI와 함께하는 맞춤형 학습
-        </Text>
-      </div>
+    <BackgroundLayer>
+      {/* === 히어로 섹션 === */}
+      <section className="relative flex flex-col items-center justify-center min-h-[90vh] p-10 gap-6 pb-14">
+        <HeroCard
+          onLogin={() => navigate("/login")}
+          onSignup={() => navigate("/signUp")}
+        />
 
-      <Button
-        size="onboard"
-        textColor="white"
-        className="bg-blue-500 rounded-xl"
-        onClick={() => navigate("/login")}
-      >
-        로그인
-      </Button>
-
-      <Button
-        size="onboard"
-        textColor="white"
-        className="border border-blue-500 text-blue-500 rounded-xl"
-        onClick={() => navigate("/signUp")}
-      >
-        회원가입
-      </Button>
-
-      <section className="flex flex-col gap-5  w-100 h-12 text-lg">
-        <div className="flex items-center justify-center w-full gap-4">
-          <div className="flex-grow h-px bg-gray-300 opacity-50" />
-          <span className="text-gray-400 text-sm font-medium whitespace-nowrap">
-            간편로그인
-          </span>
-          <div className="flex-grow h-px bg-gray-300 opacity-50" />
-        </div>
-
-        <div
-          className={"flex flex-row gap-5 justify-center items-center w-full"}
-        >
-          <img
-            src={KaKaoIcon}
-            alt="카카오 로그인"
-            className="w-10 h-10 cursor-pointer"
-            onClick={() => {
-              // 로그인 후 돌아올 페이지 (풀 URL)
-              const finalRedirect =
-                "http://ec2-13-125-250-93.ap-northeast-2.compute.amazonaws.com/main";
-
-              // OAuth 서버가 인증 완료 후 호출할 프론트 콜백 경로
-              const callback = window.location.origin + "/oauth2/success";
-
-              // 백엔드에 전달할 redirect_uri
-              document.cookie = `redirect_uri=${encodeURIComponent(callback)}; path=/`;
-
-              // 프론트에서 사용할 최종 리다이렉트 경로
-              // 풀 URL도 허용 → OAuthSuccess에서 처리 분기
-              document.cookie = `final_redirect=${encodeURIComponent(finalRedirect)}; path=/; SameSite=Lax`;
-
-              // 소셜 로그인 시작
-              window.location.href = `${baseurl}/oauth2/authorization/kakao`;
-            }}
-          />
-
-          <img
-            src={NaverIcon}
-            alt="네이버 로그인"
-            className="w-10 h-10 cursor-pointer"
-            onClick={() => {
-              // 로그인 후 돌아올 페이지 (풀 URL)
-              const finalRedirect =
-                "http://ec2-13-125-250-93.ap-northeast-2.compute.amazonaws.com/main";
-
-              // OAuth 서버가 인증 완료 후 호출할 프론트 콜백 경로
-              const callback = window.location.origin + "/oauth2/success";
-
-              // 백엔드에 전달할 redirect_uri
-              document.cookie = `redirect_uri=${encodeURIComponent(callback)}; path=/`;
-
-              // 프론트에서 사용할 최종 리다이렉트 경로
-              // 풀 URL도 허용 → OAuthSuccess에서 처리 분기
-              document.cookie = `final_redirect=${encodeURIComponent(finalRedirect)}; path=/; SameSite=Lax`;
-
-              // 소셜 로그인 시작
-              window.location.href = `${baseurl}/oauth2/authorization/naver`;
-            }}
-          />
-          {/*<img*/}
-          {/*  src={GoogleIcon}*/}
-          {/*  alt="구글 로그인"*/}
-          {/*  className="w-10 h-10 cursor-pointer"*/}
-          {/*  onClick={() => {*/}
-          {/*    // 로그인 후 돌아올 페이지 (풀 URL)*/}
-          {/*    const finalRedirect =*/}
-          {/*      "http://ec2-13-125-250-93.ap-northeast-2.compute.amazonaws.com/main";*/}
-
-          {/*    // OAuth 서버가 인증 완료 후 호출할 프론트 콜백 경로*/}
-          {/*    const callback = window.location.origin + "/oauth2/success";*/}
-
-          {/*    // 백엔드에 전달할 redirect_uri*/}
-          {/*    document.cookie = `redirect_uri=${encodeURIComponent(callback)}; path=/`;*/}
-
-          {/*    // 프론트에서 사용할 최종 리다이렉트 경로*/}
-          {/*    // 풀 URL도 허용 → OAuthSuccess에서 처리 분기*/}
-          {/*    document.cookie = `final_redirect=${encodeURIComponent(finalRedirect)}; path=/; SameSite=Lax`;*/}
-
-          {/*    // 소셜 로그인 시작*/}
-          {/*    window.location.href = `${baseurl}/oauth2/authorization/google`;*/}
-          {/*  }}*/}
-          {/*/>*/}
+        {/* 히어로 데코 */}
+        <img
+          src={Bino}
+          alt="망원경 해적"
+          className="absolute right-0 bottom-[-1px] w-[32%] max-w-[300px] pointer-events-none"
+          draggable={false}
+        />
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-gray-500 text-sm animate-bounce">
+          ↓ 아래로 스크롤
         </div>
       </section>
-    </div>
+
+      {/* === 소개 섹션 === */}
+      <section className="relative px-6 sm:px-10 py-10 space-y-15">
+        <Reveal from="right">
+          <IntroCard
+            align="right"
+            subtitle="AI 기반 학습"
+            title="내 실력에 맞춘 맞춤 추천"
+            desc="이미지 인식과 난이도 추정으로, 지금 나에게 적절한 단어와 학습량을 자동 추천합니다. 외우기 쉬운 순서대로 큐레이션해 주어 집중력을 아껴줘요."
+          />
+        </Reveal>
+
+        <Reveal from="left">
+          <IntroCard
+            align="left"
+            subtitle="루틴 & 기록"
+            title="루틴 생성과 진도 추적"
+            desc="원하는 시간대와 목표에 맞춰 루틴을 만들고, 진행 상황을 자동으로 기록합니다. 다시 학습할 단어는 따로 모아 복습 효율을 높여요."
+          />
+        </Reveal>
+      </section>
+
+      <div className="h-24" />
+    </BackgroundLayer>
   );
-};
+}
