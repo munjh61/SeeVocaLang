@@ -20,19 +20,26 @@ export const Dots = ({
       onClick={onClick}
       className={cn(
         Variants({ bg, border, color, hover, size, font }),
-        "w-full py-3 px-6 bg-purple-900 font-mono uppercase tracking-wider rounded relative overflow-hidden group hover:bg-purple-800 transition-all duration-300",
+        "w-full flex items-center justify-center min-w-0 btn-compact",
+        "py-3 px-6 bg-purple-900 font-mono uppercase tracking-wider rounded relative overflow-hidden group hover:bg-purple-800 transition-all duration-300",
         className
       )}
     >
       {icon && (
         <Icon
           icon={icon}
-          className={cn(Variants({ color }), "inline-block w-5 h-5 mr-2")}
+          className={cn(Variants({ color }), "w-5 h-5 mr-2 shrink-0 icon")}
         />
       )}
-      <span className={cn(Variants({ color, size, font }), "")}>
+      <span
+        className={cn(
+          Variants({ color, size, font }),
+          "label min-w-0 whitespace-nowrap break-keep truncate leading-none text-center"
+        )}
+      >
         {children}
       </span>
+
       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
         {[...Array(6)].map((_, i) => (
           <div
