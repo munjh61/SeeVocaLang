@@ -44,7 +44,7 @@ export const textVariants = cva("", {
     },
     font: {
       default: "", // Tailwind 기본 폰트
-      outline: "font-sds-outline", // 우리가 직접 설정한 클래스
+      outline: "font-sds-outline",
     },
   },
   defaultVariants: {

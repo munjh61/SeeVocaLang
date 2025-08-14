@@ -5,19 +5,25 @@ import KaKaoIcon from "../asset/png/kakologo.png";
 import NaverIcon from "../asset/png/naverIcon.png";
 import { Logo } from "../components/atoms/Logo.tsx";
 import { BASE_URL } from "../types/Regex.ts";
+import Bino from "../asset/png/pirate_binoculars.png";
 
 const baseurl = BASE_URL;
 export const OnBoardingPage = () => {
   const navigate = useNavigate();
   return (
-    <div className="flex flex-col w-full h-full items-center justify-center p-10 bg-[#F3F4FF] gap-6">
+    <div className="flex flex-col w-full h-full items-center justify-center p-10 bg-[#F3F4FF] gap-6 relative">
       <div className="flex flex-col items-center justify-center gap-5">
         <Logo />
         <Text className="text-blue-500 text-4xl font-extrabold">
           씨보랭(SVL)
         </Text>
       </div>
-
+      <img
+        src={Bino}
+        alt="망원경 해적"
+        className="absolute right-0 bottom-0 w-[18%] block" // 가로만 고정, 세로는 자동(비율 유지)
+        draggable={false}
+      />
       <div className="flex flex-col items-center justify-center gap-0.5">
         <Text color="muted" size="sm">
           스마트한 방법으로 영단어를 마스터하세요

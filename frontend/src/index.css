@@ -6,7 +6,7 @@
 
 }
 
-/* 단어 카드에서 사용하는 폰트 */
+/* 외곽선이 있는 폰트 */
 @font-face {
   font-family: 'SDSamliphopangche_Outline';
   src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts-20-12@1.0/SDSamliphopangche_Outline.woff') format('woff');
@@ -14,9 +14,21 @@
   font-style: normal;
 }
 
+/* 칠판 필기 폰트 */
+@font-face {
+    font-family: 'HakgyoansimDoldamB';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/HakgyoansimDoldamB.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+
 
 .font-sds-outline {
   font-family: 'SDSamliphopangche_Outline', sans-serif;
+}
+
+.font-hakgyo {
+  font-family: 'HakgyoansimDoldamB', sans-serif;
 }
 
 html,
