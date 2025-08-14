@@ -2,18 +2,12 @@ import { useEffect, useState, useCallback } from "react";
 import { Modal } from "../../atoms/modal/modal.tsx";
 import { UploadStep1 } from "./UploadStep1.tsx";
 import { UploadStep2 } from "./UploadStep2.tsx";
-import { analyzeImage } from "../../../api/PhotoUpload.ts";
+import { analyzeImage } from "../../../api/upload/AnalyzeImage.ts";
+import type { AnalysisResult } from "../../../types/FileUploadType.ts";
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-};
-
-type AnalysisResult = {
-  name_en: string;
-  name_ko: string;
-  image_key: string;
-  word_id: number;
 };
 
 type Step = 1 | 2;
@@ -41,7 +35,6 @@ export const FileUploadModalFlow = ({ isOpen, onClose }: Props) => {
 
   const goToStep = (s: Step) => setStep(s);
 
-  // 파일 분석만 수행 (저장/교체는 UploadStep2에서)
   // 파일 분석만 수행 (저장/교체는 UploadStep2에서)
   const handleAnalyze = async () => {
     if (!file || isAnalyzing) return;
@@ -81,7 +74,7 @@ export const FileUploadModalFlow = ({ isOpen, onClose }: Props) => {
           file && (
             <UploadStep2
               file={file}
-              onBack={resetAll} // ✅ “다시 선택”도 같은 리셋 함수 사용
+              onBack={resetAll}
               onAnalyze={handleAnalyze}
               isAnalyzing={busy}
               result={analysisResult}
@@ -96,7 +89,9 @@ export const FileUploadModalFlow = ({ isOpen, onClose }: Props) => {
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      {renderStep()}
+      <div className="max-h-[85vh] md:max-h-[75vh] xl:max-h-[70vh] overflow-y-auto pr-1">
+        {renderStep()}
+      </div>{" "}
     </Modal>
   );
 };

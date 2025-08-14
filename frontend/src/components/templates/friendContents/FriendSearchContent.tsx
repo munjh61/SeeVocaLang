@@ -24,7 +24,7 @@ export const FriendSearchContent = ({ searchValue, userId,friends,onAddFriend,on
 
   
   return (
-    <div className="flex flex-col px-4 py-2 bg-gradient-to-b from-[#F7F5FE] to-[#F3FAF3] h-[calc(100vh-160px)] overflow-y-auto">
+    <div className="flex flex-col px-4 py-2 bg-gray-100 h-[calc(100vh-160px)] overflow-y-auto">
       <div className="mb-4">
         <Text color="black" size="lg" weight="bold">
           새로운 친구 찾기
@@ -37,7 +37,7 @@ export const FriendSearchContent = ({ searchValue, userId,friends,onAddFriend,on
       <div className="flex flex-col gap-3">
         {!hasSearch ? (
           <div className="text-center mt-8">
-            <Text color="gray" size="sm">
+            <Text color="gray" size="xl">
               친구 닉네임을 입력해 검색해보세요
             </Text>
           </div>

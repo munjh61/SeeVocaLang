@@ -1,4 +1,4 @@
-import { checkNicknameDuplicate } from "../../../api/SignupApi.ts";
+import { checkNicknameDuplicate } from "../../../api/user/SignupApi.ts";
 import { Input } from "../../atoms/input/Input.tsx";
 import { Text } from "../../atoms/text/Text.tsx";
 import { Button } from "../../atoms/button/Button.tsx";

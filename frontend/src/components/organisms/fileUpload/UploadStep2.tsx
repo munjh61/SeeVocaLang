@@ -1,34 +1,20 @@
 import { useEffect, useMemo, useState } from "react";
-import type { AxiosError } from "axios";
 import { Text } from "../../atoms/text/Text";
-import { Button } from "../../atoms/button/Button";
-import {
-  SaveRecognizedWordApi,
-  type SaveRecognizedWordRequest,
-} from "../../../api/SaveRecognizedWord.ts";
-import { WordImageUploadApi } from "../../../api/WordImageUploadApi.ts";
-import { getfolders } from "../../../api/FolderAPI.ts";
-import { useAuthStore } from "../../../stores/AuthStore.ts";
+import { useUploadMode } from "../../../hooks/UseUploadMode.ts";
+import { usePreviewUrl } from "../../../hooks/UsePreviewUrl.ts";
+// ❌ 삭제: useFolderListByWordId
+// import { useFolderListByWordId } from "../../../hooks/UseFolderList.ts";
+import { saveWords } from "../../../service/WordService.ts";
+import { PreviewSection } from "./PreviewSection.tsx";
+import { ActionsAnalyze } from "./ActionAnalyze.tsx";
+import { ActionsSave } from "./ActionSave.tsx";
+import { AnalyzeFailCard, DuplicateCard } from "../AnalyzeResultCards";
+import type { AnalysisResult } from "../../../types/FileUploadType.ts";
+import { UpdateWordImage } from "../../../api/upload/UpdateWordImage.ts";
+import type { AxiosError } from "axios";
+import { getAllFolderIds } from "../../../api/upload/GetWordFolders.ts";
 
-// 새로 만든 카드 컴포넌트들
-import {
-  Badge,
-  AnalyzeFailCard,
-  DuplicateCard,
-  SuccessCard,
-  type Folder as CardFolder,
-} from "../AnalyzeResultCards.tsx";
-
-type AnalysisResult = {
-  name_en: string;
-  name_ko: string;
-  image_key: string;
-  word_id: number;
-};
-
-type Folder = { folderId: number; name: string };
-
-type Props = {
+export function UploadStep2(props: {
   file: File;
   onBack: () => void;
   onAnalyze: () => void;
@@ -36,225 +22,120 @@ type Props = {
   result: AnalysisResult | null;
   folderId?: number;
   onDone?: (message?: string) => void;
-};
+}) {
+  const { file, onBack, onAnalyze, isAnalyzing, result, folderId, onDone } =
+    props;
 
-export const UploadStep2 = ({
-  file,
-  onBack,
-  onAnalyze,
-  isAnalyzing,
-  result,
-  folderId,
-  onDone,
-}: Props) => {
-  // ---------------- state ----------------
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [previewUrl, setPreviewUrl] = useState<string>("");
-  const [folders, setFolders] = useState<Folder[]>([]);
-  const [foldersLoading, setFoldersLoading] = useState(false);
-  const [foldersError, setFoldersError] = useState<string | null>(null);
-  const [selectedFolderId, setSelectedFolderId] = useState<number | null>(
-    folderId ?? null
-  );
   const [requestedAnalyze, setRequestedAnalyze] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
 
-  // 로그인된 사용자
-  const userId = useAuthStore.getState().user?.userId ?? 1;
+  // ✅ 저장(신규) 선택 목록 (UI 선택용 — 필요 시 유지)
+  const [selectedFolderIds, setSelectedFolderIds] = useState<number[]>(
+    folderId != null ? [folderId] : []
+  );
 
-  // ---------------- 분기관리 ----------------
-  const mode = useMemo<"analyze" | "replace" | "save">(() => {
-    if (!result) return "analyze";
-    return result.word_id ? "replace" : "save";
-  }, [result]);
+  // ✅ 모든 폴더 ID
+  const [allFolderIds, setAllFolderIds] = useState<
+    { id: number; name: string }[]
+  >([]);
 
-  const shouldShowFolderSelect = mode === "save";
+  useEffect(() => {
+    (async () => {
+      try {
+        const rows = await getAllFolderIds(); // [{ id, name }]
+        setAllFolderIds(rows);
+      } catch (e) {
+        console.error("모든 폴더 조회 실패:", e);
+      }
+    })();
+  }, []);
+
+  const { mode, wordId, existingImageUrl } = useUploadMode(result);
+  const previewUrl = usePreviewUrl(file);
+
   const showAnalyzeFail =
     requestedAnalyze && !isAnalyzing && mode === "analyze";
 
-  // ---------------- effects ----------------
-  useEffect(() => {
-    const url = URL.createObjectURL(file);
-    setPreviewUrl(url);
-    return () => URL.revokeObjectURL(url);
-  }, [file]);
+  // ✅ UI에 넣어줄 folders: allFolderIds만 사용 (이름은 기본 포맷)
+  const folders = useMemo(
+    () => allFolderIds.map(({ id, name }) => ({ folder_id: id, name })), // ✅ name 사용
+    [allFolderIds]
+  );
 
-  useEffect(() => {
-    if (!shouldShowFolderSelect) return;
-    if (folderId != null) return; // 외부에서 이미 선택값이 들어온 경우 스킵
-
-    let mounted = true;
-    (async () => {
-      try {
-        setFoldersLoading(true);
-        setFoldersError(null);
-        const list = await getfolders(userId);
-
-        if (!mounted) return;
-
-        const simplified: Folder[] = (list ?? []).map(
-          ({ folderId, name }: { folderId: number; name: string }) => ({
-            folderId: Number(folderId),
-            name: String(name ?? ""),
-          })
-        );
-
-        setFolders(simplified);
-        if (simplified.length > 0 && selectedFolderId == null) {
-          setSelectedFolderId(simplified[0].folderId);
-        }
-      } catch (e) {
-        const err = e as AxiosError<{ message?: string }>;
-        if (!mounted) return;
-        setFoldersError(
-          err.response?.data?.message ||
-            err.message ||
-            "폴더 목록을 불러오지 못했습니다."
-        );
-      } finally {
-        if (mounted) setFoldersLoading(false);
-      }
-    })();
-
-    return () => {
-      mounted = false;
-    };
-  }, [shouldShowFolderSelect, folderId, userId, selectedFolderId]);
-
-  useEffect(() => {
-    if (folderId != null) setSelectedFolderId(folderId);
-  }, [folderId]);
-
-  // ---------------- handlers ----------------
   const handleAnalyzeStart = () => {
     setRequestedAnalyze(true);
     onAnalyze();
   };
 
-  const handleReplace = async () => {
-    if (!result) return;
+  // ✅ 교체 (기존 단어 이미지 교체)
+  const onReplace = async () => {
+    if (!wordId || !result?.image_key) {
+      alert("교체할 단어 정보가 준비되지 않았습니다.");
+      return;
+    }
     try {
       setIsProcessing(true);
-      const msg = await WordImageUploadApi(result.word_id, result.image_key);
-      alert(msg ?? "이미지가 성공적으로 수정되었습니다.");
+      const msg = await UpdateWordImage(wordId, result.image_key);
+      alert(msg);
       onDone?.(msg);
     } catch (e) {
       const err = e as AxiosError<{ message?: string }>;
-      alert(
-        err.response?.data?.message ||
-          err.message ||
-          "이미지 교체에 실패했습니다."
-      );
+      const message =
+        err.response?.data?.message ??
+        err.message ??
+        "이미지 교체에 실패했습니다.";
+      alert(message);
     } finally {
       setIsProcessing(false);
     }
   };
 
-  const handleSave = async () => {
-    if (!result || selectedFolderId == null) return;
+  // ✅ 저장 (신규 저장: 선택한 폴더만 사용)
+  const wordSave = async () => {
+    if (!result?.image_key || !result?.name_en || !result?.name_ko) {
+      alert("저장할 단어 정보가 준비되지 않았습니다.");
+      return;
+    }
+    if (selectedFolderIds.length === 0) {
+      alert("저장할 폴더를 선택하세요.");
+      return;
+    }
+
     try {
       setIsProcessing(true);
-      const body: SaveRecognizedWordRequest = {
-        name_en: result.name_en,
-        name_ko: result.name_ko,
-        image_key: result.image_key,
-        folder_id: selectedFolderId,
-      };
-      const msg = await SaveRecognizedWordApi(body);
-      alert(msg ?? "단어가 저장되었습니다.");
-      onDone?.(msg);
-    } catch (e) {
-      const err = e as AxiosError<{ message?: string }>;
-      alert(
-        err.response?.data?.message ||
-          err.message ||
-          "단어 저장에 실패했습니다."
+      const res = await saveWords(
+        result.name_en,
+        result.name_ko,
+        result.image_key,
+        selectedFolderIds
       );
+      alert(res.message);
+      onDone?.(res.message);
+    } catch (e) {
+      const message = e instanceof Error ? e.message : "저장에 실패했습니다.";
+      alert(message);
     } finally {
       setIsProcessing(false);
     }
   };
 
-  // ---------------- render ----------------
+  // ✅ 버튼 비활성화: allFolderIds만 기준
+  const disabledCommon = isProcessing || isAnalyzing || folders.length === 0;
+
   return (
     <div className="flex flex-col gap-4">
       <Text size="xl" weight="bold">
         업로드 정보 확인
       </Text>
 
-      {/* === 미리보기 + 정보 카드 === */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* 미리보기 */}
-        <div className="rounded-2xl border bg-white p-4 shadow-sm">
-          <Text size="sm" weight="bold" className="mb-2">
-            미리보기
-          </Text>
-          <div className="relative rounded-xl overflow-hidden ring-1 ring-gray-200">
-            {previewUrl ? (
-              <div className="aspect-square bg-gradient-to-br from-gray-50 to-gray-100">
-                <img
-                  src={previewUrl}
-                  alt="preview"
-                  className="h-full w-full object-contain transition-transform duration-300 hover:scale-[1.02]"
-                />
-              </div>
-            ) : (
-              <div className="aspect-square flex items-center justify-center text-sm text-gray-500 bg-gray-50">
-                미리보기 없음
-              </div>
-            )}
-          </div>
-          <div className="mt-3 flex flex-wrap items-center gap-2">
-            <Badge>{file.type || "unknown/type"}</Badge>
-            <Badge>{(file.size / 1024 / 1024).toFixed(2)} MB</Badge>
-            <Badge>{file.name}</Badge>
-          </div>
-        </div>
+      <PreviewSection
+        mode={mode}
+        existingImageUrl={existingImageUrl}
+        previewUrl={previewUrl}
+        file={file}
+        result={result ?? undefined}
+      />
 
-        {/* 파일 정보 */}
-        <div className="rounded-2xl border bg-white p-4 shadow-sm flex flex-col h-full">
-          <Text
-            size="sm"
-            weight="bold"
-            className="mb-3 border-b-2 border-gray-400 pb-2"
-          >
-            파일 정보
-          </Text>
-          <dl className="grid grid-cols-3 gap-x-4 gap-y-3 text-sm flex-1 px-2">
-            <dt className="col-span-1 text-gray-500">이름</dt>
-            <dd className="col-span-2 text-gray-800 truncate">{file.name}</dd>
-
-            <dt className="col-span-1 text-gray-500">크기</dt>
-            <dd className="col-span-2 text-gray-800">
-              {(file.size / 1024 / 1024).toFixed(2)} MB
-            </dd>
-
-            <dt className="col-span-1 text-gray-500">형식</dt>
-            <dd className="col-span-2 text-gray-800">{file.type || "-"}</dd>
-
-            <dt className="col-span-1 text-gray-500">업로드 시간</dt>
-            <dd className="col-span-2 text-gray-800">
-              {new Date().toLocaleTimeString()}
-            </dd>
-
-            {/* 추가 정보 */}
-            <dt className="col-span-1 text-gray-500">마지막 수정</dt>
-            <dd className="col-span-2 text-gray-800">
-              {file.lastModified
-                ? new Date(file.lastModified).toLocaleString()
-                : "-"}
-            </dd>
-          </dl>
-
-          {/* 하단 구분선 + 파일 상태 */}
-          <div className="mt-auto pt-3 border-t-2 border-gray-400 flex items-center justify-between text-xs text-gray-500">
-            <span>파일 상태: 준비 완료</span>
-            <span>📂 {file.type.split("/")[0] || "알 수 없음"}</span>
-          </div>
-        </div>
-      </div>
-      {/* === /미리보기 + 정보 카드 === */}
-
-      {/* === 상태 카드: 미리보기/정보 아래 === */}
       {showAnalyzeFail && (
         <AnalyzeFailCard
           onBack={onBack}
@@ -264,59 +145,55 @@ export const UploadStep2 = ({
       )}
 
       {mode === "replace" && !showAnalyzeFail && (
-        <DuplicateCard
-          nameEn={result?.name_en}
-          nameKo={result?.name_ko}
-          onBack={onBack}
-          onReplace={handleReplace}
-          isProcessing={isProcessing}
-          disabled={isProcessing || isAnalyzing}
-        />
+        <div className="flex flex-col">
+          <DuplicateCard
+            nameEn={result?.name_en ?? ""}
+            nameKo={result?.name_ko ?? ""}
+            onBack={onBack}
+            onReplace={onReplace}
+            isProcessing={isProcessing}
+            disabled={isProcessing || isAnalyzing || !wordId}
+          />
+          {/* 필요 시 replace 모드에서도 신규 저장 허용하려면 주석 해제 */}
+          {/*
+          <ActionsSave
+            nameEn={result?.name_en ?? ""}
+            nameKo={result?.name_ko ?? ""}
+            folders={folders}
+            foldersLoading={false}
+            foldersError={undefined}
+            selectedFolderIds={selectedFolderIds}
+            onChangeSelected={setSelectedFolderIds}
+            onBack={onBack}
+            onSave={wordSave}
+            disabled={disabledCommon}
+          />
+          */}
+        </div>
       )}
 
       {mode === "save" && !showAnalyzeFail && (
-        <SuccessCard
-          nameEn={result?.name_en}
-          nameKo={result?.name_ko}
-          folders={folders as CardFolder[]}
-          foldersLoading={foldersLoading}
-          foldersError={foldersError}
-          selectedFolderId={selectedFolderId}
-          onChangeFolder={setSelectedFolderId}
+        <ActionsSave
+          nameEn={result?.name_en ?? ""}
+          nameKo={result?.name_ko ?? ""}
+          folders={folders}
+          foldersLoading={false}
+          selectedFolderIds={selectedFolderIds}
+          onChangeSelected={setSelectedFolderIds}
           onBack={onBack}
-          onSave={handleSave}
-          isProcessing={isProcessing}
-          disabled={
-            isProcessing ||
-            isAnalyzing ||
-            foldersLoading ||
-            !!foldersError ||
-            selectedFolderId == null
-          }
+          onSave={wordSave}
+          disabled={disabledCommon}
+          foldersError={null}
         />
       )}
 
       {mode === "analyze" && !requestedAnalyze && (
-        <div className="flex justify-end gap-2 mt-4">
-          <Button
-            size="md"
-            bgColor="white"
-            onClick={onBack}
-            className={"border"}
-          >
-            다시 선택
-          </Button>
-          <Button
-            size="md"
-            bgColor="blue"
-            onClick={handleAnalyzeStart}
-            disabled={isAnalyzing}
-            textColor="white"
-          >
-            업로드 분석 시작
-          </Button>
-        </div>
+        <ActionsAnalyze
+          onBack={onBack}
+          onAnalyze={handleAnalyzeStart}
+          disabled={isAnalyzing}
+        />
       )}
     </div>
   );
-};
+}

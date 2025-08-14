@@ -1,6 +1,6 @@
 import axios from "axios";
-import { BASE_URL } from "../types/Regex.ts";
-import { useAuthStore } from "../stores/AuthStore.ts";
+import { BASE_URL } from "../../types/Regex.ts";
+import { useAuthStore } from "../../stores/AuthStore.ts";
 
 const LOGIN_URL = `${BASE_URL}/api/v1/auth/signin`;
 
@@ -14,11 +14,12 @@ export const signin = async (loginId: string, password: string) => {
     );
     console.log("로그인 요청 URL:", LOGIN_URL);
     console.log("🔍 전체 응답:", response);
+  
 
     const responseBody = response.data;
     const nickname = responseBody?.content?.nickname;
     const profileImage = responseBody?.content?.profileImage ?? null;
-
+    const birthday = responseBody?.content?.birthday;
     const token = response.headers["authorization"];
     console.log("토큰 : ", token);
 
@@ -32,6 +33,7 @@ export const signin = async (loginId: string, password: string) => {
       nickname,
       email: null,
       profileImage,
+      birthday
     });
 
     return { nickname, profileImage, token };

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BASE_URL } from "../types/Regex.ts";
+import { BASE_URL } from "../../types/Regex.ts";
 
 const baseurl = BASE_URL;
 
