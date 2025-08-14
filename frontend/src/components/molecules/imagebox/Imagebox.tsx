@@ -17,10 +17,10 @@ export const ImageBox = ({
   alt = "",
   shape,
   data,
+  defaultBg = "bg-gray-200",
   imageValue,
   className,
   imgClassName,
-  defaultBg = "bg-gray-200",
 }: ImageBoxProps) => {
   const hasImage = Boolean(src);
 

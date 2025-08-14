@@ -99,6 +99,7 @@ export const Nav = ({
       className={cn(
         "grow justify-center rounded-none border-0",
         onoff ? "opacity-100 [&>div:first-of-type]:w-full" : "opacity-70",
+        "btn-compact",
         className
       )}
     >

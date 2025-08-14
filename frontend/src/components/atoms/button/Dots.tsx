@@ -20,7 +20,7 @@ export const Dots = ({
       onClick={onClick}
       className={cn(
         Variants({ bg, border, color, hover, size, font }),
-        "w-full flex items-center justify-center min-w-0 btn-compact",
+        "w-full flex items-center justify-center min-w-0",
         "py-3 px-6 bg-purple-900 font-mono uppercase tracking-wider rounded relative overflow-hidden group hover:bg-purple-800 transition-all duration-300",
         className
       )}
