@@ -35,7 +35,7 @@ export const acceptFriend= async(userId: number):Promise<boolean>=>{
 export const deleteFriend =async(userId:number):Promise<boolean>=>{
     try{
         const response =await authApi.delete(`${FRIEND_URL}/${userId}`)
-        return response.status===204;
+        return response.status===200 || response.status ===204;
     }catch{
         return false;
     }
@@ -51,6 +51,8 @@ export const friendList = async (): Promise<Friend[]> => {
     if (response.status === 200) {
       // 여기에 API 응답 구조에 맞게 접근하세요
       // 예: response.data.content.users
+      console.log(response.data.content);
+      
       return response.data.content; // 친구 배열 반환
     } else {
       return [];

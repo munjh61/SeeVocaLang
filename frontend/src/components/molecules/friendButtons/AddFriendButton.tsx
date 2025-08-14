@@ -5,6 +5,7 @@ import { Button } from "../../atoms/button/Button";
 import { Icon } from "../../atoms/icon/Icon";
 import { Text } from "../../atoms/text/Text";
 import { addFriend } from "../../../api/FriendPageApi";
+import { pirateBtn } from "../../../style/friendpage";
 
 
 type AddFriendButtonProps = {
@@ -43,20 +44,18 @@ export const AddFriendButton = ({ className,onRequestComplete,data}: AddFriendBu
   return (
     <>
     <Button
-      bgColor={"blue"}
-      textColor={"white"}
-      size={"md"}
-      className={`gap-1 px-3 py-1.5 ${className}!w-auto`}
-      onClick={handleFriendRequest}
-      disabled={loading}
-    >
-      <div className="flex items-center gap-2">
-        <Icon icon={AddFriendIcon} color={"white"} className="w-4 h-4" />
-        <Text size="base" color="white" weight="medium">
-          친구 추가
-        </Text>
-      </div>
-    </Button>
+  onClick={handleFriendRequest}
+  disabled={loading}
+  bgColor="white"
+  textColor="black"
+  size="md"
+  className={`${pirateBtn} ${className ?? ""}`}
+>
+  <Icon icon={AddFriendIcon} className="w-4 h-4" color="pirate" />
+  <Text size="base" weight="semibold" color="black">
+    친구 추가
+  </Text>
+</Button>
 
     <FriendAddCompleteModal
         isOpen={isModalOpen}

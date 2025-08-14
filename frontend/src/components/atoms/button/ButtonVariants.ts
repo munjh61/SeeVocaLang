@@ -30,6 +30,7 @@ export const buttonVariants = cva(
         purple: "bg-[#9D5EEE]",
         noBg: `bg-transparent`,
         profileButton: `bg-[#2659F5]`,
+        pirate:`bg-white/50`
       },
       size: {
         xs: "px-2 py-0.5 text-xs font-light",

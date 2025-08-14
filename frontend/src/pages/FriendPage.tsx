@@ -2,7 +2,7 @@ import { Navigation } from "../components/organisms/nav/Navigation";
 import { FriendPageTemplate } from "../components/templates/friend/FriendPageTemplate";
 function FriendPage() {
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen friend-page-bg">
       <div className="flex-grow overflow-y-auto">
         <FriendPageTemplate />
       </div>

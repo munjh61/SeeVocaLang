@@ -20,6 +20,7 @@ export const iconVariants = cva("inline-block", {
       green: "text-[#6DC16A]",
       blue: "text-[#6083EE]",
       purple: "text-[#9D5EEE]",
+      pirate: "text-[#2b1e12]/80",
     },
     rotate: {
       none: "",

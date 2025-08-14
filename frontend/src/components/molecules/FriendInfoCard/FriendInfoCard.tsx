@@ -1,4 +1,4 @@
-import {useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "../../atoms/button/Button";
 import { AddFriendButton } from "../friendButtons/AddFriendButton";
 import { DeleteFriendButton } from "../friendButtons/DeleteFriendButton";
@@ -6,121 +6,166 @@ import { RequestFriendButton } from "../friendButtons/RequestFriendButton";
 import { acceptFriend, deleteFriend } from "../../../api/FriendPageApi";
 import { VocaButton } from "../friendButtons/VocaButton";
 
-
-
+export type FriendStatus = "NONE" | "REQUEST" | "PENDING" | "APPROVED";
 
 type FriendInfoProps = {
   id: number;
   profileUrl?: string;
   name: string;
-  status: string;
-  userid?:number;
-  onAddFriend?: (id: number) => void; 
+  status: FriendStatus;              
+  onAddFriend?: (id: number) => void;
   onDeleteFriend?: (id: number) => void;
-  onAcceptFriend?: (id: number) => void; 
+  onAcceptFriend?: (id: number) => void;
 };
 
-export const FriendInfoCard = ({ id, profileUrl, name, status: initialStatus,onAddFriend,onDeleteFriend,onAcceptFriend}: FriendInfoProps) => {
-
-  const [status, setStatus] = useState<string>(initialStatus);
-   useEffect(() => {
-    setStatus(initialStatus);
-  }, [initialStatus]);
+export const FriendInfoCard = ({
+  id,
+  profileUrl,
+  name,
+  status,                     
+  onAddFriend,
+  onDeleteFriend,
+  onAcceptFriend,
+}: FriendInfoProps) => {
+  const [mutating, setMutating] = useState<null | "accept" | "refuse">(null);
 
   const handleAccept = async () => {
-  try {
-    const success = await acceptFriend(id);
-    if (success) {
-      alert("친구 수락이 완료되었습니다.");
-      setStatus("APPROVED"); 
-      onAcceptFriend?.(id);
+    try {
+      setMutating("accept");
+      const success = await acceptFriend(id);
+      if (success) {
+        onAcceptFriend?.(id);         
+      } else {
+        alert("친구 수락에 실패했어요.");
+      }
+    } catch (error) {
+      console.error("친구 수락 실패:", error);
+      alert("친구 수락에 실패했어요.");
+    } finally {
+      setMutating(null);
     }
-  } catch (error) {
-    console.error("친구 수락 실패:", error);
-    alert("친구 수락에 실패했어요.");
-  }
-};
+  };
+
+  const handleRefuse = async () => {
+    try {
+      setMutating("refuse");
+      const success = await deleteFriend(id);
+      if (success) {
+        onDeleteFriend?.(id);        
+      } else {
+        alert("친구 요청 거절에 실패했습니다.");
+      }
+    } catch {
+      alert("친구 요청 거절에 실패했습니다.");
+    } finally {
+      setMutating(null);
+    }
+  };
 
   const renderButton = () => {
-    
     switch (status) {
       case "NONE":
         return (
-          <AddFriendButton data= {id} className="w-full" onRequestComplete={() =>{ setStatus("REQUEST"); onAddFriend?.(id);   }             }/>
+          <AddFriendButton
+            data={id}
+            className="w-full"
+            onRequestComplete={() => onAddFriend?.(id)} 
+          />
         );
+
       case "APPROVED":
         return (
           <div className="flex flex-col gap-2 w-full">
-      <VocaButton data={id} className="w-full" />
-      <DeleteFriendButton
-        data={id}
-        className="w-full"
-        friendName={name}
-        onRequestComplete={() => {
-          setStatus("NONE");
-          onDeleteFriend?.(id);
-        }}
-      />
-      </div>
+            <VocaButton data={id} className="w-full" />
+            <DeleteFriendButton
+              data={id}
+              className="w-full"
+              friendName={name}
+              onRequestComplete={() => onDeleteFriend?.(id)} 
+            />
+          </div>
         );
-        case "REQUEST":
-        return (
-          <RequestFriendButton className="w-full" />
-        );
+
+      case "REQUEST":
+        return <RequestFriendButton className="w-full" />;
+
       case "PENDING":
         return (
-          <div className="flex  gap-2">
+          <div className="flex gap-2">
             <Button
-            bgColor="green"
-            size="md"
-            textColor="white"
-            className="gap-1 px-3 py-1.5"   
-            onClick={handleAccept}   
-          >
-            수락
-          </Button>
-          <Button
-            bgColor="red"
-            size="md"
-            textColor="white"
-            className="gap-1 px-3 py-1.5"
-           onClick={async () => {
-          const success = await deleteFriend(id); // ✅ API 호출
-          if (success) {
-            alert("친구 요청을 거절했습니다.");
-            setStatus("NONE");
-            onDeleteFriend?.(id); // 부모 컴포넌트에서도 제거
-          } else {
-            alert("친구 요청 거절에 실패했습니다.");
-          }
-        }}
-          >
-            거절
-          </Button>
-        </div>
-      );
+              bgColor="green"
+              size="md"
+              textColor="white"
+              className="gap-1 px-3 py-1.5"
+              onClick={handleAccept}
+              disabled={mutating !== null}
+            >
+              {mutating === "accept" ? "수락 중..." : "수락"}
+            </Button>
+            <Button
+              bgColor="red"
+              size="md"
+              textColor="white"
+              className="gap-1 px-3 py-1.5"
+              onClick={handleRefuse}
+              disabled={mutating !== null}
+            >
+              {mutating === "refuse" ? "거절 중..." : "거절"}
+            </Button>
+          </div>
+        );
+
+      default:
+        // 예기치 못한 상태 안전망
+        return null;
     }
   };
 
   return (
-  <div className="flex items-center justify-between w-full px-4 py-3 bg-white rounded-xl shadow-sm">
-  <div className="flex items-center gap-4 min-w-0">
-    <div className="w-10 h-10 rounded-full bg-gray-200 overflow-hidden">
-      {profileUrl ? (
-        <img
-          src={profileUrl}
-          alt={`${name}의 프로필`}
-          className="w-full h-full object-cover"
-        />
-      ) : null}
+    <div
+      className="
+        group mx-auto w-full max-w-4xl
+        flex items-center justify-between gap-4
+        rounded-2xl border-2 border-[#2b1e12]
+        bg-[#fff8e6]/85 backdrop-blur-sm
+        px-4 py-3
+        shadow-[0_6px_0_#2b1e12] ring-1 ring-black/10
+        transition hover:shadow-[0_8px_0_#2b1e12]
+      "
+    >
+      {/* 왼쪽: 아바타 + 이름 */}
+      <div className="flex items-center gap-4 min-w-0">
+        <div
+          className="
+            w-11 h-11 rounded-full overflow-hidden shrink-0
+            ring-2 ring-[#2b1e12] bg-[#fffaf0]
+          "
+        >
+          {profileUrl ? (
+            <img
+              src={profileUrl}
+              alt={`${name}의 프로필`}
+              className="w-full h-full object-cover"
+            />
+          ) : null}
+        </div>
+
+        <div className="min-w-0">
+          <span
+            className="
+              block text-base font-semibold text-[#2b1e12]
+              whitespace-nowrap overflow-hidden text-ellipsis
+              drop-shadow-[0_1px_0_rgba(0,0,0,0.25)]
+            "
+            title={name}
+          >
+            {name}
+          </span>
+        </div>
+      </div>
+
+
+      <div className="ml-4 flex-shrink-0 w-[140px]">{renderButton()}</div>
     </div>
-    <span className="text-sm font-semibold text-gray-900 whitespace-nowrap overflow-hidden text-ellipsis">
-      {name}
-    </span>
-  </div>
-  <div className="ml-4 flex-shrink-0 w-[120px]">
-    {renderButton()}
-  </div>
-</div>
   );
 };

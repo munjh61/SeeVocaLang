@@ -1,8 +1,6 @@
-
 import type { ReactNode } from "react";
-import { Button } from "../../atoms/button/Button.tsx";
+import { Button } from "../../atoms/button/Button";
 import { cn } from "../../../utils/cn";
-
 
 type NavTabProps = {
   label: string;
@@ -22,20 +20,47 @@ export const NavTab = ({
   return (
     <Button
       onClick={onClick}
+      role="tab"
+      aria-selected={selected}
+      // atom props는 그대로 사용
       bgColor={selected ? "pp" : "white"}
       size="md"
-      textColor={selected ? "pp" : "gray"}
+      textColor={selected ? "white" : "black"}
       className={cn(
-        "gap-1 px-3 py-1.5 rounded-full relative",
+        // 레이아웃
+        "relative inline-flex items-center gap-2 h-9 px-3 rounded-full select-none",
+        // 기본 톤(양피지 위)
+        "border-2 border-[#2b1e12] bg-[#fffaf0]/70",
+        // 이동/트랜지션
+        "transition-all will-change-transform",
+        // 선택/비선택 상태
         selected
-          ? "shadow-md font-semibold"
-          : "hover:bg-white/30 transition"
+          ? [
+              "shadow-[0_3px_0_#1a120b]",
+              "ring-1 ring-black/10",
+              "font-semibold",
+            ].join(" ")
+          : [
+              "hover:bg-[#fff1c7]/80 hover:-translate-y-[1px]",
+              "active:translate-y-0",
+              "focus-visible:ring-2 focus-visible:ring-[#f4c430]",
+            ].join(" ")
       )}
     >
       {icon && <span className="w-4 h-4">{icon}</span>}
-      <span>{label}</span>
+      <span className="text-sm">{label}</span>
+
       {badgeCount !== undefined && badgeCount > 0 && (
-        <span className="absolute -top-1 -right-1 px-1.5 py-0.5 text-[10px] leading-none font-bold text-white bg-red-500 rounded-full">
+        <span
+          className="
+            absolute -top-2 -right-2 min-w-5 h-5 px-1
+            flex items-center justify-center
+            rounded-full
+            bg-[#7a1f1f] text-white text-xs font-bold
+            shadow-[0_2px_0_#441010]
+          "
+          aria-label={`${badgeCount}개의 새 요청`}
+        >
           {badgeCount}
         </span>
       )}
