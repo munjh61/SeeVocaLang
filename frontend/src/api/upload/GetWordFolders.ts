@@ -98,8 +98,11 @@ export const getExistingWordFolders = async (
   }
 };
 
-export const getAllFolderIds = async (): Promise<number[]> => {
+export type FolderIdName = { id: number; name: string };
+
+export const getAllFolderIds = async (): Promise<FolderIdName[]> => {
   const userId = useAuthStore.getState().user?.userId ?? 1;
   const folders: FolderProps[] = await getfolders(userId);
-  return folders.map(f => f.folderId);
+  // ⬇️ id + name 함께 반환
+  return folders.map(f => ({ id: f.folderId, name: f.name }));
 };

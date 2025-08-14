@@ -2,7 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { Text } from "../../atoms/text/Text";
 import { useUploadMode } from "../../../hooks/UseUploadMode.ts";
 import { usePreviewUrl } from "../../../hooks/UsePreviewUrl.ts";
-import { useFolderListByWordId } from "../../../hooks/UseFolderList.ts";
+// ❌ 삭제: useFolderListByWordId
+// import { useFolderListByWordId } from "../../../hooks/UseFolderList.ts";
 import { saveWords } from "../../../service/WordService.ts";
 import { PreviewSection } from "./PreviewSection.tsx";
 import { ActionsAnalyze } from "./ActionAnalyze.tsx";
@@ -33,15 +34,18 @@ export function UploadStep2(props: {
     folderId != null ? [folderId] : []
   );
 
-  // ✅ 모든 폴더 ID (getAllFolderIds 결과)
-  const [allFolderIds, setAllFolderIds] = useState<number[]>([]);
+  // ✅ 모든 폴더 ID
+  const [allFolderIds, setAllFolderIds] = useState<
+    { id: number; name: string }[]
+  >([]);
+
   useEffect(() => {
     (async () => {
       try {
-        const ids = await getAllFolderIds();
-        setAllFolderIds(ids);
+        const rows = await getAllFolderIds(); // [{ id, name }]
+        setAllFolderIds(rows);
       } catch (e) {
-        console.error("모든 폴더 ID 조회 실패:", e);
+        console.error("모든 폴더 조회 실패:", e);
       }
     })();
   }, []);
@@ -49,28 +53,14 @@ export function UploadStep2(props: {
   const { mode, wordId, existingImageUrl } = useUploadMode(result);
   const previewUrl = usePreviewUrl(file);
 
-  const shouldShowFolderSelect = mode === "save" || mode === "replace";
-  const shouldFetchFolders =
-    !!wordId && shouldShowFolderSelect && folderId == null;
   const showAnalyzeFail =
     requestedAnalyze && !isAnalyzing && mode === "analyze";
 
-  const {
-    folders: wordFolders, // { folderId, name }[]
-    loading: foldersLoading,
-    error: foldersError,
-  } = useFolderListByWordId(shouldFetchFolders, wordId ?? null);
-
-  // ⬇️ UI에 넣어줄 folders: getAllFolderIds()의 결과를 기반으로,
-  // useFolderListByWordId에서 가져온 이름과 매칭해서 보여준다.
-  const fallbackCardFolders: { folder_id: number; name: string }[] =
-    useMemo(() => {
-      if (!allFolderIds.length) return [];
-      return allFolderIds.map(id => {
-        const matched = wordFolders.find(f => f.folderId === id);
-        return { folder_id: id, name: matched?.name ?? `폴더 #${id}` };
-      });
-    }, [allFolderIds, wordFolders]);
+  // ✅ UI에 넣어줄 folders: allFolderIds만 사용 (이름은 기본 포맷)
+  const folders = useMemo(
+    () => allFolderIds.map(({ id, name }) => ({ folder_id: id, name })), // ✅ name 사용
+    [allFolderIds]
+  );
 
   const handleAnalyzeStart = () => {
     setRequestedAnalyze(true);
@@ -100,8 +90,7 @@ export function UploadStep2(props: {
     }
   };
 
-  // ✅ 저장 (신규 저장: 모든 폴더 ID 사용)
-  // ✅ 저장 (신규 저장: "선택한 폴더"만 사용)
+  // ✅ 저장 (신규 저장: 선택한 폴더만 사용)
   const wordSave = async () => {
     if (!result?.image_key || !result?.name_en || !result?.name_ko) {
       alert("저장할 단어 정보가 준비되지 않았습니다.");
@@ -114,7 +103,6 @@ export function UploadStep2(props: {
 
     try {
       setIsProcessing(true);
-      // ⬇️ 여기! 전체 폴더가 아니라 선택한 폴더만 보냅니다.
       const res = await saveWords(
         result.name_en,
         result.name_ko,
@@ -131,15 +119,8 @@ export function UploadStep2(props: {
     }
   };
 
-  // 버튼 비활성화: allFolderIds가 있다면 그걸 기준으로, 없으면 선택기준
-  const hasAnyFolder =
-    (allFolderIds.length ? allFolderIds.length : selectedFolderIds.length) > 0;
-  const disabledCommon =
-    isProcessing ||
-    isAnalyzing ||
-    foldersLoading ||
-    !!foldersError ||
-    !hasAnyFolder;
+  // ✅ 버튼 비활성화: allFolderIds만 기준
+  const disabledCommon = isProcessing || isAnalyzing || folders.length === 0;
 
   return (
     <div className="flex flex-col gap-4">
@@ -173,19 +154,21 @@ export function UploadStep2(props: {
             isProcessing={isProcessing}
             disabled={isProcessing || isAnalyzing || !wordId}
           />
-          {/* replace 모드에서도 “신규 저장” 허용: folders에 getAllFolderIds 기반 값 전달 */}
+          {/* 필요 시 replace 모드에서도 신규 저장 허용하려면 주석 해제 */}
+          {/*
           <ActionsSave
             nameEn={result?.name_en ?? ""}
             nameKo={result?.name_ko ?? ""}
-            folders={fallbackCardFolders}
-            foldersLoading={foldersLoading}
-            foldersError={foldersError}
+            folders={folders}
+            foldersLoading={false}
+            foldersError={undefined}
             selectedFolderIds={selectedFolderIds}
             onChangeSelected={setSelectedFolderIds}
             onBack={onBack}
             onSave={wordSave}
             disabled={disabledCommon}
           />
+          */}
         </div>
       )}
 
@@ -193,14 +176,14 @@ export function UploadStep2(props: {
         <ActionsSave
           nameEn={result?.name_en ?? ""}
           nameKo={result?.name_ko ?? ""}
-          folders={fallbackCardFolders}
-          foldersLoading={foldersLoading}
-          foldersError={foldersError}
+          folders={folders}
+          foldersLoading={false}
           selectedFolderIds={selectedFolderIds}
           onChangeSelected={setSelectedFolderIds}
           onBack={onBack}
           onSave={wordSave}
           disabled={disabledCommon}
+          foldersError={null}
         />
       )}
 
