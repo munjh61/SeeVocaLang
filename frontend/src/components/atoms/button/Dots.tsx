@@ -30,7 +30,9 @@ export const Dots = ({
           className={cn(Variants({ color }), "inline-block w-5 h-5 mr-2")}
         />
       )}
-      <span className={cn(Variants({ color, size, font }))}>{children}</span>
+      <span className={cn(Variants({ color, size, font }), "")}>
+        {children}
+      </span>
       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
         {[...Array(6)].map((_, i) => (
           <div

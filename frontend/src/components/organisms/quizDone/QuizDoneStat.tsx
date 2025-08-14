@@ -21,7 +21,7 @@ export const QuizDoneStatCard = ({
   const days = ["일", "월", "화", "수", "목", "금", "토"];
   const dayOfWeek = days[today.getDay()];
 
-  const [user, setUserInfo] = useState<UserInfo>();
+  const [user, setUserInfo] = useState<UserInfo | null>(null);
   useEffect(() => {
     (async () => {
       const res = await getUserInfo();
