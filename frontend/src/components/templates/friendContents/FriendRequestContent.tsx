@@ -22,14 +22,14 @@ export const FriendRequestContent = ({ userId, friends,searchValue = "",onAccept
   );
 
   return (
-    <div className="flex flex-col px-4 py-2 bg-gradient-to-b from-[#F7F5FE] to-[#F3FAF3] h-[calc(100vh-160px)] overflow-y-auto">
+    <div className="flex flex-col px-4 py-2 bg-gray-100 h-[calc(100vh-160px)] overflow-y-auto">
       <div className="mb-4">
       <Text color="black" size="lg" weight="bold">친구요청</Text>
       <Text color="gray" size="xs">{totalRequestCount}개의 요청</Text>
       </div>
       {requestList.length === 0 ? (
         <div className="text-center mt-8">
-          <Text color="gray" size="sm">요청목록이 비어있습니다</Text>
+          <Text color="gray" size="xl">요청목록이 비어있습니다</Text>
         </div>
       ) : (
         <div className="space-y-4">
