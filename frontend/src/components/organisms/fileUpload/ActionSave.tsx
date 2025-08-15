@@ -1,5 +1,3 @@
-// ActionsSave.tsx
-// 저장 성공시 나오는 성공 카드
 import { SuccessCard } from "../AnalyzeResultCards";
 import type { CardFolder } from "../../../types/FileUploadType.ts";
 

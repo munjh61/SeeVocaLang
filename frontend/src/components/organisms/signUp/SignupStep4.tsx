@@ -14,6 +14,7 @@ type SignupStep4Props = {
   setError: (val: string) => void;
   checking: boolean;
   setChecking: (val: boolean) => void;
+  progressBar: React.ReactNode;
 };
 
 export const SignupStep4 = ({
@@ -27,6 +28,7 @@ export const SignupStep4 = ({
   setError,
   checking,
   setChecking,
+  progressBar,
 }: SignupStep4Props) => {
   const handleCheckNickname = async () => {
     setChecking(true);
@@ -52,15 +54,18 @@ export const SignupStep4 = ({
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-col bg-white/70 rounded-2xl p-10 pt-5  justify-center gap-5 px-6">
-        <Text
-          size="xl"
-          color="black"
-          weight="extrabold"
-          className="text-center mb-10"
-        >
-          닉네임 설정
-        </Text>
+      <div className="flex flex-col bg-white/85 shadow-xl rounded-2xl p-10 pt-5  justify-center gap-5 px-6">
+        <div className={"flex flex-col items-center justify-center gap-6 mb-5"}>
+          {progressBar}
+          <Text
+            size="xl"
+            color="black"
+            weight="extrabold"
+            className="text-center"
+          >
+            닉네임 설정
+          </Text>
+        </div>
 
         <Input
           placeholder="닉네임을 입력해주세요"
@@ -108,6 +113,8 @@ export const SignupStep4 = ({
           rounded={"lg"}
           onClick={onBack}
           textColor="blue"
+          bgColor={"white"}
+          className={"border-2"}
         >
           돌아가기
         </Button>

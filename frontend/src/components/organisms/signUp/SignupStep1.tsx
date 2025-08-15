@@ -15,6 +15,7 @@ type SignupStep1Props = {
   ) => void;
   onNext: () => void;
   onBack: () => void;
+  progressBar: React.ReactNode;
 };
 
 export const SignupStep1 = ({
@@ -25,6 +26,7 @@ export const SignupStep1 = ({
   onChange,
   onNext,
   onBack,
+  progressBar,
 }: SignupStep1Props) => {
   const [showErrors, setShowErrors] = useState(false);
 
@@ -45,8 +47,9 @@ export const SignupStep1 = ({
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-col bg-white/70 rounded-2xl p-10 pt-5  justify-center gap-5 px-6">
+      <div className="flex flex-col bg-white/85 shadow-xl rounded-2xl p-10 pt-5  justify-center gap-5 px-6">
         <div className={"flex flex-col items-center justify-center gap-6 mb-5"}>
+          {progressBar}
           <Text
             size={"xl"}
             color={"black"}
@@ -151,6 +154,8 @@ export const SignupStep1 = ({
             onClick={onBack}
             rounded={"lg"}
             textColor={"blue"}
+            bgColor={"white"}
+            className={"border-2"}
           >
             &lt; 돌아가기
           </Button>

@@ -67,7 +67,7 @@ export const Login = () => {
     <div className="flex h-screen items-center justify-center">
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col bg-white/70 rounded-2xl p-10 pt-5 items-center justify-center gap-5 px-6"
+        className="flex flex-col bg-white/85 shadow-xl rounded-2xl p-10 pt-5 items-center justify-center gap-5 px-6"
       >
         <img src={LogoImg} className="w-25 h-25" alt={"로고"} />
         <Text size="xl" weight="extrabold" color="black">
@@ -117,6 +117,12 @@ export const Login = () => {
               setShowErrors(false);
             }}
             className="m-0 px-3"
+            onKeyDown={e => {
+              if (e.key === "Enter") {
+                e.preventDefault(); // 기본 submit 방지
+                handleSubmit(e as unknown as React.FormEvent); // 로그인 시도
+              }
+            }}
           />
           {showErrors && password.trim() === "" && (
             <Text size="xs" color="red" className="ml-2">
@@ -170,7 +176,9 @@ export const Login = () => {
             border="blue"
             rounded="lg"
             textColor="blue"
+            bgColor={"white"}
             onClick={() => navigate("/")}
+            className={"border-2"}
           >
             &lt; 돌아가기
           </Button>

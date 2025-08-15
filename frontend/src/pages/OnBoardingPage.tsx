@@ -3,15 +3,16 @@ import BackgroundLayer from "../components/organisms/onboarding/BackgroundLayer.
 import HeroCard from "../components/organisms/onboarding/HeroCard.tsx";
 import IntroCard from "../components/organisms/onboarding/IntroCard.tsx";
 import Reveal from "../components/organisms/Reveal.tsx";
-import Bino from "../asset/png/pirate_binoculars.png";
+import Bino from "../asset/png/pirate-bino_onboat.png";
+import BGImage from "../../src/asset/png/background/summer_background_20_without_text.jpg";
 
 export function OnBoardingPage() {
   const navigate = useNavigate();
 
   return (
-    <BackgroundLayer>
+    <BackgroundLayer src={BGImage}>
       {/* === 히어로 섹션 === */}
-      <section className="relative flex flex-col items-center justify-center min-h-[90vh] p-10 gap-6 pb-14">
+      <section className="relative flex flex-col items-center justify-center min-h-[90vh] mt-10 p-10 gap-6 pb-20 ">
         <HeroCard
           onLogin={() => navigate("/login")}
           onSignup={() => navigate("/signUp")}

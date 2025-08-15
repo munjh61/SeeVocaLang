@@ -7,7 +7,8 @@ import { SignupStep4 } from "./SignupStep4.tsx";
 import { registerUser } from "../../../api/user/SignupApi.ts";
 import { useNavigate } from "react-router-dom";
 import BackgroundLayer from "../onboarding/BackgroundLayer.tsx";
-
+import { ProgressBar } from "../../molecules/progressbar/ProgressBar.tsx";
+import BackgroundImg from "../../../asset/png/background/summer_background_20_without_text.jpg";
 type Step = 1 | 2 | 3 | 4;
 
 export const SignupFlow = () => {
@@ -82,6 +83,14 @@ export const SignupFlow = () => {
       case 1:
         return (
           <SignupStep1
+            progressBar={
+              <ProgressBar
+                current={step}
+                total={4}
+                height={8}
+                percentageView={false}
+              />
+            }
             name={form.name}
             birthYear={form.birthYear}
             birthMonth={form.birthMonth}
@@ -97,6 +106,14 @@ export const SignupFlow = () => {
       case 2:
         return (
           <SignupStep2
+            progressBar={
+              <ProgressBar
+                current={step}
+                total={4}
+                height={8}
+                percentageView={false}
+              />
+            }
             id={localId}
             onChange={val => {
               setLocalId(val);
@@ -119,6 +136,14 @@ export const SignupFlow = () => {
       case 3:
         return (
           <SignupStep3
+            progressBar={
+              <ProgressBar
+                current={step}
+                total={4}
+                height={8}
+                percentageView={false}
+              />
+            }
             password={form.password}
             passwordCheck={form.passwordCheck}
             onPasswordChange={val => handleChange("password", val)}
@@ -131,6 +156,14 @@ export const SignupFlow = () => {
       case 4:
         return (
           <SignupStep4
+            progressBar={
+              <ProgressBar
+                current={step}
+                total={4}
+                height={8}
+                percentageView={false}
+              />
+            }
             nickname={form.nickname}
             onChange={val => handleChange("nickname", val)}
             isValid={validation.nickname}
@@ -151,7 +184,7 @@ export const SignupFlow = () => {
   };
 
   return (
-    <BackgroundLayer>
+    <BackgroundLayer src={BackgroundImg}>
       <div className="w-full h-screen flex items-center justify-center p-10 gap-6">
         {renderStep()}
       </div>

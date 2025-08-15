@@ -11,6 +11,7 @@ type SignupStep3Props = {
   isValid: boolean;
   onNext: () => void;
   onBack: () => void;
+  progressBar: React.ReactNode;
 };
 
 export const SignupStep3 = ({
@@ -21,6 +22,7 @@ export const SignupStep3 = ({
   isValid,
   onNext,
   onBack,
+  progressBar,
 }: SignupStep3Props) => {
   const isPasswordValid = PASSWORD_REGEX.test(password);
   const isMatch = password === passwordCheck;
@@ -34,15 +36,18 @@ export const SignupStep3 = ({
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-col bg-white/70 rounded-2xl p-10 pt-5  justify-center gap-5 px-6">
-        <Text
-          size="xl"
-          color="black"
-          weight="extrabold"
-          className="text-center mb-10"
-        >
-          비밀번호 설정
-        </Text>
+      <div className="flex flex-col bg-white/85 shadow-xl rounded-2xl p-10 pt-5  justify-center gap-5 px-6">
+        <div className={"flex flex-col items-center justify-center gap-6 mb-5"}>
+          {progressBar}
+          <Text
+            size="xl"
+            color="black"
+            weight="extrabold"
+            className="text-center"
+          >
+            비밀번호 설정
+          </Text>
+        </div>
 
         {/* 비밀번호 입력 */}
         <div className="flex flex-col gap-1">
@@ -119,6 +124,8 @@ export const SignupStep3 = ({
             rounded={"lg"}
             onClick={onBack}
             textColor="blue"
+            bgColor={"white"}
+            className={"border-2"}
           >
             &lt; 돌아가기
           </Button>

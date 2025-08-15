@@ -2,8 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 import { Text } from "../../atoms/text/Text";
 import { useUploadMode } from "../../../hooks/UseUploadMode.ts";
 import { usePreviewUrl } from "../../../hooks/UsePreviewUrl.ts";
-// ❌ 삭제: useFolderListByWordId
-// import { useFolderListByWordId } from "../../../hooks/UseFolderList.ts";
 import { saveWords } from "../../../service/WordService.ts";
 import { PreviewSection } from "./PreviewSection.tsx";
 import { ActionsAnalyze } from "./ActionAnalyze.tsx";
@@ -154,21 +152,6 @@ export function UploadStep2(props: {
             isProcessing={isProcessing}
             disabled={isProcessing || isAnalyzing || !wordId}
           />
-          {/* 필요 시 replace 모드에서도 신규 저장 허용하려면 주석 해제 */}
-          {/*
-          <ActionsSave
-            nameEn={result?.name_en ?? ""}
-            nameKo={result?.name_ko ?? ""}
-            folders={folders}
-            foldersLoading={false}
-            foldersError={undefined}
-            selectedFolderIds={selectedFolderIds}
-            onChangeSelected={setSelectedFolderIds}
-            onBack={onBack}
-            onSave={wordSave}
-            disabled={disabledCommon}
-          />
-          */}
         </div>
       )}
 

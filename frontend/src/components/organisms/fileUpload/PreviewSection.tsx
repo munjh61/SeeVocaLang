@@ -24,7 +24,6 @@ export function PreviewSection({
           src={existingImageUrl}
           alt="기존 이미지"
           showInfo={false}
-          badge
           result={result}
         />
         <ImageInfoCard

@@ -1,15 +1,12 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import { Modal } from "../../atoms/modal/modal.tsx";
 import { UploadStep1 } from "./UploadStep1.tsx";
 import { UploadStep2 } from "./UploadStep2.tsx";
 import { analyzeImage } from "../../../api/upload/AnalyzeImage.ts";
 import type { AnalysisResult } from "../../../types/FileUploadType.ts";
+import { useUploadMode } from "../../../hooks/UseUploadMode.ts";
 
-type Props = {
-  isOpen: boolean;
-  onClose: () => void;
-};
-
+type Props = { isOpen: boolean; onClose: () => void };
 type Step = 1 | 2;
 
 export const FileUploadModalFlow = ({ isOpen, onClose }: Props) => {
@@ -20,7 +17,9 @@ export const FileUploadModalFlow = ({ isOpen, onClose }: Props) => {
     null
   );
 
-  // ✅ 단일 리셋 함수 (모달 닫힘/다시 선택에 공용)
+  // ✅ 부모에서 현재 모드 계산 (analyze | save | replace)
+  const { mode } = useUploadMode(analysisResult);
+
   const resetAll = useCallback(() => {
     setIsAnalyzing(false);
     setAnalysisResult(null);
@@ -28,14 +27,13 @@ export const FileUploadModalFlow = ({ isOpen, onClose }: Props) => {
     setStep(1);
   }, []);
 
-  // 모달 닫히면 모든 상태 초기화
   useEffect(() => {
     if (!isOpen) resetAll();
   }, [isOpen, resetAll]);
 
   const goToStep = (s: Step) => setStep(s);
 
-  // 파일 분석만 수행 (저장/교체는 UploadStep2에서)
+  // 파일 분석 (저장/교체는 Step2에서 처리)
   const handleAnalyze = async () => {
     if (!file || isAnalyzing) return;
     setIsAnalyzing(true);
@@ -43,55 +41,72 @@ export const FileUploadModalFlow = ({ isOpen, onClose }: Props) => {
       const result = await analyzeImage(file);
       console.log("analysis result: ", result);
       setAnalysisResult(result);
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error("분석 실패:", error.message);
-      } else {
-        console.error("분석 실패: 알 수 없는 오류", error);
-      }
+    } catch (e) {
+      console.error("분석 실패:", e);
     } finally {
       setIsAnalyzing(false);
     }
   };
 
-  const busy = isAnalyzing;
+  // ✅ 스텝/모드별 사이즈 맵 (필요시 숫자만 조절)
+  const SIZE_MAP = useMemo(
+    () =>
+      ({
+        step1: "w-[520px]  h-[300px]",
+        "step2:analyze": "w-[600px]  h-[450px]",
+        "step2:save": "w-[600px] h-[630px]",
+        "step2:replace": "w-[877px]  h-[550px]",
+      }) as const,
+    []
+  );
+
+  // ✅ 현재 상황에 맞는 패널 크기 클래스
+  const panelSizeClass = useMemo(() => {
+    if (step === 1) return SIZE_MAP.step1;
+    if (mode === "save") return SIZE_MAP["step2:save"];
+    if (mode === "replace") return SIZE_MAP["step2:replace"];
+    return SIZE_MAP["step2:analyze"]; // 기본 analyze
+  }, [step, mode, SIZE_MAP]);
 
   const renderStep = () => {
-    switch (step) {
-      case 1:
-        return (
-          <UploadStep1
-            // 파일 인풋 완전 초기화용 재마운트 키
-            key={`step1-${file ? "has" : "none"}`}
-            onNext={selectedFile => {
-              setFile(selectedFile);
-              goToStep(2);
-            }}
-          />
-        );
-      case 2:
-        return (
-          file && (
-            <UploadStep2
-              file={file}
-              onBack={resetAll}
-              onAnalyze={handleAnalyze}
-              isAnalyzing={busy}
-              result={analysisResult}
-              onDone={() => onClose()} // 닫히면 useEffect 통해 resetAll 호출됨
-            />
-          )
-        );
-      default:
-        return null;
+    if (step === 1) {
+      return (
+        <UploadStep1
+          key={`step1-${file ? "has" : "none"}`} // 파일 인풋 초기화용
+          onNext={selectedFile => {
+            setFile(selectedFile);
+            goToStep(2);
+          }}
+        />
+      );
     }
+
+    // step === 2
+    return (
+      file && (
+        <UploadStep2
+          file={file}
+          onBack={resetAll}
+          onAnalyze={handleAnalyze}
+          isAnalyzing={isAnalyzing}
+          result={analysisResult}
+          onDone={() => onClose()}
+        />
+      )
+    );
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-      <div className="max-h-[85vh] md:max-h-[75vh] xl:max-h-[70vh] overflow-y-auto pr-1">
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      // ✅ 모드에 맞춰 크기 변경 + 부드러운 전환
+      panelClassName={`transition-all duration-300 ${panelSizeClass}`}
+    >
+      {/* 내용만 스크롤 */}
+      <div className="h-full max-h-full overflow-y-auto p-1 pr-2">
         {renderStep()}
-      </div>{" "}
+      </div>
     </Modal>
   );
 };
