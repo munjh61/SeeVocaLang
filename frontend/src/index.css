@@ -42,6 +42,7 @@ body,
 #root {
   height: 100%;
 }
+
 .font-outline {
   -webkit-text-stroke: 1px #1a120b;
   color: transparent;           /* 속이 빈 아웃라인 폰트 느낌 */
