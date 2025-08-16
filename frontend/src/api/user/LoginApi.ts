@@ -14,7 +14,6 @@ export const signin = async (loginId: string, password: string) => {
     );
     console.log("로그인 요청 URL:", LOGIN_URL);
     console.log("🔍 전체 응답:", response);
-  
 
     const responseBody = response.data;
     const nickname = responseBody?.content?.nickname;
@@ -33,7 +32,7 @@ export const signin = async (loginId: string, password: string) => {
       nickname,
       email: null,
       profileImage,
-      birthday
+      birthday,
     });
 
     return { nickname, profileImage, token };

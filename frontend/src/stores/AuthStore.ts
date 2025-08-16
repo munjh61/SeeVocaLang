@@ -10,7 +10,7 @@ export type AuthUser = {
   nickname: string;
   email: string | null;
   profileImage: string | null;
-  birthday: string;
+  birthday: string | null;
 };
 
 type AuthState = {
@@ -18,7 +18,17 @@ type AuthState = {
   isLoggedIn: boolean;
   user: AuthUser | null;
 
-  login: (token: string, user: AuthUser) => void;
+  login: (
+    token: string,
+    user: {
+      userId: number;
+      loginId: string;
+      nickname: string;
+      email: string | null;
+      profileImage: string | null;
+      birthday: string | null;
+    }
+  ) => void;
   logout: () => void;
   setAccessToken: (token: string) => void;
   refreshAccessToken: () => Promise<string | null>;
