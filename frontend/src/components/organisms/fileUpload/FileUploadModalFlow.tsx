@@ -55,7 +55,7 @@ export const FileUploadModalFlow = ({ isOpen, onClose }: Props) => {
         step1: "w-[520px]  h-[300px]",
         "step2:analyze": "w-[600px]  h-[450px]",
         "step2:save": "w-[600px] h-[630px]",
-        "step2:replace": "w-[877px]  h-[550px]",
+        "step2:replace": "w-[827px]  h-[550px]",
       }) as const,
     []
   );

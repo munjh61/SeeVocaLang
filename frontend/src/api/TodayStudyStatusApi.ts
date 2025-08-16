@@ -7,6 +7,6 @@ type todayStudyStatusResult = {
 
 export const todayStudyStatus = async (): Promise<todayStudyStatusResult> => {
   const response = await authApi.get("/api/v1/quiz");
-  console.log(response.data.content);
+  console.log("res: ", response.data.content);
   return response.data.content;
 };

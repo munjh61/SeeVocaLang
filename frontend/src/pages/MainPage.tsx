@@ -8,7 +8,7 @@ function MainPage() {
 
   return (
     <BackgroundLayer src={BackgroundImg}>
-      <div className="relative h-screen w-full">
+      <div className="relative h-full w-full">
         <main
           className="h-full overflow-hidden px-4 pt-6"
           style={{ paddingBottom: `${NAV_H}px` }}

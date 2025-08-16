@@ -30,7 +30,7 @@ export const MainDashboardTemplate = () => {
         if (!alive) return;
         setStudyStatus({
           lastSolvedNumber: study.lastSolvedNumber,
-          totalProblemCount: 20, // API 값으로 변경 가능
+          totalProblemCount: 20,
         });
       } catch (err) {
         console.error("❌ 오늘의 학습현황 불러오기 실패:", err);
@@ -67,8 +67,7 @@ export const MainDashboardTemplate = () => {
   };
 
   return (
-    // ⬇️ relative 추가 (배 이미지 absolute 기준)
-    <div className="relative w-full min-h-screen overflow-x-hidden pt-3">
+    <div className="relative w-full h-dvh box-border overflow-hidden pt-3 overscroll-none">
       <TopLeftProgressBar
         current={studyStatus?.lastSolvedNumber ?? 0}
         total={studyStatus?.totalProblemCount ?? 0}
@@ -77,12 +76,10 @@ export const MainDashboardTemplate = () => {
         height={8}
       />
 
-      {/* 캐로셀을 위 레이어로 올림 */}
       <div className="relative z-20">
         <IslandCarousel items={items} onSelect={handleSelect} />
       </div>
 
-      {/* 배 이미지: 캐로셀 뒤로 내림 */}
       <img
         src={TreasureImg}
         alt="보물상자"
@@ -94,7 +91,7 @@ export const MainDashboardTemplate = () => {
       <img
         src={Bino}
         alt="망원경 해적"
-        className="absolute right-[-20px] bottom-[-1px] w-[25%] max-w-[250px] pointer-events-none"
+        className="absolute right-[-20px] bottom-0 w-[25%] max-w-[250px] pointer-events-none"
         draggable={false}
       />
 

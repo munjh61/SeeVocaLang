@@ -54,7 +54,7 @@ export const ImageInfoCard: React.FC<ImageInfoCardProps> = ({
                 loading="lazy"
                 decoding="async"
                 draggable={false}
-                className="h-full w-full object-contain transition-transform duration-300 hover:scale-[1.02]"
+                className="max-w-[200px] max-h-[200px] w-auto h-auto object-contain transition-transform duration-300 hover:scale-[1.02]"
               />
             ) : (
               <div className="aspect-square flex items-center justify-center text-sm text-gray-500 bg-gray-50">
