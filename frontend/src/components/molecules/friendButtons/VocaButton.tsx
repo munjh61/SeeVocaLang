@@ -5,6 +5,7 @@ import BookIcon from "../../../asset/folder.svg?react";
 import { getfolders } from "../../../api/FolderAPI";
 import { useState } from "react";
 import { FriendVocaModal } from "../friendModal/FriendVocaModal";
+import { pirateBtn } from "../../../style/friendpage";
 type VocaButtonProps = {
     className?:string;
     data?:number;
@@ -36,16 +37,18 @@ export const VocaButton = ({className,data}:VocaButtonProps)=>{
     return(
       <>
         <Button
-        bgColor={"black"}
-        textColor={"white"}
+        bgColor={"white"}
+        textColor={"black"}
         size={"md"}
-        className={`gap-1 px-3 py-1.5 ${className}!w-auto`}
+         className={`
+         ${pirateBtn} ${className ?? ""}
+        `}
         onClick={searchFriendVoca}
         disabled={loading}
         >
         <div className="flex items-center gap-2">
-        <Icon icon={BookIcon} color={"white"} className="w-4 h-4" />
-        <Text size="base" color="white" weight="medium">
+        <Icon icon={BookIcon} color={"pirate"} className="w-4 h-4" />
+        <Text size="base" color="black" weight="semibold">
           단어장
         </Text>
       </div>

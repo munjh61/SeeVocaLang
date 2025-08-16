@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { FriendHeader } from "../../organisms/friendHeader/FriendHeader";
 import { MyFriendsContent } from "../friendContents/MyFriendsContent";
 import { FriendRequestContent } from "../friendContents/FriendRequestContent";
@@ -7,16 +7,20 @@ import { friendList, type Friend } from "../../../api/FriendPageApi";
 import { useAuthStore } from "../../../stores/AuthStore";
 
 type TabKey = "search" | "friend" | "request";
+
 export const FriendPageTemplate = () => {
   const [searchValue, setSearchValue] = useState("");
   const [selectedTab, setSelectedTab] = useState<TabKey>("search");
   const [friends, setFriends] = useState<Friend[]>([]);
-  const userId = useAuthStore.getState().user?.userId;
+
+
+  const userId = useAuthStore((s) => s.user?.userId);
+
   useEffect(() => {
     const fetchFriends = async () => {
       try {
         const data = await friendList();
-        if (Array.isArray(data)) setFriends(data);
+        setFriends(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error("친구 목록 불러오기 실패:", error);
         setFriends([]);
@@ -24,30 +28,31 @@ export const FriendPageTemplate = () => {
     };
     fetchFriends();
   }, []);
-  const handleAddFriend = (id: number) => {
+
+
+  const updateStatusById = useCallback((id: number, nextStatus: Friend["friend_status"]) => {
     setFriends((prev) =>
       prev.map((f) =>
-        f.user_id === id ? { ...f, friend_status: "PENDING", sender_id: userId ?? f.sender_id } : f
+        f.user_id === id ? { ...f, friend_status: nextStatus } : f
       )
     );
-  };
+  }, []);
 
-  const handleAcceptFriend = async() => {
-     try {
-    const updatedFriends = await friendList();
-    setFriends(updatedFriends);
-  } catch (error) {
-    console.error("친구 목록 갱신 실패", error);
-  }
-  };
 
-  const handleDeleteFriend = async() => {
-  try {const updatedFriends = await friendList();
-    setFriends(updatedFriends);
-  } catch (error) {
-    console.error("친구 목록 갱신 실패", error);
-  }
-  };
+  const handleAddFriend = useCallback((id: number) => {
+ 
+    updateStatusById(id, "REQUEST");
+  }, [updateStatusById]);
+
+  const handleAcceptFriend = useCallback((id: number) => {
+  
+    updateStatusById(id, "APPROVED");
+  }, [updateStatusById]);
+
+  const handleDeleteFriend = useCallback((id: number) => {
+
+    updateStatusById(id, "NONE");
+  }, [updateStatusById]);
 
   return (
     <div className="p-4">
@@ -71,6 +76,7 @@ export const FriendPageTemplate = () => {
             onDeleteFriend={handleDeleteFriend}
           />
         )}
+
         {selectedTab === "friend" && (
           <MyFriendsContent
             friends={friends}
@@ -78,6 +84,7 @@ export const FriendPageTemplate = () => {
             onDeleteFriend={handleDeleteFriend}
           />
         )}
+
         {selectedTab === "request" && (
           <FriendRequestContent
             userId={userId}
