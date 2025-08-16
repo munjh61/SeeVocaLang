@@ -21,7 +21,8 @@ export const Override = ({
       className={cn(
         Variants({ bg, border, color, size, hover, font }),
         "w-full flex items-center justify-center min-w-0",
-        "py-3 px-6 bg-yellow-900 font-mono uppercase tracking-wider rounded relative overflow-hidden group hover:bg-yellow-800 transition-all duration-300",
+        "cursor-pointer",
+        "py-3 px-6 bg-yellow-600 font-mono uppercase tracking-wider rounded relative overflow-hidden group hover:bg-yellow-500 transition-all duration-300",
         className
       )}
     >

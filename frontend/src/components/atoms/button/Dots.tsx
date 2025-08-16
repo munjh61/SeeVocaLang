@@ -21,7 +21,8 @@ export const Dots = ({
       className={cn(
         Variants({ bg, border, color, hover, size, font }),
         "w-full flex items-center justify-center min-w-0",
-        "py-3 px-6 bg-purple-900 font-mono uppercase tracking-wider rounded relative overflow-hidden group hover:bg-purple-800 transition-all duration-300",
+        "cursor-pointer",
+        "py-3 px-6 bg-purple-800 font-mono uppercase tracking-wider rounded relative overflow-hidden group hover:bg-purple-700 transition-all duration-300",
         className
       )}
     >
@@ -44,7 +45,7 @@ export const Dots = ({
         {[...Array(6)].map((_, i) => (
           <div
             key={i}
-            className="absolute w-3 h-3 border-2 border-purple-400 rounded-full animate-ping"
+            className="absolute w-3 h-3 border-2 border-purple-500 rounded-full animate-ping"
             style={{
               left: `${15 + i * 12}%`,
               top: "50%",

@@ -9,6 +9,7 @@ const foldersURL = `${BASE_URL}/api/v1/folders`;
 export const getfolders = async (userId: number) => {
   try {
     const response = await authApi.get(`${foldersURL}/${userId}`);
+    console.log(response.data.content);
     const folders: FolderProps[] = response.data.content.map(
       (b: FolderProps) => ({
         folderId: b.folderId,
@@ -16,6 +17,7 @@ export const getfolders = async (userId: number) => {
         description: b.description ?? "",
         favorite: Boolean(b.favorite),
         thumbnailUrl: b.thumbnailUrl ?? null,
+        wordCount: b.wordCount,
       })
     );
     return folders;

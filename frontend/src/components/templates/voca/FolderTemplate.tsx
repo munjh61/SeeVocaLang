@@ -21,9 +21,10 @@ import {
 } from "../../organisms/vocaCard/VocaCard";
 import { deleteWordAtAllFolder } from "../../../api/WordAPI";
 import sea from "../../../asset/png/sea.png";
+import { ISLANDS } from "../../common/Islands";
 
 type FolderTemplateProps = {
-  folderDatas: FolderProps[]; // ← 배열 타입 (선택 아님)
+  folderDatas: FolderProps[];
   vocaDatas: VocaCardProps[];
 };
 
@@ -83,7 +84,11 @@ export const FolderTemplate = ({
           name: created.name ?? title,
           description: created.description ?? subtitle,
           favorite: Boolean(created.favorite),
+          wordCount: 0,
           thumbnailUrl: created.thumbnailUrl ?? null,
+          onEditClick: () => {
+            openEditModal(created.folderId);
+          },
         };
         // 3) 목록에 반영(낙관적 업데이트)
         setfolderList(prev => [...prev, newItem]);
@@ -236,18 +241,19 @@ export const FolderTemplate = ({
         )}
         {/* 단어장 카드 목록 */}
         {isToggle && (
-          <div
-            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3
-                          lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4"
-          >
-            {filteredFolderList.map(data => (
-              <Folder
-                key={data.folderId}
-                {...data}
-                onEditClick={openEditModal}
-                onToggleFavorite={toggleFavorite}
-              />
-            ))}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
+            {filteredFolderList.map(data => {
+              const idx = Math.abs(Number(data.folderId)) % ISLANDS.length;
+              return (
+                <Folder
+                  key={data.folderId}
+                  {...data}
+                  islandSrc={ISLANDS[idx]}
+                  onEditClick={openEditModal}
+                  onToggleFavorite={toggleFavorite}
+                />
+              );
+            })}
           </div>
         )}
       </Div>
