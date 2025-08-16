@@ -23,7 +23,7 @@ export const FriendHeader = ({
   userId,
   }: FriendHeaderProps) => {
   return (
-    <div className="sticky top-0">
+    <div className="space-y-4">
     <div className="flex items-center justify-center space-x-4">
   <img
     src={penguinImg}

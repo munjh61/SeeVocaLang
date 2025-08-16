@@ -37,7 +37,7 @@ const filteredFriends = useMemo(() => {
 
   return (
     <div className="flex flex-col px-4 py-2 h-[calc(100vh-160px)] overflow-y-auto">
-      <div className="mb-4">
+      <div className="mb-4 ml-55">
         <Text color="black" size="xl" weight="bold" font={"outline"}>
           내 친구목록
         </Text>

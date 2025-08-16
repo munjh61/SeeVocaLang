@@ -24,7 +24,7 @@ const mapStatusForViewer = (f: Friend, viewerId?: number): FriendStatus => {
       // if (!viewerId) return "PENDING";
       if (f.receiver_id === viewerId) return "PENDING"; 
       if (f.sender_id === viewerId) return "REQUEST";
-      return "NONE";
+      return "NONE"; 
     case "NONE":
     default:
       return "NONE";
@@ -52,7 +52,7 @@ export const FriendSearchContent = ({
 
   return (
     <div className="flex flex-col px-4 py-2 h-[calc(100vh-160px)] overflow-y-auto">
-      <div className="mb-4">
+      <div className="mb-4 ml-55">
         <Text color="black" size="xl" weight="bold" font={"outline"}>
           새로운 친구 찾기
         </Text>

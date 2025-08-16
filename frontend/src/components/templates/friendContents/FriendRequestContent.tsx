@@ -61,7 +61,7 @@ export const FriendRequestContent = ({
 
   return (
     <div className="flex flex-col px-4 py-2 h-[calc(100vh-160px)] overflow-y-auto">
-      <div className="mb-4">
+      <div className="mb-4 ml-55">
         <Text color="black" size="xl" weight="bold" font={"outline"}>친구요청</Text>
         <Text color="black" size="sm" font={"outline"}>{totalRequestCount}개의 요청</Text>
       </div>
