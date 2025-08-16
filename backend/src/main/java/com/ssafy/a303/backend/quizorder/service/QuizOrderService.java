@@ -25,11 +25,12 @@ public class QuizOrderService {
 
     @Transactional
     public void saveTodayQuizProgress(UserEntity user, QuizEntity quiz) {
-        quizOrderRepository.findByUserAndQuiz(user, quiz)
-                .ifPresentOrElse(
-                        existing -> updateQuizOrder(existing, quiz),
-                        ()       -> createQuizOrder(user, quiz)
-                );
+        Optional<QuizOrderEntity> lastSolved = quizOrderRepository.findTopByUser(user);
+        if (lastSolved.isPresent()) {
+            lastSolved.get().updateQuizId(quiz);
+        } else {
+            quizOrderRepository.save(new QuizOrderEntity(user, quiz));
+        }
     }
 
     private void updateQuizOrder(QuizOrderEntity order, QuizEntity quiz) {
