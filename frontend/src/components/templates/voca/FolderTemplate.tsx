@@ -20,6 +20,7 @@ import {
   type VocaCardProps,
 } from "../../organisms/vocaCard/VocaCard";
 import { deleteWordAtAllFolder } from "../../../api/WordAPI";
+import sea from "../../../asset/png/sea.png";
 
 type FolderTemplateProps = {
   folderDatas: FolderProps[]; // ← 배열 타입 (선택 아님)
@@ -204,8 +205,8 @@ export const FolderTemplate = ({
 
       {/* 본문 */}
       <Div
-        bg={"sky"}
-        className="flex flex-col grow gap-4 p-4 w-full rounded-md"
+        style={{ backgroundImage: `url(${sea})` }}
+        className="flex flex-col grow gap-4 p-4 w-full rounded-md bg-cover"
       >
         <VocafolderSecondHeader
           isToggle={isToggle}

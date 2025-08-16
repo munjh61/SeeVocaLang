@@ -347,7 +347,7 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
       {/* 움직이는 영역 (배경 포함) */}
       <div
         ref={containerRef}
-        className="relative grow rounded-md overflow-hidden flex"
+        className="relative grow rounded-md overflow-hidden flex min-h-0"
       >
         {/* 미사일 (세로 중앙 고정 + 가로 이동) */}
         {current && (
@@ -365,20 +365,28 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
             />
           </div>
         )}
-        <div className="w-full grid grid-cols-3">
-          <div className="relative">
-            <img src={battleship} className="w-full h-full" />
+        <div className="w-full h-full grid grid-cols-3">
+          <div className="relative h-full">
+            <img
+              src={battleship}
+              className="absolute inset-0 w-full h-full object-contain pointer-events-none select-none"
+            />
             <img
               src={enemySrc}
-              className="absolute bottom-0 left-1/2 -translate-x-1/2 pointer-events-none select-none h-[50%]"
+              className="absolute bottom-0 left-1/2 -translate-x-1/2 pointer-events-none select-none h-1/2 max-h-full"
             />
           </div>
           <div />
-          <div className="relative">
-            <img src={cannon} className="w-full h-full" />
+          <div className="relative h-full">
+            <img
+              src={cannon}
+              className="absolute inset-0 w-full h-full object-contain pointer-events-none select-none"
+              alt=""
+            />
             <img
               src={penguin}
-              className="absolute bottom-0 left-1/2 -translate-x-1/2 pointer-events-none select-none h-[70%]"
+              className="absolute bottom-0 left-1/2 -translate-x-1/2 pointer-events-none select-none h-[70%] max-h-full"
+              alt=""
             />
             {/* 폭발 이미지: 오른쪽 가장자리에서 잠깐 표시 (정사각) */}
             {boomVisible && (
