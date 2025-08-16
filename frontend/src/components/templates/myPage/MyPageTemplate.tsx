@@ -1,9 +1,3 @@
-/**
- * MyPageTemplate (상위 템플릿)
- * - 상태는 최소화하고, 훅(useMyPageData)으로 데이터 로드
- * - 좌측(ProfileCard), 우측(CalendarStatsCard), 그리고 ProfileModal을 관리
- */
-
 import { useState, useCallback } from "react";
 import { ProfileModal } from "../profileModal/ProfileModal.tsx";
 import { useMyPageData } from "../../../hooks/UseMyPageData.ts";
@@ -26,15 +20,25 @@ export const MyPageTemplate = () => {
     [setUserInfo]
   );
 
+  const CARD_W = "w-full max-w-[700px] md:w-[700px]";
+  const CARD_H = "md:h-[520px]";
+
   return (
-    <div className="p-6 min-h-screen">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <ProfileCard
-          userInfo={userInfo}
-          statistics={statistics}
-          onOpenModal={openModal}
-        />
-        <CalendarStatsCard days={days} statistics={statistics} />
+    <div className="min-h-screen py-8">
+      <div className="mx-auto w-full max-w-screen-2xl px-4">
+        <div className="grid w-fit mx-auto grid-cols-1 md:grid-cols-2 gap-6">
+          <div className={`${CARD_W} ${CARD_H}`}>
+            <ProfileCard
+              userInfo={userInfo}
+              statistics={statistics}
+              onOpenModal={openModal}
+            />
+          </div>
+
+          <div className={`${CARD_W} ${CARD_H}`}>
+            <CalendarStatsCard days={days} statistics={statistics} />
+          </div>
+        </div>
       </div>
 
       <ProfileModal
