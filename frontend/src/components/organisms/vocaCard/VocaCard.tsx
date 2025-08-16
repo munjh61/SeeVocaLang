@@ -8,6 +8,7 @@ import paper from "../../../asset/png/paper-col.png";
 import paper_partial from "../../../asset/png/paper_partial.png";
 // import cardDeco from "../../../asset/png/cardDecoration.png";
 import { TTSButton } from "../../molecules/ttsButton/TTSButton";
+import { Button } from "../../atoms/button/Button";
 
 export type VocaCardProps = {
   wordId?: number;
@@ -80,7 +81,15 @@ export const VocaCard = ({
                     name={folders[2].name}
                   />
                 )}
-                {folders.length > 3 && <VocaLoc bg={"blue"}>더보기</VocaLoc>}
+                {folders.length > 3 && (
+                  <Button
+                    bgColor={"blue"}
+                    textColor={"white"}
+                    className="p-1 w-18 block"
+                  >
+                    더보기
+                  </Button>
+                )}
               </>
             )}
           </div>

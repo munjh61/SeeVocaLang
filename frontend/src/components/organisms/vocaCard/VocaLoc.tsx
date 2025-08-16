@@ -4,21 +4,20 @@ import type { buttonVariants } from "../../atoms/button/ButtonVariants";
 
 type VocaLoc = {
   bg?: VariantProps<typeof buttonVariants>["bgColor"];
-  folderId?: number;
+  folderId: number;
   name?: string;
-  children?: string;
 };
 
-export const VocaLoc = ({ bg, folderId, name, children }: VocaLoc) => {
+export const VocaLoc = ({ bg, folderId, name }: VocaLoc) => {
   return (
     <IconButton
       ButtonVariant={{ bgColor: bg, textColor: "white" }}
       className="p-1 w-18 block"
       path={`/folder/${folderId}`}
+      state={{ name }}
     >
       <span className="w-full whitespace-nowrap overflow-hidden text-ellipsis font-light text-xs">
         {name}
-        {children}
       </span>
     </IconButton>
   );
