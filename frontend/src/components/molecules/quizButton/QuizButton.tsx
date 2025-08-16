@@ -1,5 +1,4 @@
 import { Button } from "../../atoms/button/Button";
-import cardDeco from "../../../asset/png/cardDecoration.png";
 import { useState } from "react";
 import { Text } from "../../atoms/text/Text";
 
@@ -44,13 +43,9 @@ export const QuizButton = ({
       textColor={selected ? selectColor : "gray"}
       bgColor={"green"}
       border={"white"}
-      className="px-5 py-3 relative shadow-2xl"
+      className="px-5 py-3 shadow-2xl"
     >
-      <img
-        src={cardDeco}
-        className="absolute inset-0 w-full h-full opacity-20 z-0 pointer-events-none"
-      />
-      <Text font={"outline"} size={"xxxl"} color="white" className="z-10">
+      <Text font={"outline"} size={"xxxl"} color="white">
         {lang === "en" ? en : ko}
       </Text>
     </Button>

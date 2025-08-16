@@ -21,6 +21,7 @@ export const UnderLine = ({
       className={cn(
         Variants({ bg, border, color, size, hover, font }),
         "w-full flex items-center justify-center min-w-0",
+        "cursor-pointer",
         "py-3 px-6 bg-blue-400 font-mono uppercase tracking-wider rounded relative overflow-hidden group hover:bg-blue-500 transition-all duration-300",
         className
       )}

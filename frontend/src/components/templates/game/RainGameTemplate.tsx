@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { LoadingPage } from "../loadingTemplate/LoadingTemplate";
 import { RainGame } from "../../organisms/game/RainGame";
 import { getTodayQuiz } from "../../../api/TodayQuizAPI";
+// import { SampleData } from "../../../stores/Sample";
 
 export const RainGameTemplate = () => {
   const nav = useNavigate();
@@ -15,6 +16,7 @@ export const RainGameTemplate = () => {
       try {
         const data = await getTodayQuiz();
         if (mounted) setVocas(Array.isArray(data) ? data : []);
+        // if (vocas.length === 0) setVocas(SampleData);
       } catch (e) {
         if (!mounted) return;
         const msg = e instanceof Error ? e.message : "불러오기 실패";

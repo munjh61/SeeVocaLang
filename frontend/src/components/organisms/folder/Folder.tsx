@@ -1,42 +1,47 @@
-import { Text } from "../../atoms/text/Text";
-import { IconButton } from "../../molecules/iconButton/IconButton";
 import { ImageBox } from "../../molecules/imagebox/Imagebox";
 import { Icon } from "../../atoms/icon/Icon";
-import gear from "../../../asset/gear.svg?react";
-import folder from "../../../asset/nav_folder.svg?react";
 import starF from "../../../asset/star-fill.svg?react";
 import starE from "../../../asset/star_empty.svg?react";
-import noImage from "../../../asset/png/noimage.png";
+import noImage from "../../../asset/png/pirate_shrug.png";
+import balloon from "../../../asset/png/balloon.png";
 import { useState } from "react";
+import { FolderInfo } from "../../molecules/folder/FolderInfo";
+import { FolderButton } from "../../molecules/folder/FolderButton";
 
 export type FolderProps = {
+  islandSrc?: string;
   folderId: number;
   thumbnailUrl?: string | null;
   name: string;
   description: string;
   favorite: boolean;
-  onLearnClick?: (id: number) => void;
-  onEditClick?: (id: number) => void;
+  wordCount: number;
+  onEditClick: (id: number) => void;
   onToggleFavorite?: (id: number, favorite: boolean) => void;
 };
 
 export const Folder = ({
+  islandSrc,
   folderId,
   thumbnailUrl,
   name,
   description,
   favorite,
-  onLearnClick,
+  wordCount,
   onEditClick,
   onToggleFavorite,
 }: FolderProps) => {
   const [isFav, setIsFav] = useState(favorite);
   return (
     <div
-      className="rounded-md shadow-md w-full p-3 inline-flex flex-col gap-2 bg-white select-none"
+      className="w-full inline-flex flex-col gap-2 select-none"
       onDragStart={e => e.preventDefault()}
     >
-      <div className="relative grow">
+      {/* 위 */}
+      <div
+        className="flex justify-center items-center grow relative pb-10 bg-center bg-contain bg-no-repeat"
+        style={{ backgroundImage: `url(${balloon})` }}
+      >
         <Icon
           icon={isFav ? starF : starE}
           color={"yellow"}
@@ -49,44 +54,26 @@ export const Folder = ({
         />
         <ImageBox
           src={thumbnailUrl ? thumbnailUrl : noImage}
-          className="grow"
+          className="h-[60%] rounded-xl"
+          defaultBg="bg-transparent"
         />
       </div>
-
-      <div className="flex flex-col">
-        <div className="pl-5">
-          <Text
-            size={"xl"}
-            weight={"bold"}
-            onlyOneLine={"yes"}
-            className="mb-3"
-          >
-            {name}
-          </Text>
-          <Text size={"xs"} color={"blue"} onlyOneLine={"yes"} className="mb-5">
-            {description}
-          </Text>
-        </div>
-        <div className="flex flex-row justify-evenly">
-          <IconButton
-            IconVariant={{ icon: folder, color: "white" }}
-            ButtonVariant={{ bgColor: "blue", textColor: "white" }}
-            buttonValue={v => onLearnClick?.(Number(v))}
-            path={`/folder/${folderId}`}
-            state={{ name, description }}
-          >
-            학습하기
-          </IconButton>
-          <IconButton
-            IconVariant={{ icon: gear }}
-            ButtonVariant={{ bgColor: "white", border: "gray" }}
-            data={folderId}
-            buttonValue={v => onEditClick?.(Number(v))}
-          >
-            수정
-          </IconButton>
-        </div>
+      {/* 아래 */}
+      <div
+        className="flex flex-col relative bg-center bg-contain bg-no-repeat"
+        style={{ backgroundImage: `url(${islandSrc})` }}
+      >
+        {/* 글자 부분 */}
+        <FolderInfo name={name} description={description} />
+        {/* 버튼 부분 */}
       </div>
+      <FolderButton
+        folderId={folderId}
+        name={name}
+        description={description}
+        wordCount={wordCount}
+        onEditClick={onEditClick}
+      />
     </div>
   );
 };

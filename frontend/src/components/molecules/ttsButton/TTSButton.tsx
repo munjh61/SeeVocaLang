@@ -1,5 +1,5 @@
 import speaker from "../../../asset/speaker.svg?react";
-import { IconButton } from "../iconButton/IconButton";
+import { SoundButton } from "../../atoms/button/SoundButton";
 
 type TTSButtonProps = {
   text: string;
@@ -16,17 +16,13 @@ export const TTSButton = ({ text }: TTSButtonProps) => {
   };
 
   return (
-    <IconButton
-      IconVariant={{ icon: speaker, color: "white" }}
-      ButtonVariant={{
-        textColor: "white",
-        bgColor: "green",
-        className: "font-medium",
-      }}
-      className="w-[80%]"
-      buttonValue={() => speak(text)}
+    <SoundButton
+      icon={speaker}
+      color={"white"}
+      font={"hakgyo"}
+      onClick={() => speak(text)}
     >
       발음 듣기
-    </IconButton>
+    </SoundButton>
   );
 };
