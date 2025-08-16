@@ -8,7 +8,7 @@ export type UserInfo = {
   nickname: string;
   email: string | null;
   profileImage?: string | null;
-  birthday: string
+  birthday: string | null;
 };
 
 // 유저 정보 조회 API

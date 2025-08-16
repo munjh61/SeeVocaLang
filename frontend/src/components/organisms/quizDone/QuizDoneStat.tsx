@@ -31,6 +31,7 @@ export const QuizDoneStatCard = ({
         profileImage: res.profileImage,
         nickname: res.nickname,
         email: res.email,
+        birthday: res.birthday,
       });
     })();
   }, []);
