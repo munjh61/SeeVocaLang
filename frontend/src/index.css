@@ -42,13 +42,6 @@ body,
 #root {
   height: 100%;
 }
-.friend-page-bg {
-  background-image: url("asset/png/friendpage.png"); /* public 기준 경로 */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
 .font-outline {
   -webkit-text-stroke: 1px #1a120b;
   color: transparent;           /* 속이 빈 아웃라인 폰트 느낌 */

@@ -23,8 +23,8 @@ export const FriendHeader = ({
   userId,
   }: FriendHeaderProps) => {
   return (
-    <div className="space-y-4">
-    <div className="flex items-center justify-center space-x-4">
+   <div className="space-y-4 mt-8 md:mt-24">
+  <div className="flex items-center justify-center space-x-4">
   <img
     src={penguinImg}
     alt="friend icon"
@@ -38,18 +38,22 @@ export const FriendHeader = ({
     align="left"
     className="whitespace-nowrap overflow-hidden text-ellipsis"
   >
-    친구를 찾고 함께 영어를 학습해보세요!
+    친구를 찾고 함께 영단어를 학습해보세요!
   </Text>
 </div>
+<div className="mt-4">  
+  <FriendNavBar
+    selectedTab={selectedTab}
+    setSelectedTab={setSelectedTab}
+    friends={friends}
+    userId={userId}
+  />
+</div>
 
-<FriendNavBar
-  selectedTab={selectedTab}
-  setSelectedTab={setSelectedTab}
-  friends={friends}
-  userId={userId}
-/>
+<div className="mt-4"> 
+  <FriendSearchBar value={searchValue} onChange={onSearchChange} />
+</div>
 
-<FriendSearchBar value={searchValue} onChange={onSearchChange} />
 </div>
   );
 };

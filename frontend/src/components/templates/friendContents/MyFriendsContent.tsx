@@ -5,8 +5,8 @@ import type { Friend } from "../../../api/FriendPageApi";
 import { type FriendStatus } from "../../molecules/FriendInfoCard/FriendInfoCard";
 
 type MyFriendsContentProps = {
-  friends: Friend[];             // 부모로부터 친구목록 전달
-  onDeleteFriend: (id: number) => void; // 삭제 콜백
+  friends: Friend[];            
+  onDeleteFriend: (id: number) => void; 
   searchValue?: string;
 };
 
@@ -37,7 +37,7 @@ const filteredFriends = useMemo(() => {
 
   return (
     <div className="flex flex-col px-4 py-2 h-[calc(100vh-160px)] overflow-y-auto">
-      <div className="mb-4 ml-55">
+      <div className="mb-4 ml-10">
         <Text color="black" size="xl" weight="bold" font={"outline"}>
           내 친구목록
         </Text>
