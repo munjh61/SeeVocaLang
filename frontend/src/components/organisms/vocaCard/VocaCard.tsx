@@ -35,12 +35,12 @@ export const VocaCard = ({
   const koLength = nameKo.length;
 
   return (
-    <div className="rounded-md w-full h-full p-5 inline-flex flex-col gap-2 select-none relative">
+    <div className="rounded-md w-full h-full p-5 inline-flex flex-col items-center gap-2 select-none relative">
       <img
         src={paper}
         className="absolute inset-0 w-full h-full z-0 pointer-events-none"
       />
-      <div className="relative z-10 flex flex-col gap-2 h-full p-5">
+      <div className="relative z-10 flex flex-col gap-2 h-full p-5 w-[80%]">
         <Text
           size={nameEn.length < 12 ? "xxxl" : "xxl"}
           font={"outline"}
