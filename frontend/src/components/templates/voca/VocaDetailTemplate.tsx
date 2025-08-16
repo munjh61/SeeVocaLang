@@ -10,6 +10,8 @@ import { useNavigate } from "react-router-dom";
 import { Searchbar } from "../../molecules/searchbar/Searchbar";
 import { Div } from "../../atoms/div/Div";
 import { deleteWordAtThisFolder } from "../../../api/FolderAPI";
+import sea from "../../../asset/png/sea.png";
+import cave from "../../../asset/png/cave.png";
 
 type VocaDetailTemplateProps = {
   folderId: number;
@@ -75,7 +77,15 @@ export const VocaDetailTemplate = ({
           퀴즈 풀기
         </IconButton>
       </div>
-      <Div bg={"sky"} className="flex flex-col gap-4 p-4 grow w-full">
+      <Div
+        className="flex flex-col gap-4 p-4 grow w-full  "
+        style={{
+          backgroundImage: `url(${cave}), url(${sea})`,
+          backgroundSize: "cover, cover",
+          backgroundPosition: "top, center",
+          backgroundRepeat: "no-repeat, repeat",
+        }}
+      >
         <div className="flex flex-row gap-2">
           <ToggleButton
             selected={blurEn}
@@ -90,7 +100,7 @@ export const VocaDetailTemplate = ({
             한글가리기
           </ToggleButton>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-4 p-10">
           {filteredVocaList.map(card => (
             <VocaCard
               key={card.wordId}

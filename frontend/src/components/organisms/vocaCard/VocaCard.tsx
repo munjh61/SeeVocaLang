@@ -4,7 +4,9 @@ import { IconButton } from "../../molecules/iconButton/IconButton";
 import { ImageBox } from "../../molecules/imagebox/Imagebox";
 import { VocaLoc } from "./VocaLoc";
 import trash from "../../../asset/delete.svg?react";
-import cardDeco from "../../../asset/png/cardDecoration.png";
+import paper from "../../../asset/png/paper-col.png";
+import paper_partial from "../../../asset/png/paper_partial.png";
+// import cardDeco from "../../../asset/png/cardDecoration.png";
 import { TTSButton } from "../../molecules/ttsButton/TTSButton";
 
 export type VocaCardProps = {
@@ -32,10 +34,10 @@ export const VocaCard = ({
   const koLength = nameKo.length;
 
   return (
-    <div className="rounded-md shadow-md w-full h-full p-3 inline-flex flex-col gap-2 bg-white select-none relative">
+    <div className="rounded-md w-full h-full p-5 inline-flex flex-col gap-2 select-none relative">
       <img
-        src={cardDeco}
-        className="absolute inset-0 w-full h-full opacity-20 z-0 pointer-events-none"
+        src={paper}
+        className="absolute inset-0 w-full h-full z-0 pointer-events-none"
       />
       <div className="relative z-10 flex flex-col gap-2 h-full p-5">
         <Text
@@ -47,15 +49,13 @@ export const VocaCard = ({
         >
           {blurEn ? "□".repeat(enLength) : nameEn}
         </Text>
-        <div className="relative border-b border-gray-200">
-          <div className="absolute top-1 left-1">
-            <IconButton
-              IconVariant={{ icon: trash, color: "white" }}
-              buttonValue={onDelete}
-              ButtonVariant={{ bgColor: "red" }}
-              className="rounded-full h-9"
-            ></IconButton>
-          </div>
+        <IconButton
+          IconVariant={{ icon: trash, color: "white" }}
+          buttonValue={onDelete}
+          ButtonVariant={{ bgColor: "red" }}
+          className="rounded-full h-9 absolute top-1 left-1"
+        />
+        <div className="relative">
           <div className="absolute top-1 right-1">
             {folders && (
               <>
@@ -88,6 +88,11 @@ export const VocaCard = ({
             src={imageUrl ? imageUrl : noImage}
             className="h-50"
             imgClassName="object-cover"
+            defaultBg="bg-transparent"
+          />
+          <img
+            src={paper_partial}
+            className="absolute opacity-20 inset-0 w-full h-full z-0 pointer-events-none"
           />
         </div>
         <Text

@@ -23,7 +23,7 @@ export const FolderButton = ({
 }: FolderButtonProps) => {
   const nav = useNavigate();
   const handleLearnClick = () => {
-    if (wordCount > 0)
+    if (wordCount >= 0)
       nav(`/folder/${folderId}`, { state: { name, description } });
   };
   const handleEditClick = () => {
