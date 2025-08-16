@@ -6,6 +6,7 @@ import { FriendSearchContent } from "../friendContents/FriendSearchContent";
 import { friendList, type Friend } from "../../../api/FriendPageApi";
 import { useAuthStore } from "../../../stores/AuthStore";
 
+
 type TabKey = "search" | "friend" | "request";
 
 export const FriendPageTemplate = () => {
@@ -65,7 +66,15 @@ export const FriendPageTemplate = () => {
         userId={userId}
       />
 
-      <div className="mt-4">
+        <div
+      className="
+        mt-4 flex-1 min-h-0 overflow-y-auto
+        rounded-3xl bg-no-repeat bg-[length:100%_100%]
+        px-4 md:px-6 pb-24
+      "
+     
+    >
+      <img src=""></img>
         {selectedTab === "search" && (
           <FriendSearchContent
             searchValue={searchValue}

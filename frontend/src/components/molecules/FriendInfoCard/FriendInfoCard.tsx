@@ -5,6 +5,8 @@ import { DeleteFriendButton } from "../friendButtons/DeleteFriendButton";
 import { RequestFriendButton } from "../friendButtons/RequestFriendButton";
 import { acceptFriend, deleteFriend } from "../../../api/FriendPageApi";
 import { VocaButton } from "../friendButtons/VocaButton";
+import { pirateBtn } from "../../../style/friendpage";
+import { Text } from "../../atoms/text/Text";
 
 export type FriendStatus = "NONE" | "REQUEST" | "PENDING" | "APPROVED";
 
@@ -34,7 +36,8 @@ export const FriendInfoCard = ({
       setMutating("accept");
       const success = await acceptFriend(id);
       if (success) {
-        onAcceptFriend?.(id);         
+        onAcceptFriend?.(id);   
+        alert("친구를 수락하셨습니다.")      
       } else {
         alert("친구 수락에 실패했어요.");
       }
@@ -51,7 +54,8 @@ export const FriendInfoCard = ({
       setMutating("refuse");
       const success = await deleteFriend(id);
       if (success) {
-        onDeleteFriend?.(id);        
+        onDeleteFriend?.(id);    
+        alert("친구를 거절하셨습니다.")      
       } else {
         alert("친구 요청 거절에 실패했습니다.");
       }
@@ -91,33 +95,41 @@ export const FriendInfoCard = ({
 
       case "PENDING":
         return (
-          <div className="flex gap-2">
-            <Button
-              bgColor="green"
-              size="md"
-              textColor="white"
-              className="gap-1 px-3 py-1.5"
-              onClick={handleAccept}
-              disabled={mutating !== null}
-            >
-              {mutating === "accept" ? "수락 중..." : "수락"}
-            </Button>
-            <Button
-              bgColor="red"
-              size="md"
-              textColor="white"
-              className="gap-1 px-3 py-1.5"
-              onClick={handleRefuse}
-              disabled={mutating !== null}
-            >
-              {mutating === "refuse" ? "거절 중..." : "거절"}
-            </Button>
-          </div>
-        );
+      <div className="flex gap-2 shrink-0">
+  {mutating !== "refuse" && (
+    <Button
+      bgColor="green"
+      size="md"
+      textColor="black"
+      className={`${pirateBtn} w-[96px] h-10 rounded-full flex items-center justify-center`}
+      onClick={handleAccept}
+      disabled={!!mutating}
+      aria-busy={mutating === "accept"}
+    >
+      <Text className="whitespace-nowrap leading-none font-semibold">
+        {mutating === "accept" ? "수락 중..." : "수락"}
+      </Text>
+    </Button>
+  )}
 
-      default:
-        // 예기치 못한 상태 안전망
-        return null;
+  {mutating !== "accept" && (
+    <Button
+      bgColor="red"
+      size="md"
+      textColor="black"
+      className={`${pirateBtn} w-[96px] h-10 rounded-full flex items-center justify-center`}
+      onClick={handleRefuse}
+      disabled={!!mutating}
+      aria-busy={mutating === "refuse"}
+    >
+      <Text className="whitespace-nowrap leading-none font-semibold">
+        {mutating === "refuse" ? "거절 중..." : "거절"}
+      </Text>
+    </Button>
+  )}
+</div>
+
+        );
     }
   };
 

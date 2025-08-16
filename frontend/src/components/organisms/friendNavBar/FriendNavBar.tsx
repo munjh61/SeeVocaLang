@@ -16,7 +16,7 @@ type FriendNavBarProps = {
 
 export const FriendNavBar = ({ selectedTab, setSelectedTab, friends,userId}: FriendNavBarProps) => {
 
-  // "PENDING" 상태인 친구 수 계산
+
   const pendingCount = friends.filter(friend => friend.friend_status === "PENDING" && userId === friend.receiver_id).length;
   return (
     <div className="flex gap-2 px-4 py-2 justify-end">
@@ -34,7 +34,7 @@ export const FriendNavBar = ({ selectedTab, setSelectedTab, friends,userId}: Fri
       <NavTab
         label="친구 요청"
         icon={<BellIcon className="w-4 h-4" />}
-        badgeCount={pendingCount}          //내 userid에게 친구요청 보낸 사람 수
+        badgeCount={pendingCount}        
         selected={selectedTab === "request"}
         onClick={() => setSelectedTab("request")}
       />

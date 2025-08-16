@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { Button } from "../../atoms/button/Button";
 import { cn } from "../../../utils/cn";
+import { Text } from "../../atoms/text/Text";
 
 type NavTabProps = {
   label: string;
@@ -23,9 +24,9 @@ export const NavTab = ({
       role="tab"
       aria-selected={selected}
       // atom props는 그대로 사용
-      bgColor={selected ? "pp" : "white"}
+      bgColor={selected ? "black" : "black"}
       size="md"
-      textColor={selected ? "white" : "black"}
+      textColor={selected ? "black" : "black"}
       className={cn(
         // 레이아웃
         "relative inline-flex items-center gap-2 h-9 px-3 rounded-full select-none",
@@ -48,7 +49,7 @@ export const NavTab = ({
       )}
     >
       {icon && <span className="w-4 h-4">{icon}</span>}
-      <span className="text-sm">{label}</span>
+      <span className="text-sm"><Text size="base" font={"outline"} >{label}</Text></span>
 
       {badgeCount !== undefined && badgeCount > 0 && (
         <span

@@ -52,7 +52,7 @@ export const FriendSearchContent = ({
 
   return (
     <div className="flex flex-col px-4 py-2 h-[calc(100vh-160px)] overflow-y-auto">
-      <div className="mb-4 ml-55">
+      <div className="mb-4 ml-10">
         <Text color="black" size="xl" weight="bold" font={"outline"}>
           새로운 친구 찾기
         </Text>
@@ -84,7 +84,7 @@ export const FriendSearchContent = ({
                 id={friend.user_id}
                 name={friend.nickname}
                 profileUrl={friend.profile_url}
-                status={statusToPass}                 // ✅ FriendStatus 보장
+                status={statusToPass}              
                 onAddFriend={() => onAddFriend(friend.user_id)}
                 onAcceptFriend={() => onAcceptFriend(friend.user_id)}
                 onDeleteFriend={() => onDeleteFriend(friend.user_id)}
