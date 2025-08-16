@@ -243,7 +243,6 @@ export const FolderTemplate = ({
               <Folder
                 key={data.folderId}
                 {...data}
-                // onLearnClick={handleLearnClick}
                 onEditClick={openEditModal}
                 onToggleFavorite={toggleFavorite}
               />

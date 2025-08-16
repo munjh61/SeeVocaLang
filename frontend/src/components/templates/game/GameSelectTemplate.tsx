@@ -7,7 +7,7 @@ import ropeThumbnail from "./../../../asset/png/pirate_rope_hang.png";
 import rainThumbnail from "../../../asset/png/rainThumbnail.png";
 import cardThumbnail from "../../../asset/png/cardThumbnail.png";
 import treasureChest from "../../../asset/png/treasureChest.png";
-import map from "../../../asset/png/map.png";
+import gamebackground from "../../../asset/png/gameBackground.png";
 
 type GameSelectTemplateProps = {
   onClick: (v: number) => void;
@@ -52,7 +52,7 @@ export const GameSelectTemplate = ({ onClick }: GameSelectTemplateProps) => {
     <Div
       align={"center"}
       className="grow p-2 pt-20 bg-center bg-cover"
-      style={{ backgroundImage: `url(${map})` }}
+      style={{ backgroundImage: `url(${gamebackground})` }}
     >
       <ImageBox
         src={games[ready - 1].gameThumbnail}

@@ -1,4 +1,4 @@
-import noImage from "../../../asset/png/noimage.png";
+import noImage from "../../../asset/png/pirate_shrug.png";
 import { Text } from "../../atoms/text/Text";
 import { IconButton } from "../../molecules/iconButton/IconButton";
 import { ImageBox } from "../../molecules/imagebox/Imagebox";
