@@ -16,8 +16,5 @@ public interface QuizOrderRepository extends JpaRepository<QuizOrderEntity, Long
             LocalDateTime end
     );
 
-    Optional<QuizOrderEntity> findByUserAndQuiz(
-            UserEntity user,
-            QuizEntity quiz
-    );
+    Optional<QuizOrderEntity> findTopByUser(UserEntity user);
 }
