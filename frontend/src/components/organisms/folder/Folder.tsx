@@ -47,14 +47,14 @@ export const Folder = ({
           color={"yellow"}
           className="absolute top-0 right-0 cursor-pointer"
           onClick={async () => {
-            console.log("현재 즐겨찾기", isFav);
+            // console.log("현재 즐겨찾기", isFav);
             await onToggleFavorite?.(folderId, isFav);
             setIsFav(prev => !prev);
           }}
         />
         <ImageBox
           src={thumbnailUrl ? thumbnailUrl : noImage}
-          className="h-[60%] rounded-xl"
+          className="h-[50%] rounded-xl"
           defaultBg="bg-transparent"
         />
       </div>

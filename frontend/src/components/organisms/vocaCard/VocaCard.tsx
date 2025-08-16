@@ -8,6 +8,7 @@ import paper from "../../../asset/png/paper-col.png";
 import paper_partial from "../../../asset/png/paper_partial.png";
 // import cardDeco from "../../../asset/png/cardDecoration.png";
 import { TTSButton } from "../../molecules/ttsButton/TTSButton";
+import { Button } from "../../atoms/button/Button";
 
 export type VocaCardProps = {
   wordId?: number;
@@ -34,12 +35,12 @@ export const VocaCard = ({
   const koLength = nameKo.length;
 
   return (
-    <div className="rounded-md w-full h-full p-5 inline-flex flex-col gap-2 select-none relative">
+    <div className="rounded-md w-full h-full p-5 inline-flex flex-col items-center gap-2 select-none relative">
       <img
         src={paper}
         className="absolute inset-0 w-full h-full z-0 pointer-events-none"
       />
-      <div className="relative z-10 flex flex-col gap-2 h-full p-5">
+      <div className="relative z-10 flex flex-col gap-2 h-full p-5 w-[80%]">
         <Text
           size={nameEn.length < 12 ? "xxxl" : "xxl"}
           font={"outline"}
@@ -80,7 +81,15 @@ export const VocaCard = ({
                     name={folders[2].name}
                   />
                 )}
-                {folders.length > 3 && <VocaLoc bg={"blue"}>더보기</VocaLoc>}
+                {folders.length > 3 && (
+                  <Button
+                    bgColor={"blue"}
+                    textColor={"white"}
+                    className="p-1 w-18 block"
+                  >
+                    더보기
+                  </Button>
+                )}
               </>
             )}
           </div>
