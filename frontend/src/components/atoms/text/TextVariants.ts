@@ -45,6 +45,7 @@ export const textVariants = cva("", {
     font: {
       default: "", // Tailwind 기본 폰트
       outline: "font-sds-outline",
+      hakgyo: "font-hakgyo",
     },
   },
   defaultVariants: {

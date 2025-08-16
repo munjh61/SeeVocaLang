@@ -6,10 +6,15 @@ import { LoadingPage } from "../../templates/loadingTemplate/LoadingTemplate";
 import { HpBar } from "../../molecules/game/HpBar";
 import { GameText } from "../../molecules/game/GameText";
 import { Missile } from "../../molecules/game/Missile";
+import deck from "../../../asset/png/deck.png";
 import boom from "../../../asset/png/boom.png";
-import cityDark from "../../../asset/png/cityDark.png";
-import cityDay from "../../../asset/png/cityDay.png";
-import sky from "../../../asset/png/sky.png";
+import battleship from "../../../asset/png/battleship.png";
+import enemy1 from "../../../asset/png/pirate_enemy_crocodile.png";
+import enemy2 from "../../../asset/png/pirate_enemy_monkey.png";
+import enemy3 from "../../../asset/png/pirate_enemy_squirrel.png";
+import penguin from "../../../asset/png/pirate_knife.png";
+import cannon from "../../../asset/png/cannon.png";
+import bombSfx from "../../../asset/sfx/bomb.wav";
 
 type RainGameProps = {
   vocas: VocaCardProps[];
@@ -60,6 +65,11 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
   const [round, setRound] = useState(1);
   const [idx, setIdx] = useState(0);
   const current = roundData[idx];
+  const enemySrc = useMemo(() => {
+    if (round === 1) return enemy2; // monkey
+    if (round === 2) return enemy1; // crocodile
+    return enemy3; // squirrel
+  }, [round]);
 
   /** -------------------------
    *  컨테이너 & 크기 상태(반응형)
@@ -270,6 +280,7 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
 
       // 오른쪽 벽 도착 (동적 미사일 너비 고려)
       if (next + missileSize.w >= w) {
+        new Audio(bombSfx).play().catch(() => {}); // 폭팔소리
         showBoom(); // 폭발 잠깐 표시
         setLives(l => l - 1); // 목숨 감소
         setIdx(i => i + 1); // 다음 문제
@@ -321,7 +332,10 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
    *  UI
    * ------------------------- */
   return (
-    <div className="flex flex-col gap-4 w-full grow p-4">
+    <div
+      className="flex flex-col gap-4 w-full grow p-4 bg-cover bg-center"
+      style={{ backgroundImage: `url(${deck})` }}
+    >
       {/* 상단 정보바 */}
       <div className="flex items-center gap-4">
         <GameText label="SCORE" data={score} />
@@ -339,7 +353,7 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
         {current && (
           <div
             key={`${round}-${idx}-${current.nameEn}`}
-            className="absolute top-1/2 -translate-y-1/2 transition-none"
+            className="absolute top-1/2 -translate-y-1/2 transition-none z-20"
             style={{ left: x }}
           >
             {/* 에셋이 왼쪽을 향하면 머리부터 보이게 하려면 래퍼에 scale-x-[-1] */}
@@ -352,18 +366,20 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
           </div>
         )}
         <div className="w-full grid grid-cols-3">
-          <div
-            className="bg-center bg-cover"
-            style={{ backgroundImage: `url(${cityDark})` }}
-          />
-          <div
-            className="bg-center bg-cover"
-            style={{ backgroundImage: `url(${sky})` }}
-          />
-          <div
-            className="bg-center bg-cover relative"
-            style={{ backgroundImage: `url(${cityDay})` }}
-          >
+          <div className="relative">
+            <img src={battleship} className="w-full h-full" />
+            <img
+              src={enemySrc}
+              className="absolute bottom-0 left-1/2 -translate-x-1/2 pointer-events-none select-none h-[50%]"
+            />
+          </div>
+          <div />
+          <div className="relative">
+            <img src={cannon} className="w-full h-full" />
+            <img
+              src={penguin}
+              className="absolute bottom-0 left-1/2 -translate-x-1/2 pointer-events-none select-none h-[70%]"
+            />
             {/* 폭발 이미지: 오른쪽 가장자리에서 잠깐 표시 (정사각) */}
             {boomVisible && (
               <img

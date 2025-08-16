@@ -7,7 +7,7 @@ import ropeThumbnail from "./../../../asset/png/pirate_rope_hang.png";
 import rainThumbnail from "../../../asset/png/rainThumbnail.png";
 import cardThumbnail from "../../../asset/png/cardThumbnail.png";
 import treasureChest from "../../../asset/png/treasureChest.png";
-import gameMap from "../../../asset/png/gameMap.png";
+import map from "../../../asset/png/map.png";
 
 type GameSelectTemplateProps = {
   onClick: (v: number) => void;
@@ -31,13 +31,13 @@ export const GameSelectTemplate = ({ onClick }: GameSelectTemplateProps) => {
   const games: GameSelect[] = [
     {
       gameNumber: 1,
-      gameTitle: "행맨",
+      gameTitle: "포로 탈출",
       gameDescription: "한 글자씩 단어를 맞추어 보아요.",
       gameThumbnail: ropeThumbnail,
     },
     {
       gameNumber: 2,
-      gameTitle: "소나기",
+      gameTitle: "폭탄 피하기",
       gameDescription: "폭탄이 도착하기 전에 막아주세요",
       gameThumbnail: rainThumbnail,
     },
@@ -52,36 +52,34 @@ export const GameSelectTemplate = ({ onClick }: GameSelectTemplateProps) => {
     <Div
       align={"center"}
       className="grow p-2 pt-20 bg-center bg-cover"
-      style={{ backgroundImage: `url(${gameMap})` }}
+      style={{ backgroundImage: `url(${map})` }}
     >
       <ImageBox
         src={games[ready - 1].gameThumbnail}
-        className="grow rounded-2xl border-2 w-full max-w-xl border-orange-800 bg-white/80"
+        className="w-[40%] h-[40%] rounded-2xl border-2 max-w-xl border-orange-800 bg-white/80"
       />
-      <Div align={"center"} className="w-full gap-2">
+      <Div align={"center"} className="w-full gap-2 grow">
         {/* 선택 부분 */}
-        <Div className="w-[60%] flex flex-row justify-around">
+        <Div className="grow grid grid-cols-3 gap-40">
           {games.map(g => (
-            <Div align={"center"} className="w-[16%] relative">
+            <Button
+              className="w-full h-full relative m-auto"
+              onClick={() => moveFunction(g.gameNumber)}
+            >
               <ImageBox
                 src={treasureChest}
                 defaultBg="bg-transparent"
-                className="absolute left-1/2 -translate-x-1/2 z-0 w-full"
+                className="grow absolute z-0"
               ></ImageBox>
-              <Button
-                className="grow z-10"
-                onClick={() => moveFunction(g.gameNumber)}
+              <Text
+                font={"hakgyo"}
+                color="white"
+                className="p-10 whitespace-nowrap z-10"
+                size={"xxxl"}
               >
-                <Text
-                  font={"outline"}
-                  color="white"
-                  className="p-10 whitespace-nowrap"
-                  size={"xxxl"}
-                >
-                  {g.gameTitle}
-                </Text>
-              </Button>
-            </Div>
+                {g.gameTitle}
+              </Text>
+            </Button>
           ))}
         </Div>
         {/* 설명 부분 */}
