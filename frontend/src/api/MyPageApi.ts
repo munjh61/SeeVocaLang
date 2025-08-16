@@ -70,6 +70,8 @@ export const checkPassword = async (password: string): Promise<boolean> => {
 };
 
 // ✅ profileFile은 null일 수도 있음
+// ✅ 서버 스펙: multipart/form-data
+// Parts: data(JSON, 필수), profile(File, 선택)
 export const updateProfile = async (
   currentPassword: string,
   newPassword: string,
@@ -77,29 +79,43 @@ export const updateProfile = async (
   profileFile: File | null
 ): Promise<boolean> => {
   try {
-    const formData = new FormData();
+    // 값이 비어있으면 보내지 않도록 omit
+    const dataObj: Record<string, string> = {};
 
-    // 📌 JSON 부분을 문자열로 변환해서 "data"에 담기
-    const profileData = {
-      currentPassword,
-      newPassword,
-      nickname,
-    };
-    const blob = new Blob([JSON.stringify(profileData)], {
-      type: "application/json",
-    });
-    formData.append("data", blob);
+    const nick = nickname?.trim();
+    if (nick) dataObj.nickname = nick;
 
-    // 📌 파일이 있으면 "profile"이라는 키로 추가
-    if (profileFile) {
-      formData.append("profile", profileFile);
+    const currPwd = currentPassword?.trim();
+    const newPwd = newPassword?.trim();
+    // 비번 변경 의사가 있을 때만 둘 다 보냄(한 쪽만 보내면 400 가능)
+    if (currPwd && newPwd) {
+      dataObj.currentPassword = currPwd;
+      dataObj.newPassword = newPwd;
     }
 
-    const response = await authApi.patch(`${MYPAGE_URL}`, formData);
+    // ⚠️ data(JSON)는 필수이므로, 비어있어도 최소 {}는 보내야 함
+    const fd = new FormData();
+    const dataBlob = new Blob([JSON.stringify(dataObj)], {
+      type: "application/json",
+    });
+    fd.append("data", dataBlob); // ← 서버 요구: data(JSON)
+
+    if (profileFile) {
+      // ⚠️ 서버가 요구한 파일 파트명: "profile"
+      fd.append("profile", profileFile);
+    }
+
+    const response = await authApi.patch(`${MYPAGE_URL}`, fd, {
+      // Content-Type은 자동 설정(boundary 포함) → 명시 X
+      withCredentials: true,
+    });
 
     return response.status === 200;
-  } catch (error) {
-    console.error("프로필 업데이트 실패:", error);
+  } catch (error: any) {
+    console.error("프로필 업데이트 실패:", {
+      status: error?.response?.status,
+      data: error?.response?.data,
+    });
     return false;
   }
 };
