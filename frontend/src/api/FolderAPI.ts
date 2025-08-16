@@ -9,7 +9,7 @@ const foldersURL = `${BASE_URL}/api/v1/folders`;
 export const getfolders = async (userId: number) => {
   try {
     const response = await authApi.get(`${foldersURL}/${userId}`);
-    console.log(response.data.content);
+    // console.log(response.data.content);
     const folders: FolderProps[] = response.data.content.map(
       (b: FolderProps) => ({
         folderId: b.folderId,
@@ -131,7 +131,8 @@ export const deleteWordAtThisFolder = async (
         headers: { "Content-Type": "application/json" },
       }
     );
-    console.log(res.data.message);
+    // console.log(res.data.message);
+    return res.data.message;
   } catch (error) {
     console.error("❌ 단어 삭제 요청 실패:", error);
     throw error;
