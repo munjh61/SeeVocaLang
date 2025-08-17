@@ -20,11 +20,11 @@ export const VocafolderSecondHeader = ({
   return (
     <div className="flex align-center gap-4">
       <IconButton
-        IconVariant={{ icon: favorite, color: "white", size: "lg" }}
+        IconVariant={{ icon: favorite, color: "white", size: "md" }}
         ButtonVariant={{
           bgColor: "yellow",
           textColor: "white",
-          size: "lg",
+          size: "md",
           font: "hakgyo",
         }}
         className="min-w-25"
@@ -35,13 +35,13 @@ export const VocafolderSecondHeader = ({
       <IconButton
         IconVariant={{
           icon: isToggle ? all : list,
-          size: "lg",
+          size: "md",
           color: "white",
         }}
         ButtonVariant={{
           bgColor: isToggle ? "green" : "orange",
           textColor: "white",
-          size: "lg",
+          size: "md",
           font: "hakgyo",
         }}
         buttonValue={onClickToggle}
@@ -50,11 +50,11 @@ export const VocafolderSecondHeader = ({
         {isToggle ? "단어장" : "ALL"}
       </IconButton>
       <IconButton
-        IconVariant={{ icon: folder, size: "lg", color: "white" }}
+        IconVariant={{ icon: folder, size: "md", color: "white" }}
         ButtonVariant={{
           bgColor: "blue",
           textColor: "white",
-          size: "lg",
+          size: "md",
           font: "hakgyo",
         }}
         buttonValue={onClickCreate}

@@ -200,7 +200,7 @@ export const FolderTemplate = ({
             buttonValue={() => navigate(-1)}
             className="w-30"
           >
-            뒤로 가기
+            뒤로
           </IconButton>
 
           <Searchbar iconColor="blue" onSearch={searchFunction} />
@@ -215,7 +215,7 @@ export const FolderTemplate = ({
             buttonValue={() => setQuizModalOpen(true)}
             className="w-30"
           >
-            퀴즈 풀기
+            퀴즈
           </IconButton>
         </Div>
         <VocafolderSecondHeader

@@ -9,9 +9,18 @@ type FriendVocaModalProps = {
   folders: { folderId: number; name: string; description?: string }[];
 };
 
-type Word = { wordId?: number; imageUrl?: string; nameEn?: string; nameKo?: string };
+type Word = {
+  wordId?: number;
+  imageUrl?: string;
+  nameEn?: string;
+  nameKo?: string;
+};
 
-export const FriendVocaModal = ({ isOpen, onClose, folders }: FriendVocaModalProps) => {
+export const FriendVocaModal = ({
+  isOpen,
+  onClose,
+  folders,
+}: FriendVocaModalProps) => {
   const [words, setWords] = useState<Word[]>([]);
   const [selectedFolderId, setSelectedFolderId] = useState<number | null>(null);
   const [selectedFolderName, setSelectedFolderName] = useState<string>("");
@@ -56,7 +65,7 @@ export const FriendVocaModal = ({ isOpen, onClose, folders }: FriendVocaModalPro
           <aside className="p-4 border-b md:border-b-0 md:border-r border-black/10 max-h-[65vh] overflow-y-auto">
             <ul className="space-y-2">
               {folders.length ? (
-                folders.map((f) => (
+                folders.map(f => (
                   <li key={f.folderId}>
                     <button
                       onClick={() => handleFolderClick(f.folderId, f.name)}
@@ -65,7 +74,11 @@ export const FriendVocaModal = ({ isOpen, onClose, folders }: FriendVocaModalPro
                       disabled={loading && selectedFolderId !== f.folderId}
                     >
                       <div className="font-medium truncate">{f.name}</div>
-                      {f.description && <div className="text-xs text-black/60 truncate">{f.description}</div>}
+                      {f.description && (
+                        <div className="text-xs text-black/60 truncate">
+                          {f.description}
+                        </div>
+                      )}
                     </button>
                   </li>
                 ))
@@ -75,13 +88,18 @@ export const FriendVocaModal = ({ isOpen, onClose, folders }: FriendVocaModalPro
             </ul>
           </aside>
 
-          <main className="relative p-4 max-h-[65vh] overflow-y-auto" aria-busy={loading}>
+          <main
+            className="relative p-4 max-h-[65vh] overflow-y-auto"
+            aria-busy={loading}
+          >
             {/* 선택 전 안내 */}
             {selectedFolderId == null ? (
-              <p className="text-sm text-black/60">왼쪽에서 단어장을 선택하세요.</p>
+              <p className="text-sm text-black/60">
+                왼쪽에서 단어장을 선택하세요.
+              </p>
             ) : words.length ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {words.map((w) => (
+                {words.map(w => (
                   <div
                     key={w.wordId ?? `${w.nameEn}-${w.nameKo}-${Math.random()}`}
                     className="flex items-center gap-3 p-3 rounded-xl ring-1 ring-black/10 bg-white"
@@ -98,8 +116,12 @@ export const FriendVocaModal = ({ isOpen, onClose, folders }: FriendVocaModalPro
                       </div>
                     )}
                     <div className="min-w-0">
-                      <div className="font-semibold truncate">{w.nameEn ?? "-"}</div>
-                      <div className="text-sm text-black/60 truncate">{w.nameKo ?? "-"}</div>
+                      <div className="font-semibold truncate">
+                        {w.nameEn ?? "-"}
+                      </div>
+                      <div className="text-sm text-black/60 truncate">
+                        {w.nameKo ?? "-"}
+                      </div>
                     </div>
                   </div>
                 ))}

@@ -85,7 +85,8 @@ export const updatefolder = async (
 export const addFavorite = async (folderId: number) => {
   try {
     const res = await authApi.post(`${foldersURL}/${folderId}/favorites`);
-    console.log(res.data);
+    return res.data.content;
+    // console.log(res.data);
   } catch (error) {
     console.error("❌ 폴더 즐겨찾기 추가 요청 실패:", error);
     throw error;
@@ -94,7 +95,8 @@ export const addFavorite = async (folderId: number) => {
 export const deleteFavorite = async (folderId: number) => {
   try {
     const res = await authApi.delete(`${foldersURL}/${folderId}/favorites`);
-    console.log(res.data);
+    return res.data.content;
+    // console.log(res.data);
   } catch (error) {
     console.error("❌ 폴더 즐겨찾기 삭제 요청 실패:", error);
     throw error;

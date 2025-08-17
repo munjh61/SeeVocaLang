@@ -74,7 +74,7 @@ export const VocaDetailTemplate = ({
             buttonValue={() => navigate(-1)}
             className="w-30"
           >
-            뒤로 가기
+            뒤로
           </IconButton>
           <Searchbar iconColor="blue" onSearch={searchFunction} />
           <IconButton
@@ -88,7 +88,7 @@ export const VocaDetailTemplate = ({
             state={{ name, description }}
             className="w-30"
           >
-            퀴즈 풀기
+            퀴즈
           </IconButton>
         </div>
         <div className="flex flex-row gap-2">
