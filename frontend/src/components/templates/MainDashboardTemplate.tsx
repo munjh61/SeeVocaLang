@@ -76,32 +76,34 @@ export const MainDashboardTemplate = () => {
 
   return (
     <div className="relative w-full min-h-dvh box-border pt-3 overscroll-none flex flex-col overflow-x-hidden">
-      {/* 상단 바 */}
-      <div className="flex flex-col sm:flex-row justify-between items-start gap-2 px-4 z-30 flex-none">
+      {/* 상단 바 (배경은 클릭 막지 않게) */}
+      <div className="flex flex-col sm:flex-row justify-between items-start gap-2 px-4 z-30 flex-none pointer-events-none">
         <TopLeftProgressBar
           current={studyStatus?.lastSolvedNumber ?? 0}
           total={studyStatus?.totalProblemCount ?? 0}
           loading={loading}
           width={300}
           height={8}
-          className="w-full sm:w-auto"
+          className="w-full sm:w-auto pointer-events-auto"
         />
         <button
           onClick={handleLogout}
-          className="bg-red-500 hover:bg-red-400 text-white font-semibold px-4 py-2 rounded-lg shadow-md"
+          className="bg-red-500 hover:bg-red-400 text-white font-semibold px-4 py-2 rounded-lg shadow-md pointer-events-auto"
         >
           로그아웃
         </button>
       </div>
 
-      {/* 메인 콘텐츠: 남은 공간 차지 + 자체 스크롤 */}
-      <div className="relative z-20 flex-1 overflow-y-auto">
+      {/* 메인 콘텐츠
+        - 기본(모바일): mt-3 → 겹침 없음
+        - md 이상: -mt-8 → 헤더와 살짝 겹치도록 끌어올림
+        - lg 이상: 더 많이 겹치고 싶으면 값 조정
+    */}
+      <div className="relative z-20 flex-1 overflow-y-auto mt-3 md:-mt-8 lg:-mt-12">
         <IslandCarousel items={items} onSelect={handleSelect} />
       </div>
 
-      {/* 장식 이미지: 부모를 기준으로 absolute.
-        만약 이미지 때문에 하단이 잘리면 부모에 pb를 조금 주거나
-        이미지를 main 안쪽으로 옮겨주세요. */}
+      {/* 장식 이미지 (그대로) */}
       <img
         src={TreasureImg}
         alt="보물상자"
