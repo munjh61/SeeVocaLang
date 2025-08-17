@@ -142,6 +142,11 @@ export const FolderTemplate = ({
 
   // 즐겨찾기 토글
   const toggleFavorite = async (folderId: number, favorite: boolean) => {
+    setfolderList(prev =>
+      prev.map(f =>
+        f.folderId === folderId ? { ...f, favorite: !favorite } : f
+      )
+    );
     if (favorite) {
       deleteFavorite(folderId);
     } else {

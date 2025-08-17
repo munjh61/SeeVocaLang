@@ -9,7 +9,7 @@ const quizURL = `${BASE_URL}/api/v1/quiz`;
 export const getQuizStatus = async () => {
   try {
     const res = await authApi.get(quizURL);
-    console.log("오늘의 학습", res.data.content);
+    // console.log("오늘의 학습", res.data.content);
     const c = res.data?.content;
     const status: UserStatisticsApi = {
       totalDaysCount: Number(c.totalDaysCount ?? 0),
@@ -54,7 +54,7 @@ export const updateQuizStatus = async (quizNumber: number) => {
         headers: { "Content-Type": "application/json" },
       }
     );
-    console.log("오늘의 학습 진행도 저장", res.data.content);
+    console.log("오늘의 학습 진행도 저장", res.data);
   } catch (error) {
     if (error instanceof Error)
       console.error("❌ 오늘의 학습 진행도 저장 실패:", error.message);
@@ -63,8 +63,8 @@ export const updateQuizStatus = async (quizNumber: number) => {
 
 export const completeTodayQuiz = async () => {
   try {
-    const res = await authApi.post(`${BASE_URL}/api/v/completion-quiz`);
-    console.log(res.data.content);
+    const res = await authApi.post(`${BASE_URL}/api/v1/completion-quiz`);
+    console.log(res.data);
   } catch (error) {
     if (error instanceof Error)
       console.error("❌ 오늘의 학습 완료 처리 실패:", error.message);

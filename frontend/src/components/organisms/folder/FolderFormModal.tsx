@@ -43,12 +43,20 @@ export const FolderFormModal = ({
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className="flex flex-col gap-4">
-        <h1 className="text-xl font-bold">
+        <Text
+          font={"hakgyo"}
+          color="blue"
+          className="font-bold sm:text-sm md:text-md lg:text-lg xl:text-xl 2xl:text-2xl"
+        >
           {formType === "create" ? "단어장 생성" : "단어장 수정"}
-        </h1>
+        </Text>
 
         <div>
-          <Text font={"hakgyo"} size={"xxl"}>
+          <Text
+            font={"hakgyo"}
+            color="gray"
+            className="font-bold sm:text-sm md:text-md lg:text-lg xl:text-xl 2xl:text-2xl"
+          >
             단어장 이름
           </Text>
           <Input
@@ -60,7 +68,12 @@ export const FolderFormModal = ({
         </div>
 
         <div>
-          <Text font={"hakgyo"} size={"xxl"}>
+          <Text
+            font={"hakgyo"}
+            size={"base"}
+            color="gray"
+            className="font-bold sm:text-sm md:text-md lg:text-lg xl:text-xl 2xl:text-2xl"
+          >
             단어장 설명
           </Text>
           <Input
@@ -77,7 +90,7 @@ export const FolderFormModal = ({
               삭제하기
             </Override>
           )}
-          <Override color={"white"} bg={"blue"} onClick={handleSubmit}>
+          <Override color={"white"} bg={"green"} onClick={handleSubmit}>
             저장하기
           </Override>
         </div>

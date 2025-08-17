@@ -6,6 +6,7 @@ import { QuizDoneInfoCard } from "../../molecules/quizDone/QuizDoneInfoCard";
 import { getUserInfo, type UserInfo } from "../../../api/userInfo";
 import { useEffect, useState } from "react";
 import { ImageBox } from "../../molecules/imagebox/Imagebox";
+import defaultImg from "../../../asset/png/default_profile.png";
 
 type QuizDoneStatProps = {
   streakDay: number;
@@ -38,18 +39,16 @@ export const QuizDoneStatCard = ({
 
   return (
     <Div bg="white" align={"center"} className="rounded-t-xl p-4 w-full">
-      <Div align={"center"}>
+      <Div align={"center"} className="w-full gap-2">
         <Text size="xxl" weight="extrabold" color="danger" className="mb-3">
           🌟
         </Text>
-        <Div className="flex flex-row w-full justify-center items-center px-10 pb-2">
-          <ImageBox
-            src={user?.profileImage ?? undefined}
-            shape="circle"
-            className="aspect-square w-[20%]"
-            imgClassName="object-cover"
+        <Div className="flex flex-row w-full justify-center items-center px-10 gap-4">
+          <img
+            src={user?.profileImage ?? defaultImg}
+            className="rounded-full max-w-[100px] max-h-[100px]"
           />
-          <Div align={"center"} className="grow">
+          <Div align={"center"}>
             <Text
               size={"xxxl"}
               weight={"extrabold"}
