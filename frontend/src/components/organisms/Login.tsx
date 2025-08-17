@@ -9,13 +9,21 @@ import { signin } from "../../api/user/LoginApi.ts";
 import { getUserInfo } from "../../api/userInfo.ts";
 import { useAuthStore } from "../../stores/AuthStore.ts";
 import LogoImg from "../../asset/png/pirate.png";
-
+import { Modal } from "../atoms/modal/modal.tsx";
+import type { AxiosError } from "axios";
 export const Login = () => {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [showErrors, setShowErrors] = useState(false);
   const [isRemembered, setIsRemembered] = useState(false);
   const navigate = useNavigate();
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalMessage, setModalMessage] = useState("");
+  const [modalOnConfirm, setModalOnConfirm] = useState<() => void>(
+    () => () => {}
+  );
 
   // 아이디 저장/삭제 처리
   useEffect(() => {
@@ -39,8 +47,19 @@ export const Login = () => {
       });
 
       navigate("/main");
-    } catch {
-      alert("아이디 또는 비밀번호가 올바르지 않습니다.");
+    } catch (err) {
+      // err가 AxiosError 인지 확인
+      const axiosErr = err as AxiosError<{ message?: string }>;
+      setModalTitle("로그인 실패");
+
+      // 서버에서 message 내려주면 그대로, 아니면 기본 메시지
+      const msg =
+        axiosErr.response?.data?.message ??
+        "아이디 또는 비밀번호가 올바르지 않습니다.";
+      setModalMessage(`❌ ${msg}`);
+
+      setModalOnConfirm(() => () => setModalOpen(false));
+      setModalOpen(true);
     }
   };
 
@@ -48,6 +67,11 @@ export const Login = () => {
     e.preventDefault();
     if (id.trim() === "" || password.trim() === "") {
       setShowErrors(true);
+      // 입력 누락도 Modal로 통일
+      setModalTitle("입력 확인");
+      setModalMessage("❌ 아이디와 비밀번호를 모두 입력해주세요.");
+      setModalOnConfirm(() => () => setModalOpen(false));
+      setModalOpen(true);
       return;
     }
     handleLogin();
@@ -213,6 +237,37 @@ export const Login = () => {
           </Button>
         </div>
       </form>
+
+      {/* ✅ 공용 Modal (SignupFlow와 동일한 UX) */}
+      <Modal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        closeOnOverlayClick={false}
+        panelClassName="w-full max-w-sm sm:max-w-md md:max-w-lg rounded-2xl"
+      >
+        <div className="p-4 sm:p-6 lg:p-8">
+          <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3">
+            {modalTitle}
+          </h3>
+          <p className="text-sm sm:text-base text-gray-700 mb-6">
+            {modalMessage}
+          </p>
+
+          <div className="flex justify-center">
+            <button
+              onClick={modalOnConfirm}
+              className="
+                bg-blue-500 hover:bg-blue-400 text-white font-semibold
+                text-sm sm:text-base
+                px-4 py-2 sm:px-5 sm:py-2.5
+                rounded-lg mt-3
+              "
+            >
+              확인
+            </button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };
