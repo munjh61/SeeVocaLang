@@ -8,6 +8,7 @@ type Props = {
   width?: number; // px
   height?: number;
   className?: string;
+  variant?: "inline" | "floating"; // ✅ 배치 방식 선택
 };
 
 export const TopLeftProgressBar: React.FC<Props> = ({
@@ -17,24 +18,19 @@ export const TopLeftProgressBar: React.FC<Props> = ({
   width = 360,
   height = 8,
   className = "",
+  variant = "inline", // ✅ 기본은 레이아웃 흐름에 따름
 }) => {
-  // 남은 개수 계산
   const remaining = Math.max(total - current, 0);
 
+  const base =
+    "rounded-lg bg-white/80 backdrop-blur px-6 py-3 shadow-lg border border-black/5 flex flex-col gap-4";
+  const pos = variant === "floating" ? "fixed top-4 left-4 z-50" : ""; // ✅ 필요시 떠있는 모드
+
   return (
-    <div
-      className={[
-        "fixed top-4 left-4 z-50",
-        "rounded-lg bg-white/80 backdrop-blur px-6 py-3 shadow-lg border border-black/5",
-        "flex flex-col gap-4",
-        className,
-      ].join(" ")}
-    >
-      {/* 제목 */}
+    <div className={[base, pos, className].join(" ")}>
       <h3 className="text-sm font-bold text-gray-800">오늘의 학습 현황</h3>
 
       {loading ? (
-        // 로딩 스켈레톤
         <div
           className="rounded-full bg-gray-200 overflow-hidden"
           style={{ width, height }}
@@ -43,17 +39,14 @@ export const TopLeftProgressBar: React.FC<Props> = ({
         </div>
       ) : (
         <>
-          {/* 진행바 */}
           <div style={{ width }}>
             <ProgressBar
               current={current}
               total={total}
               height={height}
-              percentageView={true}
+              percentageView
             />
           </div>
-
-          {/* 서브 문구 */}
           <p className="text-xs text-gray-600 font-medium">
             목표까지{" "}
             <span className="text-blue-600 font-semibold">{remaining}개</span>{" "}

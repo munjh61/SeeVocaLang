@@ -76,27 +76,30 @@ export const MainDashboardTemplate = () => {
 
   return (
     <div className="relative w-full h-dvh box-border overflow-hidden pt-3 overscroll-none">
-      {/* 우상단 로그아웃 버튼 */}
-      <button
-        onClick={handleLogout}
-        aria-label="로그아웃"
-        className="absolute top-4 right-4 z-30 bg-red-500 hover:bg-red-400 text-white font-semibold px-4 py-2 rounded-lg shadow-md cursor-pointer"
-      >
-        로그아웃
-      </button>
+      {/* 상단 바 */}
+      <div className="flex flex-col sm:flex-row justify-between items-start gap-2 px-4 z-30">
+        <TopLeftProgressBar
+          current={studyStatus?.lastSolvedNumber ?? 0}
+          total={studyStatus?.totalProblemCount ?? 0}
+          loading={loading}
+          width={300}
+          height={8}
+          className="w-full sm:w-auto"
+        />
+        <button
+          onClick={handleLogout}
+          className="bg-red-500 hover:bg-red-400 text-white font-semibold px-4 py-2 rounded-lg shadow-md"
+        >
+          로그아웃
+        </button>
+      </div>
 
-      <TopLeftProgressBar
-        current={studyStatus?.lastSolvedNumber ?? 0}
-        total={studyStatus?.totalProblemCount ?? 0}
-        loading={loading}
-        width={300}
-        height={8}
-      />
-
+      {/* === 메인 콘텐츠 === */}
       <div className="relative z-20">
         <IslandCarousel items={items} onSelect={handleSelect} />
       </div>
 
+      {/* 보물 상자 */}
       <img
         src={TreasureImg}
         alt="보물상자"
@@ -105,6 +108,7 @@ export const MainDashboardTemplate = () => {
         draggable={false}
       />
 
+      {/* 망원경 해적 */}
       <img
         src={Bino}
         alt="망원경 해적"
