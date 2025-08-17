@@ -56,7 +56,6 @@ export const deletefolder = async (folderId: number) => {
     const response = await authApi.delete(`${foldersURL}/${folderId}`, {
       headers: { "Content-Type": "application/json" },
     });
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("❌ 폴더 삭제 요청 실패:", error);

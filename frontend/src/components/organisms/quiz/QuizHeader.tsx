@@ -25,7 +25,7 @@ export const QuizHeader = ({
           color="white"
           size={"xxxl"}
           align={"center"}
-          className="w-48"
+          className="sm:text-md md:text-lg lg:text-xl xl:text-2xl min-w-48"
           onlyOneLine={"yes"}
           children={name}
         />
@@ -39,6 +39,7 @@ export const QuizHeader = ({
           size={"xl"}
           onlyOneLine={"yes"}
           children={`${index} 번째 / ${total} 문제`}
+          className="sm:text-sm md:text-md lg:text-lg xl:text-xl"
         />
       </Div>
     </Div>
