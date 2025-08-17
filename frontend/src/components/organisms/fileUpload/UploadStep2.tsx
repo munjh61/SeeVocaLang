@@ -11,6 +11,7 @@ import type { AnalysisResult } from "../../../types/FileUploadType.ts";
 import { UpdateWordImage } from "../../../api/upload/UpdateWordImage.ts";
 import type { AxiosError } from "axios";
 import { getAllFolderIds } from "../../../api/upload/GetWordFolders.ts";
+import { Modal } from "../../atoms/modal/modal.tsx";
 
 export function UploadStep2(props: {
   file: File;
@@ -27,7 +28,7 @@ export function UploadStep2(props: {
   const [requestedAnalyze, setRequestedAnalyze] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
 
-  // ✅ 저장(신규) 선택 목록 (UI 선택용 — 필요 시 유지)
+  // ✅ 저장(신규) 선택 목록
   const [selectedFolderIds, setSelectedFolderIds] = useState<number[]>(
     folderId != null ? [folderId] : []
   );
@@ -54,48 +55,71 @@ export function UploadStep2(props: {
   const showAnalyzeFail =
     requestedAnalyze && !isAnalyzing && mode === "analyze";
 
-  // ✅ UI에 넣어줄 folders: allFolderIds만 사용 (이름은 기본 포맷)
+  // ✅ UI에 넣어줄 folders
   const folders = useMemo(
-    () => allFolderIds.map(({ id, name }) => ({ folder_id: id, name })), // ✅ name 사용
+    () => allFolderIds.map(({ id, name }) => ({ folder_id: id, name })),
     [allFolderIds]
   );
+
+  // -----------------------------
+  // ✅ 알림 모달 상태
+  const [noticeOpen, setNoticeOpen] = useState(false);
+  const [noticeMessage, setNoticeMessage] = useState("");
+  const [noticeOnConfirm, setNoticeOnConfirm] = useState<() => void>(
+    () => () => {}
+  );
+  // -----------------------------
 
   const handleAnalyzeStart = () => {
     setRequestedAnalyze(true);
     onAnalyze();
   };
 
-  // ✅ 교체 (기존 단어 이미지 교체)
+  // ✅ 교체
   const onReplace = async () => {
     if (!wordId || !result?.image_key) {
-      alert("교체할 단어 정보가 준비되지 않았습니다.");
+      setNoticeMessage("교체할 단어 정보가 준비되지 않았습니다.");
+      setNoticeOnConfirm(() => () => setNoticeOpen(false));
+      setNoticeOpen(true);
       return;
     }
     try {
       setIsProcessing(true);
       const msg = await UpdateWordImage(wordId, result.image_key);
-      alert(msg);
-      onDone?.(msg);
+
+      setNoticeMessage(msg);
+      setNoticeOnConfirm(() => () => {
+        setNoticeOpen(false);
+        onDone?.(msg);
+      });
+      setNoticeOpen(true);
     } catch (e) {
       const err = e as AxiosError<{ message?: string }>;
       const message =
         err.response?.data?.message ??
         err.message ??
         "이미지 교체에 실패했습니다.";
-      alert(message);
+
+      setNoticeMessage(message);
+      setNoticeOnConfirm(() => () => setNoticeOpen(false));
+      setNoticeOpen(true);
     } finally {
       setIsProcessing(false);
     }
   };
 
-  // ✅ 저장 (신규 저장: 선택한 폴더만 사용)
+  // ✅ 저장
   const wordSave = async () => {
     if (!result?.image_key || !result?.name_en || !result?.name_ko) {
-      alert("저장할 단어 정보가 준비되지 않았습니다.");
+      setNoticeMessage("❌ 저장할 단어 정보가 준비되지 않았습니다.");
+      setNoticeOnConfirm(() => () => setNoticeOpen(false));
+      setNoticeOpen(true);
       return;
     }
     if (selectedFolderIds.length === 0) {
-      alert("저장할 폴더를 선택하세요.");
+      setNoticeMessage("❌ 저장할 폴더를 선택하세요.");
+      setNoticeOnConfirm(() => () => setNoticeOpen(false));
+      setNoticeOpen(true);
       return;
     }
 
@@ -107,76 +131,104 @@ export function UploadStep2(props: {
         result.image_key,
         selectedFolderIds
       );
-      alert(res.message);
-      onDone?.(res.message);
+
+      setNoticeMessage(res.message);
+      setNoticeOnConfirm(() => () => {
+        setNoticeOpen(false);
+        onDone?.(res.message);
+      });
+      setNoticeOpen(true);
     } catch (e) {
-      const message = e instanceof Error ? e.message : "저장에 실패했습니다.";
-      alert(message);
+      const message =
+        e instanceof Error ? e.message : "❌ 저장에 실패했습니다.";
+      setNoticeMessage(message);
+      setNoticeOnConfirm(() => () => setNoticeOpen(false));
+      setNoticeOpen(true);
     } finally {
       setIsProcessing(false);
     }
   };
 
-  // ✅ 버튼 비활성화: allFolderIds만 기준
   const disabledCommon = isProcessing || isAnalyzing || folders.length === 0;
 
   return (
-    <div className="flex flex-col gap-4">
-      <Text size="xl" weight="bold">
-        업로드 정보 확인
-      </Text>
+    <>
+      <div className="flex flex-col gap-4">
+        <Text size="xl" weight="bold">
+          업로드 정보 확인
+        </Text>
 
-      <PreviewSection
-        mode={mode}
-        existingImageUrl={existingImageUrl}
-        previewUrl={previewUrl}
-        file={file}
-        result={result ?? undefined}
-      />
-
-      {showAnalyzeFail && (
-        <AnalyzeFailCard
-          onBack={onBack}
-          onRetry={handleAnalyzeStart}
-          isRetrying={isAnalyzing}
+        <PreviewSection
+          mode={mode}
+          existingImageUrl={existingImageUrl}
+          previewUrl={previewUrl}
+          file={file}
+          result={result ?? undefined}
         />
-      )}
 
-      {mode === "replace" && !showAnalyzeFail && (
-        <div className="flex flex-col">
-          <DuplicateCard
+        {showAnalyzeFail && (
+          <AnalyzeFailCard
+            onBack={onBack}
+            onRetry={handleAnalyzeStart}
+            isRetrying={isAnalyzing}
+          />
+        )}
+
+        {mode === "replace" && !showAnalyzeFail && (
+          <div className="flex flex-col">
+            <DuplicateCard
+              nameEn={result?.name_en ?? ""}
+              nameKo={result?.name_ko ?? ""}
+              onBack={onBack}
+              onReplace={onReplace}
+              isProcessing={isProcessing}
+              disabled={isProcessing || isAnalyzing || !wordId}
+            />
+          </div>
+        )}
+
+        {mode === "save" && !showAnalyzeFail && (
+          <ActionsSave
             nameEn={result?.name_en ?? ""}
             nameKo={result?.name_ko ?? ""}
+            folders={folders}
+            foldersLoading={false}
+            selectedFolderIds={selectedFolderIds}
+            onChangeSelected={setSelectedFolderIds}
             onBack={onBack}
-            onReplace={onReplace}
-            isProcessing={isProcessing}
-            disabled={isProcessing || isAnalyzing || !wordId}
+            onSave={wordSave}
+            disabled={disabledCommon}
+            foldersError={null}
           />
+        )}
+
+        {mode === "analyze" && !requestedAnalyze && (
+          <ActionsAnalyze
+            onBack={onBack}
+            onAnalyze={handleAnalyzeStart}
+            disabled={isAnalyzing}
+          />
+        )}
+      </div>
+
+      {/* ✅ 알림 모달 */}
+      <Modal
+        isOpen={noticeOpen}
+        onClose={() => setNoticeOpen(false)}
+        closeOnOverlayClick={false}
+      >
+        <div className="flex flex-col gap-10 py-6 px-8">
+          <Text size="lg">{noticeMessage}</Text>
+          <button
+            className="self-center rounded bg-blue-500 hover:bg-blue-400 text-white px-4 py-2"
+            onClick={() => {
+              noticeOnConfirm();
+            }}
+          >
+            확인
+          </button>
         </div>
-      )}
-
-      {mode === "save" && !showAnalyzeFail && (
-        <ActionsSave
-          nameEn={result?.name_en ?? ""}
-          nameKo={result?.name_ko ?? ""}
-          folders={folders}
-          foldersLoading={false}
-          selectedFolderIds={selectedFolderIds}
-          onChangeSelected={setSelectedFolderIds}
-          onBack={onBack}
-          onSave={wordSave}
-          disabled={disabledCommon}
-          foldersError={null}
-        />
-      )}
-
-      {mode === "analyze" && !requestedAnalyze && (
-        <ActionsAnalyze
-          onBack={onBack}
-          onAnalyze={handleAnalyzeStart}
-          disabled={isAnalyzing}
-        />
-      )}
-    </div>
+      </Modal>
+    </>
   );
 }

@@ -39,15 +39,13 @@ export const SignupStep2 = ({
   const isIdFormatValid = ID_REGEX.test(id);
 
   useEffect(() => {
-    if (isValid) {
-      setShowErrors(false);
-    }
+    if (isValid) setShowErrors(false);
   }, [id, isValid, setShowErrors]);
 
   const handleCheckDuplicate = async () => {
     if (!isIdFormatValid) {
       setError(
-        "아이디는 5~20자의 영문, 숫자, 밑줄 또는 하이픈만 사용할 수 있습니다."
+        "아이디는 5~20자의 영문, 숫자, 밑줄(_), 하이픈(-)만 가능합니다."
       );
       return;
     }
@@ -82,98 +80,131 @@ export const SignupStep2 = ({
     setError("");
   };
 
+  // 반응형 입력/선택/버튼 공통 사이즈
+  const fieldBase =
+    "w-full rounded-md px-3 py-2 text-sm sm:px-4 sm:py-2.5 sm:text-base lg:px-5 lg:py-3 lg:text-lg";
+
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex flex-col bg-white/85 shadow-xl rounded-2xl p-10 pt-5  justify-center gap-5 px-6">
-        <div className={"flex flex-col items-center justify-center gap-6 mb-5"}>
-          {progressBar}
-          <Text
-            size="xl"
-            color="black"
-            weight="extrabold"
-            className="text-center"
-          >
-            아이디 설정
-          </Text>
-        </div>
+    // 중앙 정렬은 부모(SignupFlow)가 담당 — 여기선 카드만
+    <div
+      className="
+        w-full
+        max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl
+        bg-white/90 backdrop-blur-md shadow-2xl rounded-2xl
+        p-6 sm:p-8 lg:p-12
+        flex flex-col gap-6
+      "
+    >
+      {/* 상단 진행바 + 타이틀 */}
+      <div className="flex flex-col items-center justify-center gap-6">
+        {progressBar}
+        <Text
+          size="xl"
+          color="black"
+          weight="extrabold"
+          className="text-center text-lg sm:text-xl lg:text-2xl"
+        >
+          아이디 설정
+        </Text>
+      </div>
 
-        <div className="flex flex-col gap-1">
-          <Input
-            scale="signup"
-            border={
-              showErrors && (!isIdFormatValid || !isValid) ? "red" : "lightgray"
+      {/* 아이디 입력 */}
+      <div className="flex flex-col gap-1">
+        <Input
+          scale="signup"
+          border={
+            showErrors && (!isIdFormatValid || !isValid) ? "red" : "lightgray"
+          }
+          text="gray"
+          placeholder="아이디"
+          value={id}
+          onChange={handleInputChange}
+          className={`${fieldBase} m-0`}
+          onKeyDown={e => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              handleCheckDuplicate();
             }
-            text="gray"
-            placeholder="아이디"
-            value={id}
-            onChange={handleInputChange}
-            className="m-0 px-3"
-          />
-          {showErrors && !isIdFormatValid && (
-            <Text color="red" size="xs">
-              아이디는 5~20자의 영문, 숫자, 밑줄(_), 하이픈(-)만 가능합니다.
-            </Text>
-          )}
-        </div>
+          }}
+        />
+        {showErrors && !isIdFormatValid && (
+          <Text color="red" size="xs">
+            아이디는 5~20자의 영문, 숫자, 밑줄(_), 하이픈(-)만 가능합니다.
+          </Text>
+        )}
+      </div>
 
+      {/* 중복 확인 버튼 */}
+      <Button
+        size="signup"
+        onClick={handleCheckDuplicate}
+        disabled={checking || id.trim() === ""}
+        rounded="lg"
+        className={`
+          ${fieldBase} 
+          !w-full bg-gray-200 text-gray-800 font-medium
+          disabled:opacity-50
+        `}
+      >
+        {checking ? "확인 중..." : "중복 확인"}
+      </Button>
+
+      {/* 결과 메시지 */}
+      {error && (
+        <Text color="red" size="xs">
+          {error}
+        </Text>
+      )}
+      {isValid && !error && id.trim() !== "" && (
+        <Text color="green" size="xs" className="px-2">
+          ✅ 사용 가능한 아이디입니다
+        </Text>
+      )}
+
+      {/* 가이드 (정책과 일치시킴) */}
+      <div className="flex flex-col px-2">
+        <Text color="black" weight="bold" size="sm">
+          아이디 생성 가이드
+        </Text>
+        <Text color="muted" size="xs">
+          - 5~20자, 영문/숫자/밑줄(_)/하이픈(-) 허용
+        </Text>
+        <Text color="muted" size="xs">
+          - 영문/숫자 조합을 권장합니다
+        </Text>
+      </div>
+
+      {/* 다음/뒤로 */}
+      <div className="flex flex-col justify-between gap-2 w-full mt-2">
         <Button
           size="signup"
-          onClick={handleCheckDuplicate}
-          disabled={checking || id.trim() === ""}
-          rounded={"lg"}
-          className="bg-gray-200 text-gray-800"
+          onClick={handleNext}
+          rounded="lg"
+          disabled={!isValid || !isIdFormatValid}
+          className="
+            w-full bg-blue-500 text-white font-semibold
+            text-sm sm:text-base lg:text-lg
+            px-3 py-2 sm:px-4 sm:py-2.5 lg:px-6 lg:py-3
+            disabled:opacity-50
+          "
         >
-          {checking ? "확인 중..." : "중복 확인"}
+          다음
         </Button>
-
-        {error && (
-          <Text color="red" size="xs">
-            {error}
-          </Text>
-        )}
-        {isValid && !error && (
-          <Text color="green" size="xs" className={"px-2"}>
-            ✅ 사용 가능한 아이디입니다
-          </Text>
-        )}
-
-        <div className={"flex flex-col px-2"}>
-          <Text color="black" weight={"bold"} size="sm">
-            아이디 생성 가이드
-          </Text>
-          <Text color="muted" size="xs">
-            - 영문, 숫자 조합 4-20자
-          </Text>
-          <Text color="muted" size="xs">
-            - 첫 글자는 영문으로 시작
-          </Text>
-          <Text color="muted" size="xs">
-            - 특수문자는 사용할 수 없습니다
-          </Text>
-        </div>
-
-        <div className="flex flex-col justify-between mt-4 gap-2">
-          <Button
-            size="signup"
-            onClick={handleNext}
-            className="bg-blue-500 text-white px-4 py-2 disabled:opacity-50"
-            rounded={"lg"}
-            disabled={!isValid || !isIdFormatValid}
-          >
-            다음
-          </Button>
-          <Button
-            size="signup"
-            border="blue"
-            rounded={"lg"}
-            onClick={onBack}
-            textColor="blue"
-            bgColor={"white"}
-            className={"border-2"}
-          >
-            &lt; 돌아가기
-          </Button>
-        </div>
+        <Button
+          size="signup"
+          border="blue"
+          rounded="lg"
+          onClick={onBack}
+          textColor="blue"
+          bgColor="white"
+          className="
+            w-full border-2 font-semibold
+            text-sm sm:text-base lg:text-lg
+            px-3 py-2 sm:px-4 sm:py-2.5 lg:px-6 lg:py-3
+          "
+        >
+          &lt; 돌아가기
+        </Button>
       </div>
     </div>
   );

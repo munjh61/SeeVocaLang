@@ -45,42 +45,59 @@ export const SignupStep1 = ({
     onNext();
   };
 
+  // 공통 반응형 인풋/셀렉트 클래스
+  const fieldBase =
+    "w-full rounded-md px-3 py-2 text-sm sm:px-4 sm:py-2.5 sm:text-base lg:px-5 lg:py-3 lg:text-lg";
+
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex flex-col bg-white/85 shadow-xl rounded-2xl p-10 pt-5  justify-center gap-5 px-6">
-        <div className={"flex flex-col items-center justify-center gap-6 mb-5"}>
+    <div className="flex min-h-screen items-center justify-center px-4 sm:px-6 lg:px-8 py-8">
+      <div
+        className="
+          w-full
+          max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl
+          bg-white/90 backdrop-blur-md shadow-2xl rounded-2xl
+          p-6 sm:p-8 lg:p-12
+          flex flex-col gap-6
+        "
+      >
+        {/* 상단 진행바 + 타이틀 */}
+        <div className="flex flex-col items-center justify-center gap-6">
           {progressBar}
           <Text
-            size={"xl"}
-            color={"black"}
-            weight={"extrabold"}
-            className={"text-center"}
+            size="xl"
+            color="black"
+            weight="extrabold"
+            className="text-center text-lg sm:text-xl lg:text-2xl"
           >
             이름 / 생년월일
           </Text>
         </div>
+
+        {/* 이름 */}
         <div className="flex flex-col gap-1">
           <Input
-            scale={"signup"}
+            scale="signup"
             border={showErrors && !isNameValid ? "red" : "lightgray"}
-            text={"gray"}
-            placeholder={"이름"}
+            text="gray"
+            placeholder="이름"
             value={name}
             onChange={e => {
               onChange("name", e.target.value);
               setShowErrors(false);
             }}
-            className={"m-0 px-3"}
+            className={`${fieldBase} m-0`}
           />
           {showErrors && !isNameValid && (
-            <Text color={"red"} size={"xs"}>
+            <Text color="red" size="xs">
               이름을 입력해주세요.
             </Text>
           )}
         </div>
 
-        <div className="flex gap-2">
-          <div className="flex flex-col flex-1 gap-1">
+        {/* 생년월일 - 모바일 1열, sm 이상 3열 */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {/* 년 */}
+          <div className="flex flex-col gap-1">
             <SelectBox
               value={birthYear}
               onChange={e => {
@@ -89,16 +106,19 @@ export const SignupStep1 = ({
               }}
               options={Array.from({ length: 50 }, (_, i) => `${2024 - i}`)}
               placeholder="YYYY년"
-              className={showErrors && !isYearValid ? "border-red-500" : ""}
+              className={`${fieldBase} ${
+                showErrors && !isYearValid ? "border-red-500" : ""
+              }`}
             />
             {showErrors && !isYearValid && (
-              <Text color={"red"} size={"xs"}>
+              <Text color="red" size="xs">
                 년도를 선택해주세요.
               </Text>
             )}
           </div>
 
-          <div className="flex flex-col flex-1 gap-1">
+          {/* 월 */}
+          <div className="flex flex-col gap-1">
             <SelectBox
               value={birthMonth}
               onChange={e => {
@@ -109,16 +129,19 @@ export const SignupStep1 = ({
                 (i + 1).toString().padStart(2, "0")
               )}
               placeholder="MM월"
-              className={showErrors && !isMonthValid ? "border-red-500" : ""}
+              className={`${fieldBase} ${
+                showErrors && !isMonthValid ? "border-red-500" : ""
+              }`}
             />
             {showErrors && !isMonthValid && (
-              <Text color={"red"} size={"xs"}>
+              <Text color="red" size="xs">
                 월을 선택해주세요.
               </Text>
             )}
           </div>
 
-          <div className="flex flex-col flex-1 gap-1">
+          {/* 일 */}
+          <div className="flex flex-col gap-1">
             <SelectBox
               value={birthDay}
               onChange={e => {
@@ -129,33 +152,45 @@ export const SignupStep1 = ({
                 (i + 1).toString().padStart(2, "0")
               )}
               placeholder="DD일"
-              className={showErrors && !isDayValid ? "border-red-500" : ""}
+              className={`${fieldBase} ${
+                showErrors && !isDayValid ? "border-red-500" : ""
+              }`}
             />
             {showErrors && !isDayValid && (
-              <Text color={"red"} size={"xs"}>
+              <Text color="red" size="xs">
                 일을 선택해주세요.
               </Text>
             )}
           </div>
         </div>
 
-        <div className="flex flex-col justify-between mt-4 gap-2">
+        {/* 버튼 */}
+        <div className="flex flex-col justify-between gap-2 w-full mt-2">
           <Button
-            size={"signup"}
+            size="signup"
             onClick={handleNext}
-            rounded={"lg"}
-            className="bg-blue-500 text-white px-4 py-2 disabled:opacity-50"
+            rounded="lg"
+            className="
+              w-full bg-blue-500 text-white font-semibold
+              text-sm sm:text-base lg:text-lg
+              px-3 py-2 sm:px-4 sm:py-2.5 lg:px-6 lg:py-3
+              disabled:opacity-50
+            "
           >
             다음
           </Button>
           <Button
-            size={"signup"}
-            border={"blue"}
+            size="signup"
+            border="blue"
             onClick={onBack}
-            rounded={"lg"}
-            textColor={"blue"}
-            bgColor={"white"}
-            className={"border-2"}
+            rounded="lg"
+            textColor="blue"
+            bgColor="white"
+            className="
+              w-full border-2 font-semibold
+              text-sm sm:text-base lg:text-lg
+              px-3 py-2 sm:px-4 sm:py-2.5 lg:px-6 lg:py-3
+            "
           >
             &lt; 돌아가기
           </Button>

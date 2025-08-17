@@ -49,6 +49,14 @@ export const ProfileModal = ({
   const [profileFile, setProfileFile] = useState<File | null>(null);
   const [isSaving, setIsSaving] = useState(false);
 
+  // ✅ 알림(확인) 모달 상태 (alert 대체)
+  const [noticeOpen, setNoticeOpen] = useState(false);
+  const [noticeTitle, setNoticeTitle] = useState<string>("");
+  const [noticeMessage, setNoticeMessage] = useState<string>("");
+  const [noticeOnConfirm, setNoticeOnConfirm] = useState<() => void>(
+    () => () => {}
+  );
+
   // 모달 열릴 때 현재 props로 초기화 + 캐시 버스터 갱신
   useEffect(() => {
     if (isOpen) {
@@ -77,17 +85,33 @@ export const ProfileModal = ({
 
   const handleVerifyPassword = async () => {
     const success = await checkPassword(currentPassword);
-    if (success) setIsVerified(true);
-    else alert("현재 비밀번호가 일치하지 않습니다.");
+    if (success) {
+      setIsVerified(true);
+      setNoticeTitle("확인 완료");
+      setNoticeMessage("현재 비밀번호가 확인되었습니다.");
+      setNoticeOnConfirm(() => () => setNoticeOpen(false));
+      setNoticeOpen(true);
+    } else {
+      setNoticeTitle("확인 실패");
+      setNoticeMessage("현재 비밀번호가 일치하지 않습니다.");
+      setNoticeOnConfirm(() => () => setNoticeOpen(false));
+      setNoticeOpen(true);
+    }
   };
 
   const handleVerifyEmailCode = async () => {
     const success = await sendEmailCode(email, emailCode);
     if (success) {
-      alert("✅ 이메일 인증이 완료되었습니다.");
       setEmailStep("completed");
+      setNoticeTitle("이메일 인증");
+      setNoticeMessage("✅ 이메일 인증이 완료되었습니다.");
+      setNoticeOnConfirm(() => () => setNoticeOpen(false));
+      setNoticeOpen(true);
     } else {
-      alert("❌ 인증번호가 올바르지 않습니다.");
+      setNoticeTitle("이메일 인증");
+      setNoticeMessage("❌ 인증번호가 올바르지 않습니다.");
+      setNoticeOnConfirm(() => () => setNoticeOpen(false));
+      setNoticeOpen(true);
     }
   };
 
@@ -116,16 +140,25 @@ export const ProfileModal = ({
 
   const changeProfile = async () => {
     if (!hasChanges) {
-      alert("변경 사항이 없습니다.");
+      setNoticeTitle("안내");
+      setNoticeMessage("변경 사항이 없습니다.");
+      setNoticeOnConfirm(() => () => setNoticeOpen(false));
+      setNoticeOpen(true);
       return;
     }
     if (willChangePwd) {
       if (!currentPassword.trim()) {
-        alert("현재 비밀번호를 입력해주세요.");
+        setNoticeTitle("입력 필요");
+        setNoticeMessage("현재 비밀번호를 입력해주세요.");
+        setNoticeOnConfirm(() => () => setNoticeOpen(false));
+        setNoticeOpen(true);
         return;
       }
       if (newPassword !== confirmPassword) {
-        alert("새 비밀번호가 일치하지 않습니다.");
+        setNoticeTitle("비밀번호 불일치");
+        setNoticeMessage("새 비밀번호가 일치하지 않습니다.");
+        setNoticeOnConfirm(() => () => setNoticeOpen(false));
+        setNoticeOpen(true);
         return;
       }
     }
@@ -140,35 +173,43 @@ export const ProfileModal = ({
       );
 
       if (!success) {
-        alert("❌ 프로필 수정에 실패했습니다. 다시 시도해주세요.");
+        setNoticeTitle("실패");
+        setNoticeMessage("❌ 프로필 수정에 실패했습니다. 다시 시도해주세요.");
+        setNoticeOnConfirm(() => () => setNoticeOpen(false));
+        setNoticeOpen(true);
         return;
       }
 
-      alert("✅ 프로필 수정이 완료되었습니다.");
+      setNoticeTitle("성공");
+      setNoticeMessage("✅ 프로필 수정이 완료되었습니다.");
+      setNoticeOnConfirm(() => async () => {
+        setNoticeOpen(false);
 
-      // 1) 서버 최신 유저 정보로 스토어 갱신
-      const latest = await useAuthStore.getState().refreshUser();
+        // 1) 서버 최신 유저 정보로 스토어 갱신
+        const latest = await useAuthStore.getState().refreshUser();
 
-      // 2) 부모에도 서버 값 전달 (blob 절대 전달 X)
-      if (latest && userInfo) {
-        onUpdateUserInfo({
-          ...userInfo,
-          userId: latest.userId,
-          loginId: latest.loginId,
-          nickname: latest.nickname,
-          email: latest.email ?? null,
-          birthday: latest.birthday ?? null,
-          profileImage: latest.profileImage ?? undefined,
-        });
-      }
+        // 2) 부모에도 서버 값 전달 (blob 절대 전달 X)
+        if (latest && userInfo) {
+          onUpdateUserInfo({
+            ...userInfo,
+            userId: latest.userId,
+            loginId: latest.loginId,
+            nickname: latest.nickname,
+            email: latest.email ?? null,
+            birthday: latest.birthday ?? null,
+            profileImage: latest.profileImage ?? undefined,
+          });
+        }
 
-      // 3) 모달 내부 미리보기 또한 서버 URL로 교체 + 캐시 버스터 갱신
-      if (latest?.profileImage) {
-        setImageURL(latest.profileImage); // 서버 URL
-        setImgNonce(Date.now()); // 캐시 무력화
-      }
+        // 3) 모달 내부 미리보기 또한 서버 URL로 교체 + 캐시 버스터 갱신
+        if (latest?.profileImage) {
+          setImageURL(latest.profileImage);
+          setImgNonce(Date.now());
+        }
 
-      onClose();
+        onClose();
+      });
+      setNoticeOpen(true);
     } finally {
       setIsSaving(false);
     }
@@ -316,11 +357,26 @@ export const ProfileModal = ({
                         className="pirate-btn pirate-btn--teal w-full"
                         onClick={async () => {
                           const success = await getEmailCode(email);
-                          if (success) setEmailStep("sent");
-                          else
-                            alert(
+                          if (success) {
+                            setEmailStep("sent");
+                            setNoticeTitle("인증 메일 발송");
+                            setNoticeMessage(
+                              "입력하신 주소로 인증 메일을 발송했습니다."
+                            );
+                            setNoticeOnConfirm(
+                              () => () => setNoticeOpen(false)
+                            );
+                            setNoticeOpen(true);
+                          } else {
+                            setNoticeTitle("발송 실패");
+                            setNoticeMessage(
                               "이메일 인증 코드 발송에 실패했습니다. 이메일을 다시 확인해주세요."
                             );
+                            setNoticeOnConfirm(
+                              () => () => setNoticeOpen(false)
+                            );
+                            setNoticeOpen(true);
+                          }
                         }}
                       >
                         인증 메일 발송
@@ -421,7 +477,7 @@ export const ProfileModal = ({
                       weight="bold"
                       className="text-center"
                     >
-                      비밀번호 변경 완료하였습니다.
+                      비밀번호 변경 준비가 완료되었습니다.
                     </Text>
                   ) : (
                     <>
@@ -446,11 +502,21 @@ export const ProfileModal = ({
                         className="pirate-btn pirate-btn--crimson w-full"
                         onClick={() => {
                           if (newPassword !== confirmPassword) {
-                            alert("새 비밀번호가 일치하지 않습니다.");
+                            setNoticeTitle("비밀번호 불일치");
+                            setNoticeMessage(
+                              "새 비밀번호가 일치하지 않습니다."
+                            );
+                            setNoticeOnConfirm(
+                              () => () => setNoticeOpen(false)
+                            );
+                            setNoticeOpen(true);
                             return;
                           }
-                          alert("비밀번호가 일치하였습니다.");
                           setIsPasswordChanged(true);
+                          setNoticeTitle("확인 완료");
+                          setNoticeMessage("비밀번호가 일치합니다.");
+                          setNoticeOnConfirm(() => () => setNoticeOpen(false));
+                          setNoticeOpen(true);
                         }}
                       >
                         새비밀번호 확인
@@ -484,10 +550,37 @@ export const ProfileModal = ({
         </div>
       </Modal>
 
+      {/* 파일 업로드 플로우 (이미지 분석 등) */}
       <FileUploadModalFlow
         isOpen={isModalOpen}
         onClose={() => setModalOpen(false)}
       />
+
+      <Modal
+        isOpen={noticeOpen}
+        onClose={() => setNoticeOpen(false)}
+        closeOnOverlayClick={false}
+        panelClassName="w-full max-w-sm sm:max-w-md rounded-2xl"
+      >
+        <div className="p-4 sm:p-6">
+          {noticeTitle && (
+            <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">
+              {noticeTitle}
+            </h3>
+          )}
+          <p className="text-sm sm:text-base text-gray-700 mb-6 whitespace-pre-line">
+            {noticeMessage}
+          </p>
+          <div className="flex justify-center">
+            <button
+              onClick={noticeOnConfirm}
+              className="rounded-lg bg-blue-500 text-white font-semibold px-4 py-2 sm:px-5 sm:py-2.5"
+            >
+              확인
+            </button>
+          </div>
+        </div>
+      </Modal>
     </>
   );
 };

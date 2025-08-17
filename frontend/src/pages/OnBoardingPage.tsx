@@ -50,17 +50,14 @@ export function OnBoardingPage() {
       {/* === 소개 섹션 === */}
       <section className="py-12 sm:py-16 lg:py-24">
         <div className="mx-auto w-full max-w-screen-xl px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-16">
-          {/* Row 1 */}
           <Reveal from="right">
-            {/* 행 자체를 화면 중앙에 고정 */}
             <div className="flex justify-center">
-              {/* 실제 컨텐츠 너비만큼만 차지해서 중앙 정렬 */}
-              <div className="flex items-center gap-0 max-w-fit">
+              <div className="flex items-center justify-center gap-2 sm:gap-0 max-w-full flex-nowrap">
                 <img
                   src={FoxRopeImg}
                   alt="여우 줄다리기"
                   draggable={false}
-                  className="block shrink-0 w-32 sm:w-40 md:w-52 lg:w-64"
+                  className="block shrink-0 w-28 sm:w-40 md:w-52 lg:w-64 max-[390px]:w-16 sm:-mr-4 md:-mr-6"
                 />
                 <IntroCard
                   align="right"
@@ -72,37 +69,33 @@ export function OnBoardingPage() {
             </div>
           </Reveal>
 
-          {/* Row 2 */}
           <Reveal from="left">
             <div className="flex justify-center">
-              <div className="flex items-center max-w-fit">
+              <div className="flex items-center justify-center gap-2 sm:gap-0 max-w-full flex-nowrap">
                 <IntroCard
                   align="left"
                   subtitle="나만의 단어장 & 복습 게임"
                   title="게임으로 즐기는 영단어 복습"
-                  desc="저장한 단어들을 다양한 게임 형식으로 복습하고,
-        더 재미있고 효과적인 영어 학습을 즐겨보세요!"
-                  className="-mr-4 sm:-mr-6 md:-mr-2"
+                  desc="저장한 단어들을 다양한 게임 형식으로 복습하고, 더 재미있고 효과적인 영어 학습을 즐겨보세요!"
                 />
                 <img
                   src={MonkeyRopeImg}
                   alt="원숭이 줄다리기"
                   draggable={false}
-                  className="block shrink-0 w-32 sm:w-40 md:w-52 lg:w-64"
+                  className="block shrink-0 w-28 sm:w-40 md:w-52 lg:w-64 max-[390px]:w-16 sm:-ml-5 md:-ml-7"
                 />
               </div>
             </div>
           </Reveal>
 
-          {/* Row 3 */}
           <Reveal from="right">
             <div className="flex justify-center">
-              <div className="flex items-center gap-0 max-w-fit">
+              <div className="flex items-center justify-center gap-2 sm:gap-0 max-w-full flex-nowrap">
                 <img
                   src={AlgRopeImg}
                   alt="밧줄 잡은 앵무"
                   draggable={false}
-                  className="block shrink-0 w-32 sm:w-40 md:w-52 lg:w-64"
+                  className="block shrink-0 w-28 sm:w-40 md:w-52 lg:w-64 max-[390px]:w-16 sm:-mr-4 md:-mr-6"
                 />
                 <IntroCard
                   align="right"
@@ -114,10 +107,9 @@ export function OnBoardingPage() {
             </div>
           </Reveal>
 
-          {/* Row 4 */}
           <Reveal from="left">
             <div className="flex justify-center">
-              <div className="flex items-center gap-0 max-w-fit">
+              <div className="flex items-center justify-center gap-2 sm:gap-0 max-w-full flex-nowrap">
                 <IntroCard
                   align="left"
                   subtitle="단어장 공유"
@@ -128,7 +120,7 @@ export function OnBoardingPage() {
                   src={BinoRopeImg}
                   alt="망원경 밧줄"
                   draggable={false}
-                  className="block shrink-0 w-32 sm:w-40 md:w-52 lg:w-64"
+                  className="block shrink-0 w-28 sm:w-40 md:w-52 lg:w-64 max-[390px]:w-16 sm:-ml-4 md:-ml-6"
                 />
               </div>
             </div>
