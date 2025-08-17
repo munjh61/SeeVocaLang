@@ -30,7 +30,7 @@ export const QuizHeader = ({
           children={name}
         />
       </Div>
-      <Div className="p-2 grow">
+      <Div className="p-2 grow invisible lg:visible xl:visible">
         <Text color="gray" onlyOneLine={"yes"} children={description} />
       </Div>
       <Div className="p-2">
