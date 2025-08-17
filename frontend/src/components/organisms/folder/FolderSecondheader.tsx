@@ -20,9 +20,14 @@ export const VocafolderSecondHeader = ({
   return (
     <div className="flex align-center gap-4">
       <IconButton
-        IconVariant={{ icon: favorite, color: "white", size: "sm" }}
-        ButtonVariant={{ bgColor: "yellow", textColor: "white", size: "sm" }}
-        className="min-w-25 h-8"
+        IconVariant={{ icon: favorite, color: "white", size: "lg" }}
+        ButtonVariant={{
+          bgColor: "yellow",
+          textColor: "white",
+          size: "lg",
+          font: "hakgyo",
+        }}
+        className="min-w-25"
         buttonValue={onClickFavorite}
       >
         즐겨찾기
@@ -30,24 +35,30 @@ export const VocafolderSecondHeader = ({
       <IconButton
         IconVariant={{
           icon: isToggle ? all : list,
-          size: "sm",
+          size: "lg",
           color: "white",
         }}
         ButtonVariant={{
           bgColor: isToggle ? "green" : "orange",
           textColor: "white",
-          size: "sm",
+          size: "lg",
+          font: "hakgyo",
         }}
         buttonValue={onClickToggle}
-        className="min-w-25 h-8"
+        className="min-w-25"
       >
         {isToggle ? "단어장" : "ALL"}
       </IconButton>
       <IconButton
-        IconVariant={{ icon: folder, size: "sm", color: "white" }}
-        ButtonVariant={{ bgColor: "blue", textColor: "white", size: "sm" }}
+        IconVariant={{ icon: folder, size: "lg", color: "white" }}
+        ButtonVariant={{
+          bgColor: "blue",
+          textColor: "white",
+          size: "lg",
+          font: "hakgyo",
+        }}
         buttonValue={onClickCreate}
-        className="min-w-25 h-8"
+        className="min-w-25"
       >
         단어장 추가하기
       </IconButton>

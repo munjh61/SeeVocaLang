@@ -8,6 +8,7 @@ import rainThumbnail from "../../../asset/png/rainThumbnail.png";
 import cardThumbnail from "../../../asset/png/cardThumbnail.png";
 import treasureChest from "../../../asset/png/treasureChest.png";
 import gamebackground from "../../../asset/png/gameBackground.png";
+import bg from "../../../asset/png/background/roundedpaper.png";
 
 type GameSelectTemplateProps = {
   onClick: (v: number) => void;
@@ -54,10 +55,12 @@ export const GameSelectTemplate = ({ onClick }: GameSelectTemplateProps) => {
       className="grow p-2 pt-20 bg-center bg-cover"
       style={{ backgroundImage: `url(${gamebackground})` }}
     >
-      <ImageBox
-        src={games[ready - 1].gameThumbnail}
-        className="w-[40%] h-[40%] rounded-2xl border-2 max-w-xl border-orange-800 bg-white/80"
-      />
+      <div
+        style={{ backgroundImage: `url(${bg})` }}
+        className="w-[40%] h-[40%] max-w-xl aspect-[4/3] rounded-2xl border-2 border-orange-800 bg-no-repeat bg-cover bg-center"
+      >
+        <img src={games[ready - 1].gameThumbnail} className="w-full h-full" />
+      </div>
       <Div align={"center"} className="w-full gap-2 grow">
         {/* 선택 부분 */}
         <Div className="grow grid grid-cols-3 gap-40">

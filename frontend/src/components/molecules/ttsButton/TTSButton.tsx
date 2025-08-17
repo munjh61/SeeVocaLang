@@ -1,4 +1,4 @@
-import speaker from "../../../asset/speaker.svg?react";
+// import speaker from "../../../asset/speaker.svg?react";
 import { SoundButton } from "../../atoms/button/SoundButton";
 
 type TTSButtonProps = {
@@ -17,9 +17,10 @@ export const TTSButton = ({ text }: TTSButtonProps) => {
 
   return (
     <SoundButton
-      icon={speaker}
-      color={"white"}
+      // icon={speaker}
+      color={"brown"}
       font={"hakgyo"}
+      size={"xl"}
       onClick={() => speak(text)}
     >
       발음 듣기

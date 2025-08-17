@@ -32,6 +32,7 @@ export const textVariants = cva("", {
       green: "text-[#6DC16A]",
       blue: "text-[#6083EE]",
       purple: "text-[#9D5EEE]",
+      brown: "text-yellow-700",
     },
     align: {
       left: "text-left",
