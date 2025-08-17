@@ -96,7 +96,7 @@ public class FolderService {
                 .getWordByWordId(deleteFolderWordsCommandDto.getWordId());
 
         word.increment(-1);
-        if(word.getFolderCount() == 0)
+        if (word.getFolderCount() == 0)
             word.delete();
 
         return BaseResponseDto.<Void>builder()
@@ -117,6 +117,7 @@ public class FolderService {
                 .build();
     }
 
+    @Transactional
     public BaseResponseDto<Void> updateFavorite(long folderId, boolean favorite) {
         FolderEntity folder = folderRepository.findById(folderId)
                 .orElseThrow(() -> new FolderNotFoundException(CommonErrorCode.RESOURCE_NOT_FOUND));
