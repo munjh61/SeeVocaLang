@@ -40,7 +40,7 @@ export const DEFAULT_CAROUSEL_CONFIG: CarouselConfig = {
    * 값 ↑ : 중앙 섬이 더 크고 강조됨
    * 값 ↓ : 중앙과 옆 섬 크기 차이가 줄어듦
    */
-  CENTER_SCALE: 1.5,
+  CENTER_SCALE: 1.4,
 
   /**
    * 프레임 너비 — clamp(최소, 뷰포트비율, 최대) 형식
