@@ -48,7 +48,7 @@ export const VocaButton = ({className,data}:VocaButtonProps)=>{
         >
         <div className="flex items-center gap-2">
         <Icon icon={BookIcon} color={"pirate"} className="w-4 h-4" />
-        <Text size="base" color="black" weight="semibold">
+        <Text size="sm" color="black" weight="semibold">
           단어장
         </Text>
       </div>

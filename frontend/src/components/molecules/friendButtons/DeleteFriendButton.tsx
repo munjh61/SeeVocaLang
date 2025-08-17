@@ -29,8 +29,7 @@ export const DeleteFriendButton = ({
       const success = await deleteFriend(data); // ✅ API 호출
            if (success) {
             onRequestComplete();
-             setIsModalOpen(false); // 요청 성공 시 모달 열기
-            alert(`${friendName}님이 친구 목록에서 삭제되었습니다.`);
+             setIsModalOpen(false); 
       } else {
         console.log("11111111111");
         alert("친구 삭제에 실패했어요.");
@@ -61,7 +60,7 @@ export const DeleteFriendButton = ({
       >
         <div className="flex items-center gap-2">
           <Icon icon={DeleteFriendIcon} color="pirate" className="w-4 h-4"  />
-          <Text size="base" color="black" weight="semibold">
+          <Text size="sm" color="black" weight="semibold">
             친구 삭제
           </Text>
         </div>

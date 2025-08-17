@@ -34,7 +34,7 @@ export const FriendNavBar = ({ selectedTab, setSelectedTab, friends,userId}: Fri
       <NavTab
         label="친구 요청"
         icon={<BellIcon className="w-4 h-4" />}
-        badgeCount={pendingCount}        
+        badgeCount={pendingCount > 0 ? pendingCount : undefined}    
         selected={selectedTab === "request"}
         onClick={() => setSelectedTab("request")}
       />

@@ -51,10 +51,12 @@ export const AddFriendButton = ({ className,onRequestComplete,data}: AddFriendBu
   size="md"
   className={`${pirateBtn} ${className ?? ""}`}
 >
+   <div className="flex items-center gap-2">
   <Icon icon={AddFriendIcon} className="w-4 h-4" color="pirate" />
-  <Text size="base" weight="semibold" color="black">
+  <Text size="sm" weight="semibold" color="black">
     친구 추가
   </Text>
+  </div>
 </Button>
 
     <FriendAddCompleteModal
