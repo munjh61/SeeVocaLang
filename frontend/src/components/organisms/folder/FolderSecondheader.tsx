@@ -24,10 +24,10 @@ export const VocafolderSecondHeader = ({
         ButtonVariant={{
           bgColor: "yellow",
           textColor: "white",
-          size: "lg",
+          size: "md",
           font: "hakgyo",
         }}
-        className="min-w-25"
+        className="min-w-25 sm:text-sm md:text-md lg:text-lg xl:text-xl 2xl:text-2xl"
         buttonValue={onClickFavorite}
       >
         즐겨찾기
@@ -41,11 +41,11 @@ export const VocafolderSecondHeader = ({
         ButtonVariant={{
           bgColor: isToggle ? "green" : "orange",
           textColor: "white",
-          size: "lg",
+          size: "md",
           font: "hakgyo",
         }}
         buttonValue={onClickToggle}
-        className="min-w-25"
+        className="min-w-25 sm:text-sm md:text-md lg:text-lg xl:text-xl 2xl:text-2xl"
       >
         {isToggle ? "단어장" : "ALL"}
       </IconButton>
@@ -54,11 +54,11 @@ export const VocafolderSecondHeader = ({
         ButtonVariant={{
           bgColor: "blue",
           textColor: "white",
-          size: "lg",
+          size: "md",
           font: "hakgyo",
         }}
         buttonValue={onClickCreate}
-        className="min-w-25"
+        className="min-w-25  sm:text-sm md:text-md lg:text-lg xl:text-xl 2xl:text-2xl"
       >
         단어장 추가하기
       </IconButton>
