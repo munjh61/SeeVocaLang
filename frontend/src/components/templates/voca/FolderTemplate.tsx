@@ -189,7 +189,8 @@ export const FolderTemplate = ({
           ButtonVariant={{
             bgColor: "purple",
             textColor: "white",
-            size: "xxxl",
+            size: "xl",
+            font: "hakgyo",
           }}
           buttonValue={() => navigate(-1)}
           className="w-30"
@@ -200,7 +201,12 @@ export const FolderTemplate = ({
         <Searchbar iconColor="blue" onSearch={searchFunction} />
 
         <IconButton
-          ButtonVariant={{ bgColor: "purple", textColor: "white" }}
+          ButtonVariant={{
+            bgColor: "purple",
+            textColor: "white",
+            size: "xl",
+            font: "hakgyo",
+          }}
           buttonValue={() => setQuizModalOpen(true)}
           className="w-30"
         >
@@ -211,7 +217,7 @@ export const FolderTemplate = ({
       {/* 본문 */}
       <Div
         style={{ backgroundImage: `url(${sea})` }}
-        className="flex flex-col grow gap-4 p-4 w-full rounded-md bg-cover"
+        className="flex flex-col grow gap-6 p-4 w-full rounded-md bg-cover"
       >
         <VocafolderSecondHeader
           isToggle={isToggle}
@@ -219,41 +225,43 @@ export const FolderTemplate = ({
           onClickCreate={openCreateModal}
           onClickFavorite={() => setIsFavoriteOnly(prev => !prev)}
         />
-        {/* 단어 카드 목록*/}
-        {!isToggle && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
-            {filteredVocaList.map(card => {
-              const id = Number(card.wordId);
-              return (
-                <VocaCard
-                  key={id}
-                  nameEn={card.nameEn}
-                  nameKo={card.nameKo}
-                  imageUrl={card.imageUrl}
-                  folders={card.folders}
-                  onDelete={() => deleteWordFunction(id)}
-                />
-              );
-            })}
-          </div>
-        )}
-        {/* 단어장 카드 목록 */}
-        {isToggle && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-4">
-            {filteredFolderList.map(data => {
-              const idx = Math.abs(Number(data.folderId)) % ISLANDS.length;
-              return (
-                <Folder
-                  key={data.folderId}
-                  {...data}
-                  islandSrc={ISLANDS[idx]}
-                  onEditClick={openEditModal}
-                  onToggleFavorite={toggleFavorite}
-                />
-              );
-            })}
-          </div>
-        )}
+        <div className="w-[70%] self-center">
+          {/* 단어 카드 목록*/}
+          {!isToggle && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
+              {filteredVocaList.map(card => {
+                const id = Number(card.wordId);
+                return (
+                  <VocaCard
+                    key={id}
+                    nameEn={card.nameEn}
+                    nameKo={card.nameKo}
+                    imageUrl={card.imageUrl}
+                    folders={card.folders}
+                    onDelete={() => deleteWordFunction(id)}
+                  />
+                );
+              })}
+            </div>
+          )}
+          {/* 단어장 카드 목록 */}
+          {isToggle && (
+            <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
+              {filteredFolderList.map(data => {
+                const idx = Math.abs(Number(data.folderId)) % ISLANDS.length;
+                return (
+                  <Folder
+                    key={data.folderId}
+                    {...data}
+                    islandSrc={ISLANDS[idx]}
+                    onEditClick={openEditModal}
+                    onToggleFavorite={toggleFavorite}
+                  />
+                );
+              })}
+            </div>
+          )}
+        </div>
       </Div>
     </Div>
   );

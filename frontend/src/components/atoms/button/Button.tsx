@@ -20,6 +20,7 @@ export const Button = ({
   border,
   className,
   children,
+  font,
   ...props
 }: ButtonProps) => {
   return (
@@ -31,12 +32,15 @@ export const Button = ({
           bgColor,
           size,
           textColor,
+          font,
         }),
         className
       )}
       {...props}
     >
-      {children}
+      <span className={cn(buttonVariants({ size, textColor, font }))}>
+        {children}
+      </span>
     </button>
   );
 };

@@ -30,14 +30,18 @@ export const buttonVariants = cva(
         purple: "bg-[#9D5EEE]",
         noBg: `bg-transparent`,
         profileButton: `bg-[#2659F5]`,
-        pirate:`bg-white/50`
+        pirate: `bg-white/50`,
+        brown: "bg-yellow-700",
       },
       size: {
         xs: "px-2 py-0.5 text-xs font-light",
         sm: "px-2 py-1 text-xs font-normal",
         md: "px-4 py-1 text-xs font-medium",
         lg: "px-5 py-1 text-lg font-semibold",
-        xxxl: "px-10 py-1 text-xxl font-bold",
+        xl: "px-7 py-1 text-xl font-bold",
+        xxl: "px-8 py-1 text-2xl font-bold",
+        xxxl: "px-10 py-1 text-3xl font-bold",
+        xxxxl: "px-10 py-1 text-4xl font-bold",
         xl5: "px-25 py-1 text-xs",
         word: "px-30 py-30 text-3xl",
         onboard: "w-80 h-12 text-lg",
@@ -55,6 +59,7 @@ export const buttonVariants = cva(
         green: "text-[#6DC16A]",
         blue: "text-[#6083EE]",
         purple: "text-[#9D5EEE]",
+        brown: "text-yellow-700",
       },
       border: {
         white: "border border-white",
@@ -70,6 +75,11 @@ export const buttonVariants = cva(
       rounded: {
         full: "rounded-full",
         lg: "rounded-lg",
+      },
+      font: {
+        default: "", // Tailwind 기본 폰트
+        outline: "font-sds-outline",
+        hakgyo: "font-hakgyo",
       },
     },
   }

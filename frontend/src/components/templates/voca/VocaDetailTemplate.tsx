@@ -12,6 +12,7 @@ import { Div } from "../../atoms/div/Div";
 import { deleteWordAtThisFolder } from "../../../api/FolderAPI";
 import sea from "../../../asset/png/sea.png";
 import cave from "../../../asset/png/cave.png";
+import parrot from "../../../asset/png/parrot.png";
 
 type VocaDetailTemplateProps = {
   folderId: number;
@@ -57,7 +58,8 @@ export const VocaDetailTemplate = ({
           ButtonVariant={{
             bgColor: "purple",
             textColor: "white",
-            size: "xxxl",
+            size: "xl",
+            font: "hakgyo",
           }}
           buttonValue={() => navigate(-1)}
           className="w-30"
@@ -69,6 +71,8 @@ export const VocaDetailTemplate = ({
           ButtonVariant={{
             bgColor: "purple",
             textColor: "white",
+            size: "xl",
+            font: "hakgyo",
           }}
           path={`/quiz/${folderId}`}
           state={{ name, description }}
@@ -78,7 +82,7 @@ export const VocaDetailTemplate = ({
         </IconButton>
       </div>
       <Div
-        className="flex flex-col gap-4 p-4 grow w-full  "
+        className="flex flex-col gap-4 p-4 grow w-full relative"
         style={{
           backgroundImage: `url(${cave}), url(${sea})`,
           backgroundSize: "cover, cover",
@@ -100,7 +104,11 @@ export const VocaDetailTemplate = ({
             한글가리기
           </ToggleButton>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-4 p-10">
+        <img
+          src={parrot}
+          className="self-end w-[10%] absolute pointer-events-none select-none"
+        />
+        <div className="w-[80%] self-center grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
           {filteredVocaList.map(card => (
             <VocaCard
               key={card.wordId}

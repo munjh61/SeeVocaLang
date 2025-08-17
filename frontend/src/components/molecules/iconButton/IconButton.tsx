@@ -33,6 +33,7 @@ export const IconButton = ({
   const color = ButtonVariant?.textColor;
   const size = ButtonVariant?.size;
   const border = ButtonVariant?.border;
+  const font = ButtonVariant?.font;
 
   const navigate = useNavigate();
   const onClick = () => {
@@ -49,6 +50,7 @@ export const IconButton = ({
         textColor={color}
         size={size}
         border={border}
+        font={font}
         className={`flex items-center gap-2 text-nowrap px-2 py-1 w-full h-full overflow-hidden`}
         type="button"
         onClick={onClick}

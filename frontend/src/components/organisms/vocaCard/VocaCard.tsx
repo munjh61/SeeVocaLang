@@ -43,8 +43,8 @@ export const VocaCard = ({
       <div className="relative z-10 flex flex-col gap-2 h-full p-5 w-[80%]">
         <Text
           size={nameEn.length < 12 ? "xxxl" : "xxl"}
-          font={"outline"}
-          className="text-green-700 flex items-center justify-center h-10"
+          font={"hakgyo"}
+          className="text-yellow-700 flex items-center justify-center h-10"
           onlyOneLine={"yes"}
           align={"center"}
         >
@@ -53,7 +53,7 @@ export const VocaCard = ({
         <IconButton
           IconVariant={{ icon: trash, color: "white" }}
           buttonValue={onDelete}
-          ButtonVariant={{ bgColor: "red" }}
+          ButtonVariant={{ bgColor: "brown" }}
           className="rounded-full h-9 absolute top-1 left-1"
         />
         <div className="relative">
@@ -106,8 +106,8 @@ export const VocaCard = ({
         </div>
         <Text
           size={"xxxl"}
-          font={"outline"}
-          color="gray"
+          font={"hakgyo"}
+          color="brown"
           onlyOneLine={"yes"}
           align={"center"}
         >

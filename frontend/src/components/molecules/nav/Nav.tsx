@@ -82,7 +82,6 @@ export const Nav = ({
 }: NavProps) => {
   const navigate = useNavigate();
 
-  // UnderLine은 button onClick 시그니처를 기대하므로 MouseEventHandler로 맞춘다
   const handleClick: MouseEventHandler<HTMLButtonElement> = e => {
     e.preventDefault();
     onClick?.();
@@ -95,7 +94,7 @@ export const Nav = ({
       onClick={handleClick}
       color={"white"}
       font={"hakgyo"}
-      // 💡 UnderLine의 기본 배경/텍스트(amber)를 덮어써서 "탭"처럼 보이게
+      size={"xxl"}
       className={cn(
         "grow justify-center rounded-none border-0",
         onoff ? "opacity-100 [&>div:first-of-type]:w-full" : "opacity-70",
