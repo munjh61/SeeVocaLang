@@ -62,7 +62,7 @@ export const QuizDoneStatCard = ({
               size="xxl"
               weight="extrabold"
               color="green"
-              font={"outline"}
+              font={"hakgyo"}
               className="mb-2"
             >
               {compliment(streakDay)}
@@ -93,6 +93,9 @@ export const QuizDoneStatCard = ({
           dataColor="gray"
         />
       </Div>
+      <Text font={"hakgyo"} color="red">
+        총 학습일과 연속 학습일은 오늘의 퀴즈를 풀어야 기록되요!
+      </Text>
     </Div>
   );
 };

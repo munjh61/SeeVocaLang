@@ -1,8 +1,8 @@
-import { ImageBox } from "../../molecules/imagebox/Imagebox";
 import { QuizButton } from "../../molecules/quizButton/QuizButton";
 import correct from "../../../asset/png/correct.png";
 import wrong from "../../../asset/png/cross.png";
 import { useState } from "react";
+import woodframe from "../../../asset/png/woodframe.png";
 
 export type QuizProps = {
   quizDatas: { en: string; ko: string }[];
@@ -27,7 +27,7 @@ export const Quiz = ({
   const [toggleW, setToggleW] = useState(false);
   const [timer, setTimer] = useState(true);
   const feedbackClass =
-    "w-64 h-64 z-10 absolute top-1/3 left-1/2 -translate-x-1/2 animate-fade";
+    "w-64 h-64 z-20 absolute top-1/3 left-1/2 -translate-x-1/2 animate-fade";
 
   const handleOnclick = (v: boolean) => {
     if (timer) {
@@ -64,9 +64,25 @@ export const Quiz = ({
       {toggleW && <img src={wrong} className={feedbackClass} />}
       {/* 이미지 영역 */}
       <div className="flex items-center justify-center grow">
-        <ImageBox src={answerImg} className="w-[500px] h-[300px]" />
+        <div className="relative w-[560px] max-w-[80vw] aspect-[4/3]">
+          {/* 액자 */}
+          <img
+            src={woodframe}
+            alt=""
+            className="absolute inset-0 w-full h-full z-10 pointer-events-none select-none"
+            draggable={false}
+          />
+          {/* 이미지 */}
+          <div className="absolute inset-x-[11%] inset-y-[14%] z-0">
+            <img
+              src={answerImg}
+              alt=""
+              className="w-full h-full object-cover object-center select-none"
+              draggable={false}
+            />
+          </div>
+        </div>
       </div>
-
       {/* 보기 버튼 영역 */}
       <div className="w-full grid grid-cols-4 grid-rows-2 gap-1">
         {quizDatas.map(data => (

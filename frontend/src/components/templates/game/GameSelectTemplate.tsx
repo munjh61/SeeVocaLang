@@ -64,7 +64,6 @@ export const GameSelectTemplate = ({ onClick }: GameSelectTemplateProps) => {
         <img src={games[ready - 1].gameThumbnail} className="w-full h-full" />
       </div>
       {/* 선택 부분 */}
-      {/* 선택 부분 */}
       <Div className="w-full max-w-6xl grid grid-cols-3 gap-6 place-items-center">
         {games.map(g => (
           <GameSelectButton

@@ -1,8 +1,8 @@
 import { Modal } from "../../atoms/modal/modal";
-import { Button } from "../../atoms/button/Button";
 import { Input } from "../../atoms/input/Input";
 import { Text } from "../../atoms/text/Text";
 import { useState } from "react";
+import { Override } from "../../atoms/button/Override";
 
 type FolderFormModalProps = {
   isOpen: boolean;
@@ -48,7 +48,9 @@ export const FolderFormModal = ({
         </h1>
 
         <div>
-          <h2>단어장 이름</h2>
+          <Text font={"hakgyo"} size={"xxl"}>
+            단어장 이름
+          </Text>
           <Input
             value={title}
             onChange={e => onChangeTitle(e.target.value)}
@@ -58,7 +60,9 @@ export const FolderFormModal = ({
         </div>
 
         <div>
-          <h2>단어장 설명</h2>
+          <Text font={"hakgyo"} size={"xxl"}>
+            단어장 설명
+          </Text>
           <Input
             value={subtitle}
             onChange={e => onChangeSubtitle(e.target.value)}
@@ -69,23 +73,13 @@ export const FolderFormModal = ({
 
         <div className="flex flex-row justify-between gap-4">
           {folderId && (
-            <Button
-              bgColor={"red"}
-              textColor={"white"}
-              className="p-1 grow"
-              onClick={onDelete}
-            >
+            <Override color={"white"} bg={"red"} onClick={onDelete}>
               삭제하기
-            </Button>
+            </Override>
           )}
-          <Button
-            bgColor={"blue"}
-            textColor={"white"}
-            className="p-1 grow"
-            onClick={handleSubmit}
-          >
+          <Override color={"white"} bg={"blue"} onClick={handleSubmit}>
             저장하기
-          </Button>
+          </Override>
         </div>
 
         {!check && (

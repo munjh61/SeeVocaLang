@@ -1,4 +1,4 @@
-import { Button } from "../../atoms/button/Button";
+import { Laser } from "../../atoms/button/Laser";
 import { Div } from "../../atoms/div/Div";
 import { useNavigate } from "react-router-dom";
 
@@ -11,26 +11,24 @@ export const QuizDoneButtons = ({ className }: QuizDoneButtonsProps) => {
 
   return (
     <Div align={"center"} className={`w-full grid grid-cols-2 ${className}`}>
-      <Button
-        size="lg"
-        bgColor="black"
-        textColor="white"
-        rounded="lg"
-        className="w-full py-4 px-6 shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
-        onClick={() => navigate(-1)} // 이전 페이지로
-      >
-        다시 해볼래요
-      </Button>
-      <Button
-        size="lg"
-        bgColor="black"
-        textColor="white"
-        rounded="lg"
-        className="w-full py-4 px-6 shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
-        onClick={() => navigate("/folder")}
+      <Laser
+        onClick={() => {
+          navigate("/folder");
+        }}
+        font={"hakgyo"}
+        color={"white"}
+        className="rounded-md"
       >
         단어장 페이지로
-      </Button>
+      </Laser>
+      <Laser
+        onClick={() => navigate(-1)}
+        font={"hakgyo"}
+        color={"white"}
+        className="rounded-md"
+      >
+        다시 해볼래요
+      </Laser>
     </Div>
   );
 };

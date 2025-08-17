@@ -19,10 +19,10 @@ export const Dots = ({
     <button
       onClick={onClick}
       className={cn(
-        Variants({ bg, border, color, hover, size, font }),
         "w-full flex items-center justify-center min-w-0",
         "cursor-pointer",
         "py-3 px-6 bg-purple-700 font-mono uppercase tracking-wider rounded relative overflow-hidden group hover:bg-purple-600 transition-all duration-300",
+        Variants({ bg, border, color, hover, size, font }),
         className
       )}
     >
@@ -40,7 +40,6 @@ export const Dots = ({
       >
         {children}
       </span>
-
       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
         {[...Array(6)].map((_, i) => (
           <div

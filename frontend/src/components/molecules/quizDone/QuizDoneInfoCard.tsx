@@ -29,7 +29,7 @@ export const QuizDoneInfoCard = ({
         bg={titleColor}
       >
         {icon && <Icon icon={icon} color="white" size="sm" />}
-        <Text size="sm" weight="medium" color="white" font={"outline"}>
+        <Text size="sm" weight="medium" color="white" font={"hakgyo"}>
           {title}
         </Text>
       </Div>

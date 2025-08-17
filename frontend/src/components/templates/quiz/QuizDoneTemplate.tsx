@@ -3,6 +3,11 @@ import { QuizDoneButtons } from "../../organisms/quizDone/QuizDoneButtons";
 import { Div } from "../../atoms/div/Div";
 import { RainyBalls } from "../../atoms/deco/RainyBall";
 import { QuizDoneInfo } from "../../organisms/quizDone/QuizDoneInfo";
+import sea from "../../../asset/png/sea.png";
+import happyParrot from "../../../asset/png/happyParrot.png";
+import happyPenguin from "../../../asset/png/happyPenguin.png";
+import happyCrocodile from "../../../asset/png/happyCrocodile.png";
+import happyMonkey from "../../../asset/png/happyMonkey.png";
 
 type QuizDoneTemplateProps = {
   name: string;
@@ -20,22 +25,33 @@ export const QuizDoneTemplate = ({
   totalDay,
 }: QuizDoneTemplateProps) => {
   return (
-    <Div
-      align={"center"}
-      className="grow p-4 relative overflow-hidden justify-center"
-      style={{
-        background:
-          "linear-gradient(to bottom right, #d8b4fe, #f9a8d4, #93c5fd)",
-      }}
+    <div
+      className="flex flex-col items-center justify-center grow p-4 relative overflow-hidden bg-cover"
+      style={{ backgroundImage: `url(${sea})` }}
     >
+      <img
+        src={happyMonkey}
+        className="absolute left-0 top-0 w-[25%] h-[30%]"
+      />
+      <img
+        src={happyParrot}
+        className="absolute right-0 top-0 w-[25%] h-[30%]"
+      />
+      <img
+        src={happyPenguin}
+        className="absolute right-0 bottom-0 w-[25%] h-[30%]"
+      />
+      <img
+        src={happyCrocodile}
+        className="absolute left-0 bottom-0 w-[25%] h-[30%]"
+      />
       {/* 배경 데코 요소들 */}
       <RainyBalls />
-
-      <Div align={"center"} className="gap-0">
+      <Div align={"center"} className="gap-0 z-10">
         <QuizDoneStatCard streakDay={streakDay} totalDay={totalDay} />
         <QuizDoneInfo name={name} size={size} result={result} />
         <QuizDoneButtons className="mt-10" />
       </Div>
-    </Div>
+    </div>
   );
 };
