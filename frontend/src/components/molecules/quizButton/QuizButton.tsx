@@ -50,7 +50,12 @@ export const QuizButton = ({
       border={"white"}
       className="px-5 py-3 shadow-2xl"
     >
-      <Text font={"outline"} size={"xxxl"} color="white">
+      <Text
+        font={"outline"}
+        size={"base"}
+        color="white"
+        className="sm:text-sm md:text-md lg:text-lg xl:text-xl 2xl:text-2xl"
+      >
         {lang === "en" ? en : ko}
       </Text>
     </Button>

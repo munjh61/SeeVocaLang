@@ -437,7 +437,7 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
       </div>
 
       {/* 보기 버튼 (8개) */}
-      <div className="grid grid-cols-4 grid-rows-2 gap-2">
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-1">
         {options.map(opt => (
           <QuizButton
             key={opt.en}
