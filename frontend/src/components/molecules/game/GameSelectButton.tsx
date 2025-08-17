@@ -44,7 +44,7 @@ export const GameSelectButton = ({
         font={"hakgyo"}
         color="white"
         size={"xxxl"}
-        className="absolute inset-x-0 bottom-2 text-center whitespace-nowrap pointer-events-none drop-shadow"
+        className="absolute inset-x-0 bottom-2 text-center whitespace-nowrap pointer-events-none drop-shadow sm:text-sm md:text-md lg:text-lg xl:text-xl 2xl:text-2xl"
       >
         {title}
       </Text>
