@@ -15,7 +15,7 @@ const navItems = [
   { icon: game, label: "게임", value: "game", path: "/game" },
   { icon: folder, label: "단어장", value: "folder", path: "/folder" },
   { icon: friend, label: "친구", value: "friend", path: "/friend" },
-  { icon: setting, label: "마이페이지", value: "mypage", path: "/mypage" },
+  { icon: setting, label: "내정보", value: "mypage", path: "/mypage" },
 ];
 
 export const Navigation = ({ loc }: NavProps) => {

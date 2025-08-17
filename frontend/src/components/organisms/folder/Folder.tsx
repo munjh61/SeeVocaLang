@@ -39,19 +39,9 @@ export const Folder = ({
     >
       {/* 위 */}
       <div
-        className="flex justify-center items-center grow relative pb-10 bg-center bg-contain bg-no-repeat"
+        className="flex justify-center items-center grow pb-10 bg-center bg-contain bg-no-repeat"
         style={{ backgroundImage: `url(${balloon})` }}
       >
-        <Icon
-          icon={isFav ? starF : starE}
-          color={"yellow"}
-          className="absolute top-0 right-0 cursor-pointer"
-          onClick={async () => {
-            // console.log("현재 즐겨찾기", isFav);
-            await onToggleFavorite?.(folderId, isFav);
-            setIsFav(prev => !prev);
-          }}
-        />
         <ImageBox
           src={thumbnailUrl ? thumbnailUrl : noImage}
           className="h-[50%] rounded-xl"
@@ -63,6 +53,15 @@ export const Folder = ({
         className="flex flex-col relative bg-center bg-contain bg-no-repeat"
         style={{ backgroundImage: `url(${islandSrc})` }}
       >
+        <Icon
+          icon={isFav ? starF : starE}
+          color={"yellow"}
+          className="absolute top-2 right-2 cursor-pointer"
+          onClick={async () => {
+            await onToggleFavorite?.(folderId, isFav);
+            setIsFav(prev => !prev);
+          }}
+        />
         {/* 글자 부분 */}
         <FolderInfo name={name} description={description} />
         {/* 버튼 부분 */}

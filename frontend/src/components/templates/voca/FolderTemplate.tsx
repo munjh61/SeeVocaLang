@@ -190,12 +190,9 @@ export const FolderTemplate = ({
       {/* 본문 */}
       <Div
         style={{ backgroundImage: `url(${sea})` }}
-        className="flex flex-col grow gap-6 p-4 w-full rounded-md bg-cover items-center relative"
+        className="flex flex-col grow gap-6 p-4 w-full bg-cover items-center relative"
       >
-        <img
-          src={readingPriate}
-          className="absolute right-5 bottom-5 h-[10%]"
-        />
+        <img src={readingPriate} className="absolute left-5 top-5 h-[10%]" />
         {/* 상단 툴바 */}
         <Div className="flex flex-row gap-2 p-4 bg-gray-100 rounded-md w-full max-w-5xl">
           <IconButton
