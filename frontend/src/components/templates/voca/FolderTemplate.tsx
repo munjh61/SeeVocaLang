@@ -183,42 +183,41 @@ export const FolderTemplate = ({
         folderList={folderList}
       />
 
-      {/* 상단 툴바 */}
-      <Div className="flex flex-row gap-2 p-4 bg-gray-100 rounded-md w-full">
-        <IconButton
-          ButtonVariant={{
-            bgColor: "purple",
-            textColor: "white",
-            size: "xl",
-            font: "hakgyo",
-          }}
-          buttonValue={() => navigate(-1)}
-          className="w-30"
-        >
-          뒤로 가기
-        </IconButton>
-
-        <Searchbar iconColor="blue" onSearch={searchFunction} />
-
-        <IconButton
-          ButtonVariant={{
-            bgColor: "purple",
-            textColor: "white",
-            size: "xl",
-            font: "hakgyo",
-          }}
-          buttonValue={() => setQuizModalOpen(true)}
-          className="w-30"
-        >
-          퀴즈 풀기
-        </IconButton>
-      </Div>
-
       {/* 본문 */}
       <Div
         style={{ backgroundImage: `url(${sea})` }}
-        className="flex flex-col grow gap-6 p-4 w-full rounded-md bg-cover"
+        className="flex flex-col grow gap-6 p-4 w-full rounded-md bg-cover items-center"
       >
+        {/* 상단 툴바 */}
+        <Div className="flex flex-row gap-2 p-4 bg-gray-100 rounded-md w-full max-w-5xl">
+          <IconButton
+            ButtonVariant={{
+              bgColor: "purple",
+              textColor: "white",
+              size: "xl",
+              font: "hakgyo",
+            }}
+            buttonValue={() => navigate(-1)}
+            className="w-30"
+          >
+            뒤로 가기
+          </IconButton>
+
+          <Searchbar iconColor="blue" onSearch={searchFunction} />
+
+          <IconButton
+            ButtonVariant={{
+              bgColor: "purple",
+              textColor: "white",
+              size: "xl",
+              font: "hakgyo",
+            }}
+            buttonValue={() => setQuizModalOpen(true)}
+            className="w-30"
+          >
+            퀴즈 풀기
+          </IconButton>
+        </Div>
         <VocafolderSecondHeader
           isToggle={isToggle}
           onClickToggle={() => setIsToggle(prev => !prev)}

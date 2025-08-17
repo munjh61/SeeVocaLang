@@ -53,36 +53,8 @@ export const VocaDetailTemplate = ({
 
   return (
     <Div align={"center"} className="w-full h-full p-2">
-      <div className="flex flex-row gap-2 p-4 bg-gray-100 rounded-md w-full">
-        <IconButton
-          ButtonVariant={{
-            bgColor: "purple",
-            textColor: "white",
-            size: "xl",
-            font: "hakgyo",
-          }}
-          buttonValue={() => navigate(-1)}
-          className="w-30"
-        >
-          뒤로 가기
-        </IconButton>
-        <Searchbar iconColor="blue" onSearch={searchFunction} />
-        <IconButton
-          ButtonVariant={{
-            bgColor: "purple",
-            textColor: "white",
-            size: "xl",
-            font: "hakgyo",
-          }}
-          path={`/quiz/${folderId}`}
-          state={{ name, description }}
-          className="w-30"
-        >
-          퀴즈 풀기
-        </IconButton>
-      </div>
       <Div
-        className="flex flex-col gap-4 p-4 grow w-full relative"
+        className="flex flex-col gap-4 p-4 grow w-full items-center relative"
         style={{
           backgroundImage: `url(${cave}), url(${sea})`,
           backgroundSize: "cover, cover",
@@ -90,6 +62,35 @@ export const VocaDetailTemplate = ({
           backgroundRepeat: "no-repeat, repeat",
         }}
       >
+        {/* 상단 */}
+        <div className="flex flex-row gap-2 p-4 bg-gray-100 rounded-md w-full max-w-5xl">
+          <IconButton
+            ButtonVariant={{
+              bgColor: "purple",
+              textColor: "white",
+              size: "xl",
+              font: "hakgyo",
+            }}
+            buttonValue={() => navigate(-1)}
+            className="w-30"
+          >
+            뒤로 가기
+          </IconButton>
+          <Searchbar iconColor="blue" onSearch={searchFunction} />
+          <IconButton
+            ButtonVariant={{
+              bgColor: "purple",
+              textColor: "white",
+              size: "xl",
+              font: "hakgyo",
+            }}
+            path={`/quiz/${folderId}`}
+            state={{ name, description }}
+            className="w-30"
+          >
+            퀴즈 풀기
+          </IconButton>
+        </div>
         <div className="flex flex-row gap-2">
           <ToggleButton
             selected={blurEn}
