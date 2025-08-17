@@ -70,14 +70,17 @@ public class WordQueryRepositoryImpl extends QuerydslRepositorySupport implement
 
     @Override
     public List<WordEntity> getWordsByFolderId(Long folderId) {
-        QFolderWordEntity folderWord = QFolderWordEntity.folderWordEntity;
-        QWordEntity word = QWordEntity.wordEntity;
+        QFolderWordEntity fw = QFolderWordEntity.folderWordEntity;
+        QWordEntity w = QWordEntity.wordEntity;
 
-        return from(word)
-                .select(word)
-                .join(folderWord.word, word)
-                .where(folderWord.folder.folderId.eq(folderId).and(word.isDeleted.eq(false)))
+        return from(fw)
+                .join(fw.word, w)
+                .select(w)
+                .where(
+                        fw.folder.folderId.eq(folderId),
+                        w.isDeleted.isFalse()
+                )
+                .distinct() // 같은 단어가 중복 매핑될 가능성이 있으면 추가
                 .fetch();
-
     }
 }
