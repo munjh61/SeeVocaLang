@@ -1,14 +1,12 @@
 import { useState } from "react";
-import { Button } from "../../atoms/button/Button";
 import { Div } from "../../atoms/div/Div";
 import { Text } from "../../atoms/text/Text";
-import { ImageBox } from "../../molecules/imagebox/Imagebox";
-import ropeThumbnail from "./../../../asset/png/pirate_rope_hang.png";
+import ropeThumbnail from "./../../../asset/png/capture.png";
 import rainThumbnail from "../../../asset/png/rainThumbnail.png";
 import cardThumbnail from "../../../asset/png/cardThumbnail.png";
-import treasureChest from "../../../asset/png/treasureChest.png";
 import gamebackground from "../../../asset/png/gameBackground.png";
 import bg from "../../../asset/png/background/roundedpaper.png";
+import { GameSelectButton } from "../../molecules/game/GameSelectButton";
 
 type GameSelectTemplateProps = {
   onClick: (v: number) => void;
@@ -18,6 +16,7 @@ type GameSelect = {
   gameTitle: string;
   gameDescription: string;
   gameThumbnail: string;
+  isFinished: boolean;
 };
 
 export const GameSelectTemplate = ({ onClick }: GameSelectTemplateProps) => {
@@ -35,24 +34,27 @@ export const GameSelectTemplate = ({ onClick }: GameSelectTemplateProps) => {
       gameTitle: "포로 탈출",
       gameDescription: "한 글자씩 단어를 맞추어 보아요.",
       gameThumbnail: ropeThumbnail,
+      isFinished: true,
     },
     {
       gameNumber: 2,
       gameTitle: "폭탄 피하기",
       gameDescription: "폭탄이 도착하기 전에 막아주세요",
       gameThumbnail: rainThumbnail,
+      isFinished: true,
     },
     {
       gameNumber: 3,
       gameTitle: "카드 뒤집기",
       gameDescription: "뒤집어 있는 카드의 짝을 맞춰요.",
       gameThumbnail: cardThumbnail,
+      isFinished: false,
     },
   ];
   return (
     <Div
       align={"center"}
-      className="grow p-2 pt-20 bg-center bg-cover"
+      className="w-full p-2 pt-20 bg-center bg-cover gap-8"
       style={{ backgroundImage: `url(${gamebackground})` }}
     >
       <div
@@ -61,46 +63,34 @@ export const GameSelectTemplate = ({ onClick }: GameSelectTemplateProps) => {
       >
         <img src={games[ready - 1].gameThumbnail} className="w-full h-full" />
       </div>
-      <Div align={"center"} className="w-full gap-2 grow">
-        {/* 선택 부분 */}
-        <Div className="grow grid grid-cols-3 gap-40">
-          {games.map(g => (
-            <Button
-              className="w-full h-full relative m-auto"
-              onClick={() => moveFunction(g.gameNumber)}
-            >
-              <ImageBox
-                src={treasureChest}
-                defaultBg="bg-transparent"
-                className="grow absolute z-0"
-              ></ImageBox>
-              <Text
-                font={"hakgyo"}
-                color="white"
-                className="p-10 whitespace-nowrap z-10"
-                size={"xxxl"}
-              >
-                {g.gameTitle}
-              </Text>
-            </Button>
-          ))}
-        </Div>
-        {/* 설명 부분 */}
-        <Div
-          bg={"yellow"}
-          align={"center"}
-          className="w-fit p-4 justify-center"
-          rounded={"lg"}
+      {/* 선택 부분 */}
+      {/* 선택 부분 */}
+      <Div className="w-full max-w-6xl grid grid-cols-3 gap-6 place-items-center">
+        {games.map(g => (
+          <GameSelectButton
+            key={g.gameNumber}
+            gameNumber={g.gameNumber}
+            title={g.gameTitle}
+            isFinished={g.isFinished}
+            onClick={moveFunction}
+          />
+        ))}
+      </Div>
+      {/* 설명 부분 */}
+      <Div
+        bg={"yellow"}
+        align={"center"}
+        className="w-fit p-4 justify-center"
+        rounded={"lg"}
+      >
+        <Text
+          color="white"
+          font={"outline"}
+          size={"xxxl"}
+          className="w-full text-center"
         >
-          <Text
-            color="white"
-            font={"outline"}
-            size={"xxxl"}
-            className="w-full text-center"
-          >
-            {games[ready - 1].gameDescription}
-          </Text>
-        </Div>
+          {games[ready - 1].gameDescription}
+        </Text>
       </Div>
     </Div>
   );
