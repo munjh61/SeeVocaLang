@@ -161,7 +161,7 @@ export const FolderTemplate = ({
   const [quizModalOpen, setQuizModalOpen] = useState(false);
 
   return (
-    <Div align={"center"} className="w-full h-full p-2">
+    <Div align={"center"} className="w-full h-full">
       {/* 생성/수정 폼 모달 */}
       <FolderFormModal
         isOpen={modalType !== null}

@@ -35,14 +35,16 @@ export const FolderButton = ({
         icon={folder}
         color={"white"}
         font={"hakgyo"}
+        size={"lg"}
         onClick={handleLearnClick}
       >
-        학습하기
+        학습
       </Dots>
       <Override
         icon={gear}
         color={"white"}
         font={"hakgyo"}
+        size={"lg"}
         onClick={handleEditClick}
       >
         수정

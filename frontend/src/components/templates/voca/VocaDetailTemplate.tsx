@@ -52,7 +52,7 @@ export const VocaDetailTemplate = ({
   });
 
   return (
-    <Div align={"center"} className="w-full h-full p-2">
+    <Div align={"center"} className="w-full h-full">
       <Div
         className="flex flex-col gap-4 p-4 grow w-full items-center relative"
         style={{
