@@ -3,6 +3,7 @@ import { shuffle } from "lodash-es";
 import { QuizButton } from "../../molecules/quizButton/QuizButton";
 import type { VocaCardProps } from "../vocaCard/VocaCard";
 import { LoadingPage } from "../../templates/loadingTemplate/LoadingTemplate";
+import { RainGameOverModal } from "../../molecules/game/RainGameOverModal";
 import { HpBar } from "../../molecules/game/HpBar";
 import { GameText } from "../../molecules/game/GameText";
 import { Missile } from "../../molecules/game/Missile";
@@ -47,6 +48,8 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
   const BOOM_W_RATIO = 0.3; // 컨테이너 너비 30%
   const BOOM_MIN = 160; // 최소 160px
   const BOOM_MAX_H_FACTOR = 0.6; // 세로의 60%를 상한
+  // 다시하기
+  const [gameOverOpen, setGameOverOpen] = useState(false);
 
   /** -------------------------
    *  한 라운드에 사용할 문제 풀(pool)
@@ -236,10 +239,32 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
       setRunning(false);
       if (!endedRef.current) {
         endedRef.current = true;
-        alert(`끝! 총 정답: ${score}개 (라운드 ${round} 진행 중 종료)`);
+        setGameOverOpen(true); // ✅ 모달 오픈
       }
     }
-  }, [lives, running, score, round]);
+  }, [lives, running]);
+
+  // 게임 리셋 (다시하기)
+  const resetGame = useCallback(() => {
+    setScore(0);
+    setRound(1);
+    setRoundData(shuffle(pool)); // 문제 재셔플
+    setIdx(0);
+    setLives(MAX_LIVES);
+
+    speedRef.current = INITIAL_SPEED; // 속도 초기화
+    endedRef.current = false; // 중복 종료 방지 플래그 초기화
+    setRunning(true);
+    resetToStartX();
+
+    // 남아있을 수 있는 RAF 정리 (중복 루프 방지)
+    if (rafRef.current) {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+    }
+
+    setGameOverOpen(false);
+  }, [pool, resetToStartX]);
 
   /** -------------------------
    *  폭발 표시 & 타이머 관리
@@ -419,6 +444,14 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
           />
         ))}
       </div>
+      <RainGameOverModal
+        isOpen={gameOverOpen}
+        score={score}
+        round={round}
+        speed={Number(speedRef.current)}
+        onRetry={resetGame}
+        onClose={() => setGameOverOpen(false)}
+      />
     </div>
   );
 };
