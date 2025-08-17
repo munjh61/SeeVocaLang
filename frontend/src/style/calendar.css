@@ -61,10 +61,10 @@
     }
 
     /* ⬇︎ 이미지 경로만 네 자산 경로로 유지 */
-    .react-calendar__navigation__prev-button::before  { background-image: url("src/asset/png/arrow/arrow_single_left.png"); }
-    .react-calendar__navigation__next-button::before  { background-image: url("src/asset/png/arrow/arrow_single.png"); }
-    .react-calendar__navigation__prev2-button::before { background-image: url("src/asset/png/arrow/arrow_double_left.png"); }
-    .react-calendar__navigation__next2-button::before { background-image: url("src/asset/png/arrow/arrow_double_right.png"); }
+    .react-calendar__navigation__prev-button::before  { background-image: url("../asset/png/arrow/arrow_single_left.png"); }
+    .react-calendar__navigation__next-button::before  { background-image: url("../asset/png/arrow/arrow_single.png"); }
+    .react-calendar__navigation__prev2-button::before { background-image: url("../asset/png/arrow/arrow_double_left.png"); }
+    .react-calendar__navigation__next2-button::before { background-image: url("../asset/png/arrow/arrow_double_right.png"); }
 
     /* 호버/비활성 */
     .react-calendar__navigation button:hover:not(:disabled)::before { transform: scale(1.05); }
@@ -159,7 +159,7 @@
         z-index: 0;
     }
     .react-calendar__tile.highlight::before {
-        background-image: url("src/asset/png/pirate_skull.png") !important;
+        background-image: url("../asset/png/pirate_skull.png") !important;
     }
     .react-calendar__tile.highlight {
         color: #000 !important;
@@ -169,7 +169,7 @@
         width: 2.5rem;
         height: 2.5rem;
         border-radius: 10px;
-        background: url("src/asset/png/bino_run.png") center/cover no-repeat;
+        background: url("../asset/png/bino_run.png") center/cover no-repeat;
     }
 
     /* ✅ 날짜 텍스트는 배지 '위'로 */
