@@ -33,10 +33,11 @@ export const FolderButton = ({
     <div className={`flex flex-row justify-evenly gap-2 ${className}`}>
       <Dots
         icon={folder}
-        color={"white"}
+        color={wordCount > 0 ? "white" : "gray"}
         font={"hakgyo"}
         size={"lg"}
         onClick={handleLearnClick}
+        className={wordCount > 0 ? "" : "line-through"}
       >
         학습
       </Dots>
