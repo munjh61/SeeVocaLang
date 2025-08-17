@@ -1,6 +1,7 @@
 import type { VariantProps } from "class-variance-authority";
 import { BallVariants } from "./BallVariants";
 import { cn } from "../../../utils/cn";
+import penguin from "../../../asset/png/default_profile.png";
 
 type BallVariantProps = VariantProps<typeof BallVariants>;
 
@@ -33,7 +34,9 @@ export const Ball = ({
           animation: `fall ${duration}ms linear infinite`,
           animationDelay: `${delay}ms`,
         }}
-      />
+      >
+        <img src={penguin} />
+      </div>
 
       {/* 컴포넌트 내부에만 적용되는 <style> */}
       <style>

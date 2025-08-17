@@ -7,6 +7,7 @@ import { SegmentControl } from "../../molecules/segmentControl/SegmentControl";
 import { QuizHeader } from "../../organisms/quiz/QuizHeader";
 import { Div } from "../../atoms/div/Div";
 import { completeTodayQuiz, updateQuizStatus } from "../../../api/TodayQuizAPI";
+import sea from "../../../asset/png/sea.png";
 
 type QuizTemplateProps = {
   name: string;
@@ -41,7 +42,7 @@ export const QuizTemplate = ({
     setCurrentIndex(startIndex ?? 0);
   }, [vocaCardDatas, isTodayMission, questionCount, startIndex]);
 
-  // 현재 문제가 없거나 퀴즈 완료 시 처리
+  // 완료 처리
   useEffect(() => {
     if (questionCount === 0) return;
     // if (currentIndex >= 1) {
@@ -91,14 +92,17 @@ export const QuizTemplate = ({
   };
 
   return (
-    <div className="flex flex-col grow p-2 gap-2">
+    <div
+      className="flex flex-col grow p-2 gap-2"
+      style={{ backgroundImage: `url(${sea})` }}
+    >
       <QuizHeader
         name={name}
         description={description}
         index={currentIndex + 1}
         total={questionCount}
       />
-      <Div bg={"sky"} className="flex flex-col grow rounded-md p-2">
+      <Div className="flex flex-col grow rounded-md p-2">
         <div className="flex justify-end">
           <SegmentControl
             options={[

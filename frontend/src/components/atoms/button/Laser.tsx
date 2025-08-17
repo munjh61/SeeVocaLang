@@ -3,7 +3,7 @@ import { Variants } from "../../../types/Variants";
 import { cn } from "../../../utils/cn";
 import { Icon } from "../icon/Icon";
 
-export const Override = ({
+export const Laser = ({
   icon,
   onClick,
   children,
@@ -21,7 +21,7 @@ export const Override = ({
       className={cn(
         "w-full flex items-center justify-center min-w-0",
         "cursor-pointer",
-        "py-3 px-6 bg-yellow-600 font-mono uppercase tracking-wider rounded relative overflow-hidden group hover:bg-yellow-500 transition-all duration-300",
+        "py-3 px-6 bg-red-600 border border-red-400 text-red-300 font-mono uppercase tracking-wider rounded relative overflow-hidden group hover:bg-red-600/80 transition-all duration-300",
         Variants({ bg, border, color, size, hover, font }),
         className
       )}
@@ -40,8 +40,10 @@ export const Override = ({
       >
         {children}
       </span>
-      <div className="absolute top-0 left-0 w-0 h-full bg-yellow-400/30 group-hover:w-full transition-all duration-500" />
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-300/20 to-transparent -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <div className="absolute top-1/2 left-0 w-full h-px bg-red-400 animate-pulse" />
+        <div className="absolute top-0 left-1/2 w-px h-full bg-red-400 animate-pulse" />
+      </div>
     </button>
   );
 };
