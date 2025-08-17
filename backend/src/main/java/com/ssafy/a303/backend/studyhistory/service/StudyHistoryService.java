@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,8 +27,8 @@ public class StudyHistoryService {
         studyHistoryRepository.save(studyHistoryEntity);
     }
 
-    public LocalDateTime getLastCompletedQuizTime(Long userId) {
-        return studyHistoryRepository.findTopByUser_UserIdOrderByStudyHistoryIdDesc(userId).getCreatedAt();
+    public Optional<StudyHistoryEntity> getLastCompletedQuizTime(Long userId) {
+        return studyHistoryRepository.findTopByUser_UserIdOrderByStudyHistoryIdDesc(userId);
     }
 
     public List<LocalDateTime> getStudyDays(GetStudyDaysCommandDto commandDto) {

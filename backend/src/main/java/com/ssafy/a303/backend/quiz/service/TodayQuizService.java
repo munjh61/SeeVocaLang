@@ -7,6 +7,7 @@ import com.ssafy.a303.backend.quiz.entity.QuizEntity;
 import com.ssafy.a303.backend.quiz.exception.QuizAlreadyCompleteRuntimeException;
 import com.ssafy.a303.backend.quiz.exception.QuizNumberExceedRuntimeException;
 import com.ssafy.a303.backend.quizorder.service.QuizOrderService;
+import com.ssafy.a303.backend.studyhistory.entity.StudyHistoryEntity;
 import com.ssafy.a303.backend.studyhistory.service.StudyHistoryService;
 import com.ssafy.a303.backend.user.entity.UserEntity;
 import com.ssafy.a303.backend.user.exception.UserErrorCode;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -65,8 +67,8 @@ public class TodayQuizService {
 
         LocalDateTime endTime = currentTime.plusDays(1).minusNanos(1);
         user.incrementTotalDays();
-        LocalDateTime lastSolvedTime = studyHistoryService.getLastCompletedQuizTime(userId);
-        int streakDays = lastSolvedTime.isBefore(endTime) ? user.getStreakDays() + 1 : 1;
+        Optional<StudyHistoryEntity> lastSolvedHistory = studyHistoryService.getLastCompletedQuizTime(userId);
+        int streakDays = lastSolvedHistory.isPresent() ? user.getStreakDays() + 1 : 1;
         user.updateStreakDays(streakDays);
         studyHistoryService.completeTodayQuiz(user, currentTime, endTime);
     }
