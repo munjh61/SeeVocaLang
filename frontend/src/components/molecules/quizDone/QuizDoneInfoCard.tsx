@@ -29,7 +29,15 @@ export const QuizDoneInfoCard = ({
         bg={titleColor}
       >
         {icon && <Icon icon={icon} color="white" size="sm" />}
-        <Text size="sm" weight="medium" color="white" font={"hakgyo"}>
+        <Text
+          size="md"
+          weight="medium"
+          color="white"
+          font={"hakgyo"}
+          onlyOneLine={"yes"}
+          align={"center"}
+          className="sm:text-sm md:text-md lg:text-lg xl:text-xl 2xl:text-2xl"
+        >
           {title}
         </Text>
       </Div>
@@ -40,7 +48,7 @@ export const QuizDoneInfoCard = ({
         align={"center"}
         children={data}
         font={"outline"}
-        className="bg-white/80 rounded-b-md p-2"
+        className="bg-white/80 rounded-b-md p-2 sm:text-md md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl"
       />
     </Div>
   );

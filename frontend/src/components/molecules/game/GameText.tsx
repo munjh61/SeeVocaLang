@@ -6,7 +6,11 @@ type GameTextProps = {
 
 export const GameText = ({ label, data }: GameTextProps) => {
   return (
-    <Text font={"outline"} size={"xxxl"} className="w-fit">
+    <Text
+      font={"outline"}
+      size={"xxxl"}
+      className="w-fit sm:text-sm md:text-md lg:text-lg xl:text-xl 2xl:text-2xl"
+    >
       {label} : {data}
     </Text>
   );

@@ -5,6 +5,7 @@ export const textVariants = cva("", {
     size: {
       xs: "text-xs",
       sm: "text-sm",
+      md: "text-md",
       base: "text-base",
       lg: "text-lg",
       xl: "text-xl",
