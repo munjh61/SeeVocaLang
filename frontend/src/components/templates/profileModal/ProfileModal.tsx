@@ -5,7 +5,7 @@ import { Icon } from "../../atoms/icon/Icon";
 import { Text } from "../../atoms/text/Text";
 import UploadIcon from "../../../asset/image_upload.svg?react";
 import MailIcon from "../../../asset/mail.svg?react";
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { FileUploadModalFlow } from "../../organisms/fileUpload/FileUploadModalFlow";
 import type { UserInfo } from "../../../api/userInfo";
 import DefaultProfileImg from "../../../asset/png/default_profile.png";
@@ -16,6 +16,7 @@ import {
   updateProfile,
 } from "../../../api/MyPageApi";
 import { TapePair } from "../../organisms/mypage/Tape.tsx";
+import { useAuthStore } from "../../../stores/AuthStore";
 
 type ProfileModalProps = {
   isOpen: boolean;
@@ -31,7 +32,8 @@ export const ProfileModal = ({
   onUpdateUserInfo,
 }: ProfileModalProps) => {
   const [isModalOpen, setModalOpen] = useState(false); // 파일 업로더 용도
-  const [imageURL, setImageURL] = useState<string | null>(null);
+  const [imageURL, setImageURL] = useState<string | null>(null); // 미리보기 소스 (blob 또는 서버 URL)
+  const [imgNonce, setImgNonce] = useState<number>(0); // 캐시 버스터
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
   const [emailCode, setEmailCode] = useState("");
@@ -47,25 +49,7 @@ export const ProfileModal = ({
   const [profileFile, setProfileFile] = useState<File | null>(null);
   const [isSaving, setIsSaving] = useState(false);
 
-  // ✅ 모달 닫힘 전환 감지 → 즉시 새로고침
-  const wasOpenRef = useRef(isOpen);
-  useEffect(() => {
-    if (wasOpenRef.current && !isOpen) {
-      window.location.reload();
-    }
-    wasOpenRef.current = isOpen;
-  }, [isOpen]);
-
-  // 초기화
-  useEffect(() => {
-    if (userInfo) {
-      setNickname(userInfo.nickname ?? "");
-      setEmail(userInfo.email ?? "");
-      setImageURL(userInfo.profileImage ?? null);
-      setEmailStep(userInfo.email ? "completed" : "idle");
-    }
-  }, [userInfo]);
-
+  // 모달 열릴 때 현재 props로 초기화 + 캐시 버스터 갱신
   useEffect(() => {
     if (isOpen) {
       setIsVerified(false);
@@ -77,13 +61,14 @@ export const ProfileModal = ({
       setEmailStep(userInfo?.email ? "completed" : "idle");
       setNickname(userInfo?.nickname ?? "");
       setEmail(userInfo?.email ?? "");
-      setImageURL(userInfo?.profileImage ?? null);
+      setImageURL(userInfo?.profileImage ?? null); // 서버 URL(또는 null)
       setProfileFile(null);
       setIsSaving(false);
+      setImgNonce(Date.now()); // 🔥 모달 열 때마다 캐시 버스터 갱신
     }
   }, [isOpen, userInfo]);
 
-  // 로컬 object URL 정리
+  // 로컬 object URL 정리(우리가 만든 blob만 정리)
   useEffect(() => {
     return () => {
       if (imageURL?.startsWith("blob:")) URL.revokeObjectURL(imageURL);
@@ -119,6 +104,16 @@ export const ProfileModal = ({
   const hasChanges =
     hasNicknameChange || hasProfileImageChange || willChangePwd;
 
+  // HTTP(S) 경로만 캐시 버스터 부착
+  const previewSrc = useMemo(() => {
+    if (!imageURL) return DefaultProfileImg;
+    if (imageURL.startsWith("blob:")) return imageURL; // blob은 그대로
+    if (/^https?:\/\//.test(imageURL)) {
+      return `${imageURL}${imageURL.includes("?") ? "&" : "?"}t=${imgNonce}`;
+    }
+    return imageURL;
+  }, [imageURL, imgNonce]);
+
   const changeProfile = async () => {
     if (!hasChanges) {
       alert("변경 사항이 없습니다.");
@@ -144,20 +139,36 @@ export const ProfileModal = ({
         profileFile
       );
 
-      if (success) {
-        alert("✅ 프로필 수정이 완료되었습니다.");
-        if (userInfo) {
-          onUpdateUserInfo({
-            ...userInfo,
-            nickname: nickname?.trim() || userInfo.nickname,
-            profileImage: imageURL ?? userInfo.profileImage,
-            email,
-          });
-        }
-        onClose();
-      } else {
+      if (!success) {
         alert("❌ 프로필 수정에 실패했습니다. 다시 시도해주세요.");
+        return;
       }
+
+      alert("✅ 프로필 수정이 완료되었습니다.");
+
+      // 1) 서버 최신 유저 정보로 스토어 갱신
+      const latest = await useAuthStore.getState().refreshUser();
+
+      // 2) 부모에도 서버 값 전달 (blob 절대 전달 X)
+      if (latest && userInfo) {
+        onUpdateUserInfo({
+          ...userInfo,
+          userId: latest.userId,
+          loginId: latest.loginId,
+          nickname: latest.nickname,
+          email: latest.email ?? null,
+          birthday: latest.birthday ?? null,
+          profileImage: latest.profileImage ?? undefined,
+        });
+      }
+
+      // 3) 모달 내부 미리보기 또한 서버 URL로 교체 + 캐시 버스터 갱신
+      if (latest?.profileImage) {
+        setImageURL(latest.profileImage); // 서버 URL
+        setImgNonce(Date.now()); // 캐시 무력화
+      }
+
+      onClose();
     } finally {
       setIsSaving(false);
     }
@@ -196,9 +207,9 @@ export const ProfileModal = ({
 
                 <div className="relative w-32 h-32">
                   <div className="w-full h-full rounded-full border-4 border-amber-300 bg-amber-50 overflow-hidden">
-                    {imageURL ? (
+                    {previewSrc ? (
                       <img
-                        src={imageURL}
+                        src={previewSrc}
                         alt="프로필"
                         className="w-full h-full object-cover"
                       />
@@ -231,6 +242,7 @@ export const ProfileModal = ({
                             URL.revokeObjectURL(prev);
                           return newImageURL;
                         });
+                        // blob 미리보기라 캐시버스터 필요 없음
                       }
                     }}
                   />
@@ -240,7 +252,7 @@ export const ProfileModal = ({
                 </Text>
               </div>
 
-              {/* 🏷️ 닉네임 카드 (양피지 + 못) */}
+              {/* 🏷️ 닉네임 카드 */}
               <div className="relative bg-parchment rounded-xl p-4 border border-amber-200/60 shadow-sm">
                 <span className="nail left-3 top-3" />
                 <span className="nail right-3 top-3" />
@@ -260,7 +272,7 @@ export const ProfileModal = ({
 
             {/* ========== Right Column ========== */}
             <div className="space-y-6">
-              {/* ✉️ 이메일 인증 (양피지 + 상단 테이프) */}
+              {/* ✉️ 이메일 인증 */}
               <div className="relative bg-parchment rounded-xl p-4 border border-amber-200/60">
                 <TapePair
                   size="sm"
@@ -378,7 +390,7 @@ export const ProfileModal = ({
                 )}
               </div>
 
-              {/* 🔐 비밀번호 변경 (양피지 + 못) */}
+              {/* 🔐 비밀번호 변경 */}
               <div className="relative bg-parchment rounded-xl p-4 border border-amber-200/60">
                 <span className="nail left-3 top-3" />
                 <span className="nail right-3 top-3" />

@@ -2,7 +2,7 @@
  * ProfileCard
  * - 좌측 카드: 프로필 수정 버튼, 프로필 이미지, 유저 기본 정보 및 단어/폴더 통계 표시
  * - props:
- *   - userInfo: 유저 정보
+ *   - userInfo: 유저 정보(폴백용)
  *   - statistics: 통계 응답
  *   - onOpenModal: 프로필 수정 모달 열기 콜백
  */
@@ -13,9 +13,8 @@ import { BgCard } from "../../molecules/BgCard";
 import { StatsNote } from "../../molecules/StateNote";
 import type { UserInfo } from "../../../api/userInfo";
 import type { StatisticsResponse } from "../../../api/MyPageApi";
-
-// ✅ TapePair + TapeCorners 둘 다 가져오기
-import { TapePair, TapeCorners } from "./Tape.tsx";
+import { TapePair, TapeCorners } from "./Tape.tsx"; // ✅ TapePair + TapeCorners
+import { useAuthStore } from "../../../stores/AuthStore"; // ✅ 스토어 구독
 
 type Props = {
   userInfo: UserInfo | null;
@@ -24,6 +23,17 @@ type Props = {
 };
 
 export function ProfileCard({ userInfo, statistics, onOpenModal }: Props) {
+  // ✅ store.user 우선, 없으면 props.userInfo 폴백
+  const authUser = useAuthStore(s => s.user);
+  const ui = authUser ?? userInfo ?? null;
+
+  // ✅ 캐시 버스터(서버가 동일 URL을 반환해도 즉시 갱신되도록)
+  const rawSrc = ui?.profileImage || DefaultProfileImg;
+  const imgSrc =
+    typeof rawSrc === "string" && /^https?:\/\//.test(rawSrc)
+      ? `${rawSrc}${rawSrc.includes("?") ? "&" : "?"}t=${Date.now()}`
+      : rawSrc;
+
   return (
     <BgCard
       src={WantedImg1}
@@ -69,7 +79,7 @@ export function ProfileCard({ userInfo, statistics, onOpenModal }: Props) {
         <div className="relative mx-auto my-2 w-fit">
           <div className="relative -rotate-1 rounded-2xl border border-amber-200/70 bg-amber-50/70 p-3 shadow">
             <img
-              src={userInfo?.profileImage || DefaultProfileImg}
+              src={imgSrc}
               alt="프로필 이미지"
               className="block w-50 h-50 rounded-full object-cover ring-1 ring-amber-200 shadow-sm"
               draggable={false}
@@ -82,7 +92,7 @@ export function ProfileCard({ userInfo, statistics, onOpenModal }: Props) {
               style={{ clipPath: "polygon(0 0, 100% 0, 0 100%)" }}
             />
 
-            {/* ✅ 프레임 내부 코너 테이프를 컴포넌트로 교체 */}
+            {/* ✅ 프레임 내부 코너 테이프 */}
             <div
               aria-hidden
               className="pointer-events-none absolute inset-0 z-[60]"
@@ -105,16 +115,16 @@ export function ProfileCard({ userInfo, statistics, onOpenModal }: Props) {
         <ul className="mt-10 space-y-2 relative overflow-visible">
           <StatsNote
             items={[
-              { label: "닉네임", value: userInfo?.nickname || "Pino" },
-              { label: "생년월일", value: userInfo?.birthday || "1996-09-19" },
-              { label: "이메일", value: userInfo?.email || "미연동" },
+              { label: "닉네임", value: ui?.nickname || "Pino" },
+              { label: "생년월일", value: ui?.birthday || "1996-09-19" },
+              { label: "이메일", value: ui?.email || "미연동" },
             ]}
           />
           <StatsNote
             items={[
               {
                 label: "총 단어 갯수",
-                value: statistics?.content.totalWordsCount || 0,
+                value: statistics?.content.totalWordsCount ?? 0,
               },
             ]}
           />
@@ -122,7 +132,7 @@ export function ProfileCard({ userInfo, statistics, onOpenModal }: Props) {
             items={[
               {
                 label: "총 폴더 갯수",
-                value: statistics?.content.totalFoldersCount || 0,
+                value: statistics?.content.totalFoldersCount ?? 0,
               },
             ]}
           />
