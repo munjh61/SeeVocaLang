@@ -22,7 +22,7 @@ export const Dots = ({
         Variants({ bg, border, color, hover, size, font }),
         "w-full flex items-center justify-center min-w-0",
         "cursor-pointer",
-        "py-3 px-6 bg-purple-800 font-mono uppercase tracking-wider rounded relative overflow-hidden group hover:bg-purple-700 transition-all duration-300",
+        "py-3 px-6 bg-purple-700 font-mono uppercase tracking-wider rounded relative overflow-hidden group hover:bg-purple-600 transition-all duration-300",
         className
       )}
     >

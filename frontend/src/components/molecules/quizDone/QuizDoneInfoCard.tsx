@@ -7,7 +7,7 @@ type TextComponentProps = ComponentProps<typeof Text>;
 type DivComponentProps = ComponentProps<typeof Div>;
 
 type QuizDoneInfoCardProps = {
-  icon: ComponentType<SVGProps<SVGSVGElement>>;
+  icon?: ComponentType<SVGProps<SVGSVGElement>>;
   title: string;
   data: string;
   titleColor?: DivComponentProps["color"];
@@ -28,7 +28,7 @@ export const QuizDoneInfoCard = ({
         className="flex flex-row justify-center rounded-t-md p-2"
         bg={titleColor}
       >
-        <Icon icon={icon} color="white" size="sm" />
+        {icon && <Icon icon={icon} color="white" size="sm" />}
         <Text size="sm" weight="medium" color="white" font={"outline"}>
           {title}
         </Text>
