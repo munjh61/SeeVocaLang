@@ -74,7 +74,6 @@ export const FriendPageTemplate = () => {
       "
      
     >
-      <img src=""></img>
         {selectedTab === "search" && (
           <FriendSearchContent
             searchValue={searchValue}
