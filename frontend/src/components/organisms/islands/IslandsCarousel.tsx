@@ -37,7 +37,7 @@ export const IslandCarousel: React.FC<Props> = ({
   }, [items, centerItem]);
 
   return (
-    <section className="grid place-content-center px-4 min-h-[calc(100vh-64px)] gap-14">
+    <section className="grid place-content-center px-4 min-h-[calc(83vh-64px)] gap-14">
       {/* 캐러셀 영역 */}
       <div
         className="

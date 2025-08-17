@@ -75,9 +75,9 @@ export const MainDashboardTemplate = () => {
   };
 
   return (
-    <div className="relative w-full h-dvh box-border overflow-hidden pt-3 overscroll-none">
+    <div className="relative w-full min-h-dvh box-border pt-3 overscroll-none flex flex-col overflow-x-hidden">
       {/* 상단 바 */}
-      <div className="flex flex-col sm:flex-row justify-between items-start gap-2 px-4 z-30">
+      <div className="flex flex-col sm:flex-row justify-between items-start gap-2 px-4 z-30 flex-none">
         <TopLeftProgressBar
           current={studyStatus?.lastSolvedNumber ?? 0}
           total={studyStatus?.totalProblemCount ?? 0}
@@ -94,12 +94,14 @@ export const MainDashboardTemplate = () => {
         </button>
       </div>
 
-      {/* === 메인 콘텐츠 === */}
-      <div className="relative z-20">
+      {/* 메인 콘텐츠: 남은 공간 차지 + 자체 스크롤 */}
+      <div className="relative z-20 flex-1 overflow-y-auto">
         <IslandCarousel items={items} onSelect={handleSelect} />
       </div>
 
-      {/* 보물 상자 */}
+      {/* 장식 이미지: 부모를 기준으로 absolute.
+        만약 이미지 때문에 하단이 잘리면 부모에 pb를 조금 주거나
+        이미지를 main 안쪽으로 옮겨주세요. */}
       <img
         src={TreasureImg}
         alt="보물상자"
@@ -107,12 +109,10 @@ export const MainDashboardTemplate = () => {
         className="absolute left-[-20px] bottom-20 w-[16%] max-w-[300px] pointer-events-none"
         draggable={false}
       />
-
-      {/* 망원경 해적 */}
       <img
         src={Bino}
         alt="망원경 해적"
-        className="absolute right-[-20px] bottom-0 w-[25%] max-w-[250px] pointer-events-none"
+        className="absolute right-[-20px] bottom-20 w-[25%] max-w-[250px] pointer-events-none"
         draggable={false}
       />
 
