@@ -18,7 +18,7 @@ export type VocaCardProps = {
   onDelete?: () => void;
   blurKo?: boolean;
   blurEn?: boolean;
-  folders?: { id: number; name: string }[];
+  folders?: { folderId: number; name: string }[];
 };
 
 export const VocaCard = ({
@@ -63,21 +63,21 @@ export const VocaCard = ({
                 {folders[0] && (
                   <VocaLoc
                     bg={"red"}
-                    folderId={folders[0].id}
+                    folderId={folders[0].folderId}
                     name={folders[0].name}
                   />
                 )}
                 {folders[1] && (
                   <VocaLoc
                     bg={"yellow"}
-                    folderId={folders[1].id}
+                    folderId={folders[1].folderId}
                     name={folders[1].name}
                   />
                 )}
                 {folders[2] && (
                   <VocaLoc
                     bg={"green"}
-                    folderId={folders[2].id}
+                    folderId={folders[2].folderId}
                     name={folders[2].name}
                   />
                 )}
