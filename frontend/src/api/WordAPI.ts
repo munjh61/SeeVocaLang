@@ -14,7 +14,7 @@ export const getAllWords = async () => {
       nameKo: w.nameKo,
       folders: w.folders,
     }));
-    // console.log(words);
+    console.log(words);
     return words;
   } catch (error) {
     console.error("❌ 내 단어 전부 가져오기 요청 실패:", error);

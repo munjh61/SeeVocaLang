@@ -116,11 +116,14 @@ export const FolderTemplate = ({
       await deletefolder(selectedId);
       setfolderList(prev => prev.filter(item => item.folderId !== selectedId));
       setVocaList(prev =>
-        prev.filter(card =>
-          card.folders?.map(f => {
-            return f.id !== selectedId;
+        prev
+          .map(card => {
+            const nextFolders = (card.folders ?? []).filter(
+              f => f.folderId !== selectedId
+            );
+            return { ...card, folders: nextFolders };
           })
-        )
+          .filter(card => (card.folders?.length ?? 0) > 0)
       );
       closeModal();
     }

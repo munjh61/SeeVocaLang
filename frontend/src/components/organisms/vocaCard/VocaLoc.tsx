@@ -12,7 +12,7 @@ export const VocaLoc = ({ bg, folderId, name }: VocaLoc) => {
   return (
     <IconButton
       ButtonVariant={{ bgColor: bg, textColor: "white" }}
-      className="p-1 w-18 block"
+      className="p-1 w-23 block"
       path={`/folder/${folderId}`}
       state={{ name }}
     >
