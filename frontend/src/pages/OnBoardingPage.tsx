@@ -64,7 +64,6 @@ export function OnBoardingPage() {
                 />
                 <IntroCard
                   align="right"
-                  edgeAttach
                   subtitle="AI 기반 학습"
                   title="내 일상 사진으로 시작하는 영어 학습"
                   desc="내가 찍은 일상 사진 하나로, 나만의 맞춤형 영어 학습을 경험해 보세요!"
@@ -107,7 +106,6 @@ export function OnBoardingPage() {
                 />
                 <IntroCard
                   align="right"
-                  edgeAttach
                   subtitle="오늘의 학습 & 학습 통계"
                   title="매일 새로운 오늘의 단어와 내 학습 통계"
                   desc="한눈에 확인하는 학습 기록, 공부할 때마다 쌓여가는 성취를 눈으로 확인하세요!"
@@ -122,7 +120,6 @@ export function OnBoardingPage() {
               <div className="flex items-center gap-0 max-w-fit">
                 <IntroCard
                   align="left"
-                  edgeAttach
                   subtitle="단어장 공유"
                   title="함께 하면 2배로 즐거운 영어 공부"
                   desc="친구와 단어장을 공유하며 함께 성장하는 학습 메이트가 되어보세요!"
