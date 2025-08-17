@@ -196,7 +196,7 @@ export const FolderTemplate = ({
           src={readingPriate}
           className="absolute left-5 top-5 w-[10%] z-0 pointer-events-none select-none"
         />
-        <div className="flex flex-col justify-center items-center z-10 gap-6 p-4 grow">
+        <div className="flex flex-col items-center z-10 gap-6 p-4 grow">
           {/* 상단 툴바 */}
           <Div className="flex flex-row gap-2 p-4 bg-gray-100 rounded-md w-full max-w-5xl">
             <IconButton
