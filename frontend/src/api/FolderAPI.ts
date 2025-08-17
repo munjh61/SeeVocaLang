@@ -51,10 +51,12 @@ export const createfolder = async (name: string, description: string) => {
 
 // 단어장 삭제
 export const deletefolder = async (folderId: number) => {
+  console.log("folderId", folderId);
   try {
     const response = await authApi.delete(`${foldersURL}/${folderId}`, {
       headers: { "Content-Type": "application/json" },
     });
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("❌ 폴더 삭제 요청 실패:", error);

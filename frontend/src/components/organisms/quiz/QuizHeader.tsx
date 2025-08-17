@@ -37,6 +37,7 @@ export const QuizHeader = ({
         <Text
           font={"outline"}
           size={"xl"}
+          onlyOneLine={"yes"}
           children={`${index} 번째 / ${total} 문제`}
         />
       </Div>
