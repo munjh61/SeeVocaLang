@@ -56,7 +56,7 @@ export function HangmanGameOverModal({
               font={"hakgyo"}
               color={"white"}
             >
-              아니오
+              exit
             </Override>
             <Dots
               onClick={onYes}
@@ -64,7 +64,7 @@ export function HangmanGameOverModal({
               font={"hakgyo"}
               color={"white"}
             >
-              예
+              replay
             </Dots>
           </div>
         </div>

@@ -65,7 +65,7 @@ export const RainGameOverModal: React.FC<RainGameOverModalProps> = ({
         </div>
         <div className="w-full mt-2 flex gap-2 justify-end">
           <Dots onClick={onClose} font={"hakgyo"} color={"white"}>
-            close
+            exit
           </Dots>
           <Override onClick={onRetry} font={"hakgyo"} color={"white"}>
             replay
