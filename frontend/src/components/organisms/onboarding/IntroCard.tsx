@@ -16,12 +16,14 @@ export default function IntroCard({
   return (
     <div
       className={[
-        // 📌 더 이상 고정 폭 제한 없음
-        "w-full max-w-[90%] sm:max-w-[80%] lg:max-w-[70%]",
-        "p-4 sm:p-6 lg:p-8",
+        // ✅ 끝선 통일: 반응형 고정 폭 (필요시 수치만 조정)
+        "flex-none basis-[28rem] sm:basis-[32rem] md:basis-[36rem] lg:basis-[40rem]",
         "rounded-2xl shadow-xl border",
         "backdrop-blur bg-white/70 border-white/40",
+        // 바깥 여백은 정렬만 담당 (translate/margin으로 밀지 않음)
         align === "right" ? "ml-auto" : "mr-auto",
+        // 내용 여백(대칭)
+        "px-5 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8",
         className || "",
       ].join(" ")}
     >
@@ -35,11 +37,11 @@ export default function IntroCard({
           </span>
         )}
       </div>
-      {/* 📌 반응형 타이틀 크기 */}
+
       <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
         {title}
       </h3>
-      {/* 📌 반응형 설명 글자 크기 & 행간 */}
+
       <p className="text-sm sm:text-base lg:text-lg text-gray-700 leading-relaxed">
         {desc}
       </p>
