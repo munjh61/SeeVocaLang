@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { RainyBalls } from "../../atoms/deco/RainyBall";
 import { Div } from "../../atoms/div/Div";
 import { Text } from "../../atoms/text/Text";
+import sea from "../../../asset/png/sea.png";
+import penguin from "../../../asset/png/bino_run.png";
 
 export const LoadingPage = () => {
   const [count, setCount] = useState(0);
@@ -19,13 +21,11 @@ export const LoadingPage = () => {
     <Div
       align={"center"}
       className="grow w-full h-full relative overflow-hidden justify-center"
-      style={{
-        background:
-          "linear-gradient(to bottom right, #d8b4fe, #f9a8d4, #93c5fd)",
-      }}
+      style={{ backgroundImage: `url(${sea})` }}
     >
       {/* 배경 데코 요소들 */}
       <RainyBalls />
+      <img src={penguin} />
       <Text size={"xxxl"} font={"outline"}>{`로딩중 ${dot[count]}`}</Text>
     </Div>
   );

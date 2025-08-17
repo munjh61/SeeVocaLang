@@ -190,81 +190,86 @@ export const FolderTemplate = ({
       {/* 본문 */}
       <Div
         style={{ backgroundImage: `url(${sea})` }}
-        className="flex flex-col grow gap-6 p-4 w-full bg-cover items-center relative"
+        className="flex flex-col grow w-full bg-cover relative"
       >
-        <img src={readingPriate} className="absolute left-5 top-5 h-[10%]" />
-        {/* 상단 툴바 */}
-        <Div className="flex flex-row gap-2 p-4 bg-gray-100 rounded-md w-full max-w-5xl">
-          <IconButton
-            ButtonVariant={{
-              bgColor: "purple",
-              textColor: "white",
-              size: "xl",
-              font: "hakgyo",
-            }}
-            buttonValue={() => navigate(-1)}
-            className="w-30"
-          >
-            뒤로
-          </IconButton>
-
-          <Searchbar iconColor="blue" onSearch={searchFunction} />
-
-          <IconButton
-            ButtonVariant={{
-              bgColor: "purple",
-              textColor: "white",
-              size: "xl",
-              font: "hakgyo",
-            }}
-            buttonValue={() => setQuizModalOpen(true)}
-            className="w-30"
-          >
-            퀴즈
-          </IconButton>
-        </Div>
-        <VocafolderSecondHeader
-          isToggle={isToggle}
-          onClickToggle={() => setIsToggle(prev => !prev)}
-          onClickCreate={openCreateModal}
-          onClickFavorite={() => setIsFavoriteOnly(prev => !prev)}
+        <img
+          src={readingPriate}
+          className="absolute left-5 top-5 w-[10%] z-0 pointer-events-none select-none"
         />
-        <div className="w-[70%] self-center">
-          {/* 단어 카드 목록*/}
-          {!isToggle && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
-              {filteredVocaList.map(card => {
-                const id = Number(card.wordId);
-                return (
-                  <VocaCard
-                    key={id}
-                    nameEn={card.nameEn}
-                    nameKo={card.nameKo}
-                    imageUrl={card.imageUrl}
-                    folders={card.folders}
-                    onDelete={() => deleteWordFunction(id)}
-                  />
-                );
-              })}
-            </div>
-          )}
-          {/* 단어장 카드 목록 */}
-          {isToggle && (
-            <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
-              {filteredFolderList.map(data => {
-                const idx = Math.abs(Number(data.folderId)) % ISLANDS.length;
-                return (
-                  <Folder
-                    key={data.folderId}
-                    {...data}
-                    islandSrc={ISLANDS[idx]}
-                    onEditClick={openEditModal}
-                    onToggleFavorite={toggleFavorite}
-                  />
-                );
-              })}
-            </div>
-          )}
+        <div className="flex flex-col justify-center items-center z-10 gap-6 p-4 grow">
+          {/* 상단 툴바 */}
+          <Div className="flex flex-row gap-2 p-4 bg-gray-100 rounded-md w-full max-w-5xl">
+            <IconButton
+              ButtonVariant={{
+                bgColor: "purple",
+                textColor: "white",
+                size: "xl",
+                font: "hakgyo",
+              }}
+              buttonValue={() => navigate(-1)}
+              className="w-30"
+            >
+              뒤로
+            </IconButton>
+
+            <Searchbar iconColor="blue" onSearch={searchFunction} />
+
+            <IconButton
+              ButtonVariant={{
+                bgColor: "purple",
+                textColor: "white",
+                size: "xl",
+                font: "hakgyo",
+              }}
+              buttonValue={() => setQuizModalOpen(true)}
+              className="w-30"
+            >
+              퀴즈
+            </IconButton>
+          </Div>
+          <VocafolderSecondHeader
+            isToggle={isToggle}
+            onClickToggle={() => setIsToggle(prev => !prev)}
+            onClickCreate={openCreateModal}
+            onClickFavorite={() => setIsFavoriteOnly(prev => !prev)}
+          />
+          <div className="w-[70%]">
+            {/* 단어 카드 목록*/}
+            {!isToggle && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
+                {filteredVocaList.map(card => {
+                  const id = Number(card.wordId);
+                  return (
+                    <VocaCard
+                      key={id}
+                      nameEn={card.nameEn}
+                      nameKo={card.nameKo}
+                      imageUrl={card.imageUrl}
+                      folders={card.folders}
+                      onDelete={() => deleteWordFunction(id)}
+                    />
+                  );
+                })}
+              </div>
+            )}
+            {/* 단어장 카드 목록 */}
+            {isToggle && (
+              <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
+                {filteredFolderList.map(data => {
+                  const idx = Math.abs(Number(data.folderId)) % ISLANDS.length;
+                  return (
+                    <Folder
+                      key={data.folderId}
+                      {...data}
+                      islandSrc={ISLANDS[idx]}
+                      onEditClick={openEditModal}
+                      onToggleFavorite={toggleFavorite}
+                    />
+                  );
+                })}
+              </div>
+            )}
+          </div>
         </div>
       </Div>
     </Div>

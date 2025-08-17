@@ -62,8 +62,12 @@ export const VocaDetailTemplate = ({
           backgroundRepeat: "no-repeat, repeat",
         }}
       >
+        <img
+          src={parrot}
+          className="absolute right-5 top-5 w-[10%] z-0 pointer-events-none select-none"
+        />
         {/* 상단 */}
-        <div className="flex flex-row gap-2 p-4 bg-gray-100 rounded-md w-full max-w-5xl">
+        <div className="flex flex-row gap-2 p-4 bg-gray-100 rounded-md w-full max-w-5xl z-10">
           <IconButton
             ButtonVariant={{
               bgColor: "purple",
@@ -105,10 +109,7 @@ export const VocaDetailTemplate = ({
             한글가리기
           </ToggleButton>
         </div>
-        <img
-          src={parrot}
-          className="self-end w-[10%] absolute pointer-events-none select-none"
-        />
+
         <div className="w-[80%] self-center grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
           {filteredVocaList.map(card => (
             <VocaCard
