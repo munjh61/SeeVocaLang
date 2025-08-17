@@ -198,7 +198,7 @@ export const HangMan = ({ vocas, maxWrong = 5 }: HangManProps) => {
   // 나가기(아니오)
   const handleExit = () => {
     setIsOverModalOpen(false);
-    nav("/game");
+    nav("/main");
   };
 
   if (!answerRaw) {

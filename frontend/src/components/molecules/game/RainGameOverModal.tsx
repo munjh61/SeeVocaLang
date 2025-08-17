@@ -6,6 +6,7 @@ import sea from "../../../asset/png/sea.png";
 import { Dots } from "../../atoms/button/Dots";
 import { Override } from "../../atoms/button/Override";
 import { QuizDoneInfoCard } from "../quizDone/QuizDoneInfoCard";
+import { Text } from "../../atoms/text/Text";
 
 type RainGameOverModalProps = {
   isOpen: boolean;
@@ -24,19 +25,26 @@ export const RainGameOverModal: React.FC<RainGameOverModalProps> = ({
   onRetry,
   onClose,
 }) => {
+  const winOrLose = round >= 3;
   return (
     <Modal
       isOpen={isOpen}
       onClose={onClose}
       panelClassName="w-[min(560px,92vw)] max-h-[80vh] p-0"
     >
-      <div className="flex flex-col gap-4 justify-center items-center">
-        <h2 className="text-2xl font-bold text-center">게임 종료</h2>
-        <div
-          className="w-full flex flex-col items-center p-2 rounded-2xl"
-          style={{ backgroundImage: `url(${sea})` }}
+      <div
+        className="flex flex-col gap-4 justify-center items-center rounded-md p-4"
+        style={{ backgroundImage: `url(${sea})` }}
+      >
+        <Text
+          size="xxl"
+          font={"outline"}
+          className={`font-bold text-center ${winOrLose ? "text-shadow-cyan-600" : "text-red-400"}`}
         >
-          <img src={score > 8 ? win : lose} className="w-[200px] h-[200px]" />
+          게임 종료
+        </Text>
+        <div className="w-full flex flex-col items-center p-2 rounded-2xl">
+          <img src={winOrLose ? win : lose} className="w-[200px] h-[200px]" />
           <div className="w-full grid grid-cols-3 gap-3">
             <QuizDoneInfoCard
               titleColor="red"

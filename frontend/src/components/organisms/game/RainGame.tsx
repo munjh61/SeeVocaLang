@@ -16,6 +16,7 @@ import enemy3 from "../../../asset/png/pirate_enemy_squirrel.png";
 import penguin from "../../../asset/png/pirate_knife.png";
 import cannon from "../../../asset/png/cannon.png";
 import bombSfx from "../../../asset/sfx/bomb.wav";
+import { useNavigate } from "react-router-dom";
 
 type RainGameProps = {
   vocas: VocaCardProps[];
@@ -27,7 +28,7 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
    *  상수 (게임 밸런스/연출)
    * ------------------------- */
   const MAX_LIVES = 5;
-  const INITIAL_SPEED = 20; // px/frame
+  const INITIAL_SPEED = 30; // px/frame
   const SPEED_UP = 1.1; // 정답 시 속도 ×1.1
 
   // 미사일 가로:세로 비 (이전 130x100 → h/w)
@@ -239,7 +240,7 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
       setRunning(false);
       if (!endedRef.current) {
         endedRef.current = true;
-        setGameOverOpen(true); // ✅ 모달 오픈
+        setGameOverOpen(true);
       }
     }
   }, [lives, running]);
@@ -265,6 +266,11 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
 
     setGameOverOpen(false);
   }, [pool, resetToStartX]);
+  const nav = useNavigate();
+  const handleExit = () => {
+    setGameOverOpen(false);
+    nav("/main");
+  };
 
   /** -------------------------
    *  폭발 표시 & 타이머 관리
@@ -450,7 +456,7 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
         round={round}
         speed={Number(speedRef.current)}
         onRetry={resetGame}
-        onClose={() => setGameOverOpen(false)}
+        onClose={handleExit}
       />
     </div>
   );
