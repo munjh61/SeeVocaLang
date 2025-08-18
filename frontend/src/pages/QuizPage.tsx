@@ -6,7 +6,7 @@ import type { VocaCardProps } from "../components/organisms/vocaCard/VocaCard";
 import { getWords } from "../api/FolderAPI";
 import { LoadingPage } from "../components/templates/loadingTemplate/LoadingTemplate";
 import { getTodayQuiz } from "../api/TodayQuizAPI";
-import sea from "../../../asset/png/sea.png";
+import sea from "../asset/png/sea.png";
 
 function QuizPage() {
   const nav = useNavigate();
