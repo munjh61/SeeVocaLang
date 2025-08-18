@@ -59,9 +59,12 @@ export const GameSelectTemplate = ({ onClick }: GameSelectTemplateProps) => {
     >
       <div
         style={{ backgroundImage: `url(${bg})` }}
-        className="w-[40%] h-[40%] max-w-xl aspect-[4/3] rounded-2xl border-2 border-orange-800 bg-no-repeat bg-cover bg-center"
+        className="w-[40%] h-[40%] max-w-xl aspect-[4/3] rounded-2xl border-2 border-orange-800 bg-no-repeat bg-cover bg-center flex justify-center items-center"
       >
-        <img src={games[ready - 1].gameThumbnail} className="w-full h-full" />
+        <img
+          src={games[ready - 1].gameThumbnail}
+          className="max-w-full max-h-full aspect-auto"
+        />
       </div>
       {/* 선택 부분 */}
       <Div className="w-full max-w-6xl grid grid-cols-3 gap-6 place-items-center">
