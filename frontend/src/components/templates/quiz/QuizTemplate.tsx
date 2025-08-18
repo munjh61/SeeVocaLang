@@ -7,7 +7,6 @@ import { SegmentControl } from "../../molecules/segmentControl/SegmentControl";
 import { QuizHeader } from "../../organisms/quiz/QuizHeader";
 import { Div } from "../../atoms/div/Div";
 import { completeTodayQuiz, updateQuizStatus } from "../../../api/TodayQuizAPI";
-import sea from "../../../asset/png/sea.png";
 
 type QuizTemplateProps = {
   name: string;
@@ -92,10 +91,7 @@ export const QuizTemplate = ({
   };
 
   return (
-    <div
-      className="flex flex-col grow p-2 gap-2"
-      style={{ backgroundImage: `url(${sea})` }}
-    >
+    <div className="flex flex-col grow p-2 gap-2">
       <QuizHeader
         name={name}
         description={description}

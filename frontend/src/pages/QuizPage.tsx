@@ -6,6 +6,7 @@ import type { VocaCardProps } from "../components/organisms/vocaCard/VocaCard";
 import { getWords } from "../api/FolderAPI";
 import { LoadingPage } from "../components/templates/loadingTemplate/LoadingTemplate";
 import { getTodayQuiz } from "../api/TodayQuizAPI";
+import sea from "../../../asset/png/sea.png";
 
 function QuizPage() {
   const nav = useNavigate();
@@ -63,7 +64,10 @@ function QuizPage() {
 
   return (
     <div className="flex flex-col h-screen">
-      <div className="flex grow overflow-y-auto">
+      <div
+        className="flex grow overflow-y-auto"
+        style={{ backgroundImage: `url(${sea})` }}
+      >
         <QuizTemplate
           name={name}
           description={description}
