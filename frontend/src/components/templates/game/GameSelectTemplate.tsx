@@ -32,7 +32,7 @@ export const GameSelectTemplate = ({ onClick }: GameSelectTemplateProps) => {
     {
       gameNumber: 1,
       gameTitle: "포로 탈출",
-      gameDescription: "한 글자씩 단어를 맞추어 보아요.",
+      gameDescription: "한 글자씩 단어를 맞혀 보아요.",
       gameThumbnail: ropeThumbnail,
       isFinished: true,
     },

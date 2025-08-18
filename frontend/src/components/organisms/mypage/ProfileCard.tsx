@@ -123,7 +123,7 @@ export function ProfileCard({ userInfo, statistics, onOpenModal }: Props) {
           <StatsNote
             items={[
               {
-                label: "총 단어 갯수",
+                label: "총 단어 개수",
                 value: statistics?.content.totalWordsCount ?? 0,
               },
             ]}
@@ -131,7 +131,7 @@ export function ProfileCard({ userInfo, statistics, onOpenModal }: Props) {
           <StatsNote
             items={[
               {
-                label: "총 폴더 갯수",
+                label: "총 폴더 개수",
                 value: statistics?.content.totalFoldersCount ?? 0,
               },
             ]}

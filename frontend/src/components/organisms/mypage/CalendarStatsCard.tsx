@@ -53,7 +53,7 @@ export function CalendarStatsCard({ days, statistics }: Props) {
           <StatsNote
             items={[
               {
-                label: "총 학습 일 수",
+                label: "총 학습 일수",
                 value: statistics?.content.totalDaysCount || 0,
               },
             ]}
@@ -61,7 +61,7 @@ export function CalendarStatsCard({ days, statistics }: Props) {
           <StatsNote
             items={[
               {
-                label: "현재 연속 학습 일 수",
+                label: "이번 달 학습 일수",
                 value: statistics?.content.monthDaysCount || 0,
               },
             ]}
@@ -69,7 +69,7 @@ export function CalendarStatsCard({ days, statistics }: Props) {
           <StatsNote
             items={[
               {
-                label: "최대 연속 학습 일 수",
+                label: "연속 학습 일수",
                 value: statistics?.content.streakDaysCount || 0,
               },
             ]}
