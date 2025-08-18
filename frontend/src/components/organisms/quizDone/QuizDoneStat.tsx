@@ -5,7 +5,6 @@ import calendar from "../../../asset/calendar.svg?react";
 import { QuizDoneInfoCard } from "../../molecules/quizDone/QuizDoneInfoCard";
 import { getUserInfo, type UserInfo } from "../../../api/userInfo";
 import { useEffect, useState } from "react";
-import { ImageBox } from "../../molecules/imagebox/Imagebox";
 import defaultImg from "../../../asset/png/default_profile.png";
 
 type QuizDoneStatProps = {
