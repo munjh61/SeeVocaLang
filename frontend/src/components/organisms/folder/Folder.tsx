@@ -39,7 +39,7 @@ export const Folder = ({
     >
       {/* 위 */}
       <div
-        className="flex justify-center items-center grow pb-10 bg-center bg-contain bg-no-repeat"
+        className="flex justify-center items-center grow px-4 pb-10 bg-center bg-contain bg-no-repeat"
         style={{ backgroundImage: `url(${balloon})` }}
       >
         <ImageBox
