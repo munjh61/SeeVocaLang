@@ -1,4 +1,3 @@
-import { ImageBox } from "../../molecules/imagebox/Imagebox";
 import { Icon } from "../../atoms/icon/Icon";
 import starF from "../../../asset/star-fill.svg?react";
 import starE from "../../../asset/star_empty.svg?react";

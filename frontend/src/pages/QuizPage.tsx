@@ -7,6 +7,7 @@ import { getWords } from "../api/FolderAPI";
 import { LoadingPage } from "../components/templates/loadingTemplate/LoadingTemplate";
 import { getTodayQuiz } from "../api/TodayQuizAPI";
 import sea from "../asset/png/sea.png";
+// import { SampleData } from "../stores/Sample";
 
 function QuizPage() {
   const nav = useNavigate();
@@ -43,6 +44,7 @@ function QuizPage() {
           const data = await getWords(Number(folderId));
           if (mounted) setVocas(Array.isArray(data) ? data : []);
         }
+        // if (vocas.length < 8) setVocas(SampleData);
       } catch (e) {
         if (!mounted) return;
         const msg = e instanceof Error ? e.message : "불러오기 실패";

@@ -28,7 +28,7 @@ export const RainGame = ({ vocas, totalCount = 10 }: RainGameProps) => {
    *  상수 (게임 밸런스/연출)
    * ------------------------- */
   const MAX_LIVES = 5;
-  const INITIAL_SPEED = 5; // px/frame
+  const INITIAL_SPEED = 3; // px/frame
   const SPEED_UP = 1.1; // 정답 시 속도 ×1.1
 
   // 미사일 가로:세로 비 (이전 130x100 → h/w)

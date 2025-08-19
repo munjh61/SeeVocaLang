@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { LoadingPage } from "../loadingTemplate/LoadingTemplate";
 import { getTodayQuiz } from "../../../api/TodayQuizAPI";
 import { HangMan } from "../../organisms/game/HangMan";
+// import { SampleData } from "../../../stores/Sample";
 
 export const HangManTemplate = () => {
   const nav = useNavigate();
