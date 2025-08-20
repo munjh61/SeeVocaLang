@@ -1,12 +1,7 @@
-function App() {
+import { Router } from "./router/Router";
 
-  return (
-    <>
-      <div className={"bg-blue-800"}>
-        Tailwind Css Test
-            </div>
-    </>
-  )
+function App() {
+  return <Router />;
 }
 
-export default App
+export default App;

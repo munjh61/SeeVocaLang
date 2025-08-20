@@ -1,0 +1,22 @@
+/* 아래쪽을 축으로 살짝 좌우로 도는 애니메이션 */
+@keyframes rock-soft {
+  0%   { transform: rotate(0deg); }
+  25%  { transform: rotate(-3.5deg); }
+  75%  { transform: rotate(3.5deg); }
+  100% { transform: rotate(0deg); }
+}
+
+/* hover(마우스), focus-visible(키보드)에서만 회전 */
+.hoverRock:hover .wiggleTarget,
+.hoverRock:focus-visible .wiggleTarget {
+  transform-origin: center bottom;        /* 회전축: 아래 중앙 */
+  animation: rock-soft 2.2s ease-in-out infinite;
+}
+
+/* 성능 & 접근성 */
+.wiggleTarget { will-change: transform; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hoverRock:hover .wiggleTarget,
+  .hoverRock:focus-visible .wiggleTarget { animation: none; }
+}

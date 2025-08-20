@@ -1,6 +1,190 @@
-@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
 @import "tailwindcss";
 
+/* ===== Tailwind v4 theme tokens ===== */
 @theme {
-    --default-font-family: 'Pretendard', 'sans-serif';
+    --default-font-family: "Pretendard", "sans-serif";
+}
+
+/* ===== 폰트 페이스 ===== */
+/* 외곽선이 있는 폰트 */
+@font-face {
+    font-family: 'SDSamliphopangche_Outline';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts-20-12@1.0/SDSamliphopangche_Outline.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+/* 칠판 필기 폰트 */
+@font-face {
+    font-family: 'HakgyoansimDoldamB';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/HakgyoansimDoldamB.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+
+/* ===== 폰트 유틸 ===== */
+.font-sds-outline { font-family: 'SDSamliphopangche_Outline', sans-serif; }
+.font-hakgyo { font-family: 'HakgyoansimDoldamB', sans-serif; }
+
+.btn-compact { container-type: inline-size; }
+@container (max-width: 70px) {
+    .btn-compact .label { display: none; }
+    .btn-compact .icon { margin-right: 0 !important; }
+}
+
+html, body, #root { height: 100%; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+.font-outline {
+    -webkit-text-stroke: 1px #1a120b;
+    color: transparent;
+}
+@media (max-width: 640px) {
+    .font-outline { -webkit-text-stroke: 0.8px #1a120b; }
+}
+
+/* ===== Pirate Palette (CSS variables) ===== */
+:root{
+    --pirate-brown: #8b5e34;     /* 목재 1 */
+    --pirate-brown-2: #5f442b;   /* 목재 2 */
+    --parchment-top: #fff6db;    /* 양피지 상단 */
+    --parchment-bot: #f2e1b4;    /* 양피지 하단 */
+    --rope-1: #caa574;           /* 밧줄 1 */
+    --rope-2: #a47e4e;           /* 밧줄 2 */
+    --pirate-gold: #e3b341;      /* 골드 */
+    --pirate-teal: #0e7490;      /* 바다색 */
+    --pirate-emerald: #15803d;   /* 에메랄드 */
+    --pirate-crimson: #7f1d1d;   /* 크림슨(왁스 느낌) */
+    --pirate-ink: #0b1f2a;       /* 심해 */
+}
+
+/* ===== Components & Utilities ===== */
+@layer utilities {
+    /* 양피지 배경 */
+    .bg-parchment {
+        background:
+                radial-gradient(120% 80% at 50% 0%,
+                var(--parchment-top, #fff6db) 0%,
+                var(--parchment-bot, #f2e1b4) 55%,
+                #e8d39e 100%
+                ),
+                linear-gradient(180deg, rgba(139,94,52,0.06), rgba(139,94,52,0.06));
+    }
+
+    /* 목재 헤더 (가로널 판자) */
+    .wood-header {
+        @apply text-white rounded-t-xl px-6 py-4 text-center relative;
+        background:
+                linear-gradient(90deg,
+                var(--pirate-brown-2) 0%,
+                var(--pirate-brown) 25%,
+                var(--pirate-brown-2) 50%,
+                var(--pirate-brown) 75%,
+                var(--pirate-brown-2) 100%
+                );
+        background-size: 32px 100%;
+        box-shadow: inset 0 2px 0 rgba(255,255,255,.08), inset 0 -2px 0 rgba(0,0,0,.25);
+        border: 1px solid rgba(0,0,0,.25);
+    }
+
+    /* 밧줄 디바이더 */
+    .rope {
+        height: 10px;
+        background: repeating-linear-gradient(45deg, var(--rope-1) 0 8px, var(--rope-2) 8px 16px);
+        box-shadow: inset 0 2px 2px rgba(0,0,0,.15);
+    }
+
+    /* 금속 못 */
+    .nail {
+        position: absolute;
+        width: 14px; height: 14px; border-radius: 9999px;
+        background: radial-gradient(circle at 30% 30%, #d1d5db 0 40%, #9ca3af 45% 70%, #6b7280 75% 100%);
+        box-shadow: 0 1px 0 #374151, inset 0 1px 0 rgba(255,255,255,.6);
+        border: 1px solid rgba(55,65,81,.7);
+    }
+
+    /* 왁스 씰 버튼 (저장용) */
+    .wax-button {
+        color: #fff;
+        border-radius: 9999px;
+        border: 2px solid rgba(127,29,29,.5);
+        background:
+                radial-gradient(120% 120% at 30% 20%, #ff7b7b 0%, transparent 40%),
+                radial-gradient(100% 100% at 50% 50%, #b91c1c 0%, var(--pirate-crimson) 100%);
+        box-shadow: inset 0 -4px 10px rgba(0,0,0,.35), 0 10px 18px rgba(127,29,29,.35);
+        transition: transform .05s ease, box-shadow .15s ease;
+    }
+    .wax-button:hover { transform: translateY(-1px); }
+    .wax-button:active {
+        transform: translateY(1px);
+        box-shadow: inset 0 -2px 6px rgba(0,0,0,.45), 0 6px 12px rgba(127,29,29,.25);
+    }
+}
+
+/* 컴포넌트 계층: 모달/버튼 베이스 & 변형 */
+@layer components {
+    /* 모달 패널 전체 배경(심해→갑판 톤) */
+    .pirate-modal{
+        @apply rounded-2xl;
+        border: 1px solid rgba(202,165,116,.4);
+        box-shadow: 0 12px 28px rgba(0,0,0,.45), inset 0 0 0 1px rgba(0,0,0,.2);
+        background:
+                linear-gradient(180deg,
+                rgba(11,31,42,.85) 0%,
+                rgba(23,42,47,.85) 40%,
+                rgba(60,42,30,.9) 100%
+                ),
+                radial-gradient(1200px 500px at 50% -30%, rgba(227,179,65,.06), transparent 70%),
+                radial-gradient(900px 400px at 50% 120%, rgba(202,165,116,.08), transparent 70%);
+        backdrop-filter: blur(2px);
+    }
+
+    /* 공통 해적 버튼 베이스 */
+    .pirate-btn{
+        @apply inline-flex items-center justify-center rounded-lg px-4 py-2 font-semibold tracking-wide;
+        @apply ring-1 ring-black/20 border border-black/20 shadow-md;
+        @apply transition-transform duration-100;
+        text-shadow: 0 1px 0 rgba(0,0,0,.25);
+        background-clip: padding-box;
+    }
+    .pirate-btn:hover{ transform: translateY(-1px); }
+    .pirate-btn:active{ transform: translateY(0); }
+    .pirate-btn:disabled{ opacity:.6; cursor: not-allowed; transform:none; }
+
+    /* 변형: 골드(이메일 연동 시작) */
+    .pirate-btn--gold{
+        background: linear-gradient(180deg, #f7d774, var(--pirate-gold));
+        color:#3a2a0f;
+    }
+
+    /* 변형: 럼 브라운(취소) */
+    .pirate-btn--rum{
+        background: linear-gradient(180deg, #a5753e, #7a542b);
+        color:#fdf7e6;
+    }
+
+    /* 변형: 대포(현재 비번 확인) */
+    .pirate-btn--cannon{
+        background: linear-gradient(180deg, #4b5563, #111827);
+        color:#f3f4f6;
+    }
+
+    /* 변형: 바다색(인증 메일 발송) */
+    .pirate-btn--teal{
+        background: linear-gradient(180deg, #1f9bb3, var(--pirate-teal));
+        color:#e6fffb;
+    }
+
+    /* 변형: 에메랄드(인증번호 확인/연동완료) */
+    .pirate-btn--emerald{
+        background: linear-gradient(180deg, #22c55e, var(--pirate-emerald));
+        color:#ecfdf5;
+    }
+
+    /* 변형: 크림슨(새 비번 확인) */
+    .pirate-btn--crimson{
+        background: linear-gradient(180deg, #b91c1c, var(--pirate-crimson));
+        color:#fff5f5;
+    }
+
+    
 }

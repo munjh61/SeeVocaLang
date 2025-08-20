@@ -1,0 +1,212 @@
+@import "tailwindcss";
+
+@layer components {
+    /* ===== 공통 변수 ===== */
+    :root {
+        --cal-tile: clamp(1.8rem, 4.5vw, 2.5rem);
+        --cal-nav: clamp(2.5rem, 7vw, 3.4rem); /* 아이콘 크기 */
+        /* 해적 라벨 색상 */
+        --pirate-brown: #8b5e34;
+        --pirate-brown-2: #5f442b;
+        --parchment-top: #fff6db;
+        --parchment-bot: #f2e1b4;
+        --rope-1: #caa574;
+        --rope-2: #a47e4e;
+        --label-pad-x: 1rem;
+        --label-pad-y: 0.5rem;
+    }
+
+    /* 전체 달력 컨테이너 */
+    .react-calendar {
+        @apply !w-full !border-none !shadow-none !bg-transparent;
+    }
+
+    /* 상단 네비 영역 */
+    .react-calendar__navigation {
+        @apply flex items-center justify-between mb-4 !bg-transparent;
+        gap: .5rem; /* 아이콘과 라벨 간격 */
+    }
+
+    /* 네비 버튼: 배경 투명 + 클릭 영역 확장 */
+    .react-calendar__navigation button {
+        @apply relative inline-flex items-center justify-center rounded-md !bg-transparent transition;
+        /* 아이콘 크기에 맞춰 컨테이너도 키움 */
+        width: calc(var(--cal-nav) + 0.5rem);
+        height: calc(var(--cal-nav) + 0.5rem);
+    }
+
+    /* 기본 화살표 텍스트(« ‹ › ») 숨김 */
+    .react-calendar__navigation__prev-button,
+    .react-calendar__navigation__next-button,
+    .react-calendar__navigation__prev2-button,
+    .react-calendar__navigation__next2-button {
+        font-size: 0;
+        line-height: 0;
+    }
+
+    /* 아이콘을 ::before로 표시 (CSS만 사용) */
+    .react-calendar__navigation__prev-button::before,
+    .react-calendar__navigation__next-button::before,
+    .react-calendar__navigation__prev2-button::before,
+    .react-calendar__navigation__next2-button::before {
+        content: "";
+        display: block;
+        width: var(--cal-nav);
+        height: var(--cal-nav);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        transition: transform 150ms ease;
+        margin: 0 auto;
+    }
+
+    /* ⬇︎ 이미지 경로만 네 자산 경로로 유지 */
+    .react-calendar__navigation__prev-button::before  { background-image: url("../asset/png/arrow/arrow_single_left.png"); }
+    .react-calendar__navigation__next-button::before  { background-image: url("../asset/png/arrow/arrow_single.png"); }
+    .react-calendar__navigation__prev2-button::before { background-image: url("../asset/png/arrow/arrow_double_left.png"); }
+    .react-calendar__navigation__next2-button::before { background-image: url("../asset/png/arrow/arrow_double_right.png"); }
+
+    /* 호버/비활성 */
+    .react-calendar__navigation button:hover:not(:disabled)::before { transform: scale(1.05); }
+    .react-calendar__navigation button:disabled::before { opacity: 0.35; }
+
+    .react-calendar__navigation__label {
+        position: relative;
+        padding: var(--label-pad-y) var(--label-pad-x);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        font-weight: 800;
+        color: var(--pirate-brown-2);
+
+        /* ✅ 둥근 필 형태 */
+        border-radius: 9999px;
+
+        /* ✅ 윗부분 로프 + 양피지 배경(2레이어) */
+        background-image:
+                repeating-linear-gradient(45deg, var(--rope-1) 0px, var(--rope-1) 4px, var(--rope-2) 4px, var(--rope-2) 8px),
+                linear-gradient(180deg, var(--parchment-top), var(--parchment-bot));
+        background-repeat: no-repeat, no-repeat;
+        background-size: calc(100% - 16%) 6px, cover;   /* 로프 폭/높이, 양피지는 채움 */
+        background-position: 8% 0.35rem, center;       /* 로프 좌우 8% 여백, 위쪽 배치 */
+
+        box-shadow:
+                inset 0 0 0 1px #e6d6a3,
+                inset 0 -6px 10px rgba(0,0,0,0.06),
+                0 2px 10px rgba(0,0,0,0.10);
+        border: 2px solid var(--pirate-brown);
+        transition: transform 160ms ease, box-shadow 160ms ease;
+    }
+    .react-calendar__navigation__label:hover {
+        transform: translateY(-1px) rotate(-0.3deg);
+        box-shadow:
+                inset 0 0 0 1px #e6d6a3,
+                inset 0 -6px 10px rgba(0,0,0,0.08),
+                0 6px 18px rgba(0,0,0,0.16);
+    }
+
+    /* 아래쪽 로프 언더라인 (라벨 바깥) */
+    .react-calendar__navigation__label::after {
+        content: "";
+        position: absolute;
+        left: 8%;
+        right: 8%;
+        bottom: -0.45rem;
+        height: 6px;
+        border-radius: 9999px;
+        background:
+                repeating-linear-gradient(
+                        45deg,
+                        var(--rope-1) 0px,
+                        var(--rope-1) 4px,
+                        var(--rope-2) 4px,
+                        var(--rope-2) 8px
+                );
+        box-shadow: 0 1px 0 rgba(0,0,0,0.2);
+        pointer-events: none;
+    }
+    .react-calendar__navigation__label:focus-visible {
+        outline: none;
+        box-shadow:
+                0 0 0 3px rgba(59,130,246,0.5),
+                inset 0 0 0 1px #e6d6a3,
+                inset 0 -6px 10px rgba(0,0,0,0.06);
+    }
+
+    /* 이달이 아닌 날짜 */
+    .react-calendar__month-view__days__day--neighboringMonth {
+        @apply text-gray-300;
+    }
+
+    /* 타일 */
+    .react-calendar__tile {
+        @apply p-2 text-center rounded-md !bg-transparent hover:bg-gray-100;
+        position: relative;
+    }
+
+    /* ===== 하이라이트/선택 배지 ===== */
+    .react-calendar__tile.highlight::before,
+    .react-calendar__tile--active::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        margin: auto;
+        width: var(--cal-tile);
+        height: var(--cal-tile);
+        border-radius: 9999px;
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        z-index: 0;
+    }
+    .react-calendar__tile.highlight::before {
+        background-image: url("../asset/png/pirate_skull.png") !important;
+    }
+    .react-calendar__tile.highlight {
+        color: #000 !important;
+        background: transparent !important;
+    }
+    .react-calendar__tile--active::before {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 10px;
+        background: url("../asset/png/bino_run.png") center/cover no-repeat;
+    }
+
+    /* ✅ 날짜 텍스트는 배지 '위'로 */
+    .react-calendar__tile abbr,
+    .react-calendar__tile span {
+        position: relative;
+        z-index: -1; /* (기존 -100 → 1) */
+    }
+
+    /* 투명 유지 */
+    .react-calendar__navigation__next-button,
+    .react-calendar__navigation__next2-button,
+    .react-calendar__navigation__prev-button,
+    .react-calendar__navigation__prev2-button,
+    .react-calendar__navigation__label {
+        @apply !bg-transparent text-inherit rounded-md;
+    }
+    .react-calendar__navigation__next-button:hover,
+    .react-calendar__navigation__next2-button:hover,
+    .react-calendar__navigation__prev-button:hover,
+    .react-calendar__navigation__prev2-button:hover,
+    .react-calendar__navigation__label:hover {
+        @apply !bg-transparent;
+    }
+
+    /* 모바일 라벨/아이콘 축소 */
+    @media (max-width: 420px) {
+        .react-calendar__navigation { gap: .25rem; }
+        .react-calendar__navigation__label {
+            padding: .35rem .75rem;
+            font-weight: 700;
+            letter-spacing: .04em;
+            /* 윗 로프 살짝 내림 */
+            background-position: 8% 0.3rem, center;
+        }
+        .react-calendar__navigation__label::after {
+            left: 10%; right: 10%; bottom: -.4rem; height: 5px;
+        }
+    }
+}
