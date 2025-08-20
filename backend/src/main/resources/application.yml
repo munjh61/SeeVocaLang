@@ -118,7 +118,7 @@ server:
     max-http-form-post-size: 15MB
 
   ai:
-    url: ENC(0FnCnLQ3VVYBWJWsF5Q3MM87EuqNtAe0D8mO0N1Dl9qtnhvx1NOeXg==)
+    url: ENC(Jl0ndc7ytrrhneqtvs0BBIYOh+JtgHjczHBFhV9onn27BerKUx+CxAAornvBQjODroTQXlhATJSx0ryZKStHS8nAbiejHoxG)
 
 management:
   endpoints:
