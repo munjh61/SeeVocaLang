@@ -22,8 +22,12 @@ public enum SVLWord {
     SHOES("shoes", "신발"),
     CHAIR("chair", "의자"),
     GLASSES("glasses", "안경"),
+<<<<<<< HEAD
     NAMEPLATE("nameplate", "명찰"),
     HAND("hand", "손");
+=======
+    NAMEPLATE("nameplate", "명찰");
+>>>>>>> origin/be/feat-fast-api
 
     private final String nameEn;
     private final String nameKo;

@@ -1,5 +1,6 @@
 package com.ssafy.a303.backend.photo.mapper;
 
+<<<<<<< HEAD
 import com.ssafy.a303.backend.folder.entity.FolderEntity;
 import com.ssafy.a303.backend.photo.dto.*;
 import com.ssafy.a303.backend.word.dto.CreateWordCommandDto;
@@ -11,6 +12,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+=======
+import com.ssafy.a303.backend.photo.dto.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
+import org.springframework.web.multipart.MultipartFile;
+
+>>>>>>> origin/be/feat-fast-api
 @Mapper
 public interface PhotoMapper {
 
@@ -21,6 +29,7 @@ public interface PhotoMapper {
     ReadObjectDetectionResponseDto toResponseDto(ReadObjectDetectionResultDto resultDto);
 
     CreateWordPhotoCommandDto toCommandDto(Long userId, CreateWordRequestDto requestDto);
+<<<<<<< HEAD
 
     @Mapping(source = "folderId", target = "folderId")
     @Mapping(source = "name", target = "name")
@@ -37,4 +46,6 @@ public interface PhotoMapper {
     );
 
     CreateWordResponseDto toResponseDto(CreateWordResultDto resultDto);
+=======
+>>>>>>> origin/be/feat-fast-api
 }

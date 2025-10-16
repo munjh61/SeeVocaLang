@@ -1,5 +1,6 @@
 package com.ssafy.a303.backend.user.service;
 
+<<<<<<< HEAD
 import com.ssafy.a303.backend.common.exception.CommonErrorCode;
 import com.ssafy.a303.backend.common.utility.s3.ImageUploader;
 import com.ssafy.a303.backend.email.exception.EmailErrorCode;
@@ -12,6 +13,9 @@ import com.ssafy.a303.backend.user.exception.UserErrorCode;
 import com.ssafy.a303.backend.user.exception.UserException;
 import com.ssafy.a303.backend.user.exception.UserNotFoundException;
 import com.ssafy.a303.backend.user.mapper.UserMapper;
+=======
+import com.ssafy.a303.backend.user.entity.UserEntity;
+>>>>>>> origin/be/feat-fast-api
 import com.ssafy.a303.backend.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,15 +25,21 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+<<<<<<< HEAD
 import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Slf4j
+=======
+import java.util.Optional;
+
+>>>>>>> origin/be/feat-fast-api
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
+<<<<<<< HEAD
     private final EmailService emailService;
     private final RandomCodeGenerator randomCodeGenerator;
     private final PasswordEncoder passwordEncoder;
@@ -170,5 +180,10 @@ public class UserService {
         LocalDateTime endTime = commandDto.endTime();
         UserMonthlyStatsDto dto = userRepository.findUserMonthlyStats(userId, startTime, endTime);
         return UserMapper.INSTANCE.toResultDto(dto);
+=======
+
+    public Optional<UserEntity> getUser(Long userId) {
+        return userRepository.findById(userId);
+>>>>>>> origin/be/feat-fast-api
     }
 }
